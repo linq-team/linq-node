@@ -1,0 +1,114 @@
+edition: "2025-10-10"
+
+organization:
+  name: linq
+  docs: https://docs.linq.com
+  contact: support@linq.com
+  github_org: linq-team
+
+settings:
+  license: MIT
+
+environments:
+  production: https://api.linqapp.com/api/partner
+
+targets:
+  typescript:
+    edition: typescript.2025-10-10
+    package_name: "@linqapp/sdk"
+    production_repo: linq-team/linq-node
+    publish:
+      npm: true
+
+client_settings:
+  opts:
+    api_key:
+      type: string
+      auth:
+        security_scheme: BearerAuth
+      read_env: LINQ_API_KEY
+
+custom_casings:
+  linq:
+    pascal: Linq
+    snake: linq
+    camel: linq
+    capital: Linq
+
+readme:
+  example_requests:
+    default:
+      type: request
+      endpoint: post /v3/chats
+      params:
+        from: "+12025551234"
+        to:
+          - "+19876543210"
+        message:
+          parts:
+            - type: text
+              value: "Hello from Linq SDK!"
+    headline:
+      type: request
+      endpoint: post /v3/chats
+      params:
+        from: "+12025551234"
+        to:
+          - "+19876543210"
+        message:
+          parts:
+            - type: text
+              value: "Hello from Linq SDK!"
+
+resources:
+  chats:
+    methods:
+      create: post /v3/chats
+      list: get /v3/chats
+      retrieve: get /v3/chats/{chatId}
+      update: put /v3/chats/{chatId}
+      mark_as_read: post /v3/chats/{chatId}/read
+      send_voicememo: post /v3/chats/{chatId}/voicememo
+      share_contact_card: post /v3/chats/{chatId}/share_contact_card
+    subresources:
+      participants:
+        methods:
+          add: post /v3/chats/{chatId}/participants
+          remove: delete /v3/chats/{chatId}/participants
+      typing:
+        methods:
+          start: post /v3/chats/{chatId}/typing
+          stop: delete /v3/chats/{chatId}/typing
+      messages:
+        methods:
+          send: post /v3/chats/{chatId}/messages
+          list: get /v3/chats/{chatId}/messages
+
+  messages:
+    methods:
+      retrieve: get /v3/messages/{messageId}
+      delete: delete /v3/messages/{messageId}
+      add_reaction: post /v3/messages/{messageId}/reactions
+      retrieve_thread: get /v3/messages/{messageId}/thread
+
+  attachments:
+    methods:
+      create: post /v3/attachments
+      retrieve: get /v3/attachments/{attachmentId}
+
+  phone_numbers:
+    methods:
+      list: get /v3/phonenumbers
+
+  webhooks:
+    subresources:
+      subscriptions:
+        methods:
+          create: post /v3/webhook-subscriptions
+          list: get /v3/webhook-subscriptions
+          retrieve: get /v3/webhook-subscriptions/{subscriptionId}
+          update: put /v3/webhook-subscriptions/{subscriptionId}
+          delete: delete /v3/webhook-subscriptions/{subscriptionId}
+      events:
+        methods:
+          list: get /v3/webhook-events
