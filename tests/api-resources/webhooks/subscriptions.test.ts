@@ -1,16 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import LinqNodeSDK from 'linq-node-sdk';
+import Linq from '@linqapp/sdk';
 
-const client = new LinqNodeSDK({
+const client = new Linq({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource webhookSubscriptions', () => {
-  // Prism tests are disabled
-  test.skip('create: only required params', async () => {
-    const responsePromise = client.webhookSubscriptions.create({
+describe('resource subscriptions', () => {
+  test('create: only required params', async () => {
+    const responsePromise = client.webhooks.subscriptions.create({
       subscribed_events: ['message.sent', 'message.delivered', 'message.read'],
       target_url: 'https://webhooks.example.com/linq/events',
     });
@@ -23,17 +22,15 @@ describe('resource webhookSubscriptions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('create: required and optional params', async () => {
-    const response = await client.webhookSubscriptions.create({
+  test('create: required and optional params', async () => {
+    const response = await client.webhooks.subscriptions.create({
       subscribed_events: ['message.sent', 'message.delivered', 'message.read'],
       target_url: 'https://webhooks.example.com/linq/events',
     });
   });
 
-  // Prism tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.webhookSubscriptions.retrieve('b2c3d4e5-f6a7-8901-bcde-f23456789012');
+  test('retrieve', async () => {
+    const responsePromise = client.webhooks.subscriptions.retrieve('b2c3d4e5-f6a7-8901-bcde-f23456789012');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,9 +40,8 @@ describe('resource webhookSubscriptions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('update', async () => {
-    const responsePromise = client.webhookSubscriptions.update('b2c3d4e5-f6a7-8901-bcde-f23456789012', {});
+  test('update', async () => {
+    const responsePromise = client.webhooks.subscriptions.update('b2c3d4e5-f6a7-8901-bcde-f23456789012', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -55,9 +51,8 @@ describe('resource webhookSubscriptions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('list', async () => {
-    const responsePromise = client.webhookSubscriptions.list();
+  test('list', async () => {
+    const responsePromise = client.webhooks.subscriptions.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -67,9 +62,8 @@ describe('resource webhookSubscriptions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('delete', async () => {
-    const responsePromise = client.webhookSubscriptions.delete('b2c3d4e5-f6a7-8901-bcde-f23456789012');
+  test('delete', async () => {
+    const responsePromise = client.webhooks.subscriptions.delete('b2c3d4e5-f6a7-8901-bcde-f23456789012');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

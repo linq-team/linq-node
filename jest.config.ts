@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^linq-node-sdk$': '<rootDir>/src/index.ts',
-    '^linq-node-sdk/(.*)$': '<rootDir>/src/$1',
+    '^@linqapp/sdk$': '<rootDir>/src/index.ts',
+    '^@linqapp/sdk/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',
