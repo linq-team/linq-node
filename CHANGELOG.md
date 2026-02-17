@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2026-02-17)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/linq-team/linq-node/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Features
+
+* enable OIDC trusted publishing and npm provenance ([b372e1c](https://github.com/linq-team/linq-node/commit/b372e1c4f984aef4d73a60fbd0b699d51fee397d))
+
+
+### Bug Fixes
+
+* update organization docs URL to apidocs.linqapp.com ([4ad2b90](https://github.com/linq-team/linq-node/commit/4ad2b900f779bfe4e18b403cd90ff9a0a46020da))
+
 ## 0.1.0-alpha.2 (2026-02-17)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/linq-team/linq-node/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
