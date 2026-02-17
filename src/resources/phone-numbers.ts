@@ -4,25 +4,25 @@ import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
-export class Phonenumbers extends APIResource {
+export class PhoneNumbers extends APIResource {
   /**
    * Returns all phone numbers assigned to the authenticated partner. Use this
    * endpoint to discover which phone numbers are available for sending messages via
    * the `from` field in create chat and send message requests.
    */
-  list(options?: RequestOptions): APIPromise<PhonenumberListResponse> {
+  list(options?: RequestOptions): APIPromise<PhoneNumberListResponse> {
     return this._client.get('/v3/phonenumbers', options);
   }
 }
 
-export interface PhonenumberListResponse {
+export interface PhoneNumberListResponse {
   /**
    * List of phone numbers assigned to the partner
    */
-  phone_numbers: Array<PhonenumberListResponse.PhoneNumber>;
+  phone_numbers: Array<PhoneNumberListResponse.PhoneNumber>;
 }
 
-export namespace PhonenumberListResponse {
+export namespace PhoneNumberListResponse {
   export interface PhoneNumber {
     /**
      * Unique identifier for the phone number
@@ -67,6 +67,6 @@ export namespace PhonenumberListResponse {
   }
 }
 
-export declare namespace Phonenumbers {
-  export { type PhonenumberListResponse as PhonenumberListResponse };
+export declare namespace PhoneNumbers {
+  export { type PhoneNumberListResponse as PhoneNumberListResponse };
 }

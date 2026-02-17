@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import LinqNodeSDK from 'linq-node-sdk';
+import Linq from '@linqapp/sdk';
 
-const client = new LinqNodeSDK({
+const client = new Linq({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource messages', () => {
-  // Prism tests are disabled
-  test.skip('retrieve', async () => {
+  test('retrieve', async () => {
     const responsePromise = client.messages.retrieve('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -20,8 +19,7 @@ describe('resource messages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('delete: only required params', async () => {
+  test('delete: only required params', async () => {
     const responsePromise = client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
       chat_id: '94c6bf33-31d9-40e3-a0e9-f94250ecedb9',
     });
@@ -34,15 +32,13 @@ describe('resource messages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('delete: required and optional params', async () => {
+  test('delete: required and optional params', async () => {
     const response = await client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
       chat_id: '94c6bf33-31d9-40e3-a0e9-f94250ecedb9',
     });
   });
 
-  // Prism tests are disabled
-  test.skip('addReaction: only required params', async () => {
+  test('addReaction: only required params', async () => {
     const responsePromise = client.messages.addReaction('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
       operation: 'add',
       type: 'love',
@@ -56,8 +52,7 @@ describe('resource messages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('addReaction: required and optional params', async () => {
+  test('addReaction: required and optional params', async () => {
     const response = await client.messages.addReaction('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
       operation: 'add',
       type: 'love',
@@ -66,8 +61,7 @@ describe('resource messages', () => {
     });
   });
 
-  // Prism tests are disabled
-  test.skip('retrieveThread', async () => {
+  test('retrieveThread', async () => {
     const responsePromise = client.messages.retrieveThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -78,8 +72,7 @@ describe('resource messages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('retrieveThread: request options and params are passed correctly', async () => {
+  test('retrieveThread: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.messages.retrieveThread(
@@ -91,6 +84,6 @@ describe('resource messages', () => {
         },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(LinqNodeSDK.NotFoundError);
+    ).rejects.toThrow(Linq.NotFoundError);
   });
 });

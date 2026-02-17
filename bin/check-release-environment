@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "The environment is ready to push releases!"
+

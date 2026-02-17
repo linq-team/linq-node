@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import LinqNodeSDK from 'linq-node-sdk';
+import Linq from '@linqapp/sdk';
 
-const client = new LinqNodeSDK({
+const client = new Linq({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource chats', () => {
-  // Prism tests are disabled
-  test.skip('create: only required params', async () => {
+  test('create: only required params', async () => {
     const responsePromise = client.chats.create({
       from: '+12052535597',
       message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
@@ -24,8 +23,7 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('create: required and optional params', async () => {
+  test('create: required and optional params', async () => {
     const response = await client.chats.create({
       from: '+12052535597',
       message: {
@@ -45,8 +43,7 @@ describe('resource chats', () => {
     });
   });
 
-  // Prism tests are disabled
-  test.skip('retrieve', async () => {
+  test('retrieve', async () => {
     const responsePromise = client.chats.retrieve('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -57,8 +54,7 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('update', async () => {
+  test('update', async () => {
     const responsePromise = client.chats.update('550e8400-e29b-41d4-a716-446655440000', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -69,9 +65,8 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('list: only required params', async () => {
-    const responsePromise = client.chats.list({ from: '%2B13343284472' });
+  test('list: only required params', async () => {
+    const responsePromise = client.chats.list({ from: '+13343284472' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -81,17 +76,15 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('list: required and optional params', async () => {
+  test('list: required and optional params', async () => {
     const response = await client.chats.list({
-      from: '%2B13343284472',
+      from: '+13343284472',
       cursor: '20',
       limit: 20,
     });
   });
 
-  // Prism tests are disabled
-  test.skip('markAsRead', async () => {
+  test('markAsRead', async () => {
     const responsePromise = client.chats.markAsRead('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -102,8 +95,7 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('sendVoicememo: only required params', async () => {
+  test('sendVoicememo: only required params', async () => {
     const responsePromise = client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {
       from: '+12052535597',
       voice_memo_url: 'https://example.com/voice-memo.m4a',
@@ -117,16 +109,14 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('sendVoicememo: required and optional params', async () => {
+  test('sendVoicememo: required and optional params', async () => {
     const response = await client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {
       from: '+12052535597',
       voice_memo_url: 'https://example.com/voice-memo.m4a',
     });
   });
 
-  // Prism tests are disabled
-  test.skip('shareContactCard', async () => {
+  test('shareContactCard', async () => {
     const responsePromise = client.chats.shareContactCard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);

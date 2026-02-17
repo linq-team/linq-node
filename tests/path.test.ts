@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from 'linq-node-sdk/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from '@linqapp/sdk/internal/utils/path';
 import { inspect } from 'node:util';
 import { runInNewContext } from 'node:vm';
 
