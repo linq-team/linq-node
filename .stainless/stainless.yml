@@ -12,6 +12,9 @@ settings:
 environments:
   production: https://api.linqapp.com/api/partner
 
+openapi:
+  code_samples: redocly
+
 targets:
   typescript:
     edition: typescript.2025-10-10

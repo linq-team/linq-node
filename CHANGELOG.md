@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2026-02-17)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/linq-team/linq-node/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Features
+
+* enable documented OpenAPI spec with SDK code samples ([3dde73c](https://github.com/linq-team/linq-node/commit/3dde73cadb43e86fec82a805551b79c9aa234f71))
+
+
+### Bug Fixes
+
+* remove provenance flag for private repo publishing ([3ae4be7](https://github.com/linq-team/linq-node/commit/3ae4be7539d46672439d540c58ba011cb3f58e1e))
+
 ## 0.1.0-alpha.1 (2026-02-17)
 
 Full Changelog: [v0.0.1...v0.1.0-alpha.1](https://github.com/linq-team/linq-node/compare/v0.0.1...v0.1.0-alpha.1)
