@@ -1,6 +1,6 @@
 {
   "name": "linq-node-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The official TypeScript library for the Linq Node SDK API",
   "author": "Linq Node SDK <support@linq.com>",
   "types": "dist/index.d.ts",
