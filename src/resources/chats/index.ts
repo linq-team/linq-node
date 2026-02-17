@@ -2,9 +2,9 @@
 
 export {
   Chats,
-  type Chat,
-  type MessageContent,
   type ChatCreateResponse,
+  type ChatRetrieveResponse,
+  type ChatUpdateResponse,
   type ChatListResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
@@ -14,7 +14,6 @@ export {
 } from './chats';
 export {
   Messages,
-  type SentMessage,
   type MessageListResponse,
   type MessageSendResponse,
   type MessageListParams,

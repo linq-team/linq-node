@@ -1,13 +1,13 @@
 {
-  "name": "linq-node-sdk",
+  "name": "@linqapp/sdk",
   "version": "0.0.1",
-  "description": "The official TypeScript library for the Linq Node SDK API",
-  "author": "Linq Node SDK <support@linq.com>",
+  "description": "The official TypeScript library for the Linq API",
+  "author": "Linq <support@linq.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
   "repository": "github:linq-team/linq-node",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "packageManager": "pnpm@10.27.0",
   "files": [
     "**/*"

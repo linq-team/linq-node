@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from 'linq-node-sdk/internal/uploads';
-import { toFile } from 'linq-node-sdk/core/uploads';
+import { multipartFormRequestOptions, createForm } from '@linqapp/sdk/internal/uploads';
+import { toFile } from '@linqapp/sdk/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

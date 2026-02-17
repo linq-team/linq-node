@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import type { LinqNodeSDK } from '../client';
+import type { Linq } from '../client';
 
 export abstract class APIResource {
-  protected _client: LinqNodeSDK;
+  protected _client: Linq;
 
-  constructor(client: LinqNodeSDK) {
+  constructor(client: Linq) {
     this._client = client;
   }
 }

@@ -18,7 +18,7 @@ export class Messages extends APIResource {
    * );
    * ```
    */
-  retrieve(messageID: string, options?: RequestOptions): APIPromise<Message> {
+  retrieve(messageID: string, options?: RequestOptions): APIPromise<MessageRetrieveResponse> {
     return this._client.get(path`/v3/messages/${messageID}`, options);
   }
 
@@ -61,7 +61,7 @@ export class Messages extends APIResource {
    *
    * @example
    * ```ts
-   * const reaction = await client.messages.addReaction(
+   * const response = await client.messages.addReaction(
    *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
    *   { operation: 'add', type: 'love' },
    * );
@@ -71,7 +71,7 @@ export class Messages extends APIResource {
     messageID: string,
     body: MessageAddReactionParams,
     options?: RequestOptions,
-  ): APIPromise<Reaction> {
+  ): APIPromise<MessageAddReactionResponse> {
     return this._client.post(path`/v3/messages/${messageID}/reactions`, { body, ...options });
   }
 
@@ -99,84 +99,7 @@ export class Messages extends APIResource {
   }
 }
 
-export interface ChatHandle {
-  /**
-   * Unique identifier for this handle
-   */
-  id: string;
-
-  /**
-   * Phone number (E.164) or email address of the participant
-   */
-  handle: string;
-
-  /**
-   * When this participant joined the chat
-   */
-  joined_at: string;
-
-  /**
-   * Service type (iMessage, SMS, RCS, etc.)
-   */
-  service: 'iMessage' | 'SMS' | 'RCS';
-
-  /**
-   * Whether this handle belongs to the sender (your phone number)
-   */
-  is_me?: boolean | null;
-
-  /**
-   * When they left (if applicable)
-   */
-  left_at?: string | null;
-
-  /**
-   * Participant status
-   */
-  status?: 'active' | 'left' | 'removed' | null;
-}
-
-/**
- * A media attachment part
- */
-export interface MediaPart {
-  /**
-   * Unique attachment identifier
-   */
-  id: string;
-
-  /**
-   * Original filename
-   */
-  filename: string;
-
-  /**
-   * MIME type of the file
-   */
-  mime_type: string;
-
-  /**
-   * Reactions on this message part
-   */
-  reactions: Array<Reaction> | null;
-
-  /**
-   * File size in bytes
-   */
-  size_bytes: number;
-
-  /**
-   * Indicates this is a media attachment part
-   */
-  type: 'media';
-
-  /**
-   * Presigned URL for downloading the attachment (expires in 1 hour).
-   */
-  url: string;
-}
-
-export interface Message {
+export interface MessageRetrieveResponse {
   /**
    * Unique identifier for the message
    */
@@ -220,7 +143,7 @@ export interface Message {
   /**
    * iMessage effect applied to a message (screen or bubble effect)
    */
-  effect?: MessageEffect | null;
+  effect?: MessageRetrieveResponse.Effect | null;
 
   /**
    * @deprecated DEPRECATED: Use from_handle instead. Phone number of the message
@@ -231,12 +154,12 @@ export interface Message {
   /**
    * The sender of this message as a full handle object
    */
-  from_handle?: ChatHandle | null;
+  from_handle?: MessageRetrieveResponse.FromHandle | null;
 
   /**
    * Message parts in order (text and media)
    */
-  parts?: Array<TextPart | MediaPart> | null;
+  parts?: Array<MessageRetrieveResponse.TextPartResponse | MessageRetrieveResponse.MediaPartResponse> | null;
 
   /**
    * Preferred service for sending this message
@@ -251,7 +174,7 @@ export interface Message {
   /**
    * Indicates this message is a threaded reply to another message
    */
-  reply_to?: ReplyTo | null;
+  reply_to?: MessageRetrieveResponse.ReplyTo | null;
 
   /**
    * When the message was sent
@@ -264,27 +187,270 @@ export interface Message {
   service?: 'iMessage' | 'SMS' | 'RCS' | null;
 }
 
-/**
- * iMessage effect applied to a message (screen or bubble effect)
- */
-export interface MessageEffect {
+export namespace MessageRetrieveResponse {
   /**
-   * Name of the effect. Common values:
-   *
-   * - Screen effects: confetti, fireworks, lasers, sparkles, celebration, hearts,
-   *   love, balloons, happy_birthday, echo, spotlight
-   * - Bubble effects: slam, loud, gentle, invisible
+   * iMessage effect applied to a message (screen or bubble effect)
    */
-  name?: string;
+  export interface Effect {
+    /**
+     * Name of the effect. Common values:
+     *
+     * - Screen effects: confetti, fireworks, lasers, sparkles, celebration, hearts,
+     *   love, balloons, happy_birthday, echo, spotlight
+     * - Bubble effects: slam, loud, gentle, invisible
+     */
+    name?: string;
+
+    /**
+     * Type of effect
+     */
+    type?: 'screen' | 'bubble';
+  }
 
   /**
-   * Type of effect
+   * The sender of this message as a full handle object
    */
-  type?: 'screen' | 'bubble';
+  export interface FromHandle {
+    /**
+     * Unique identifier for this handle
+     */
+    id: string;
+
+    /**
+     * Phone number (E.164) or email address of the participant
+     */
+    handle: string;
+
+    /**
+     * When this participant joined the chat
+     */
+    joined_at: string;
+
+    /**
+     * Service type (iMessage, SMS, RCS, etc.)
+     */
+    service: 'iMessage' | 'SMS' | 'RCS';
+
+    /**
+     * Whether this handle belongs to the sender (your phone number)
+     */
+    is_me?: boolean | null;
+
+    /**
+     * When they left (if applicable)
+     */
+    left_at?: string | null;
+
+    /**
+     * Participant status
+     */
+    status?: 'active' | 'left' | 'removed' | null;
+  }
+
+  /**
+   * A text message part
+   */
+  export interface TextPartResponse {
+    /**
+     * Reactions on this message part
+     */
+    reactions: Array<TextPartResponse.Reaction> | null;
+
+    /**
+     * Indicates this is a text message part
+     */
+    type: 'text';
+
+    /**
+     * The text content
+     */
+    value: string;
+  }
+
+  export namespace TextPartResponse {
+    export interface Reaction {
+      handle: Reaction.Handle;
+
+      /**
+       * Whether this reaction is from the current user
+       */
+      is_me: boolean;
+
+      /**
+       * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
+       * emphasize, question. Custom emoji reactions have type "custom" with the actual
+       * emoji in the custom_emoji field.
+       */
+      type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom';
+
+      /**
+       * Custom emoji if type is "custom", null otherwise
+       */
+      custom_emoji?: string | null;
+    }
+
+    export namespace Reaction {
+      export interface Handle {
+        /**
+         * Unique identifier for this handle
+         */
+        id: string;
+
+        /**
+         * Phone number (E.164) or email address of the participant
+         */
+        handle: string;
+
+        /**
+         * When this participant joined the chat
+         */
+        joined_at: string;
+
+        /**
+         * Service type (iMessage, SMS, RCS, etc.)
+         */
+        service: 'iMessage' | 'SMS' | 'RCS';
+
+        /**
+         * Whether this handle belongs to the sender (your phone number)
+         */
+        is_me?: boolean | null;
+
+        /**
+         * When they left (if applicable)
+         */
+        left_at?: string | null;
+
+        /**
+         * Participant status
+         */
+        status?: 'active' | 'left' | 'removed' | null;
+      }
+    }
+  }
+
+  /**
+   * A media attachment part
+   */
+  export interface MediaPartResponse {
+    /**
+     * Unique attachment identifier
+     */
+    id: string;
+
+    /**
+     * Original filename
+     */
+    filename: string;
+
+    /**
+     * MIME type of the file
+     */
+    mime_type: string;
+
+    /**
+     * Reactions on this message part
+     */
+    reactions: Array<MediaPartResponse.Reaction> | null;
+
+    /**
+     * File size in bytes
+     */
+    size_bytes: number;
+
+    /**
+     * Indicates this is a media attachment part
+     */
+    type: 'media';
+
+    /**
+     * Presigned URL for downloading the attachment (expires in 1 hour).
+     */
+    url: string;
+  }
+
+  export namespace MediaPartResponse {
+    export interface Reaction {
+      handle: Reaction.Handle;
+
+      /**
+       * Whether this reaction is from the current user
+       */
+      is_me: boolean;
+
+      /**
+       * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
+       * emphasize, question. Custom emoji reactions have type "custom" with the actual
+       * emoji in the custom_emoji field.
+       */
+      type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom';
+
+      /**
+       * Custom emoji if type is "custom", null otherwise
+       */
+      custom_emoji?: string | null;
+    }
+
+    export namespace Reaction {
+      export interface Handle {
+        /**
+         * Unique identifier for this handle
+         */
+        id: string;
+
+        /**
+         * Phone number (E.164) or email address of the participant
+         */
+        handle: string;
+
+        /**
+         * When this participant joined the chat
+         */
+        joined_at: string;
+
+        /**
+         * Service type (iMessage, SMS, RCS, etc.)
+         */
+        service: 'iMessage' | 'SMS' | 'RCS';
+
+        /**
+         * Whether this handle belongs to the sender (your phone number)
+         */
+        is_me?: boolean | null;
+
+        /**
+         * When they left (if applicable)
+         */
+        left_at?: string | null;
+
+        /**
+         * Participant status
+         */
+        status?: 'active' | 'left' | 'removed' | null;
+      }
+    }
+  }
+
+  /**
+   * Indicates this message is a threaded reply to another message
+   */
+  export interface ReplyTo {
+    /**
+     * The ID of the message to reply to
+     */
+    message_id: string;
+
+    /**
+     * The specific message part to reply to (0-based index). Defaults to 0 (first
+     * part) if not provided. Use this when replying to a specific part of a multipart
+     * message.
+     */
+    part_index?: number;
+  }
 }
 
-export interface Reaction {
-  handle: ChatHandle;
+export interface MessageAddReactionResponse {
+  handle: MessageAddReactionResponse.Handle;
 
   /**
    * Whether this reaction is from the current user
@@ -296,7 +462,7 @@ export interface Reaction {
    * emphasize, question. Custom emoji reactions have type "custom" with the actual
    * emoji in the custom_emoji field.
    */
-  type: ReactionType;
+  type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom';
 
   /**
    * Custom emoji if type is "custom", null otherwise
@@ -304,48 +470,43 @@ export interface Reaction {
   custom_emoji?: string | null;
 }
 
-/**
- * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
- * emphasize, question. Custom emoji reactions have type "custom" with the actual
- * emoji in the custom_emoji field.
- */
-export type ReactionType = 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom';
+export namespace MessageAddReactionResponse {
+  export interface Handle {
+    /**
+     * Unique identifier for this handle
+     */
+    id: string;
 
-/**
- * Indicates this message is a threaded reply to another message
- */
-export interface ReplyTo {
-  /**
-   * The ID of the message to reply to
-   */
-  message_id: string;
+    /**
+     * Phone number (E.164) or email address of the participant
+     */
+    handle: string;
 
-  /**
-   * The specific message part to reply to (0-based index). Defaults to 0 (first
-   * part) if not provided. Use this when replying to a specific part of a multipart
-   * message.
-   */
-  part_index?: number;
-}
+    /**
+     * When this participant joined the chat
+     */
+    joined_at: string;
 
-/**
- * A text message part
- */
-export interface TextPart {
-  /**
-   * Reactions on this message part
-   */
-  reactions: Array<Reaction> | null;
+    /**
+     * Service type (iMessage, SMS, RCS, etc.)
+     */
+    service: 'iMessage' | 'SMS' | 'RCS';
 
-  /**
-   * Indicates this is a text message part
-   */
-  type: 'text';
+    /**
+     * Whether this handle belongs to the sender (your phone number)
+     */
+    is_me?: boolean | null;
 
-  /**
-   * The text content
-   */
-  value: string;
+    /**
+     * When they left (if applicable)
+     */
+    left_at?: string | null;
+
+    /**
+     * Participant status
+     */
+    status?: 'active' | 'left' | 'removed' | null;
+  }
 }
 
 /**
@@ -355,12 +516,364 @@ export interface MessageRetrieveThreadResponse {
   /**
    * Messages in the thread, ordered by the specified order parameter
    */
-  messages: Array<Message>;
+  messages: Array<MessageRetrieveThreadResponse.Message>;
 
   /**
    * Cursor for fetching the next page of results (null if no more results)
    */
   next_cursor?: string | null;
+}
+
+export namespace MessageRetrieveThreadResponse {
+  export interface Message {
+    /**
+     * Unique identifier for the message
+     */
+    id: string;
+
+    /**
+     * ID of the chat this message belongs to
+     */
+    chat_id: string;
+
+    /**
+     * When the message was created
+     */
+    created_at: string;
+
+    /**
+     * Whether the message has been delivered
+     */
+    is_delivered: boolean;
+
+    /**
+     * Whether this message was sent by the authenticated user
+     */
+    is_from_me: boolean;
+
+    /**
+     * Whether the message has been read
+     */
+    is_read: boolean;
+
+    /**
+     * When the message was last updated
+     */
+    updated_at: string;
+
+    /**
+     * When the message was delivered
+     */
+    delivered_at?: string | null;
+
+    /**
+     * iMessage effect applied to a message (screen or bubble effect)
+     */
+    effect?: Message.Effect | null;
+
+    /**
+     * @deprecated DEPRECATED: Use from_handle instead. Phone number of the message
+     * sender.
+     */
+    from?: string | null;
+
+    /**
+     * The sender of this message as a full handle object
+     */
+    from_handle?: Message.FromHandle | null;
+
+    /**
+     * Message parts in order (text and media)
+     */
+    parts?: Array<Message.TextPartResponse | Message.MediaPartResponse> | null;
+
+    /**
+     * Preferred service for sending this message
+     */
+    preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
+
+    /**
+     * When the message was read
+     */
+    read_at?: string | null;
+
+    /**
+     * Indicates this message is a threaded reply to another message
+     */
+    reply_to?: Message.ReplyTo | null;
+
+    /**
+     * When the message was sent
+     */
+    sent_at?: string | null;
+
+    /**
+     * Service used to send/receive this message
+     */
+    service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  }
+
+  export namespace Message {
+    /**
+     * iMessage effect applied to a message (screen or bubble effect)
+     */
+    export interface Effect {
+      /**
+       * Name of the effect. Common values:
+       *
+       * - Screen effects: confetti, fireworks, lasers, sparkles, celebration, hearts,
+       *   love, balloons, happy_birthday, echo, spotlight
+       * - Bubble effects: slam, loud, gentle, invisible
+       */
+      name?: string;
+
+      /**
+       * Type of effect
+       */
+      type?: 'screen' | 'bubble';
+    }
+
+    /**
+     * The sender of this message as a full handle object
+     */
+    export interface FromHandle {
+      /**
+       * Unique identifier for this handle
+       */
+      id: string;
+
+      /**
+       * Phone number (E.164) or email address of the participant
+       */
+      handle: string;
+
+      /**
+       * When this participant joined the chat
+       */
+      joined_at: string;
+
+      /**
+       * Service type (iMessage, SMS, RCS, etc.)
+       */
+      service: 'iMessage' | 'SMS' | 'RCS';
+
+      /**
+       * Whether this handle belongs to the sender (your phone number)
+       */
+      is_me?: boolean | null;
+
+      /**
+       * When they left (if applicable)
+       */
+      left_at?: string | null;
+
+      /**
+       * Participant status
+       */
+      status?: 'active' | 'left' | 'removed' | null;
+    }
+
+    /**
+     * A text message part
+     */
+    export interface TextPartResponse {
+      /**
+       * Reactions on this message part
+       */
+      reactions: Array<TextPartResponse.Reaction> | null;
+
+      /**
+       * Indicates this is a text message part
+       */
+      type: 'text';
+
+      /**
+       * The text content
+       */
+      value: string;
+    }
+
+    export namespace TextPartResponse {
+      export interface Reaction {
+        handle: Reaction.Handle;
+
+        /**
+         * Whether this reaction is from the current user
+         */
+        is_me: boolean;
+
+        /**
+         * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
+         * emphasize, question. Custom emoji reactions have type "custom" with the actual
+         * emoji in the custom_emoji field.
+         */
+        type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom';
+
+        /**
+         * Custom emoji if type is "custom", null otherwise
+         */
+        custom_emoji?: string | null;
+      }
+
+      export namespace Reaction {
+        export interface Handle {
+          /**
+           * Unique identifier for this handle
+           */
+          id: string;
+
+          /**
+           * Phone number (E.164) or email address of the participant
+           */
+          handle: string;
+
+          /**
+           * When this participant joined the chat
+           */
+          joined_at: string;
+
+          /**
+           * Service type (iMessage, SMS, RCS, etc.)
+           */
+          service: 'iMessage' | 'SMS' | 'RCS';
+
+          /**
+           * Whether this handle belongs to the sender (your phone number)
+           */
+          is_me?: boolean | null;
+
+          /**
+           * When they left (if applicable)
+           */
+          left_at?: string | null;
+
+          /**
+           * Participant status
+           */
+          status?: 'active' | 'left' | 'removed' | null;
+        }
+      }
+    }
+
+    /**
+     * A media attachment part
+     */
+    export interface MediaPartResponse {
+      /**
+       * Unique attachment identifier
+       */
+      id: string;
+
+      /**
+       * Original filename
+       */
+      filename: string;
+
+      /**
+       * MIME type of the file
+       */
+      mime_type: string;
+
+      /**
+       * Reactions on this message part
+       */
+      reactions: Array<MediaPartResponse.Reaction> | null;
+
+      /**
+       * File size in bytes
+       */
+      size_bytes: number;
+
+      /**
+       * Indicates this is a media attachment part
+       */
+      type: 'media';
+
+      /**
+       * Presigned URL for downloading the attachment (expires in 1 hour).
+       */
+      url: string;
+    }
+
+    export namespace MediaPartResponse {
+      export interface Reaction {
+        handle: Reaction.Handle;
+
+        /**
+         * Whether this reaction is from the current user
+         */
+        is_me: boolean;
+
+        /**
+         * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
+         * emphasize, question. Custom emoji reactions have type "custom" with the actual
+         * emoji in the custom_emoji field.
+         */
+        type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom';
+
+        /**
+         * Custom emoji if type is "custom", null otherwise
+         */
+        custom_emoji?: string | null;
+      }
+
+      export namespace Reaction {
+        export interface Handle {
+          /**
+           * Unique identifier for this handle
+           */
+          id: string;
+
+          /**
+           * Phone number (E.164) or email address of the participant
+           */
+          handle: string;
+
+          /**
+           * When this participant joined the chat
+           */
+          joined_at: string;
+
+          /**
+           * Service type (iMessage, SMS, RCS, etc.)
+           */
+          service: 'iMessage' | 'SMS' | 'RCS';
+
+          /**
+           * Whether this handle belongs to the sender (your phone number)
+           */
+          is_me?: boolean | null;
+
+          /**
+           * When they left (if applicable)
+           */
+          left_at?: string | null;
+
+          /**
+           * Participant status
+           */
+          status?: 'active' | 'left' | 'removed' | null;
+        }
+      }
+    }
+
+    /**
+     * Indicates this message is a threaded reply to another message
+     */
+    export interface ReplyTo {
+      /**
+       * The ID of the message to reply to
+       */
+      message_id: string;
+
+      /**
+       * The specific message part to reply to (0-based index). Defaults to 0 (first
+       * part) if not provided. Use this when replying to a specific part of a multipart
+       * message.
+       */
+      part_index?: number;
+    }
+  }
 }
 
 export interface MessageDeleteParams {
@@ -381,7 +894,7 @@ export interface MessageAddReactionParams {
    * emphasize, question. Custom emoji reactions have type "custom" with the actual
    * emoji in the custom_emoji field.
    */
-  type: ReactionType;
+  type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom';
 
   /**
    * Custom emoji string. Required when type is "custom".
@@ -414,14 +927,8 @@ export interface MessageRetrieveThreadParams {
 
 export declare namespace Messages {
   export {
-    type ChatHandle as ChatHandle,
-    type MediaPart as MediaPart,
-    type Message as Message,
-    type MessageEffect as MessageEffect,
-    type Reaction as Reaction,
-    type ReactionType as ReactionType,
-    type ReplyTo as ReplyTo,
-    type TextPart as TextPart,
+    type MessageRetrieveResponse as MessageRetrieveResponse,
+    type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessageRetrieveThreadResponse as MessageRetrieveThreadResponse,
     type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,

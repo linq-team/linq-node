@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import LinqNodeSDK from 'linq-node-sdk';
+import Linq from '@linqapp/sdk';
 
-const client = new LinqNodeSDK({
+const client = new Linq({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource participants', () => {
-  // Prism tests are disabled
-  test.skip('add: only required params', async () => {
+  test('add: only required params', async () => {
     const responsePromise = client.chats.participants.add('550e8400-e29b-41d4-a716-446655440000', {
       handle: '+12052499136',
     });
@@ -22,15 +21,13 @@ describe('resource participants', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('add: required and optional params', async () => {
+  test('add: required and optional params', async () => {
     const response = await client.chats.participants.add('550e8400-e29b-41d4-a716-446655440000', {
       handle: '+12052499136',
     });
   });
 
-  // Prism tests are disabled
-  test.skip('remove: only required params', async () => {
+  test('remove: only required params', async () => {
     const responsePromise = client.chats.participants.remove('550e8400-e29b-41d4-a716-446655440000', {
       handle: '+12052499136',
     });
@@ -43,8 +40,7 @@ describe('resource participants', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('remove: required and optional params', async () => {
+  test('remove: required and optional params', async () => {
     const response = await client.chats.participants.remove('550e8400-e29b-41d4-a716-446655440000', {
       handle: '+12052499136',
     });
