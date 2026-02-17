@@ -2,7 +2,7 @@ edition: "2025-10-10"
 
 organization:
   name: linq
-  docs: https://docs.linq.com
+  docs: https://apidocs.linqapp.com
   contact: support@linq.com
   github_org: linq-team
 
