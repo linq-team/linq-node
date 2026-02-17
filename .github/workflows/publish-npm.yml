@@ -13,10 +13,9 @@ jobs:
     name: publish
     runs-on: ubuntu-latest
 
-    # TODO: Switch to OIDC trusted publishing when repo is made public
-    # permissions:
-    #   contents: read
-    #   id-token: write
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v6
