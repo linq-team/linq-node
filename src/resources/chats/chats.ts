@@ -118,7 +118,7 @@ export class Chats extends APIResource {
    * @example
    * ```ts
    * const chats = await client.chats.list({
-   *   from: '%2B13343284472',
+   *   from: '+13343284472',
    * });
    * ```
    */
@@ -1219,8 +1219,8 @@ export interface ChatUpdateParams {
 export interface ChatListParams {
   /**
    * Phone number to filter chats by. Returns all chats made from this phone number.
-   * Must be in E.164 format with the `+` sign URL-encoded as `%2B` (e.g.,
-   * `%2B13343284472`).
+   * Must be in E.164 format (e.g., `+13343284472`). The `+` is automatically
+   * URL-encoded by HTTP clients.
    */
   from: string;
 
