@@ -21,7 +21,8 @@ targets:
     package_name: "@linqapp/sdk"
     production_repo: linq-team/linq-node
     publish:
-      npm: true
+      npm:
+        auth_method: oidc
 
 client_settings:
   opts:
@@ -101,7 +102,10 @@ resources:
 
   phone_numbers:
     methods:
-      list: get /v3/phonenumbers
+      list: get /v3/phone_numbers
+      list_deprecated:
+        endpoint: get /v3/phonenumbers
+        deprecated: "Use `list` instead, which calls `GET /v3/phone_numbers`."
 
   webhooks:
     subresources:

@@ -27,5 +27,9 @@ export {
   type MessageAddReactionParams,
   type MessageRetrieveThreadParams,
 } from './messages';
-export { PhoneNumbers, type PhoneNumberListResponse } from './phone-numbers';
+export {
+  PhoneNumbers,
+  type PhoneNumberListResponse,
+  type PhoneNumberListDeprecatedResponse,
+} from './phone-numbers';
 export { Webhooks } from './webhooks/webhooks';
