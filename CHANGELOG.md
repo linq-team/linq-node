@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2026-02-19)
+
+Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/linq-team/linq-node/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
+
+### Features
+
+* **api:** api update ([0a6d75d](https://github.com/linq-team/linq-node/commit/0a6d75d3e35aabac4843629852ebc23bd091c192))
+* **api:** api update ([b921025](https://github.com/linq-team/linq-node/commit/b921025a36162f324395253939647b1d2a5461b9))
+* deprecate /phonenumbers in favor of /phone_numbers endpoint ([91f4b97](https://github.com/linq-team/linq-node/commit/91f4b97af63525cc1089c6340ced767cda7d81c8))
+
+
+### Bug Fixes
+
+* configure OIDC publishing and fix chat list test examples ([fc00a34](https://github.com/linq-team/linq-node/commit/fc00a344a1d32b9dead7318b89b565af7f273a76))
+
+
+### Chores
+
+* **internal/client:** fix form-urlencoded requests ([dd2b7f6](https://github.com/linq-team/linq-node/commit/dd2b7f67a9acdbffd96c8f6e3a45e6860b498e3f))
+* update SDK settings ([b61c9ee](https://github.com/linq-team/linq-node/commit/b61c9ee72f8700531c70ac3161bbe0dbeb1cde61))
+
 ## 0.1.0-alpha.3 (2026-02-17)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/linq-team/linq-node/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
