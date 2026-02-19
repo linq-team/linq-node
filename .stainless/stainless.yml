@@ -101,7 +101,10 @@ resources:
 
   phone_numbers:
     methods:
-      list: get /v3/phonenumbers
+      list: get /v3/phone_numbers
+      list_deprecated:
+        endpoint: get /v3/phonenumbers
+        deprecated: "Use `list` instead, which calls `GET /v3/phone_numbers`."
 
   webhooks:
     subresources:
