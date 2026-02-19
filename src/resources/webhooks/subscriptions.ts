@@ -18,8 +18,8 @@ export class Subscriptions extends APIResource {
    * - Each request includes `X-Webhook-Signature` and `X-Webhook-Timestamp` headers
    * - Signature is HMAC-SHA256 over `{timestamp}.{payload}` — see
    *   [Webhook Events](/docs/webhook-events) for verification details
-   * - Failed deliveries (5xx, 429, network errors) are retried up to 6 times with
-   *   exponential backoff: 2s, 4s, 8s, 16s, 30s
+   * - Failed deliveries (5xx, 429, network errors) are retried up to 10 times over
+   *   ~2 hours with exponential backoff
    * - Client errors (4xx except 429) are not retried
    *
    * @example

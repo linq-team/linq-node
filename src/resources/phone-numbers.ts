@@ -11,6 +11,15 @@ export class PhoneNumbers extends APIResource {
    * the `from` field in create chat and send message requests.
    */
   list(options?: RequestOptions): APIPromise<PhoneNumberListResponse> {
+    return this._client.get('/v3/phone_numbers', options);
+  }
+
+  /**
+   * **Deprecated.** Use `GET /v3/phone_numbers` instead.
+   *
+   * @deprecated Use `list` instead, which calls `GET /v3/phone_numbers`.
+   */
+  listDeprecated(options?: RequestOptions): APIPromise<PhoneNumberListDeprecatedResponse> {
     return this._client.get('/v3/phonenumbers', options);
   }
 }
@@ -29,22 +38,43 @@ export namespace PhoneNumberListResponse {
      */
     id: string;
 
-    capabilities: PhoneNumber.Capabilities;
-
     /**
-     * ISO 3166-1 alpha-2 country code
+     * Phone number in E.164 format
      */
-    country_code: string;
+    phone_number: string;
+  }
+}
+
+export interface PhoneNumberListDeprecatedResponse {
+  /**
+   * List of phone numbers assigned to the partner
+   */
+  phone_numbers: Array<PhoneNumberListDeprecatedResponse.PhoneNumber>;
+}
+
+export namespace PhoneNumberListDeprecatedResponse {
+  export interface PhoneNumber {
+    /**
+     * Unique identifier for the phone number
+     */
+    id: string;
 
     /**
      * Phone number in E.164 format
      */
     phone_number: string;
 
+    capabilities?: PhoneNumber.Capabilities;
+
     /**
-     * Type of phone number
+     * Deprecated. Always null.
      */
-    type: 'TWILIO' | 'APPLE_ID';
+    country_code?: string;
+
+    /**
+     * Deprecated. Always null.
+     */
+    type?: 'TWILIO' | 'APPLE_ID';
   }
 
   export namespace PhoneNumber {
@@ -68,5 +98,8 @@ export namespace PhoneNumberListResponse {
 }
 
 export declare namespace PhoneNumbers {
-  export { type PhoneNumberListResponse as PhoneNumberListResponse };
+  export {
+    type PhoneNumberListResponse as PhoneNumberListResponse,
+    type PhoneNumberListDeprecatedResponse as PhoneNumberListDeprecatedResponse,
+  };
 }
