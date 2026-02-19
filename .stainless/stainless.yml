@@ -21,7 +21,8 @@ targets:
     package_name: "@linqapp/sdk"
     production_repo: linq-team/linq-node
     publish:
-      npm: true
+      npm:
+        auth_method: oidc
 
 client_settings:
   opts:

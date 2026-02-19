@@ -504,11 +504,11 @@ paths:
           required: true
           description: |
             Phone number to filter chats by. Returns all chats made from this phone number.
-            Must be in E.164 format with the `+` sign URL-encoded as `%2B` (e.g., `%2B13343284472`).
+            Must be in E.164 format (e.g., `+13343284472`). The `+` is automatically URL-encoded by HTTP clients.
           schema:
             type: string
             pattern: ^\+?[1-9]\d{1,14}$
-            example: '%2B13343284472'
+            example: '+13343284472'
         - name: limit
           in: query
           required: false
