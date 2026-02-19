@@ -31,7 +31,11 @@ import {
   MessageRetrieveThreadResponse,
   Messages,
 } from './resources/messages';
-import { PhoneNumberListResponse, PhoneNumbers } from './resources/phone-numbers';
+import {
+  PhoneNumberListDeprecatedResponse,
+  PhoneNumberListResponse,
+  PhoneNumbers,
+} from './resources/phone-numbers';
 import {
   ChatCreateParams,
   ChatCreateResponse,
@@ -803,7 +807,11 @@ export declare namespace Linq {
     type AttachmentCreateParams as AttachmentCreateParams,
   };
 
-  export { PhoneNumbers as PhoneNumbers, type PhoneNumberListResponse as PhoneNumberListResponse };
+  export {
+    PhoneNumbers as PhoneNumbers,
+    type PhoneNumberListResponse as PhoneNumberListResponse,
+    type PhoneNumberListDeprecatedResponse as PhoneNumberListDeprecatedResponse,
+  };
 
   export { Webhooks as Webhooks };
 }

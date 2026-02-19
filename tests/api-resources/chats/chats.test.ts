@@ -66,7 +66,7 @@ describe('resource chats', () => {
   });
 
   test('list: only required params', async () => {
-    const responsePromise = client.chats.list({ from: '+13343284472' });
+    const responsePromise = client.chats.list({ from: '%2B13343284472' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -78,7 +78,7 @@ describe('resource chats', () => {
 
   test('list: required and optional params', async () => {
     const response = await client.chats.list({
-      from: '+13343284472',
+      from: '%2B13343284472',
       cursor: '20',
       limit: 20,
     });
