@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.5 (2026-02-20)
+
+Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/linq-team/linq-node/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
+
+### Chores
+
+* update mock server docs ([c694694](https://github.com/linq-team/linq-node/commit/c694694e05979a7ea5376d258191e67d46dc3957))
+
 ## 0.1.0-alpha.4 (2026-02-19)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/linq-team/linq-node/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
