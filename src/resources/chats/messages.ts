@@ -106,7 +106,7 @@ export interface SentMessage {
   from_handle?: MessagesAPI.ChatHandle | null;
 
   /**
-   * Preferred service for sending this message
+   * Messaging service type
    */
   preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
 
@@ -116,7 +116,7 @@ export interface SentMessage {
   reply_to?: MessagesAPI.ReplyTo | null;
 
   /**
-   * Service used to send this message
+   * Messaging service type
    */
   service?: 'iMessage' | 'SMS' | 'RCS' | null;
 }

@@ -116,7 +116,7 @@ export interface ChatHandle {
   joined_at: string;
 
   /**
-   * Service type (iMessage, SMS, RCS, etc.)
+   * Messaging service type
    */
   service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -239,7 +239,7 @@ export interface Message {
   parts?: Array<TextPart | MediaPart> | null;
 
   /**
-   * Preferred service for sending this message
+   * Messaging service type
    */
   preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
 
@@ -259,7 +259,7 @@ export interface Message {
   sent_at?: string | null;
 
   /**
-   * Service used to send/receive this message
+   * Messaging service type
    */
   service?: 'iMessage' | 'SMS' | 'RCS' | null;
 }

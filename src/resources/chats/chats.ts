@@ -237,7 +237,7 @@ export interface Chat {
   updated_at: string;
 
   /**
-   * Service type for the chat
+   * Messaging service type
    */
   service?: 'iMessage' | 'SMS' | 'RCS' | null;
 }
@@ -286,17 +286,9 @@ export interface MessageContent {
   idempotency_key?: string;
 
   /**
-   * Preferred messaging service to use for this message. If not specified, uses
-   * default fallback chain: iMessage → RCS → SMS.
-   *
-   * - iMessage: Enforces iMessage without fallback to RCS or SMS. Message fails if
-   *   recipient doesn't support iMessage.
-   * - RCS: Enforces RCS or SMS (no iMessage). Uses RCS if recipient supports it,
-   *   otherwise falls back to SMS.
-   * - SMS: Enforces SMS (no iMessage). Uses RCS if recipient supports it, otherwise
-   *   falls back to SMS.
+   * Messaging service type
    */
-  preferred_service?: 'iMessage' | 'RCS' | 'SMS';
+  preferred_service?: 'iMessage' | 'SMS' | 'RCS';
 
   /**
    * Reply to another message to create a threaded conversation
@@ -415,9 +407,9 @@ export namespace ChatCreateResponse {
     message: ChatsMessagesAPI.SentMessage;
 
     /**
-     * Messaging service used
+     * Messaging service type
      */
-    service: string;
+    service: 'iMessage' | 'SMS' | 'RCS';
   }
 }
 
@@ -473,7 +465,7 @@ export namespace ChatSendVoicememoResponse {
     voice_memo: VoiceMemo.VoiceMemo;
 
     /**
-     * Service used to send this voice memo
+     * Messaging service type
      */
     service?: 'iMessage' | 'SMS' | 'RCS' | null;
   }
@@ -501,9 +493,9 @@ export namespace ChatSendVoicememoResponse {
       is_group: boolean;
 
       /**
-       * Messaging service
+       * Messaging service type
        */
-      service: string;
+      service: 'iMessage' | 'SMS' | 'RCS';
     }
 
     export interface VoiceMemo {
