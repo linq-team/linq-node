@@ -181,6 +181,10 @@ export class Chats extends APIResource {
   /**
    * Share your contact information (Name and Photo Sharing) with a chat.
    *
+   * **Note:** A contact card must be configured before sharing. You can set up your
+   * contact card on the
+   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
+   *
    * @example
    * ```ts
    * await client.chats.shareContactCard(
@@ -233,9 +237,9 @@ export namespace ChatCreateResponse {
     message: Chat.Message;
 
     /**
-     * Messaging service used
+     * Messaging service type
      */
-    service: string;
+    service: 'iMessage' | 'SMS' | 'RCS';
   }
 
   export namespace Chat {
@@ -256,7 +260,7 @@ export namespace ChatCreateResponse {
       joined_at: string;
 
       /**
-       * Service type (iMessage, SMS, RCS, etc.)
+       * Messaging service type
        */
       service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -321,7 +325,7 @@ export namespace ChatCreateResponse {
       from_handle?: Message.FromHandle | null;
 
       /**
-       * Preferred service for sending this message
+       * Messaging service type
        */
       preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
 
@@ -331,7 +335,7 @@ export namespace ChatCreateResponse {
       reply_to?: Message.ReplyTo | null;
 
       /**
-       * Service used to send this message
+       * Messaging service type
        */
       service?: 'iMessage' | 'SMS' | 'RCS' | null;
     }
@@ -397,7 +401,7 @@ export namespace ChatCreateResponse {
             joined_at: string;
 
             /**
-             * Service type (iMessage, SMS, RCS, etc.)
+             * Messaging service type
              */
             service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -499,7 +503,7 @@ export namespace ChatCreateResponse {
             joined_at: string;
 
             /**
-             * Service type (iMessage, SMS, RCS, etc.)
+             * Messaging service type
              */
             service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -560,7 +564,7 @@ export namespace ChatCreateResponse {
         joined_at: string;
 
         /**
-         * Service type (iMessage, SMS, RCS, etc.)
+         * Messaging service type
          */
         service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -639,7 +643,7 @@ export interface ChatRetrieveResponse {
   updated_at: string;
 
   /**
-   * Service type for the chat
+   * Messaging service type
    */
   service?: 'iMessage' | 'SMS' | 'RCS' | null;
 }
@@ -662,7 +666,7 @@ export namespace ChatRetrieveResponse {
     joined_at: string;
 
     /**
-     * Service type (iMessage, SMS, RCS, etc.)
+     * Messaging service type
      */
     service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -722,7 +726,7 @@ export interface ChatUpdateResponse {
   updated_at: string;
 
   /**
-   * Service type for the chat
+   * Messaging service type
    */
   service?: 'iMessage' | 'SMS' | 'RCS' | null;
 }
@@ -745,7 +749,7 @@ export namespace ChatUpdateResponse {
     joined_at: string;
 
     /**
-     * Service type (iMessage, SMS, RCS, etc.)
+     * Messaging service type
      */
     service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -819,7 +823,7 @@ export namespace ChatListResponse {
     updated_at: string;
 
     /**
-     * Service type for the chat
+     * Messaging service type
      */
     service?: 'iMessage' | 'SMS' | 'RCS' | null;
   }
@@ -842,7 +846,7 @@ export namespace ChatListResponse {
       joined_at: string;
 
       /**
-       * Service type (iMessage, SMS, RCS, etc.)
+       * Messaging service type
        */
       service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -903,7 +907,7 @@ export namespace ChatSendVoicememoResponse {
     voice_memo: VoiceMemo.VoiceMemo;
 
     /**
-     * Service used to send this voice memo
+     * Messaging service type
      */
     service?: 'iMessage' | 'SMS' | 'RCS' | null;
   }
@@ -931,9 +935,9 @@ export namespace ChatSendVoicememoResponse {
       is_group: boolean;
 
       /**
-       * Messaging service
+       * Messaging service type
        */
-      service: string;
+      service: 'iMessage' | 'SMS' | 'RCS';
     }
 
     export namespace Chat {
@@ -954,7 +958,7 @@ export namespace ChatSendVoicememoResponse {
         joined_at: string;
 
         /**
-         * Service type (iMessage, SMS, RCS, etc.)
+         * Messaging service type
          */
         service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -1075,17 +1079,9 @@ export namespace ChatCreateParams {
     idempotency_key?: string;
 
     /**
-     * Preferred messaging service to use for this message. If not specified, uses
-     * default fallback chain: iMessage → RCS → SMS.
-     *
-     * - iMessage: Enforces iMessage without fallback to RCS or SMS. Message fails if
-     *   recipient doesn't support iMessage.
-     * - RCS: Enforces RCS or SMS (no iMessage). Uses RCS if recipient supports it,
-     *   otherwise falls back to SMS.
-     * - SMS: Enforces SMS (no iMessage). Uses RCS if recipient supports it, otherwise
-     *   falls back to SMS.
+     * Messaging service type
      */
-    preferred_service?: 'iMessage' | 'RCS' | 'SMS';
+    preferred_service?: 'iMessage' | 'SMS' | 'RCS';
 
     /**
      * Reply to another message to create a threaded conversation

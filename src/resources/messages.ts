@@ -162,7 +162,7 @@ export interface MessageRetrieveResponse {
   parts?: Array<MessageRetrieveResponse.TextPartResponse | MessageRetrieveResponse.MediaPartResponse> | null;
 
   /**
-   * Preferred service for sending this message
+   * Messaging service type
    */
   preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
 
@@ -182,7 +182,7 @@ export interface MessageRetrieveResponse {
   sent_at?: string | null;
 
   /**
-   * Service used to send/receive this message
+   * Messaging service type
    */
   service?: 'iMessage' | 'SMS' | 'RCS' | null;
 }
@@ -227,7 +227,7 @@ export namespace MessageRetrieveResponse {
     joined_at: string;
 
     /**
-     * Service type (iMessage, SMS, RCS, etc.)
+     * Messaging service type
      */
     service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -307,7 +307,7 @@ export namespace MessageRetrieveResponse {
         joined_at: string;
 
         /**
-         * Service type (iMessage, SMS, RCS, etc.)
+         * Messaging service type
          */
         service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -409,7 +409,7 @@ export namespace MessageRetrieveResponse {
         joined_at: string;
 
         /**
-         * Service type (iMessage, SMS, RCS, etc.)
+         * Messaging service type
          */
         service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -488,7 +488,7 @@ export namespace MessageAddReactionResponse {
     joined_at: string;
 
     /**
-     * Service type (iMessage, SMS, RCS, etc.)
+     * Messaging service type
      */
     service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -588,7 +588,7 @@ export namespace MessageRetrieveThreadResponse {
     parts?: Array<Message.TextPartResponse | Message.MediaPartResponse> | null;
 
     /**
-     * Preferred service for sending this message
+     * Messaging service type
      */
     preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
 
@@ -608,7 +608,7 @@ export namespace MessageRetrieveThreadResponse {
     sent_at?: string | null;
 
     /**
-     * Service used to send/receive this message
+     * Messaging service type
      */
     service?: 'iMessage' | 'SMS' | 'RCS' | null;
   }
@@ -653,7 +653,7 @@ export namespace MessageRetrieveThreadResponse {
       joined_at: string;
 
       /**
-       * Service type (iMessage, SMS, RCS, etc.)
+       * Messaging service type
        */
       service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -733,7 +733,7 @@ export namespace MessageRetrieveThreadResponse {
           joined_at: string;
 
           /**
-           * Service type (iMessage, SMS, RCS, etc.)
+           * Messaging service type
            */
           service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -835,7 +835,7 @@ export namespace MessageRetrieveThreadResponse {
           joined_at: string;
 
           /**
-           * Service type (iMessage, SMS, RCS, etc.)
+           * Messaging service type
            */
           service: 'iMessage' | 'SMS' | 'RCS';
 

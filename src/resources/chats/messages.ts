@@ -136,7 +136,7 @@ export namespace MessageListResponse {
     parts?: Array<Message.TextPartResponse | Message.MediaPartResponse> | null;
 
     /**
-     * Preferred service for sending this message
+     * Messaging service type
      */
     preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
 
@@ -156,7 +156,7 @@ export namespace MessageListResponse {
     sent_at?: string | null;
 
     /**
-     * Service used to send/receive this message
+     * Messaging service type
      */
     service?: 'iMessage' | 'SMS' | 'RCS' | null;
   }
@@ -201,7 +201,7 @@ export namespace MessageListResponse {
       joined_at: string;
 
       /**
-       * Service type (iMessage, SMS, RCS, etc.)
+       * Messaging service type
        */
       service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -281,7 +281,7 @@ export namespace MessageListResponse {
           joined_at: string;
 
           /**
-           * Service type (iMessage, SMS, RCS, etc.)
+           * Messaging service type
            */
           service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -383,7 +383,7 @@ export namespace MessageListResponse {
           joined_at: string;
 
           /**
-           * Service type (iMessage, SMS, RCS, etc.)
+           * Messaging service type
            */
           service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -485,7 +485,7 @@ export namespace MessageSendResponse {
     from_handle?: Message.FromHandle | null;
 
     /**
-     * Preferred service for sending this message
+     * Messaging service type
      */
     preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
 
@@ -495,7 +495,7 @@ export namespace MessageSendResponse {
     reply_to?: Message.ReplyTo | null;
 
     /**
-     * Service used to send this message
+     * Messaging service type
      */
     service?: 'iMessage' | 'SMS' | 'RCS' | null;
   }
@@ -561,7 +561,7 @@ export namespace MessageSendResponse {
           joined_at: string;
 
           /**
-           * Service type (iMessage, SMS, RCS, etc.)
+           * Messaging service type
            */
           service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -663,7 +663,7 @@ export namespace MessageSendResponse {
           joined_at: string;
 
           /**
-           * Service type (iMessage, SMS, RCS, etc.)
+           * Messaging service type
            */
           service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -724,7 +724,7 @@ export namespace MessageSendResponse {
       joined_at: string;
 
       /**
-       * Service type (iMessage, SMS, RCS, etc.)
+       * Messaging service type
        */
       service: 'iMessage' | 'SMS' | 'RCS';
 
@@ -829,17 +829,9 @@ export namespace MessageSendParams {
     idempotency_key?: string;
 
     /**
-     * Preferred messaging service to use for this message. If not specified, uses
-     * default fallback chain: iMessage → RCS → SMS.
-     *
-     * - iMessage: Enforces iMessage without fallback to RCS or SMS. Message fails if
-     *   recipient doesn't support iMessage.
-     * - RCS: Enforces RCS or SMS (no iMessage). Uses RCS if recipient supports it,
-     *   otherwise falls back to SMS.
-     * - SMS: Enforces SMS (no iMessage). Uses RCS if recipient supports it, otherwise
-     *   falls back to SMS.
+     * Messaging service type
      */
-    preferred_service?: 'iMessage' | 'RCS' | 'SMS';
+    preferred_service?: 'iMessage' | 'SMS' | 'RCS';
 
     /**
      * Reply to another message to create a threaded conversation

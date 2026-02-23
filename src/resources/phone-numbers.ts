@@ -7,8 +7,8 @@ import { RequestOptions } from '../internal/request-options';
 export class PhoneNumbers extends APIResource {
   /**
    * Returns all phone numbers assigned to the authenticated partner. Use this
-   * endpoint to discover which phone numbers are available for sending messages via
-   * the `from` field in create chat and send message requests.
+   * endpoint to discover which phone numbers are available for use as the `from`
+   * field when creating a chat, listing chats, or sending a voice memo.
    */
   list(options?: RequestOptions): APIPromise<PhoneNumberListResponse> {
     return this._client.get('/v3/phone_numbers', options);

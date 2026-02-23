@@ -154,8 +154,8 @@ export interface AttachmentRetrieveResponse {
    * **Audio:** audio/mpeg, audio/mp4, audio/x-m4a, audio/x-caf, audio/wav,
    * audio/aiff, audio/aac, audio/amr
    *
-   * **Documents:** application/pdf, text/plain, text/vcard, text/rtf, text/csv,
-   * text/html, text/calendar, application/msword,
+   * **Documents:** application/pdf, text/plain, text/markdown, text/vcard, text/rtf,
+   * text/csv, text/html, text/calendar, application/msword,
    * application/vnd.openxmlformats-officedocument.wordprocessingml.document,
    * application/vnd.ms-excel,
    * application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
@@ -197,6 +197,7 @@ export interface AttachmentRetrieveResponse {
     | 'audio/amr'
     | 'application/pdf'
     | 'text/plain'
+    | 'text/markdown'
     | 'text/vcard'
     | 'text/x-vcard'
     | 'text/rtf'
@@ -258,8 +259,8 @@ export interface AttachmentCreateParams {
    * **Audio:** audio/mpeg, audio/mp4, audio/x-m4a, audio/x-caf, audio/wav,
    * audio/aiff, audio/aac, audio/amr
    *
-   * **Documents:** application/pdf, text/plain, text/vcard, text/rtf, text/csv,
-   * text/html, text/calendar, application/msword,
+   * **Documents:** application/pdf, text/plain, text/markdown, text/vcard, text/rtf,
+   * text/csv, text/html, text/calendar, application/msword,
    * application/vnd.openxmlformats-officedocument.wordprocessingml.document,
    * application/vnd.ms-excel,
    * application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
@@ -301,6 +302,7 @@ export interface AttachmentCreateParams {
     | 'audio/amr'
     | 'application/pdf'
     | 'text/plain'
+    | 'text/markdown'
     | 'text/vcard'
     | 'text/x-vcard'
     | 'text/rtf'
