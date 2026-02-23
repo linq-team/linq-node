@@ -21,34 +21,46 @@ import {
   AttachmentCreateResponse,
   AttachmentRetrieveResponse,
   Attachments,
+  SupportedContentType,
 } from './resources/attachments';
 import {
+  ChatHandle,
+  MediaPart,
+  Message,
   MessageAddReactionParams,
-  MessageAddReactionResponse,
   MessageDeleteParams,
-  MessageRetrieveResponse,
+  MessageEffect,
   MessageRetrieveThreadParams,
   MessageRetrieveThreadResponse,
   Messages,
+  Reaction,
+  ReactionType,
+  ReplyTo,
+  TextPart,
 } from './resources/messages';
+import { PhoneNumberListResponse, PhoneNumbers } from './resources/phone-numbers';
+import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
+import { WebhookEventListResponse, WebhookEventType, WebhookEvents } from './resources/webhook-events';
 import {
-  PhoneNumberListDeprecatedResponse,
-  PhoneNumberListResponse,
-  PhoneNumbers,
-} from './resources/phone-numbers';
+  WebhookSubscription,
+  WebhookSubscriptionCreateParams,
+  WebhookSubscriptionCreateResponse,
+  WebhookSubscriptionListResponse,
+  WebhookSubscriptionUpdateParams,
+  WebhookSubscriptions,
+} from './resources/webhook-subscriptions';
 import {
+  Chat,
   ChatCreateParams,
   ChatCreateResponse,
   ChatListParams,
   ChatListResponse,
-  ChatRetrieveResponse,
   ChatSendVoicememoParams,
   ChatSendVoicememoResponse,
   ChatUpdateParams,
-  ChatUpdateResponse,
   Chats,
+  MessageContent,
 } from './resources/chats/chats';
-import { Webhooks } from './resources/webhooks/webhooks';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -64,14 +76,17 @@ import { isEmptyObj } from './internal/utils/values';
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['LINQ_API_KEY'].
+   * Bearer token authentication. Include your API token in the Authorization header.
+   *
+   * Format: `Authorization: Bearer <your-token>`
+   *
    */
   apiKey?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['LINQ_BASE_URL'].
+   * Defaults to process.env['LINQ_API_V3_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -125,7 +140,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['LINQ_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env['LINQ_API_V3_LOG'] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -138,9 +153,9 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Linq API.
+ * API Client for interfacing with the Linq API V3 API.
  */
-export class Linq {
+export class LinqAPIV3 {
   apiKey: string;
 
   baseURL: string;
@@ -156,10 +171,10 @@ export class Linq {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Linq API.
+   * API Client for interfacing with the Linq API V3 API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['LINQ_API_KEY'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['LINQ_BASE_URL'] ?? https://api.linqapp.com/api/partner] - Override the default base URL for the API.
+   * @param {string | undefined} [opts.apiKey=process.env['LINQ_API_V3_API_KEY'] ?? undefined]
+   * @param {string} [opts.baseURL=process.env['LINQ_API_V3_BASE_URL'] ?? https://api.linqapp.com/api/partner] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -168,13 +183,13 @@ export class Linq {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('LINQ_BASE_URL'),
-    apiKey = readEnv('LINQ_API_KEY'),
+    baseURL = readEnv('LINQ_API_V3_BASE_URL'),
+    apiKey = readEnv('LINQ_API_V3_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
-      throw new Errors.LinqError(
-        "The LINQ_API_KEY environment variable is missing or empty; either provide it, or instantiate the Linq client with an apiKey option, like new Linq({ apiKey: 'My API Key' }).",
+      throw new Errors.LinqAPIV3Error(
+        "The LINQ_API_V3_API_KEY environment variable is missing or empty; either provide it, or instantiate the LinqAPIV3 client with an apiKey option, like new LinqAPIV3({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -185,14 +200,14 @@ export class Linq {
     };
 
     this.baseURL = options.baseURL!;
-    this.timeout = options.timeout ?? Linq.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? LinqAPIV3.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('LINQ_LOG'), "process.env['LINQ_LOG']", this) ??
+      parseLogLevel(readEnv('LINQ_API_V3_LOG'), "process.env['LINQ_API_V3_LOG']", this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -255,7 +270,7 @@ export class Linq {
         if (value === null) {
           return `${encodeURIComponent(key)}=`;
         }
-        throw new Errors.LinqError(
+        throw new Errors.LinqAPIV3Error(
           `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
         );
       })
@@ -742,10 +757,10 @@ export class Linq {
     }
   }
 
-  static Linq = this;
+  static LinqAPIV3 = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static LinqError = Errors.LinqError;
+  static LinqAPIV3Error = Errors.LinqAPIV3Error;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -764,24 +779,28 @@ export class Linq {
   chats: API.Chats = new API.Chats(this);
   messages: API.Messages = new API.Messages(this);
   attachments: API.Attachments = new API.Attachments(this);
+  phonenumbers: API.Phonenumbers = new API.Phonenumbers(this);
   phoneNumbers: API.PhoneNumbers = new API.PhoneNumbers(this);
-  webhooks: API.Webhooks = new API.Webhooks(this);
+  webhookEvents: API.WebhookEvents = new API.WebhookEvents(this);
+  webhookSubscriptions: API.WebhookSubscriptions = new API.WebhookSubscriptions(this);
 }
 
-Linq.Chats = Chats;
-Linq.Messages = Messages;
-Linq.Attachments = Attachments;
-Linq.PhoneNumbers = PhoneNumbers;
-Linq.Webhooks = Webhooks;
+LinqAPIV3.Chats = Chats;
+LinqAPIV3.Messages = Messages;
+LinqAPIV3.Attachments = Attachments;
+LinqAPIV3.Phonenumbers = Phonenumbers;
+LinqAPIV3.PhoneNumbers = PhoneNumbers;
+LinqAPIV3.WebhookEvents = WebhookEvents;
+LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 
-export declare namespace Linq {
+export declare namespace LinqAPIV3 {
   export type RequestOptions = Opts.RequestOptions;
 
   export {
     Chats as Chats,
+    type Chat as Chat,
+    type MessageContent as MessageContent,
     type ChatCreateResponse as ChatCreateResponse,
-    type ChatRetrieveResponse as ChatRetrieveResponse,
-    type ChatUpdateResponse as ChatUpdateResponse,
     type ChatListResponse as ChatListResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatCreateParams as ChatCreateParams,
@@ -792,8 +811,14 @@ export declare namespace Linq {
 
   export {
     Messages as Messages,
-    type MessageRetrieveResponse as MessageRetrieveResponse,
-    type MessageAddReactionResponse as MessageAddReactionResponse,
+    type ChatHandle as ChatHandle,
+    type MediaPart as MediaPart,
+    type Message as Message,
+    type MessageEffect as MessageEffect,
+    type Reaction as Reaction,
+    type ReactionType as ReactionType,
+    type ReplyTo as ReplyTo,
+    type TextPart as TextPart,
     type MessageRetrieveThreadResponse as MessageRetrieveThreadResponse,
     type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,
@@ -802,16 +827,28 @@ export declare namespace Linq {
 
   export {
     Attachments as Attachments,
+    type SupportedContentType as SupportedContentType,
     type AttachmentCreateResponse as AttachmentCreateResponse,
     type AttachmentRetrieveResponse as AttachmentRetrieveResponse,
     type AttachmentCreateParams as AttachmentCreateParams,
   };
 
+  export { Phonenumbers as Phonenumbers, type PhonenumberListResponse as PhonenumberListResponse };
+
+  export { PhoneNumbers as PhoneNumbers, type PhoneNumberListResponse as PhoneNumberListResponse };
+
   export {
-    PhoneNumbers as PhoneNumbers,
-    type PhoneNumberListResponse as PhoneNumberListResponse,
-    type PhoneNumberListDeprecatedResponse as PhoneNumberListDeprecatedResponse,
+    WebhookEvents as WebhookEvents,
+    type WebhookEventType as WebhookEventType,
+    type WebhookEventListResponse as WebhookEventListResponse,
   };
 
-  export { Webhooks as Webhooks };
+  export {
+    WebhookSubscriptions as WebhookSubscriptions,
+    type WebhookSubscription as WebhookSubscription,
+    type WebhookSubscriptionCreateResponse as WebhookSubscriptionCreateResponse,
+    type WebhookSubscriptionListResponse as WebhookSubscriptionListResponse,
+    type WebhookSubscriptionCreateParams as WebhookSubscriptionCreateParams,
+    type WebhookSubscriptionUpdateParams as WebhookSubscriptionUpdateParams,
+  };
 }
