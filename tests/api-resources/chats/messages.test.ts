@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import LinqAPIV3 from 'linq-api-v3';
+import Linq from '@linqapp/sdk';
 
-const client = new LinqAPIV3({
+const client = new Linq({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource messages', () => {
-  // Mock server tests are disabled
-  test.skip('list', async () => {
+  test('list', async () => {
     const responsePromise = client.chats.messages.list('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -20,8 +19,7 @@ describe('resource messages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Mock server tests are disabled
-  test.skip('list: request options and params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.chats.messages.list(
@@ -29,11 +27,10 @@ describe('resource messages', () => {
         { cursor: 'cursor', limit: 1 },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(LinqAPIV3.NotFoundError);
+    ).rejects.toThrow(Linq.NotFoundError);
   });
 
-  // Mock server tests are disabled
-  test.skip('send: only required params', async () => {
+  test('send: only required params', async () => {
     const responsePromise = client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {
       message: { parts: [{ type: 'text', value: 'Hello, world!' }] },
     });
@@ -46,8 +43,7 @@ describe('resource messages', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Mock server tests are disabled
-  test.skip('send: required and optional params', async () => {
+  test('send: required and optional params', async () => {
     const response = await client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {
       message: {
         parts: [
