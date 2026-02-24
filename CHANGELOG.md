@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-02-24)
+
+Full Changelog: [v0.1.2...v0.2.0](https://github.com/linq-team/linq-node/compare/v0.1.2...v0.2.0)
+
+### Features
+
+* **api:** add publish ([9985388](https://github.com/linq-team/linq-node/commit/9985388e902289caf832e5bd9ec679eea086babf))
+
 ## 0.1.2 (2026-02-24)
 
 Full Changelog: [v0.1.1...v0.1.2](https://github.com/linq-team/linq-node/compare/v0.1.1...v0.1.2)
