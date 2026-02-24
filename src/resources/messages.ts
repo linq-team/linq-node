@@ -62,7 +62,7 @@ export class Messages extends APIResource {
    *
    * @example
    * ```ts
-   * const reaction = await client.messages.addReaction(
+   * const response = await client.messages.addReaction(
    *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
    *   { operation: 'add', type: 'love' },
    * );
@@ -72,7 +72,7 @@ export class Messages extends APIResource {
     messageID: string,
     body: MessageAddReactionParams,
     options?: RequestOptions,
-  ): APIPromise<Reaction> {
+  ): APIPromise<MessageAddReactionResponse> {
     return this._client.post(path`/v3/messages/${messageID}/reactions`, { body, ...options });
   }
 
@@ -398,6 +398,14 @@ export interface TextPart {
   value: string;
 }
 
+export interface MessageAddReactionResponse {
+  message?: string;
+
+  status?: string;
+
+  trace_id?: string;
+}
+
 /**
  * Response containing messages in a thread with pagination
  */
@@ -473,6 +481,7 @@ export declare namespace Messages {
     type ReactionType as ReactionType,
     type ReplyTo as ReplyTo,
     type TextPart as TextPart,
+    type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessageRetrieveThreadResponse as MessageRetrieveThreadResponse,
     type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,
