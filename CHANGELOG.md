@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.4 (2026-02-24)
+
+Full Changelog: [v0.1.3...v0.1.4](https://github.com/linq-team/linq-node/compare/v0.1.3...v0.1.4)
+
+### Features
+
+* **api:** add shared resource ([380a131](https://github.com/linq-team/linq-node/commit/380a131778f848b4801505a5058b368dcfe714d2))
+* **api:** wtf ([f7e7689](https://github.com/linq-team/linq-node/commit/f7e76894338f764efdf980ac32768d96019a42c5))
+* PLT: Include sticker details for iMessage tapback webhooks ([e219e9f](https://github.com/linq-team/linq-node/commit/e219e9fc8a6a52701cb2ec465de366c590815517))
+
 ## 0.1.3 (2026-02-24)
 
 Full Changelog: [v0.1.2...v0.1.3](https://github.com/linq-team/linq-node/compare/v0.1.2...v0.1.3)
