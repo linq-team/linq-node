@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "@linqapp/sdk/*": ["./src/*"],
-      "@linqapp/sdk": ["./src/index.ts"]
+      "linq-api-v3/*": ["./src/*"],
+      "linq-api-v3": ["./src/index.ts"]
     },
     "noEmit": true,
 
