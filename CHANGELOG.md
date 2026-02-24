@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.5 (2026-02-24)
+
+Full Changelog: [v0.1.4...v0.1.5](https://github.com/linq-team/linq-node/compare/v0.1.4...v0.1.5)
+
+### Bug Fixes
+
+* sendReaction OpenAPI spec returns 202 not 200 ([5d99f29](https://github.com/linq-team/linq-node/commit/5d99f29e57416f1ef5205938096f812e2d99154d))
+
 ## 0.1.4 (2026-02-24)
 
 Full Changelog: [v0.1.3...v0.1.4](https://github.com/linq-team/linq-node/compare/v0.1.3...v0.1.4)
