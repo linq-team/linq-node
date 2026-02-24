@@ -1,3 +1,9 @@
+# Shared
+
+Types:
+
+- <code><a href="./src/resources/shared.ts">ServiceType</a></code>
+
 # Chats
 
 Types:

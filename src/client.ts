@@ -868,4 +868,6 @@ export declare namespace LinqAPIV3 {
     type CapabilityCheckImessageParams as CapabilityCheckImessageParams,
     type CapabilityCheckRcsParams as CapabilityCheckRcsParams,
   };
+
+  export type ServiceType = API.ServiceType;
 }
