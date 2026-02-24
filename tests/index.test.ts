@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from '@linqapp/sdk/core/api-promise';
+import { APIPromise } from 'linq-api-v3/core/api-promise';
 
 import util from 'node:util';
-import LinqAPIV3 from '@linqapp/sdk';
-import { APIUserAbortError } from '@linqapp/sdk';
+import LinqAPIV3 from 'linq-api-v3';
+import { APIUserAbortError } from 'linq-api-v3';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {
