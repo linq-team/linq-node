@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import LinqAPIV3 from '@linqapp/sdk';
+import LinqAPIV3 from 'linq-api-v3';
 
 const client = new LinqAPIV3({
   apiKey: 'My API Key',
