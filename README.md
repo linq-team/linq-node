@@ -1,18 +1,21 @@
-# Linq TypeScript API Library
+# Linq API V3 TypeScript API Library
 
 [![NPM version](<https://img.shields.io/npm/v/@linqapp/sdk.svg?label=npm%20(stable)>)](https://npmjs.org/package/@linqapp/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@linqapp/sdk)
 
-This library provides convenient access to the Linq REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Linq API V3 REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [apidocs.linqapp.com](https://apidocs.linqapp.com). The full API of this library can be found in [api.md](api.md).
+The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
 ```sh
-npm install @linqapp/sdk
+npm install git+ssh://git@github.com:linq-team/linq-node.git
 ```
+
+> [!NOTE]
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install @linqapp/sdk`
 
 ## Usage
 
@@ -20,16 +23,16 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new Linq({
-  apiKey: process.env['LINQ_API_KEY'], // This is the default and can be omitted
+const client = new LinqAPIV3({
+  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted
 });
 
 const chat = await client.chats.create({
-  from: '+12025551234',
-  message: { parts: [{ type: 'text', value: 'Hello from Linq SDK!' }] },
-  to: ['+19876543210'],
+  from: '+12052535597',
+  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  to: ['+12052532136'],
 });
 
 console.log(chat.chat);
@@ -41,18 +44,18 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new Linq({
-  apiKey: process.env['LINQ_API_KEY'], // This is the default and can be omitted
+const client = new LinqAPIV3({
+  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted
 });
 
-const params: Linq.ChatCreateParams = {
-  from: '+12025551234',
-  message: { parts: [{ type: 'text', value: 'Hello from Linq SDK!' }] },
-  to: ['+19876543210'],
+const params: LinqAPIV3.ChatCreateParams = {
+  from: '+12052535597',
+  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  to: ['+12052532136'],
 };
-const chat: Linq.ChatCreateResponse = await client.chats.create(params);
+const chat: LinqAPIV3.ChatCreateResponse = await client.chats.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -67,12 +70,12 @@ a subclass of `APIError` will be thrown:
 ```ts
 const chat = await client.chats
   .create({
-    from: '+12025551234',
-    message: { parts: [{ type: 'text', value: 'Hello from Linq SDK!' }] },
-    to: ['+19876543210'],
+    from: '+12052535597',
+    message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+    to: ['+12052532136'],
   })
   .catch(async (err) => {
-    if (err instanceof Linq.APIError) {
+    if (err instanceof LinqAPIV3.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
       console.log(err.headers); // {server: 'nginx', ...}
@@ -106,15 +109,15 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new Linq({
+const client = new LinqAPIV3({
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
 await client.chats.create({
-  from: '+12025551234',
-  message: { parts: [{ type: 'text', value: 'Hello from Linq SDK!' }] },
-  to: ['+19876543210'],
+  from: '+12052535597',
+  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  to: ['+12052532136'],
 }, {
   maxRetries: 5,
 });
@@ -127,15 +130,15 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new Linq({
+const client = new LinqAPIV3({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
 await client.chats.create({
-  from: '+12025551234',
-  message: { parts: [{ type: 'text', value: 'Hello from Linq SDK!' }] },
-  to: ['+19876543210'],
+  from: '+12052535597',
+  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  to: ['+12052532136'],
 }, {
   timeout: 5 * 1000,
 });
@@ -157,13 +160,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 
 <!-- prettier-ignore -->
 ```ts
-const client = new Linq();
+const client = new LinqAPIV3();
 
 const response = await client.chats
   .create({
-    from: '+12025551234',
-    message: { parts: [{ type: 'text', value: 'Hello from Linq SDK!' }] },
-    to: ['+19876543210'],
+    from: '+12052535597',
+    message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+    to: ['+12052532136'],
   })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -171,9 +174,9 @@ console.log(response.statusText); // access the underlying Response object
 
 const { data: chat, response: raw } = await client.chats
   .create({
-    from: '+12025551234',
-    message: { parts: [{ type: 'text', value: 'Hello from Linq SDK!' }] },
-    to: ['+19876543210'],
+    from: '+12052535597',
+    message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+    to: ['+12052532136'],
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
@@ -190,13 +193,13 @@ console.log(chat.chat);
 
 The log level can be configured in two ways:
 
-1. Via the `LINQ_LOG` environment variable
+1. Via the `LINQ_API_V3_LOG` environment variable
 2. Using the `logLevel` client option (overrides the environment variable if set)
 
 ```ts
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new Linq({
+const client = new LinqAPIV3({
   logLevel: 'debug', // Show all log messages
 });
 ```
@@ -222,13 +225,13 @@ When providing a custom logger, the `logLevel` option still controls which messa
 below the configured level will not be sent to your logger.
 
 ```ts
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 import pino from 'pino';
 
 const logger = pino();
 
-const client = new Linq({
-  logger: logger.child({ name: 'Linq' }),
+const client = new LinqAPIV3({
+  logger: logger.child({ name: 'LinqAPIV3' }),
   logLevel: 'debug', // Send all messages to pino, allowing it to filter
 });
 ```
@@ -291,10 +294,10 @@ globalThis.fetch = fetch;
 Or pass it to the client:
 
 ```ts
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 import fetch from 'my-fetch';
 
-const client = new Linq({ fetch });
+const client = new LinqAPIV3({ fetch });
 ```
 
 ### Fetch options
@@ -302,9 +305,9 @@ const client = new Linq({ fetch });
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new Linq({
+const client = new LinqAPIV3({
   fetchOptions: {
     // `RequestInit` options
   },
@@ -319,11 +322,11 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new Linq({
+const client = new LinqAPIV3({
   fetchOptions: {
     dispatcher: proxyAgent,
   },
@@ -333,9 +336,9 @@ const client = new Linq({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new Linq({
+const client = new LinqAPIV3({
   fetchOptions: {
     proxy: 'http://localhost:8888',
   },
@@ -345,10 +348,10 @@ const client = new Linq({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import Linq from 'npm:@linqapp/sdk';
+import LinqAPIV3 from 'npm:@linqapp/sdk';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new Linq({
+const client = new LinqAPIV3({
   fetchOptions: {
     client: httpClient,
   },

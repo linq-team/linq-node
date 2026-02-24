@@ -1,14 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new Linq({
+const client = new LinqAPIV3({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource typing', () => {
-  test('start', async () => {
+  // Mock server tests are disabled
+  test.skip('start', async () => {
     const responsePromise = client.chats.typing.start('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -19,7 +20,8 @@ describe('resource typing', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('stop', async () => {
+  // Mock server tests are disabled
+  test.skip('stop', async () => {
     const responsePromise = client.chats.typing.stop('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);

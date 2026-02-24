@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.1 (2026-02-24)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/linq-team/linq-node/compare/v0.1.0...v0.1.1)
+
+### Features
+
+* **api:** manual updates ([1e5a3c1](https://github.com/linq-team/linq-node/commit/1e5a3c15f90814f696548098570640d36aff3410))
+
+
+### Chores
+
+* remove custom code ([b0958ec](https://github.com/linq-team/linq-node/commit/b0958ec1385f9bb1fa946f2948fee08055adfb22))
+* update SDK settings ([f6da0a0](https://github.com/linq-team/linq-node/commit/f6da0a0623ff711f92744872d079f4de903c7613))
+
 ## 0.1.0 (2026-02-23)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/linq-team/linq-node/compare/v0.0.1...v0.1.0)

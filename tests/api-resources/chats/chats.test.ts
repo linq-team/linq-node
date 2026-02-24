@@ -1,14 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Linq from '@linqapp/sdk';
+import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new Linq({
+const client = new LinqAPIV3({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource chats', () => {
-  test('create: only required params', async () => {
+  // Mock server tests are disabled
+  test.skip('create: only required params', async () => {
     const responsePromise = client.chats.create({
       from: '+12052535597',
       message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
@@ -23,7 +24,8 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('create: required and optional params', async () => {
+  // Mock server tests are disabled
+  test.skip('create: required and optional params', async () => {
     const response = await client.chats.create({
       from: '+12052535597',
       message: {
@@ -43,7 +45,8 @@ describe('resource chats', () => {
     });
   });
 
-  test('retrieve', async () => {
+  // Mock server tests are disabled
+  test.skip('retrieve', async () => {
     const responsePromise = client.chats.retrieve('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -54,7 +57,8 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('update', async () => {
+  // Mock server tests are disabled
+  test.skip('update', async () => {
     const responsePromise = client.chats.update('550e8400-e29b-41d4-a716-446655440000', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -65,7 +69,8 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: only required params', async () => {
+  // Mock server tests are disabled
+  test.skip('list: only required params', async () => {
     const responsePromise = client.chats.list({ from: '+13343284472' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -76,7 +81,8 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: required and optional params', async () => {
+  // Mock server tests are disabled
+  test.skip('list: required and optional params', async () => {
     const response = await client.chats.list({
       from: '+13343284472',
       cursor: '20',
@@ -84,7 +90,8 @@ describe('resource chats', () => {
     });
   });
 
-  test('markAsRead', async () => {
+  // Mock server tests are disabled
+  test.skip('markAsRead', async () => {
     const responsePromise = client.chats.markAsRead('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -95,7 +102,8 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('sendVoicememo: only required params', async () => {
+  // Mock server tests are disabled
+  test.skip('sendVoicememo: only required params', async () => {
     const responsePromise = client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {
       from: '+12052535597',
       voice_memo_url: 'https://example.com/voice-memo.m4a',
@@ -109,14 +117,16 @@ describe('resource chats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('sendVoicememo: required and optional params', async () => {
+  // Mock server tests are disabled
+  test.skip('sendVoicememo: required and optional params', async () => {
     const response = await client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {
       from: '+12052535597',
       voice_memo_url: 'https://example.com/voice-memo.m4a',
     });
   });
 
-  test('shareContactCard', async () => {
+  // Mock server tests are disabled
+  test.skip('shareContactCard', async () => {
     const responsePromise = client.chats.shareContactCard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);

@@ -7,14 +7,10 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource attachments', () => {
+describe('resource capability', () => {
   // Mock server tests are disabled
-  test.skip('create: only required params', async () => {
-    const responsePromise = client.attachments.create({
-      content_type: 'image/jpeg',
-      filename: 'photo.jpg',
-      size_bytes: 1024000,
-    });
+  test.skip('checkImessage: only required params', async () => {
+    const responsePromise = client.capability.checkImessage({ address: '+15551234567' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -25,17 +21,13 @@ describe('resource attachments', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('create: required and optional params', async () => {
-    const response = await client.attachments.create({
-      content_type: 'image/jpeg',
-      filename: 'photo.jpg',
-      size_bytes: 1024000,
-    });
+  test.skip('checkImessage: required and optional params', async () => {
+    const response = await client.capability.checkImessage({ address: '+15551234567', from: '+15559876543' });
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');
+  test.skip('checkRcs: only required params', async () => {
+    const responsePromise = client.capability.checkRcs({ address: '+15551234567' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,5 +35,10 @@ describe('resource attachments', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('checkRcs: required and optional params', async () => {
+    const response = await client.capability.checkRcs({ address: '+15551234567', from: '+15559876543' });
   });
 });
