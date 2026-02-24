@@ -18,6 +18,7 @@ export {
   Chats,
   type Chat,
   type MessageContent,
+  type ServiceType,
   type ChatCreateResponse,
   type ChatListResponse,
   type ChatSendVoicememoResponse,

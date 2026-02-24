@@ -67,6 +67,7 @@ import {
   ChatUpdateParams,
   Chats,
   MessageContent,
+  ServiceType,
 } from './resources/chats/chats';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -809,6 +810,7 @@ export declare namespace LinqAPIV3 {
     Chats as Chats,
     type Chat as Chat,
     type MessageContent as MessageContent,
+    type ServiceType as ServiceType,
     type ChatCreateResponse as ChatCreateResponse,
     type ChatListResponse as ChatListResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
