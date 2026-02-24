@@ -1,6 +1,6 @@
 # Linq API V3 TypeScript API Library
 
-[![NPM version](<https://img.shields.io/npm/v/linq-api-v3.svg?label=npm%20(stable)>)](https://npmjs.org/package/linq-api-v3) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/linq-api-v3)
+[![NPM version](<https://img.shields.io/npm/v/@linqapp/sdk.svg?label=npm%20(stable)>)](https://npmjs.org/package/@linqapp/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@linqapp/sdk)
 
 This library provides convenient access to the Linq API V3 REST API from server-side TypeScript or JavaScript.
 
@@ -11,11 +11,8 @@ It is generated with [Stainless](https://www.stainless.com/).
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:stainless-sdks/linq-api-v3-typescript.git
+npm install @linqapp/sdk
 ```
-
-> [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install linq-api-v3`
 
 ## Usage
 
@@ -23,7 +20,7 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 
 const client = new LinqAPIV3({
   apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted
@@ -44,7 +41,7 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 
 const client = new LinqAPIV3({
   apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted
@@ -197,7 +194,7 @@ The log level can be configured in two ways:
 2. Using the `logLevel` client option (overrides the environment variable if set)
 
 ```ts
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 
 const client = new LinqAPIV3({
   logLevel: 'debug', // Show all log messages
@@ -225,7 +222,7 @@ When providing a custom logger, the `logLevel` option still controls which messa
 below the configured level will not be sent to your logger.
 
 ```ts
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 import pino from 'pino';
 
 const logger = pino();
@@ -294,7 +291,7 @@ globalThis.fetch = fetch;
 Or pass it to the client:
 
 ```ts
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 import fetch from 'my-fetch';
 
 const client = new LinqAPIV3({ fetch });
@@ -305,7 +302,7 @@ const client = new LinqAPIV3({ fetch });
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 
 const client = new LinqAPIV3({
   fetchOptions: {
@@ -322,7 +319,7 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
@@ -336,7 +333,7 @@ const client = new LinqAPIV3({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import LinqAPIV3 from 'linq-api-v3';
+import LinqAPIV3 from '@linqapp/sdk';
 
 const client = new LinqAPIV3({
   fetchOptions: {
@@ -348,7 +345,7 @@ const client = new LinqAPIV3({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import LinqAPIV3 from 'npm:linq-api-v3';
+import LinqAPIV3 from 'npm:@linqapp/sdk';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
 const client = new LinqAPIV3({
@@ -370,7 +367,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/linq-api-v3-typescript/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/linq-team/linq-node/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 
