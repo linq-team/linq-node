@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as ChatsAPI from './chats/chats';
 import { APIPromise } from '../core/api-promise';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
@@ -118,7 +119,7 @@ export interface ChatHandle {
   /**
    * Messaging service type
    */
-  service: 'iMessage' | 'SMS' | 'RCS';
+  service: ChatsAPI.ServiceType;
 
   /**
    * Whether this handle belongs to the sender (your phone number)
@@ -241,7 +242,7 @@ export interface Message {
   /**
    * Messaging service type
    */
-  preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  preferred_service?: ChatsAPI.ServiceType | null;
 
   /**
    * When the message was read
@@ -261,7 +262,7 @@ export interface Message {
   /**
    * Messaging service type
    */
-  service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  service?: ChatsAPI.ServiceType | null;
 }
 
 /**

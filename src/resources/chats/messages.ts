@@ -108,7 +108,7 @@ export interface SentMessage {
   /**
    * Messaging service type
    */
-  preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  preferred_service?: ChatsAPI.ServiceType | null;
 
   /**
    * Indicates this message is a threaded reply to another message
@@ -118,7 +118,7 @@ export interface SentMessage {
   /**
    * Messaging service type
    */
-  service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  service?: ChatsAPI.ServiceType | null;
 }
 
 export interface MessageListResponse {
