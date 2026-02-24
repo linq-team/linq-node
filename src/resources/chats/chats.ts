@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import * as MessagesAPI from '../messages';
+import * as Shared from '../shared';
 import * as ChatsMessagesAPI from './messages';
 import {
   MessageListParams,
@@ -243,7 +244,7 @@ export interface Chat {
   /**
    * Messaging service type
    */
-  service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  service?: Shared.ServiceType | null;
 }
 
 /**
@@ -292,7 +293,7 @@ export interface MessageContent {
   /**
    * Messaging service type
    */
-  preferred_service?: 'iMessage' | 'SMS' | 'RCS';
+  preferred_service?: Shared.ServiceType;
 
   /**
    * Reply to another message to create a threaded conversation
@@ -413,7 +414,7 @@ export namespace ChatCreateResponse {
     /**
      * Messaging service type
      */
-    service: 'iMessage' | 'SMS' | 'RCS';
+    service: Shared.ServiceType;
   }
 }
 
@@ -471,7 +472,7 @@ export namespace ChatSendVoicememoResponse {
     /**
      * Messaging service type
      */
-    service?: 'iMessage' | 'SMS' | 'RCS' | null;
+    service?: Shared.ServiceType | null;
   }
 
   export namespace VoiceMemo {
@@ -499,7 +500,7 @@ export namespace ChatSendVoicememoResponse {
       /**
        * Messaging service type
        */
-      service: 'iMessage' | 'SMS' | 'RCS';
+      service: Shared.ServiceType;
     }
 
     export interface VoiceMemo {

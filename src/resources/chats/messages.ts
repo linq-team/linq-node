@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import * as MessagesAPI from '../messages';
+import * as Shared from '../shared';
 import * as ChatsAPI from './chats';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
@@ -108,7 +109,7 @@ export interface SentMessage {
   /**
    * Messaging service type
    */
-  preferred_service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  preferred_service?: Shared.ServiceType | null;
 
   /**
    * Indicates this message is a threaded reply to another message
@@ -118,7 +119,7 @@ export interface SentMessage {
   /**
    * Messaging service type
    */
-  service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  service?: Shared.ServiceType | null;
 }
 
 export interface MessageListResponse {
