@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { LinqAPIV3 } from 'linq-api-v3';
+import { LinqAPIV3 } from '@linqapp/sdk';
 
 const { stringifyQuery } = LinqAPIV3.prototype as any;
 
