@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.3 (2026-02-24)
+
+Full Changelog: [v0.1.2...v0.1.3](https://github.com/linq-team/linq-node/compare/v0.1.2...v0.1.3)
+
+### Features
+
+* **api:** add publish ([9985388](https://github.com/linq-team/linq-node/commit/9985388e902289caf832e5bd9ec679eea086babf))
+
+
+### Chores
+
+* update SDK settings ([5fcd66d](https://github.com/linq-team/linq-node/commit/5fcd66d24acb2d008474d5b286c2597e2f5642ce))
+* update SDK settings ([ddbc1b9](https://github.com/linq-team/linq-node/commit/ddbc1b903f83f0b51b3ef0a411d738f002b6da88))
+
 ## 0.1.2 (2026-02-24)
 
 Full Changelog: [v0.1.1...v0.1.2](https://github.com/linq-team/linq-node/compare/v0.1.1...v0.1.2)
