@@ -7,10 +7,10 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource typing', () => {
+describe('resource capability', () => {
   // Mock server tests are disabled
-  test.skip('start', async () => {
-    const responsePromise = client.chats.typing.start('550e8400-e29b-41d4-a716-446655440000');
+  test.skip('checkImessage: only required params', async () => {
+    const responsePromise = client.capability.checkImessage({ address: '+15551234567' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,8 +21,13 @@ describe('resource typing', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('stop', async () => {
-    const responsePromise = client.chats.typing.stop('550e8400-e29b-41d4-a716-446655440000');
+  test.skip('checkImessage: required and optional params', async () => {
+    const response = await client.capability.checkImessage({ address: '+15551234567', from: '+15559876543' });
+  });
+
+  // Mock server tests are disabled
+  test.skip('checkRcs: only required params', async () => {
+    const responsePromise = client.capability.checkRcs({ address: '+15551234567' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -30,5 +35,10 @@ describe('resource typing', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('checkRcs: required and optional params', async () => {
+    const response = await client.capability.checkRcs({ address: '+15551234567', from: '+15559876543' });
   });
 });

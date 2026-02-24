@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from '@linqapp/sdk/internal/to-file';
-import { toFile } from '@linqapp/sdk/core/uploads';
+import type { ResponseLike } from 'linq-api-v3/internal/to-file';
+import { toFile } from 'linq-api-v3/core/uploads';
 import { File } from 'node:buffer';
 
 class MyClass {
@@ -97,7 +97,7 @@ describe('missing File error message', () => {
   });
 
   test('is thrown', async () => {
-    const uploads = await import('@linqapp/sdk/core/uploads');
+    const uploads = await import('linq-api-v3/core/uploads');
     await expect(
       uploads.toFile(mockResponse({ url: 'https://example.com/my/audio.mp3' })),
     ).rejects.toMatchInlineSnapshot(

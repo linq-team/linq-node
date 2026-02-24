@@ -2,15 +2,23 @@
 
 export {
   Attachments,
+  type SupportedContentType,
   type AttachmentCreateResponse,
   type AttachmentRetrieveResponse,
   type AttachmentCreateParams,
 } from './attachments';
 export {
+  Capability,
+  type CapabilityCheckImessageResponse,
+  type CapabilityCheckRcsResponse,
+  type CapabilityCheckImessageParams,
+  type CapabilityCheckRcsParams,
+} from './capability';
+export {
   Chats,
+  type Chat,
+  type MessageContent,
   type ChatCreateResponse,
-  type ChatRetrieveResponse,
-  type ChatUpdateResponse,
   type ChatListResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
@@ -20,16 +28,27 @@ export {
 } from './chats/chats';
 export {
   Messages,
-  type MessageRetrieveResponse,
-  type MessageAddReactionResponse,
+  type ChatHandle,
+  type MediaPart,
+  type Message,
+  type MessageEffect,
+  type Reaction,
+  type ReactionType,
+  type ReplyTo,
+  type TextPart,
   type MessageRetrieveThreadResponse,
   type MessageDeleteParams,
   type MessageAddReactionParams,
   type MessageRetrieveThreadParams,
 } from './messages';
+export { PhoneNumbers, type PhoneNumberListResponse } from './phone-numbers';
+export { Phonenumbers, type PhonenumberListResponse } from './phonenumbers';
+export { WebhookEvents, type WebhookEventType, type WebhookEventListResponse } from './webhook-events';
 export {
-  PhoneNumbers,
-  type PhoneNumberListResponse,
-  type PhoneNumberListDeprecatedResponse,
-} from './phone-numbers';
-export { Webhooks } from './webhooks/webhooks';
+  WebhookSubscriptions,
+  type WebhookSubscription,
+  type WebhookSubscriptionCreateResponse,
+  type WebhookSubscriptionListResponse,
+  type WebhookSubscriptionCreateParams,
+  type WebhookSubscriptionUpdateParams,
+} from './webhook-subscriptions';
