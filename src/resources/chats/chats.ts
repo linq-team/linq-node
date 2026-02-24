@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as ChatsAPI from './chats';
 import * as MessagesAPI from '../messages';
 import * as ChatsMessagesAPI from './messages';
 import {
@@ -243,7 +244,7 @@ export interface Chat {
   /**
    * Messaging service type
    */
-  service?: 'iMessage' | 'SMS' | 'RCS' | null;
+  service?: ServiceType | null;
 }
 
 /**
@@ -292,7 +293,7 @@ export interface MessageContent {
   /**
    * Messaging service type
    */
-  preferred_service?: 'iMessage' | 'SMS' | 'RCS';
+  preferred_service?: ServiceType;
 
   /**
    * Reply to another message to create a threaded conversation
@@ -375,6 +376,11 @@ export namespace MessageContent {
 }
 
 /**
+ * Messaging service type
+ */
+export type ServiceType = 'iMessage' | 'SMS' | 'RCS';
+
+/**
  * Response for creating a new chat with an initial message
  */
 export interface ChatCreateResponse {
@@ -413,7 +419,7 @@ export namespace ChatCreateResponse {
     /**
      * Messaging service type
      */
-    service: 'iMessage' | 'SMS' | 'RCS';
+    service: ChatsAPI.ServiceType;
   }
 }
 
@@ -471,7 +477,7 @@ export namespace ChatSendVoicememoResponse {
     /**
      * Messaging service type
      */
-    service?: 'iMessage' | 'SMS' | 'RCS' | null;
+    service?: ChatsAPI.ServiceType | null;
   }
 
   export namespace VoiceMemo {
@@ -499,7 +505,7 @@ export namespace ChatSendVoicememoResponse {
       /**
        * Messaging service type
        */
-      service: 'iMessage' | 'SMS' | 'RCS';
+      service: ChatsAPI.ServiceType;
     }
 
     export interface VoiceMemo {
@@ -609,6 +615,7 @@ export declare namespace Chats {
   export {
     type Chat as Chat,
     type MessageContent as MessageContent,
+    type ServiceType as ServiceType,
     type ChatCreateResponse as ChatCreateResponse,
     type ChatListResponse as ChatListResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,

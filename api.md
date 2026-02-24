@@ -4,6 +4,7 @@ Types:
 
 - <code><a href="./src/resources/chats/chats.ts">Chat</a></code>
 - <code><a href="./src/resources/chats/chats.ts">MessageContent</a></code>
+- <code><a href="./src/resources/chats/chats.ts">ServiceType</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatCreateResponse</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatListResponse</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatSendVoicememoResponse</a></code>
