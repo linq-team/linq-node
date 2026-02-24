@@ -68,13 +68,14 @@ Types:
 - <code><a href="./src/resources/messages.ts">ReactionType</a></code>
 - <code><a href="./src/resources/messages.ts">ReplyTo</a></code>
 - <code><a href="./src/resources/messages.ts">TextPart</a></code>
+- <code><a href="./src/resources/messages.ts">MessageAddReactionResponse</a></code>
 - <code><a href="./src/resources/messages.ts">MessageRetrieveThreadResponse</a></code>
 
 Methods:
 
 - <code title="get /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">retrieve</a>(messageID) -> Message</code>
 - <code title="delete /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">delete</a>(messageID, { ...params }) -> void</code>
-- <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages.ts">addReaction</a>(messageID, { ...params }) -> Reaction</code>
+- <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages.ts">addReaction</a>(messageID, { ...params }) -> MessageAddReactionResponse</code>
 - <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages.ts">retrieveThread</a>(messageID, { ...params }) -> MessageRetrieveThreadResponse</code>
 
 # Attachments
