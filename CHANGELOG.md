@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 (2026-02-24)
+
+Full Changelog: [v0.1.1...v0.1.2](https://github.com/linq-team/linq-node/compare/v0.1.1...v0.1.2)
+
+### Features
+
+* **api:** fix service type ([d0abbf2](https://github.com/linq-team/linq-node/commit/d0abbf2e3a3a85266215d01e6cd4268148c7d66d))
+
 ## 0.1.1 (2026-02-24)
 
 Full Changelog: [v0.1.0...v0.1.1](https://github.com/linq-team/linq-node/compare/v0.1.0...v0.1.1)
