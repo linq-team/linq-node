@@ -55,12 +55,12 @@ $ cd linq-node
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link linq-api-v3
+$ yarn link @linqapp/sdk
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link --global linq-api-v3
+$ pnpm link --global @linqapp/sdk
 ```
 
 ## Running tests
