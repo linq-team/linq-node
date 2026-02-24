@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "linq-api-v3/*": ["./dist/src/*"],
-      "linq-api-v3": ["./dist/src/index.ts"]
+      "@linqapp/sdk/*": ["./dist/src/*"],
+      "@linqapp/sdk": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
