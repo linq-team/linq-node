@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+export * from './shared';
 export {
   Attachments,
   type SupportedContentType,
@@ -18,7 +19,6 @@ export {
   Chats,
   type Chat,
   type MessageContent,
-  type ServiceType,
   type ChatCreateResponse,
   type ChatListResponse,
   type ChatSendVoicememoResponse,
