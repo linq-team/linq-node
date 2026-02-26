@@ -37,6 +37,7 @@ export {
   type ReactionType,
   type ReplyTo,
   type TextPart,
+  type MessageAddReactionResponse,
   type MessageRetrieveThreadResponse,
   type MessageDeleteParams,
   type MessageAddReactionParams,
