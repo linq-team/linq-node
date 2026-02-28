@@ -312,12 +312,6 @@ export namespace MessageContent {
      * The text content
      */
     value: string;
-
-    /**
-     * Optional idempotency key for this specific message part. Use this to prevent
-     * duplicate sends of the same part.
-     */
-    idempotency_key?: string;
   }
 
   export interface MediaPart {
@@ -334,12 +328,6 @@ export namespace MessageContent {
      * Either `url` or `attachment_id` must be provided, but not both.
      */
     attachment_id?: string;
-
-    /**
-     * Optional idempotency key for this specific message part. Use this to prevent
-     * duplicate sends of the same part.
-     */
-    idempotency_key?: string;
 
     /**
      * Any publicly accessible HTTPS URL to the media file. The server downloads and

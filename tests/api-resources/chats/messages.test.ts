@@ -50,13 +50,7 @@ describe('resource messages', () => {
   test.skip('send: required and optional params', async () => {
     const response = await client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {
       message: {
-        parts: [
-          {
-            type: 'text',
-            value: 'Hello, world!',
-            idempotency_key: 'text-part-abc123',
-          },
-        ],
+        parts: [{ type: 'text', value: 'Hello, world!' }],
         effect: { name: 'confetti', type: 'screen' },
         idempotency_key: 'msg-abc123xyz',
         preferred_service: 'iMessage',
