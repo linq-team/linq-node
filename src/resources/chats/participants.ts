@@ -5,6 +5,24 @@ import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * A Chat is a conversation thread with one or more participants.
+ *
+ * To begin a chat, you must create a Chat with at least one recipient handle.
+ * Including multiple handles creates a group chat.
+ *
+ * When creating a chat, the `from` field specifies which of your
+ * authorized phone numbers the message originates from. Your authentication token grants
+ * access to one or more phone numbers, but the `from` field determines the actual sender.
+ *
+ * **Handle Format:**
+ * - Handles can be phone numbers or email addresses
+ * - Phone numbers MUST be in E.164 format (starting with +)
+ * - Phone format: `+[country code][subscriber number]`
+ * - Example phone: `+12223334444` (US), `+442071234567` (UK), `+81312345678` (Japan)
+ * - Example email: `user@example.com`
+ * - No spaces, dashes, or parentheses in phone numbers
+ */
 export class Participants extends APIResource {
   /**
    * Add a new participant to an existing group chat.

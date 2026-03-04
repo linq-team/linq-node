@@ -7,6 +7,15 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Messages are individual text or multimedia communications within a chat thread.
+ *
+ * Messages can include text, attachments, special effects (like confetti or fireworks),
+ * and reactions. All messages are associated with a specific chat and sent from a
+ * phone number you own.
+ *
+ * Messages support delivery status tracking, read receipts, and editing capabilities.
+ */
 export class Messages extends APIResource {
   /**
    * Retrieve a specific message by its ID. This endpoint returns the full message
