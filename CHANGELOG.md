@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2026-03-05)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/linq-team/linq-node/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* **api:** add new endpoint ([feaa645](https://github.com/linq-team/linq-node/commit/feaa645c6c2a9be7c596327f8ec25ac16f8ad352))
+
 ## 0.3.0 (2026-03-05)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/linq-team/linq-node/compare/v0.2.0...v0.3.0)
