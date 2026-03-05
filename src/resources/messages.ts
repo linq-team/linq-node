@@ -34,6 +34,21 @@ export class Messages extends APIResource {
   }
 
   /**
+   * Edit the text content of a specific part of a previously sent message.
+   *
+   * @example
+   * ```ts
+   * const message = await client.messages.update(
+   *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
+   *   { text: 'This is the edited message content' },
+   * );
+   * ```
+   */
+  update(messageID: string, body: MessageUpdateParams, options?: RequestOptions): APIPromise<Message> {
+    return this._client.patch(path`/v3/messages/${messageID}`, { body, ...options });
+  }
+
+  /**
    * Deletes a message from the Linq API only. This does NOT unsend or remove the
    * message from the actual chat - recipients will still see the message.
    *
@@ -364,6 +379,18 @@ export interface MessageAddReactionResponse {
   trace_id?: string;
 }
 
+export interface MessageUpdateParams {
+  /**
+   * New text content for the message part
+   */
+  text: string;
+
+  /**
+   * Index of the message part to edit. Defaults to 0.
+   */
+  part_index?: number;
+}
+
 export interface MessageDeleteParams {
   /**
    * ID of the chat containing the message to delete
@@ -414,6 +441,7 @@ export declare namespace Messages {
     type ReplyTo as ReplyTo,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
+    type MessageUpdateParams as MessageUpdateParams,
     type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
