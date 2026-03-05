@@ -24,7 +24,7 @@ export interface MediaPartResponse {
   /**
    * Reactions on this message part
    */
-  reactions: Array<MessagesAPI.Reaction> | null;
+  reactions: Array<Reaction> | null;
 
   /**
    * File size in bytes
@@ -42,6 +42,83 @@ export interface MediaPartResponse {
   url: string;
 }
 
+export interface Reaction {
+  handle: MessagesAPI.ChatHandle;
+
+  /**
+   * Whether this reaction is from the current user
+   */
+  is_me: boolean;
+
+  /**
+   * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
+   * emphasize, question. Custom emoji reactions have type "custom" with the actual
+   * emoji in the custom_emoji field. Sticker reactions have type "sticker" with
+   * sticker attachment details in the sticker field.
+   */
+  type: ReactionType;
+
+  /**
+   * Custom emoji if type is "custom", null otherwise
+   */
+  custom_emoji?: string | null;
+
+  /**
+   * Sticker attachment details when reaction_type is "sticker". Null for non-sticker
+   * reactions.
+   */
+  sticker?: Reaction.Sticker | null;
+}
+
+export namespace Reaction {
+  /**
+   * Sticker attachment details when reaction_type is "sticker". Null for non-sticker
+   * reactions.
+   */
+  export interface Sticker {
+    /**
+     * Filename of the sticker
+     */
+    file_name?: string;
+
+    /**
+     * Sticker image height in pixels
+     */
+    height?: number;
+
+    /**
+     * MIME type of the sticker image
+     */
+    mime_type?: string;
+
+    /**
+     * Presigned URL for downloading the sticker image (expires in 1 hour).
+     */
+    url?: string;
+
+    /**
+     * Sticker image width in pixels
+     */
+    width?: number;
+  }
+}
+
+/**
+ * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
+ * emphasize, question. Custom emoji reactions have type "custom" with the actual
+ * emoji in the custom_emoji field. Sticker reactions have type "sticker" with
+ * sticker attachment details in the sticker field.
+ */
+export type ReactionType =
+  | 'love'
+  | 'like'
+  | 'dislike'
+  | 'laugh'
+  | 'emphasize'
+  | 'question'
+  | 'custom'
+  | 'sticker';
+
 /**
  * Messaging service type
  */
@@ -54,7 +131,7 @@ export interface TextPartResponse {
   /**
    * Reactions on this message part
    */
-  reactions: Array<MessagesAPI.Reaction> | null;
+  reactions: Array<Reaction> | null;
 
   /**
    * Indicates this is a text message part

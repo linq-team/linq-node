@@ -227,7 +227,7 @@ export interface ReactionEventBase {
    * emoji in the custom_emoji field. Sticker reactions have type "sticker" with
    * sticker attachment details in the sticker field.
    */
-  reaction_type: MessagesAPI.ReactionType;
+  reaction_type: Shared.ReactionType;
 
   /**
    * Chat identifier (UUID)

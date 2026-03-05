@@ -3,6 +3,8 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">MediaPartResponse</a></code>
+- <code><a href="./src/resources/shared.ts">Reaction</a></code>
+- <code><a href="./src/resources/shared.ts">ReactionType</a></code>
 - <code><a href="./src/resources/shared.ts">ServiceType</a></code>
 - <code><a href="./src/resources/shared.ts">TextPartResponse</a></code>
 
@@ -65,8 +67,6 @@ Types:
 - <code><a href="./src/resources/messages.ts">ChatHandle</a></code>
 - <code><a href="./src/resources/messages.ts">Message</a></code>
 - <code><a href="./src/resources/messages.ts">MessageEffect</a></code>
-- <code><a href="./src/resources/messages.ts">Reaction</a></code>
-- <code><a href="./src/resources/messages.ts">ReactionType</a></code>
 - <code><a href="./src/resources/messages.ts">ReplyTo</a></code>
 - <code><a href="./src/resources/messages.ts">MessageAddReactionResponse</a></code>
 
