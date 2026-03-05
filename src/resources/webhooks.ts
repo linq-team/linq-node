@@ -2,7 +2,6 @@
 
 import { APIResource } from '../core/resource';
 import * as WebhooksAPI from './webhooks';
-import * as MessagesAPI from './messages';
 import * as Shared from './shared';
 import * as WebhookEventsAPI from './webhook-events';
 
@@ -57,7 +56,7 @@ export interface MessageEventV2 {
   /**
    * The handle that sent this message
    */
-  sender_handle: MessagesAPI.ChatHandle;
+  sender_handle: Shared.ChatHandle;
 
   /**
    * Messaging service type
@@ -118,7 +117,7 @@ export namespace MessageEventV2 {
     /**
      * Your phone number's handle. Always has is_me=true.
      */
-    owner_handle?: MessagesAPI.ChatHandle | null;
+    owner_handle?: Shared.ChatHandle | null;
   }
 
   /**
@@ -248,7 +247,7 @@ export interface ReactionEventBase {
   /**
    * The person who added/removed the reaction as a full handle object
    */
-  from_handle?: MessagesAPI.ChatHandle;
+  from_handle?: Shared.ChatHandle;
 
   /**
    * Message identifier (UUID) that the reaction was added to or removed from
@@ -883,7 +882,7 @@ export namespace ParticipantAddedV2026WebhookEvent {
     /**
      * The added participant as a full handle object
      */
-    participant?: MessagesAPI.ChatHandle;
+    participant?: Shared.ChatHandle;
   }
 }
 
@@ -953,7 +952,7 @@ export namespace ParticipantRemovedV2026WebhookEvent {
     /**
      * The removed participant as a full handle object
      */
-    participant?: MessagesAPI.ChatHandle;
+    participant?: Shared.ChatHandle;
 
     /**
      * When the participant was removed
@@ -1027,7 +1026,7 @@ export namespace ChatGroupNameUpdatedV2026WebhookEvent {
     /**
      * The handle who made the change.
      */
-    changed_by_handle?: MessagesAPI.ChatHandle | null;
+    changed_by_handle?: Shared.ChatHandle | null;
 
     /**
      * New group name (null if the name was removed)
@@ -1106,7 +1105,7 @@ export namespace ChatGroupIconUpdatedV2026WebhookEvent {
     /**
      * The handle who made the change.
      */
-    changed_by_handle?: MessagesAPI.ChatHandle | null;
+    changed_by_handle?: Shared.ChatHandle | null;
 
     /**
      * New icon URL (null if the icon was removed)
@@ -1340,7 +1339,7 @@ export namespace ChatCreatedV2026WebhookEvent {
      * List of chat participants with full handle details. Always contains at least two
      * handles (your phone number and the other participant).
      */
-    handles: Array<MessagesAPI.ChatHandle>;
+    handles: Array<Shared.ChatHandle>;
 
     /**
      * Whether this is a group chat
@@ -1637,7 +1636,7 @@ export namespace MessageSentV2025WebhookEvent {
     /**
      * The sender of this message as a full handle object
      */
-    from_handle?: MessagesAPI.ChatHandle;
+    from_handle?: Shared.ChatHandle;
 
     /**
      * Idempotency key for the message. Used for deduplication of outbound messages.
@@ -1674,7 +1673,7 @@ export namespace MessageSentV2025WebhookEvent {
      * Our phone number that received the message as a full handle object. Null for
      * sent events.
      */
-    recipient_handle?: MessagesAPI.ChatHandle | null;
+    recipient_handle?: Shared.ChatHandle | null;
 
     /**
      * @deprecated DEPRECATED: Use recipient_handle instead. Our phone number that
@@ -1757,7 +1756,7 @@ export namespace MessageReceivedV2025WebhookEvent {
     /**
      * The sender of this message as a full handle object
      */
-    from_handle?: MessagesAPI.ChatHandle;
+    from_handle?: Shared.ChatHandle;
 
     /**
      * Idempotency key for the message. Used for deduplication of outbound messages.
@@ -1794,7 +1793,7 @@ export namespace MessageReceivedV2025WebhookEvent {
      * Our phone number that received the message as a full handle object. Null for
      * sent events.
      */
-    recipient_handle?: MessagesAPI.ChatHandle | null;
+    recipient_handle?: Shared.ChatHandle | null;
 
     /**
      * @deprecated DEPRECATED: Use recipient_handle instead. Our phone number that
@@ -1882,7 +1881,7 @@ export namespace MessageReadV2025WebhookEvent {
     /**
      * The sender of this message as a full handle object
      */
-    from_handle?: MessagesAPI.ChatHandle;
+    from_handle?: Shared.ChatHandle;
 
     /**
      * Idempotency key for the message. Used for deduplication of outbound messages.
@@ -1924,7 +1923,7 @@ export namespace MessageReadV2025WebhookEvent {
      * Our phone number that received the message as a full handle object. Null for
      * sent events.
      */
-    recipient_handle?: MessagesAPI.ChatHandle | null;
+    recipient_handle?: Shared.ChatHandle | null;
 
     /**
      * @deprecated DEPRECATED: Use recipient_handle instead. Our phone number that
@@ -2012,7 +2011,7 @@ export namespace MessageDeliveredV2025WebhookEvent {
     /**
      * The sender of this message as a full handle object
      */
-    from_handle?: MessagesAPI.ChatHandle;
+    from_handle?: Shared.ChatHandle;
 
     /**
      * Idempotency key for the message. Used for deduplication of outbound messages.
@@ -2054,7 +2053,7 @@ export namespace MessageDeliveredV2025WebhookEvent {
      * Our phone number that received the message as a full handle object. Null for
      * sent events.
      */
-    recipient_handle?: MessagesAPI.ChatHandle | null;
+    recipient_handle?: Shared.ChatHandle | null;
 
     /**
      * @deprecated DEPRECATED: Use recipient_handle instead. Our phone number that
@@ -2317,7 +2316,7 @@ export namespace ParticipantAddedV2025WebhookEvent {
     /**
      * The added participant as a full handle object
      */
-    participant?: MessagesAPI.ChatHandle;
+    participant?: Shared.ChatHandle;
   }
 }
 
@@ -2387,7 +2386,7 @@ export namespace ParticipantRemovedV2025WebhookEvent {
     /**
      * The removed participant as a full handle object
      */
-    participant?: MessagesAPI.ChatHandle;
+    participant?: Shared.ChatHandle;
 
     /**
      * When the participant was removed
@@ -2461,7 +2460,7 @@ export namespace ChatGroupNameUpdatedV2025WebhookEvent {
     /**
      * The handle who made the change.
      */
-    changed_by_handle?: MessagesAPI.ChatHandle | null;
+    changed_by_handle?: Shared.ChatHandle | null;
 
     /**
      * New group name (null if the name was removed)
@@ -2540,7 +2539,7 @@ export namespace ChatGroupIconUpdatedV2025WebhookEvent {
     /**
      * The handle who made the change.
      */
-    changed_by_handle?: MessagesAPI.ChatHandle | null;
+    changed_by_handle?: Shared.ChatHandle | null;
 
     /**
      * New icon URL (null if the icon was removed)
@@ -2774,7 +2773,7 @@ export namespace ChatCreatedV2025WebhookEvent {
      * List of chat participants with full handle details. Always contains at least two
      * handles (your phone number and the other participant).
      */
-    handles: Array<MessagesAPI.ChatHandle>;
+    handles: Array<Shared.ChatHandle>;
 
     /**
      * Whether this is a group chat

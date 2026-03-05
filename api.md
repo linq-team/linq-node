@@ -2,6 +2,7 @@
 
 Types:
 
+- <code><a href="./src/resources/shared.ts">ChatHandle</a></code>
 - <code><a href="./src/resources/shared.ts">MediaPartResponse</a></code>
 - <code><a href="./src/resources/shared.ts">Reaction</a></code>
 - <code><a href="./src/resources/shared.ts">ReactionType</a></code>
@@ -64,7 +65,6 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/messages.ts">ChatHandle</a></code>
 - <code><a href="./src/resources/messages.ts">Message</a></code>
 - <code><a href="./src/resources/messages.ts">MessageEffect</a></code>
 - <code><a href="./src/resources/messages.ts">ReplyTo</a></code>

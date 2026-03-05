@@ -1,6 +1,41 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import * as MessagesAPI from './messages';
+export interface ChatHandle {
+  /**
+   * Unique identifier for this handle
+   */
+  id: string;
+
+  /**
+   * Phone number (E.164) or email address of the participant
+   */
+  handle: string;
+
+  /**
+   * When this participant joined the chat
+   */
+  joined_at: string;
+
+  /**
+   * Messaging service type
+   */
+  service: ServiceType;
+
+  /**
+   * Whether this handle belongs to the sender (your phone number)
+   */
+  is_me?: boolean | null;
+
+  /**
+   * When they left (if applicable)
+   */
+  left_at?: string | null;
+
+  /**
+   * Participant status
+   */
+  status?: 'active' | 'left' | 'removed' | null;
+}
 
 /**
  * A media attachment part
@@ -43,7 +78,7 @@ export interface MediaPartResponse {
 }
 
 export interface Reaction {
-  handle: MessagesAPI.ChatHandle;
+  handle: ChatHandle;
 
   /**
    * Whether this reaction is from the current user

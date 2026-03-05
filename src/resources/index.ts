@@ -31,7 +31,6 @@ export {
 } from './chats/chats';
 export {
   Messages,
-  type ChatHandle,
   type Message,
   type MessageEffect,
   type ReplyTo,

@@ -126,7 +126,7 @@ export interface SentMessage {
   /**
    * The sender of this message as a full handle object
    */
-  from_handle?: MessagesAPI.ChatHandle | null;
+  from_handle?: Shared.ChatHandle | null;
 
   /**
    * Messaging service type
