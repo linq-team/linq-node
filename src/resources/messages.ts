@@ -133,43 +133,6 @@ export class Messages extends APIResource {
 
 export type MessagesListMessagesPagination = ListMessagesPagination<Message>;
 
-export interface ChatHandle {
-  /**
-   * Unique identifier for this handle
-   */
-  id: string;
-
-  /**
-   * Phone number (E.164) or email address of the participant
-   */
-  handle: string;
-
-  /**
-   * When this participant joined the chat
-   */
-  joined_at: string;
-
-  /**
-   * Messaging service type
-   */
-  service: Shared.ServiceType;
-
-  /**
-   * Whether this handle belongs to the sender (your phone number)
-   */
-  is_me?: boolean | null;
-
-  /**
-   * When they left (if applicable)
-   */
-  left_at?: string | null;
-
-  /**
-   * Participant status
-   */
-  status?: 'active' | 'left' | 'removed' | null;
-}
-
 export interface Message {
   /**
    * Unique identifier for the message
@@ -225,7 +188,7 @@ export interface Message {
   /**
    * The sender of this message as a full handle object
    */
-  from_handle?: ChatHandle | null;
+  from_handle?: Shared.ChatHandle | null;
 
   /**
    * Message parts in order (text and media)
@@ -356,7 +319,6 @@ export interface MessageListMessagesThreadParams extends ListMessagesPaginationP
 
 export declare namespace Messages {
   export {
-    type ChatHandle as ChatHandle,
     type Message as Message,
     type MessageEffect as MessageEffect,
     type ReplyTo as ReplyTo,

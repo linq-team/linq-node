@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 (2026-03-05)
+
+Full Changelog: [v0.5.0...v0.6.0](https://github.com/linq-team/linq-node/compare/v0.5.0...v0.6.0)
+
+### Features
+
+* **api:** fix shared ([fe8b11c](https://github.com/linq-team/linq-node/commit/fe8b11c7975f53b21f21ec8f3c1ad748591b6a08))
+
 ## 0.5.0 (2026-03-05)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/linq-team/linq-node/compare/v0.4.0...v0.5.0)
