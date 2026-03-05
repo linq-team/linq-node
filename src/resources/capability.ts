@@ -4,6 +4,9 @@ import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Check whether a recipient address supports iMessage or RCS before sending a message.
+ */
 export class Capability extends APIResource {
   /**
    * Check whether a recipient address (phone number or email) is reachable via

@@ -273,9 +273,15 @@ export interface MessageContent {
    * - To send audio as an **iMessage voice memo bubble** (inline playback UI), use
    *   the dedicated `/v3/chats/{chatId}/voicememo` endpoint instead
    *
-   * **Validation Rule:** Consecutive text parts are not allowed. Text parts must be
-   * separated by media parts. For example, [text, text] is invalid, but [text,
-   * media, text] is valid.
+   * **Validation Rules:**
+   *
+   * - Consecutive text parts are not allowed. Text parts must be separated by media
+   *   parts. For example, [text, text] is invalid, but [text, media, text] is valid.
+   * - Maximum of **100 parts** total.
+   * - Media parts using a public `url` (downloaded by the server on send) are capped
+   *   at **40**. Parts using `attachment_id` or presigned URLs are exempt from this
+   *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
+   *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
   parts: Array<MessageContent.TextPart | MessageContent.MediaPart>;
 
@@ -312,12 +318,6 @@ export namespace MessageContent {
      * The text content
      */
     value: string;
-
-    /**
-     * Optional idempotency key for this specific message part. Use this to prevent
-     * duplicate sends of the same part.
-     */
-    idempotency_key?: string;
   }
 
   export interface MediaPart {
@@ -334,12 +334,6 @@ export namespace MessageContent {
      * Either `url` or `attachment_id` must be provided, but not both.
      */
     attachment_id?: string;
-
-    /**
-     * Optional idempotency key for this specific message part. Use this to prevent
-     * duplicate sends of the same part.
-     */
-    idempotency_key?: string;
 
     /**
      * Any publicly accessible HTTPS URL to the media file. The server downloads and

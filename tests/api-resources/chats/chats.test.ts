@@ -29,13 +29,7 @@ describe('resource chats', () => {
     const response = await client.chats.create({
       from: '+12052535597',
       message: {
-        parts: [
-          {
-            type: 'text',
-            value: 'Hello! How can I help you today?',
-            idempotency_key: 'text-part-abc123',
-          },
-        ],
+        parts: [{ type: 'text', value: 'Hello! How can I help you today?' }],
         effect: { name: 'confetti', type: 'screen' },
         idempotency_key: 'msg-abc123xyz',
         preferred_service: 'iMessage',

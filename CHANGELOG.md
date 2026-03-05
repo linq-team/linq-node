@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.2.0 (2026-03-05)
+
+Full Changelog: [v0.1.5...v0.2.0](https://github.com/linq-team/linq-node/compare/v0.1.5...v0.2.0)
+
+### Features
+
+* Allow 100 presigned URL or uploaded attachments (URL + ID) in a message ([adb1e81](https://github.com/linq-team/linq-node/commit/adb1e812c68ab101e2f1362a3c53602dc9c589af))
+* Plt 361 synapse support editing messages in v3 ([68d7b8a](https://github.com/linq-team/linq-node/commit/68d7b8afbc158ecb3fd0ce85e9ca8c0ad324b6bc))
+
+
+### Bug Fixes
+
+* remove unused part-level idempotency_key from OpenAPI spec ([24df345](https://github.com/linq-team/linq-node/commit/24df345db930e173b4618ce04819dd9dc021aa02))
+
+
+### Chores
+
+* **internal:** codegen related update ([3c28377](https://github.com/linq-team/linq-node/commit/3c283771a2d2ff459ed32f289d2e03fa379278af))
+* **internal:** move stringifyQuery implementation to internal function ([b86f2c0](https://github.com/linq-team/linq-node/commit/b86f2c05a2c2e2b2ea4fe1df03c70b27f35def30))
+
 ## 0.1.5 (2026-02-24)
 
 Full Changelog: [v0.1.4...v0.1.5](https://github.com/linq-team/linq-node/compare/v0.1.4...v0.1.5)
