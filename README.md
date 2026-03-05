@@ -145,6 +145,37 @@ On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
 
+## Auto-pagination
+
+List methods in the LinqAPIV3 API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllChats(params) {
+  const allChats = [];
+  // Automatically fetches more pages as needed.
+  for await (const chat of client.chats.listChats({ from: '+13343284472' })) {
+    allChats.push(chat);
+  }
+  return allChats;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.chats.listChats({ from: '+13343284472' });
+for (const chat of page.chats) {
+  console.log(chat);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
+
 ## Advanced Usage
 
 ### Accessing raw Response data (e.g., headers)

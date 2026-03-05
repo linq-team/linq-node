@@ -2,9 +2,15 @@
 
 import { APIResource } from '../../core/resource';
 import * as MessagesAPI from '../messages';
+import { MessagesListMessagesPagination } from '../messages';
 import * as Shared from '../shared';
 import * as ChatsAPI from './chats';
 import { APIPromise } from '../../core/api-promise';
+import {
+  ListMessagesPagination,
+  type ListMessagesPaginationParams,
+  PagePromise,
+} from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
@@ -23,17 +29,24 @@ export class Messages extends APIResource {
    *
    * @example
    * ```ts
-   * const messages = await client.chats.messages.list(
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.chats.messages.list(
    *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   list(
     chatID: string,
     query: MessageListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<MessageListResponse> {
-    return this._client.get(path`/v3/chats/${chatID}/messages`, { query, ...options });
+  ): PagePromise<MessagesListMessagesPagination, MessagesAPI.Message> {
+    return this._client.getAPIList(
+      path`/v3/chats/${chatID}/messages`,
+      ListMessagesPagination<MessagesAPI.Message>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -93,7 +106,7 @@ export interface SentMessage {
   /**
    * Message parts in order (text and media)
    */
-  parts: Array<MessagesAPI.TextPart | MessagesAPI.MediaPart>;
+  parts: Array<Shared.TextPartResponse | Shared.MediaPartResponse>;
 
   /**
    * When the message was sent
@@ -131,19 +144,6 @@ export interface SentMessage {
   service?: Shared.ServiceType | null;
 }
 
-export interface MessageListResponse {
-  /**
-   * List of messages
-   */
-  messages: Array<MessagesAPI.Message>;
-
-  /**
-   * Cursor for fetching the next page of results. Null if there are no more results
-   * to fetch. Pass this value as the `cursor` parameter in the next request.
-   */
-  next_cursor?: string | null;
-}
-
 /**
  * Response for sending a message to a chat
  */
@@ -159,17 +159,7 @@ export interface MessageSendResponse {
   message: SentMessage;
 }
 
-export interface MessageListParams {
-  /**
-   * Pagination cursor from previous next_cursor response
-   */
-  cursor?: string;
-
-  /**
-   * Maximum number of messages to return
-   */
-  limit?: number;
-}
+export interface MessageListParams extends ListMessagesPaginationParams {}
 
 export interface MessageSendParams {
   /**
@@ -183,9 +173,10 @@ export interface MessageSendParams {
 export declare namespace Messages {
   export {
     type SentMessage as SentMessage,
-    type MessageListResponse as MessageListResponse,
     type MessageSendResponse as MessageSendResponse,
     type MessageListParams as MessageListParams,
     type MessageSendParams as MessageSendParams,
   };
 }
+
+export { type MessagesListMessagesPagination };

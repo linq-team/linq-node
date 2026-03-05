@@ -67,8 +67,8 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieveThread', async () => {
-    const responsePromise = client.messages.retrieveThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
+  test.skip('listMessagesThread', async () => {
+    const responsePromise = client.messages.listMessagesThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -79,10 +79,10 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieveThread: request options and params are passed correctly', async () => {
+  test.skip('listMessagesThread: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.messages.retrieveThread(
+      client.messages.listMessagesThread(
         '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
         {
           cursor: 'cursor',

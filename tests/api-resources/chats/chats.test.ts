@@ -64,8 +64,8 @@ describe('resource chats', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('list: only required params', async () => {
-    const responsePromise = client.chats.list({ from: '+13343284472' });
+  test.skip('listChats: only required params', async () => {
+    const responsePromise = client.chats.listChats({ from: '+13343284472' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -76,8 +76,8 @@ describe('resource chats', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('list: required and optional params', async () => {
-    const response = await client.chats.list({
+  test.skip('listChats: required and optional params', async () => {
+    const response = await client.chats.listChats({
       from: '+13343284472',
       cursor: '20',
       limit: 20,

@@ -14,15 +14,15 @@ export class Capability extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.capability.checkImessage({
+   * const response = await client.capability.checkiMessage({
    *   address: '+15551234567',
    * });
    * ```
    */
-  checkImessage(
-    body: CapabilityCheckImessageParams,
+  checkiMessage(
+    body: CapabilityCheckiMessageParams,
     options?: RequestOptions,
-  ): APIPromise<CapabilityCheckImessageResponse> {
+  ): APIPromise<CapabilityCheckiMessageResponse> {
     return this._client.post('/v3/capability/check_imessage', { body, ...options });
   }
 
@@ -31,17 +31,17 @@ export class Capability extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.capability.checkRcs({
+   * const response = await client.capability.checkRCS({
    *   address: '+15551234567',
    * });
    * ```
    */
-  checkRcs(body: CapabilityCheckRcsParams, options?: RequestOptions): APIPromise<CapabilityCheckRcsResponse> {
+  checkRCS(body: CapabilityCheckRCSParams, options?: RequestOptions): APIPromise<CapabilityCheckRCSResponse> {
     return this._client.post('/v3/capability/check_rcs', { body, ...options });
   }
 }
 
-export interface CapabilityCheckImessageResponse {
+export interface CapabilityCheckiMessageResponse {
   /**
    * The recipient address that was checked
    */
@@ -53,7 +53,7 @@ export interface CapabilityCheckImessageResponse {
   available: boolean;
 }
 
-export interface CapabilityCheckRcsResponse {
+export interface CapabilityCheckRCSResponse {
   /**
    * The recipient address that was checked
    */
@@ -65,7 +65,7 @@ export interface CapabilityCheckRcsResponse {
   available: boolean;
 }
 
-export interface CapabilityCheckImessageParams {
+export interface CapabilityCheckiMessageParams {
   /**
    * The recipient phone number or email address to check
    */
@@ -78,7 +78,7 @@ export interface CapabilityCheckImessageParams {
   from?: string;
 }
 
-export interface CapabilityCheckRcsParams {
+export interface CapabilityCheckRCSParams {
   /**
    * The recipient phone number or email address to check
    */
@@ -93,9 +93,9 @@ export interface CapabilityCheckRcsParams {
 
 export declare namespace Capability {
   export {
-    type CapabilityCheckImessageResponse as CapabilityCheckImessageResponse,
-    type CapabilityCheckRcsResponse as CapabilityCheckRcsResponse,
-    type CapabilityCheckImessageParams as CapabilityCheckImessageParams,
-    type CapabilityCheckRcsParams as CapabilityCheckRcsParams,
+    type CapabilityCheckiMessageResponse as CapabilityCheckiMessageResponse,
+    type CapabilityCheckRCSResponse as CapabilityCheckRCSResponse,
+    type CapabilityCheckiMessageParams as CapabilityCheckiMessageParams,
+    type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };
 }
