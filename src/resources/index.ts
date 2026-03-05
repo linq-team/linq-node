@@ -34,8 +34,6 @@ export {
   type ChatHandle,
   type Message,
   type MessageEffect,
-  type Reaction,
-  type ReactionType,
   type ReplyTo,
   type MessageAddReactionResponse,
   type MessageUpdateParams,
