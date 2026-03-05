@@ -113,6 +113,7 @@ export type WebhookEventType =
   | 'message.read'
   | 'message.delivered'
   | 'message.failed'
+  | 'message.edited'
   | 'reaction.added'
   | 'reaction.removed'
   | 'participant.added'
