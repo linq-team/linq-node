@@ -38,6 +38,7 @@ export {
   type ReactionType,
   type ReplyTo,
   type MessageAddReactionResponse,
+  type MessageUpdateParams,
   type MessageDeleteParams,
   type MessageAddReactionParams,
   type MessageListMessagesThreadParams,
