@@ -14,6 +14,14 @@ import * as Opts from './internal/request-options';
 import { stringifyQuery } from './internal/utils/query';
 import { VERSION } from './version';
 import * as Errors from './core/error';
+import * as Pagination from './core/pagination';
+import {
+  AbstractPage,
+  type ListChatsPaginationParams,
+  ListChatsPaginationResponse,
+  type ListMessagesPaginationParams,
+  ListMessagesPaginationResponse,
+} from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
@@ -26,26 +34,24 @@ import {
 } from './resources/attachments';
 import {
   Capability,
-  CapabilityCheckImessageParams,
-  CapabilityCheckImessageResponse,
-  CapabilityCheckRcsParams,
-  CapabilityCheckRcsResponse,
+  CapabilityCheckRCSParams,
+  CapabilityCheckRCSResponse,
+  CapabilityCheckiMessageParams,
+  CapabilityCheckiMessageResponse,
 } from './resources/capability';
 import {
   ChatHandle,
-  MediaPart,
   Message,
   MessageAddReactionParams,
   MessageAddReactionResponse,
   MessageDeleteParams,
   MessageEffect,
-  MessageRetrieveThreadParams,
-  MessageRetrieveThreadResponse,
+  MessageListMessagesThreadParams,
   Messages,
+  MessagesListMessagesPagination,
   Reaction,
   ReactionType,
   ReplyTo,
-  TextPart,
 } from './resources/messages';
 import { PhoneNumberListResponse, PhoneNumbers } from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
@@ -59,16 +65,62 @@ import {
   WebhookSubscriptions,
 } from './resources/webhook-subscriptions';
 import {
+  ChatCreatedV2025WebhookEvent,
+  ChatCreatedV2026WebhookEvent,
+  ChatGroupIconUpdateFailedV2025WebhookEvent,
+  ChatGroupIconUpdateFailedV2026WebhookEvent,
+  ChatGroupIconUpdatedV2025WebhookEvent,
+  ChatGroupIconUpdatedV2026WebhookEvent,
+  ChatGroupNameUpdateFailedV2025WebhookEvent,
+  ChatGroupNameUpdateFailedV2026WebhookEvent,
+  ChatGroupNameUpdatedV2025WebhookEvent,
+  ChatGroupNameUpdatedV2026WebhookEvent,
+  ChatTypingIndicatorStartedV2025WebhookEvent,
+  ChatTypingIndicatorStartedV2026WebhookEvent,
+  ChatTypingIndicatorStoppedV2025WebhookEvent,
+  ChatTypingIndicatorStoppedV2026WebhookEvent,
+  EventsWebhookEvent,
+  MessageDeliveredV2025WebhookEvent,
+  MessageDeliveredV2026WebhookEvent,
+  MessageEventV2,
+  MessageFailedV2025WebhookEvent,
+  MessageFailedV2026WebhookEvent,
+  MessagePayload,
+  MessageReadV2025WebhookEvent,
+  MessageReadV2026WebhookEvent,
+  MessageReceivedV2025WebhookEvent,
+  MessageReceivedV2026WebhookEvent,
+  MessageSentV2025WebhookEvent,
+  MessageSentV2026WebhookEvent,
+  ParticipantAddedV2025WebhookEvent,
+  ParticipantAddedV2026WebhookEvent,
+  ParticipantRemovedV2025WebhookEvent,
+  ParticipantRemovedV2026WebhookEvent,
+  PhoneNumberStatusUpdatedV2025WebhookEvent,
+  PhoneNumberStatusUpdatedV2026WebhookEvent,
+  ReactionAddedV2025WebhookEvent,
+  ReactionAddedV2026WebhookEvent,
+  ReactionEventBase,
+  ReactionRemovedV2025WebhookEvent,
+  ReactionRemovedV2026WebhookEvent,
+  SchemasMediaPartResponse,
+  SchemasMessageEffect,
+  SchemasTextPartResponse,
+  Webhooks,
+} from './resources/webhooks';
+import {
   Chat,
   ChatCreateParams,
   ChatCreateResponse,
-  ChatListParams,
-  ChatListResponse,
+  ChatListChatsParams,
   ChatSendVoicememoParams,
   ChatSendVoicememoResponse,
   ChatUpdateParams,
   Chats,
+  ChatsListChatsPagination,
+  MediaPart,
   MessageContent,
+  TextPart,
 } from './resources/chats/chats';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -523,6 +575,30 @@ export class LinqAPIV3 {
     );
 
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
+  }
+
+  getAPIList<Item, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
+    path: string,
+    Page: new (...args: any[]) => PageClass,
+    opts?: PromiseOrValue<RequestOptions>,
+  ): Pagination.PagePromise<PageClass, Item> {
+    return this.requestAPIList(
+      Page,
+      opts && 'then' in opts ?
+        opts.then((opts) => ({ method: 'get', path, ...opts }))
+      : { method: 'get', path, ...opts },
+    );
+  }
+
+  requestAPIList<
+    Item = unknown,
+    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
+  >(
+    Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
+    options: PromiseOrValue<FinalRequestOptions>,
+  ): Pagination.PagePromise<PageClass, Item> {
+    const request = this.makeRequest(options, null, undefined);
+    return new Pagination.PagePromise<PageClass, Item>(this as any as LinqAPIV3, request, Page);
   }
 
   async fetchWithTimeout(
@@ -1059,6 +1135,7 @@ export class LinqAPIV3 {
    *
    */
   capability: API.Capability = new API.Capability(this);
+  webhooks: API.Webhooks = new API.Webhooks(this);
 }
 
 LinqAPIV3.Chats = Chats;
@@ -1069,38 +1146,51 @@ LinqAPIV3.PhoneNumbers = PhoneNumbers;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Capability = Capability;
+LinqAPIV3.Webhooks = Webhooks;
 
 export declare namespace LinqAPIV3 {
   export type RequestOptions = Opts.RequestOptions;
 
+  export import ListChatsPagination = Pagination.ListChatsPagination;
+  export {
+    type ListChatsPaginationParams as ListChatsPaginationParams,
+    type ListChatsPaginationResponse as ListChatsPaginationResponse,
+  };
+
+  export import ListMessagesPagination = Pagination.ListMessagesPagination;
+  export {
+    type ListMessagesPaginationParams as ListMessagesPaginationParams,
+    type ListMessagesPaginationResponse as ListMessagesPaginationResponse,
+  };
+
   export {
     Chats as Chats,
     type Chat as Chat,
+    type MediaPart as MediaPart,
     type MessageContent as MessageContent,
+    type TextPart as TextPart,
     type ChatCreateResponse as ChatCreateResponse,
-    type ChatListResponse as ChatListResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
+    type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
     type ChatUpdateParams as ChatUpdateParams,
-    type ChatListParams as ChatListParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
   export {
     Messages as Messages,
     type ChatHandle as ChatHandle,
-    type MediaPart as MediaPart,
     type Message as Message,
     type MessageEffect as MessageEffect,
     type Reaction as Reaction,
     type ReactionType as ReactionType,
     type ReplyTo as ReplyTo,
-    type TextPart as TextPart,
     type MessageAddReactionResponse as MessageAddReactionResponse,
-    type MessageRetrieveThreadResponse as MessageRetrieveThreadResponse,
+    type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,
-    type MessageRetrieveThreadParams as MessageRetrieveThreadParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
   };
 
   export {
@@ -1132,11 +1222,58 @@ export declare namespace LinqAPIV3 {
 
   export {
     Capability as Capability,
-    type CapabilityCheckImessageResponse as CapabilityCheckImessageResponse,
-    type CapabilityCheckRcsResponse as CapabilityCheckRcsResponse,
-    type CapabilityCheckImessageParams as CapabilityCheckImessageParams,
-    type CapabilityCheckRcsParams as CapabilityCheckRcsParams,
+    type CapabilityCheckiMessageResponse as CapabilityCheckiMessageResponse,
+    type CapabilityCheckRCSResponse as CapabilityCheckRCSResponse,
+    type CapabilityCheckiMessageParams as CapabilityCheckiMessageParams,
+    type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };
 
+  export {
+    Webhooks as Webhooks,
+    type MessageEventV2 as MessageEventV2,
+    type MessagePayload as MessagePayload,
+    type ReactionEventBase as ReactionEventBase,
+    type SchemasMediaPartResponse as SchemasMediaPartResponse,
+    type SchemasMessageEffect as SchemasMessageEffect,
+    type SchemasTextPartResponse as SchemasTextPartResponse,
+    type MessageSentV2026WebhookEvent as MessageSentV2026WebhookEvent,
+    type MessageReceivedV2026WebhookEvent as MessageReceivedV2026WebhookEvent,
+    type MessageReadV2026WebhookEvent as MessageReadV2026WebhookEvent,
+    type MessageDeliveredV2026WebhookEvent as MessageDeliveredV2026WebhookEvent,
+    type MessageFailedV2026WebhookEvent as MessageFailedV2026WebhookEvent,
+    type ReactionAddedV2026WebhookEvent as ReactionAddedV2026WebhookEvent,
+    type ReactionRemovedV2026WebhookEvent as ReactionRemovedV2026WebhookEvent,
+    type ParticipantAddedV2026WebhookEvent as ParticipantAddedV2026WebhookEvent,
+    type ParticipantRemovedV2026WebhookEvent as ParticipantRemovedV2026WebhookEvent,
+    type ChatGroupNameUpdatedV2026WebhookEvent as ChatGroupNameUpdatedV2026WebhookEvent,
+    type ChatGroupIconUpdatedV2026WebhookEvent as ChatGroupIconUpdatedV2026WebhookEvent,
+    type ChatGroupNameUpdateFailedV2026WebhookEvent as ChatGroupNameUpdateFailedV2026WebhookEvent,
+    type ChatGroupIconUpdateFailedV2026WebhookEvent as ChatGroupIconUpdateFailedV2026WebhookEvent,
+    type ChatCreatedV2026WebhookEvent as ChatCreatedV2026WebhookEvent,
+    type ChatTypingIndicatorStartedV2026WebhookEvent as ChatTypingIndicatorStartedV2026WebhookEvent,
+    type ChatTypingIndicatorStoppedV2026WebhookEvent as ChatTypingIndicatorStoppedV2026WebhookEvent,
+    type PhoneNumberStatusUpdatedV2026WebhookEvent as PhoneNumberStatusUpdatedV2026WebhookEvent,
+    type MessageSentV2025WebhookEvent as MessageSentV2025WebhookEvent,
+    type MessageReceivedV2025WebhookEvent as MessageReceivedV2025WebhookEvent,
+    type MessageReadV2025WebhookEvent as MessageReadV2025WebhookEvent,
+    type MessageDeliveredV2025WebhookEvent as MessageDeliveredV2025WebhookEvent,
+    type MessageFailedV2025WebhookEvent as MessageFailedV2025WebhookEvent,
+    type ReactionAddedV2025WebhookEvent as ReactionAddedV2025WebhookEvent,
+    type ReactionRemovedV2025WebhookEvent as ReactionRemovedV2025WebhookEvent,
+    type ParticipantAddedV2025WebhookEvent as ParticipantAddedV2025WebhookEvent,
+    type ParticipantRemovedV2025WebhookEvent as ParticipantRemovedV2025WebhookEvent,
+    type ChatGroupNameUpdatedV2025WebhookEvent as ChatGroupNameUpdatedV2025WebhookEvent,
+    type ChatGroupIconUpdatedV2025WebhookEvent as ChatGroupIconUpdatedV2025WebhookEvent,
+    type ChatGroupNameUpdateFailedV2025WebhookEvent as ChatGroupNameUpdateFailedV2025WebhookEvent,
+    type ChatGroupIconUpdateFailedV2025WebhookEvent as ChatGroupIconUpdateFailedV2025WebhookEvent,
+    type ChatCreatedV2025WebhookEvent as ChatCreatedV2025WebhookEvent,
+    type ChatTypingIndicatorStartedV2025WebhookEvent as ChatTypingIndicatorStartedV2025WebhookEvent,
+    type ChatTypingIndicatorStoppedV2025WebhookEvent as ChatTypingIndicatorStoppedV2025WebhookEvent,
+    type PhoneNumberStatusUpdatedV2025WebhookEvent as PhoneNumberStatusUpdatedV2025WebhookEvent,
+    type EventsWebhookEvent as EventsWebhookEvent,
+  };
+
+  export type MediaPartResponse = API.MediaPartResponse;
   export type ServiceType = API.ServiceType;
+  export type TextPartResponse = API.TextPartResponse;
 }

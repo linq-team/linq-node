@@ -3,19 +3,20 @@
 export {
   Chats,
   type Chat,
+  type MediaPart,
   type MessageContent,
+  type TextPart,
   type ChatCreateResponse,
-  type ChatListResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
   type ChatUpdateParams,
-  type ChatListParams,
+  type ChatListChatsParams,
   type ChatSendVoicememoParams,
+  type ChatsListChatsPagination,
 } from './chats';
 export {
   Messages,
   type SentMessage,
-  type MessageListResponse,
   type MessageSendResponse,
   type MessageListParams,
   type MessageSendParams,

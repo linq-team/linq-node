@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
+import { ListMessagesPagination, type ListMessagesPaginationParams, PagePromise } from '../core/pagination';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -95,19 +96,27 @@ export class Messages extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.messages.retrieveThread(
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.messages.listMessagesThread(
    *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   * );
+   * )) {
+   *   // ...
+   * }
    * ```
    */
-  retrieveThread(
+  listMessagesThread(
     messageID: string,
-    query: MessageRetrieveThreadParams | null | undefined = {},
+    query: MessageListMessagesThreadParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<MessageRetrieveThreadResponse> {
-    return this._client.get(path`/v3/messages/${messageID}/thread`, { query, ...options });
+  ): PagePromise<MessagesListMessagesPagination, Message> {
+    return this._client.getAPIList(path`/v3/messages/${messageID}/thread`, ListMessagesPagination<Message>, {
+      query,
+      ...options,
+    });
   }
 }
+
+export type MessagesListMessagesPagination = ListMessagesPagination<Message>;
 
 export interface ChatHandle {
   /**
@@ -144,46 +153,6 @@ export interface ChatHandle {
    * Participant status
    */
   status?: 'active' | 'left' | 'removed' | null;
-}
-
-/**
- * A media attachment part
- */
-export interface MediaPart {
-  /**
-   * Unique attachment identifier
-   */
-  id: string;
-
-  /**
-   * Original filename
-   */
-  filename: string;
-
-  /**
-   * MIME type of the file
-   */
-  mime_type: string;
-
-  /**
-   * Reactions on this message part
-   */
-  reactions: Array<Reaction> | null;
-
-  /**
-   * File size in bytes
-   */
-  size_bytes: number;
-
-  /**
-   * Indicates this is a media attachment part
-   */
-  type: 'media';
-
-  /**
-   * Presigned URL for downloading the attachment (expires in 1 hour).
-   */
-  url: string;
 }
 
 export interface Message {
@@ -246,7 +215,7 @@ export interface Message {
   /**
    * Message parts in order (text and media)
    */
-  parts?: Array<TextPart | MediaPart> | null;
+  parts?: Array<Shared.TextPartResponse | Shared.MediaPartResponse> | null;
 
   /**
    * Messaging service type
@@ -387,47 +356,12 @@ export interface ReplyTo {
   part_index?: number;
 }
 
-/**
- * A text message part
- */
-export interface TextPart {
-  /**
-   * Reactions on this message part
-   */
-  reactions: Array<Reaction> | null;
-
-  /**
-   * Indicates this is a text message part
-   */
-  type: 'text';
-
-  /**
-   * The text content
-   */
-  value: string;
-}
-
 export interface MessageAddReactionResponse {
   message?: string;
 
   status?: string;
 
   trace_id?: string;
-}
-
-/**
- * Response containing messages in a thread with pagination
- */
-export interface MessageRetrieveThreadResponse {
-  /**
-   * Messages in the thread, ordered by the specified order parameter
-   */
-  messages: Array<Message>;
-
-  /**
-   * Cursor for fetching the next page of results (null if no more results)
-   */
-  next_cursor?: string | null;
 }
 
 export interface MessageDeleteParams {
@@ -463,17 +397,7 @@ export interface MessageAddReactionParams {
   part_index?: number;
 }
 
-export interface MessageRetrieveThreadParams {
-  /**
-   * Pagination cursor from previous next_cursor response
-   */
-  cursor?: string;
-
-  /**
-   * Maximum number of messages to return
-   */
-  limit?: number;
-
+export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
   /**
    * Sort order for messages (asc = oldest first, desc = newest first)
    */
@@ -483,17 +407,15 @@ export interface MessageRetrieveThreadParams {
 export declare namespace Messages {
   export {
     type ChatHandle as ChatHandle,
-    type MediaPart as MediaPart,
     type Message as Message,
     type MessageEffect as MessageEffect,
     type Reaction as Reaction,
     type ReactionType as ReactionType,
     type ReplyTo as ReplyTo,
-    type TextPart as TextPart,
     type MessageAddReactionResponse as MessageAddReactionResponse,
-    type MessageRetrieveThreadResponse as MessageRetrieveThreadResponse,
+    type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,
-    type MessageRetrieveThreadParams as MessageRetrieveThreadParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
   };
 }
