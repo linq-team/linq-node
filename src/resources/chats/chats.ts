@@ -226,7 +226,7 @@ export interface Chat {
    * List of chat participants with full handle details. Always contains at least two
    * handles (your phone number and the other participant).
    */
-  handles: Array<MessagesAPI.ChatHandle>;
+  handles: Array<Shared.ChatHandle>;
 
   /**
    * Whether the chat is archived
@@ -393,7 +393,7 @@ export namespace ChatCreateResponse {
      * List of participants in the chat. Always contains at least two handles (your
      * phone number and the other participant).
      */
-    handles: Array<MessagesAPI.ChatHandle>;
+    handles: Array<Shared.ChatHandle>;
 
     /**
      * Whether this is a group chat
@@ -466,7 +466,7 @@ export namespace ChatSendVoicememoResponse {
       /**
        * Chat participants
        */
-      handles: Array<MessagesAPI.ChatHandle>;
+      handles: Array<Shared.ChatHandle>;
 
       /**
        * Whether the chat is active

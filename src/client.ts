@@ -40,7 +40,6 @@ import {
   CapabilityCheckiMessageResponse,
 } from './resources/capability';
 import {
-  ChatHandle,
   Message,
   MessageAddReactionParams,
   MessageAddReactionResponse,
@@ -1179,7 +1178,6 @@ export declare namespace LinqAPIV3 {
 
   export {
     Messages as Messages,
-    type ChatHandle as ChatHandle,
     type Message as Message,
     type MessageEffect as MessageEffect,
     type ReplyTo as ReplyTo,
@@ -1271,6 +1269,7 @@ export declare namespace LinqAPIV3 {
     type EventsWebhookEvent as EventsWebhookEvent,
   };
 
+  export type ChatHandle = API.ChatHandle;
   export type MediaPartResponse = API.MediaPartResponse;
   export type Reaction = API.Reaction;
   export type ReactionType = API.ReactionType;
