@@ -4,14 +4,7 @@ import { APIResource } from '../../core/resource';
 import * as MessagesAPI from '../messages';
 import * as Shared from '../shared';
 import * as ChatsMessagesAPI from './messages';
-import {
-  MessageListParams,
-  MessageListResponse,
-  MessageSendParams,
-  MessageSendResponse,
-  Messages,
-  SentMessage,
-} from './messages';
+import { MessageListParams, MessageSendParams, MessageSendResponse, Messages, SentMessage } from './messages';
 import * as ParticipantsAPI from './participants';
 import {
   ParticipantAddParams,
@@ -23,6 +16,7 @@ import {
 import * as TypingAPI from './typing';
 import { Typing } from './typing';
 import { APIPromise } from '../../core/api-promise';
+import { ListChatsPagination, type ListChatsPaginationParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -120,13 +114,19 @@ export class Chats extends APIResource {
    *
    * @example
    * ```ts
-   * const chats = await client.chats.list({
+   * // Automatically fetches more pages as needed.
+   * for await (const chat of client.chats.listChats({
    *   from: '+13343284472',
-   * });
+   * })) {
+   *   // ...
+   * }
    * ```
    */
-  list(query: ChatListParams, options?: RequestOptions): APIPromise<ChatListResponse> {
-    return this._client.get('/v3/chats', { query, ...options });
+  listChats(
+    query: ChatListChatsParams,
+    options?: RequestOptions,
+  ): PagePromise<ChatsListChatsPagination, Chat> {
+    return this._client.getAPIList('/v3/chats', ListChatsPagination<Chat>, { query, ...options });
   }
 
   /**
@@ -203,6 +203,8 @@ export class Chats extends APIResource {
   }
 }
 
+export type ChatsListChatsPagination = ListChatsPagination<Chat>;
+
 export interface Chat {
   /**
    * Unique identifier for the chat
@@ -247,6 +249,54 @@ export interface Chat {
   service?: Shared.ServiceType | null;
 }
 
+export interface MediaPart {
+  /**
+   * Indicates this is a media attachment part
+   */
+  type: 'media';
+
+  /**
+   * Reference to a file pre-uploaded via `POST /v3/attachments` (optional). The file
+   * is already stored, so sends using this ID skip the download step — useful when
+   * sending the same file to many recipients.
+   *
+   * Either `url` or `attachment_id` must be provided, but not both.
+   */
+  attachment_id?: string;
+
+  /**
+   * Any publicly accessible HTTPS URL to the media file. The server downloads and
+   * sends the file automatically — no pre-upload step required.
+   *
+   * **Size limit:** 10MB maximum for URL-based downloads. For larger files (up to
+   * 100MB), use the pre-upload flow: `POST /v3/attachments` to get a presigned URL,
+   * upload directly, then reference by `attachment_id`.
+   *
+   * **Requirements:**
+   *
+   * - URL must use HTTPS
+   * - File content must be a supported format (the server validates the actual file
+   *   content)
+   *
+   * **Supported formats:**
+   *
+   * - Images: .jpg, .jpeg, .png, .gif, .heic, .heif, .tif, .tiff, .bmp
+   * - Videos: .mp4, .mov, .m4v, .mpeg, .mpg, .3gp
+   * - Audio: .m4a, .mp3, .aac, .caf, .wav, .aiff, .amr
+   * - Documents: .pdf, .txt, .rtf, .csv, .doc, .docx, .xls, .xlsx, .ppt, .pptx,
+   *   .pages, .numbers, .key, .epub, .zip, .html, .htm
+   * - Contact & Calendar: .vcf, .ics
+   *
+   * **Tip:** Audio sent here appears as a regular file attachment. To send audio as
+   * an iMessage voice memo bubble (with inline playback), use
+   * `/v3/chats/{chatId}/voicememo`. For repeated sends of the same file, use
+   * `attachment_id` to avoid redundant downloads.
+   *
+   * Either `url` or `attachment_id` must be provided, but not both.
+   */
+  url?: string;
+}
+
 /**
  * Message content container. Groups all message-related fields together,
  * separating the "what" (message content) from the "where" (routing fields like
@@ -283,7 +333,7 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<MessageContent.TextPart | MessageContent.MediaPart>;
+  parts: Array<TextPart | MediaPart>;
 
   /**
    * iMessage effect to apply to this message (screen or bubble effect)
@@ -307,66 +357,16 @@ export interface MessageContent {
   reply_to?: MessagesAPI.ReplyTo;
 }
 
-export namespace MessageContent {
-  export interface TextPart {
-    /**
-     * Indicates this is a text message part
-     */
-    type: 'text';
+export interface TextPart {
+  /**
+   * Indicates this is a text message part
+   */
+  type: 'text';
 
-    /**
-     * The text content
-     */
-    value: string;
-  }
-
-  export interface MediaPart {
-    /**
-     * Indicates this is a media attachment part
-     */
-    type: 'media';
-
-    /**
-     * Reference to a file pre-uploaded via `POST /v3/attachments` (optional). The file
-     * is already stored, so sends using this ID skip the download step — useful when
-     * sending the same file to many recipients.
-     *
-     * Either `url` or `attachment_id` must be provided, but not both.
-     */
-    attachment_id?: string;
-
-    /**
-     * Any publicly accessible HTTPS URL to the media file. The server downloads and
-     * sends the file automatically — no pre-upload step required.
-     *
-     * **Size limit:** 10MB maximum for URL-based downloads. For larger files (up to
-     * 100MB), use the pre-upload flow: `POST /v3/attachments` to get a presigned URL,
-     * upload directly, then reference by `attachment_id`.
-     *
-     * **Requirements:**
-     *
-     * - URL must use HTTPS
-     * - File content must be a supported format (the server validates the actual file
-     *   content)
-     *
-     * **Supported formats:**
-     *
-     * - Images: .jpg, .jpeg, .png, .gif, .heic, .heif, .tif, .tiff, .bmp
-     * - Videos: .mp4, .mov, .m4v, .mpeg, .mpg, .3gp
-     * - Audio: .m4a, .mp3, .aac, .caf, .wav, .aiff, .amr
-     * - Documents: .pdf, .txt, .rtf, .csv, .doc, .docx, .xls, .xlsx, .ppt, .pptx,
-     *   .pages, .numbers, .key, .epub, .zip, .html, .htm
-     * - Contact & Calendar: .vcf, .ics
-     *
-     * **Tip:** Audio sent here appears as a regular file attachment. To send audio as
-     * an iMessage voice memo bubble (with inline playback), use
-     * `/v3/chats/{chatId}/voicememo`. For repeated sends of the same file, use
-     * `attachment_id` to avoid redundant downloads.
-     *
-     * Either `url` or `attachment_id` must be provided, but not both.
-     */
-    url?: string;
-  }
+  /**
+   * The text content
+   */
+  value: string;
 }
 
 /**
@@ -410,19 +410,6 @@ export namespace ChatCreateResponse {
      */
     service: Shared.ServiceType;
   }
-}
-
-export interface ChatListResponse {
-  /**
-   * List of chats
-   */
-  chats: Array<Chat>;
-
-  /**
-   * Cursor for fetching the next page of results. Null if there are no more results
-   * to fetch. Pass this value as the `cursor` parameter in the next request.
-   */
-  next_cursor?: string | null;
 }
 
 /**
@@ -564,24 +551,13 @@ export interface ChatUpdateParams {
   group_chat_icon?: string;
 }
 
-export interface ChatListParams {
+export interface ChatListChatsParams extends ListChatsPaginationParams {
   /**
    * Phone number to filter chats by. Returns all chats made from this phone number.
    * Must be in E.164 format (e.g., `+13343284472`). The `+` is automatically
    * URL-encoded by HTTP clients.
    */
   from: string;
-
-  /**
-   * Pagination cursor from the previous response's `next_cursor` field. Omit this
-   * parameter for the first page of results.
-   */
-  cursor?: string;
-
-  /**
-   * Maximum number of chats to return per page
-   */
-  limit?: number;
 }
 
 export interface ChatSendVoicememoParams {
@@ -603,13 +579,15 @@ Chats.Messages = Messages;
 export declare namespace Chats {
   export {
     type Chat as Chat,
+    type MediaPart as MediaPart,
     type MessageContent as MessageContent,
+    type TextPart as TextPart,
     type ChatCreateResponse as ChatCreateResponse,
-    type ChatListResponse as ChatListResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
+    type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
     type ChatUpdateParams as ChatUpdateParams,
-    type ChatListParams as ChatListParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -626,7 +604,6 @@ export declare namespace Chats {
   export {
     Messages as Messages,
     type SentMessage as SentMessage,
-    type MessageListResponse as MessageListResponse,
     type MessageSendResponse as MessageSendResponse,
     type MessageListParams as MessageListParams,
     type MessageSendParams as MessageSendParams,

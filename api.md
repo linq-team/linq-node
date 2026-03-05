@@ -2,16 +2,19 @@
 
 Types:
 
+- <code><a href="./src/resources/shared.ts">MediaPartResponse</a></code>
 - <code><a href="./src/resources/shared.ts">ServiceType</a></code>
+- <code><a href="./src/resources/shared.ts">TextPartResponse</a></code>
 
 # Chats
 
 Types:
 
 - <code><a href="./src/resources/chats/chats.ts">Chat</a></code>
+- <code><a href="./src/resources/chats/chats.ts">MediaPart</a></code>
 - <code><a href="./src/resources/chats/chats.ts">MessageContent</a></code>
+- <code><a href="./src/resources/chats/chats.ts">TextPart</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatCreateResponse</a></code>
-- <code><a href="./src/resources/chats/chats.ts">ChatListResponse</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatSendVoicememoResponse</a></code>
 
 Methods:
@@ -19,7 +22,7 @@ Methods:
 - <code title="post /v3/chats">client.chats.<a href="./src/resources/chats/chats.ts">create</a>({ ...params }) -> ChatCreateResponse</code>
 - <code title="get /v3/chats/{chatId}">client.chats.<a href="./src/resources/chats/chats.ts">retrieve</a>(chatID) -> Chat</code>
 - <code title="put /v3/chats/{chatId}">client.chats.<a href="./src/resources/chats/chats.ts">update</a>(chatID, { ...params }) -> Chat</code>
-- <code title="get /v3/chats">client.chats.<a href="./src/resources/chats/chats.ts">list</a>({ ...params }) -> ChatListResponse</code>
+- <code title="get /v3/chats">client.chats.<a href="./src/resources/chats/chats.ts">listChats</a>({ ...params }) -> ChatsListChatsPagination</code>
 - <code title="post /v3/chats/{chatId}/read">client.chats.<a href="./src/resources/chats/chats.ts">markAsRead</a>(chatID) -> void</code>
 - <code title="post /v3/chats/{chatId}/voicememo">client.chats.<a href="./src/resources/chats/chats.ts">sendVoicememo</a>(chatID, { ...params }) -> ChatSendVoicememoResponse</code>
 - <code title="post /v3/chats/{chatId}/share_contact_card">client.chats.<a href="./src/resources/chats/chats.ts">shareContactCard</a>(chatID) -> void</code>
@@ -48,12 +51,11 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/chats/messages.ts">SentMessage</a></code>
-- <code><a href="./src/resources/chats/messages.ts">MessageListResponse</a></code>
 - <code><a href="./src/resources/chats/messages.ts">MessageSendResponse</a></code>
 
 Methods:
 
-- <code title="get /v3/chats/{chatId}/messages">client.chats.messages.<a href="./src/resources/chats/messages.ts">list</a>(chatID, { ...params }) -> MessageListResponse</code>
+- <code title="get /v3/chats/{chatId}/messages">client.chats.messages.<a href="./src/resources/chats/messages.ts">list</a>(chatID, { ...params }) -> MessagesListMessagesPagination</code>
 - <code title="post /v3/chats/{chatId}/messages">client.chats.messages.<a href="./src/resources/chats/messages.ts">send</a>(chatID, { ...params }) -> MessageSendResponse</code>
 
 # Messages
@@ -61,22 +63,19 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/messages.ts">ChatHandle</a></code>
-- <code><a href="./src/resources/messages.ts">MediaPart</a></code>
 - <code><a href="./src/resources/messages.ts">Message</a></code>
 - <code><a href="./src/resources/messages.ts">MessageEffect</a></code>
 - <code><a href="./src/resources/messages.ts">Reaction</a></code>
 - <code><a href="./src/resources/messages.ts">ReactionType</a></code>
 - <code><a href="./src/resources/messages.ts">ReplyTo</a></code>
-- <code><a href="./src/resources/messages.ts">TextPart</a></code>
 - <code><a href="./src/resources/messages.ts">MessageAddReactionResponse</a></code>
-- <code><a href="./src/resources/messages.ts">MessageRetrieveThreadResponse</a></code>
 
 Methods:
 
 - <code title="get /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">retrieve</a>(messageID) -> Message</code>
 - <code title="delete /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">delete</a>(messageID, { ...params }) -> void</code>
 - <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages.ts">addReaction</a>(messageID, { ...params }) -> MessageAddReactionResponse</code>
-- <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages.ts">retrieveThread</a>(messageID, { ...params }) -> MessageRetrieveThreadResponse</code>
+- <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages.ts">listMessagesThread</a>(messageID, { ...params }) -> MessagesListMessagesPagination</code>
 
 # Attachments
 
@@ -142,10 +141,60 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/capability.ts">CapabilityCheckImessageResponse</a></code>
-- <code><a href="./src/resources/capability.ts">CapabilityCheckRcsResponse</a></code>
+- <code><a href="./src/resources/capability.ts">CapabilityCheckiMessageResponse</a></code>
+- <code><a href="./src/resources/capability.ts">CapabilityCheckRCSResponse</a></code>
 
 Methods:
 
-- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkImessage</a>({ ...params }) -> CapabilityCheckImessageResponse</code>
-- <code title="post /v3/capability/check_rcs">client.capability.<a href="./src/resources/capability.ts">checkRcs</a>({ ...params }) -> CapabilityCheckRcsResponse</code>
+- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkiMessage</a>({ ...params }) -> CapabilityCheckiMessageResponse</code>
+- <code title="post /v3/capability/check_rcs">client.capability.<a href="./src/resources/capability.ts">checkRCS</a>({ ...params }) -> CapabilityCheckRCSResponse</code>
+
+# Webhooks
+
+Types:
+
+- <code><a href="./src/resources/webhooks.ts">MessageEventV2</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessagePayload</a></code>
+- <code><a href="./src/resources/webhooks.ts">ReactionEventBase</a></code>
+- <code><a href="./src/resources/webhooks.ts">SchemasMediaPartResponse</a></code>
+- <code><a href="./src/resources/webhooks.ts">SchemasMessageEffect</a></code>
+- <code><a href="./src/resources/webhooks.ts">SchemasTextPartResponse</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageSentV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageReceivedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageReadV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageDeliveredV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageFailedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ReactionAddedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ReactionRemovedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ParticipantAddedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ParticipantRemovedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupNameUpdatedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupIconUpdatedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupNameUpdateFailedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupIconUpdateFailedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatCreatedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStartedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStoppedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedV2026WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageSentV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageReceivedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageReadV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageDeliveredV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">MessageFailedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ReactionAddedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ReactionRemovedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ParticipantAddedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ParticipantRemovedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupNameUpdatedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupIconUpdatedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupNameUpdateFailedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatGroupIconUpdateFailedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatCreatedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStartedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStoppedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedV2025WebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">EventsWebhookEvent</a></code>
+
+Methods:
+
+- <code>client.webhooks.<a href="./src/resources/webhooks.ts">events</a>(body) -> void</code>
