@@ -50,8 +50,6 @@ import {
   MessageUpdateParams,
   Messages,
   MessagesListMessagesPagination,
-  Reaction,
-  ReactionType,
   ReplyTo,
 } from './resources/messages';
 import { PhoneNumberListResponse, PhoneNumbers } from './resources/phone-numbers';
@@ -1184,8 +1182,6 @@ export declare namespace LinqAPIV3 {
     type ChatHandle as ChatHandle,
     type Message as Message,
     type MessageEffect as MessageEffect,
-    type Reaction as Reaction,
-    type ReactionType as ReactionType,
     type ReplyTo as ReplyTo,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
@@ -1276,6 +1272,8 @@ export declare namespace LinqAPIV3 {
   };
 
   export type MediaPartResponse = API.MediaPartResponse;
+  export type Reaction = API.Reaction;
+  export type ReactionType = API.ReactionType;
   export type ServiceType = API.ServiceType;
   export type TextPartResponse = API.TextPartResponse;
 }
