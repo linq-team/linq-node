@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.0 (2026-03-07)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/linq-team/linq-node/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* Programmatically update contact card ([2c59430](https://github.com/linq-team/linq-node/commit/2c59430e465275d8b572161355e511b4229780fa))
+
+
+### Chores
+
+* **internal:** codegen related update ([dcc3b3a](https://github.com/linq-team/linq-node/commit/dcc3b3a40e8079ea0d5180bc6f2be4d792b83830))
+
 ## 0.6.0 (2026-03-05)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/linq-team/linq-node/compare/v0.5.0...v0.6.0)
