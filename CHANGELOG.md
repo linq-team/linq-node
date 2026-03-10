@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.1 (2026-03-10)
+
+Full Changelog: [v0.7.0...v0.7.1](https://github.com/linq-team/linq-node/compare/v0.7.0...v0.7.1)
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([fd27237](https://github.com/linq-team/linq-node/commit/fd2723743ecb0a03a270f1de26d4c0bd4b6316f4))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([eb94f55](https://github.com/linq-team/linq-node/commit/eb94f55628d03dffa3fefde4c0551a3b1579b69f))
+
 ## 0.7.0 (2026-03-07)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/linq-team/linq-node/compare/v0.6.0...v0.7.0)
