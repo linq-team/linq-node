@@ -67,6 +67,32 @@ export class Messages extends APIResource {
    *
    * Only one effect type can be applied per message.
    *
+   * ## Inline Text Decorations (iMessage only)
+   *
+   * Use the `text_decorations` array on a text part to apply styling and animations
+   * to character ranges.
+   *
+   * Each decoration specifies a `range: [start, end)` and exactly one of `style` or
+   * `animation`.
+   *
+   * **Styles:** `bold`, `italic`, `strikethrough`, `underline` **Animations:**
+   * `big`, `small`, `shake`, `nod`, `explode`, `ripple`, `bloom`, `jitter`
+   *
+   * ```json
+   * {
+   *   "type": "text",
+   *   "value": "Hello world",
+   *   "text_decorations": [
+   *     { "range": [0, 5], "style": "bold" },
+   *     { "range": [6, 11], "animation": "shake" }
+   *   ]
+   * }
+   * ```
+   *
+   * **Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges
+   * must not overlap with other animations or styles. Text decorations only render
+   * for iMessage recipients. For SMS/RCS, text decorations are not applied.
+   *
    * @example
    * ```ts
    * const response = await client.chats.messages.send(
