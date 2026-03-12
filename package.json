@@ -1,6 +1,6 @@
 {
   "name": "@linqapp/sdk",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "The official TypeScript library for the Linq API V3 API",
   "author": "Linq API V3 <support@linq.com>",
   "types": "dist/index.d.ts",

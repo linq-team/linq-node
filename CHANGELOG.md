@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.0 (2026-03-12)
+
+Full Changelog: [v0.7.1...v0.8.0](https://github.com/linq-team/linq-node/compare/v0.7.1...v0.8.0)
+
+### Features
+
+* make `from` optional on GET /v3/chats and add `to` filter ([b36752b](https://github.com/linq-team/linq-node/commit/b36752b991171ee984cc985e68dc8f82afc928e6))
+* PDEV(Synapse): support markdown and text effects ([00dc922](https://github.com/linq-team/linq-node/commit/00dc922ef1cca534a50931d290c9b2e47b87772c))
+* Plt 397 patch update contact card endpoint rename my cards endpoints ([4b64e37](https://github.com/linq-team/linq-node/commit/4b64e373c20408ebfb7a6ab8f9e32678115dd9de))
+
+
+### Chores
+
+* **internal:** update dependencies to address dependabot vulnerabilities ([19ceba3](https://github.com/linq-team/linq-node/commit/19ceba365cab72a999a5305be2566f8cdd5e216b))
+
 ## 0.7.1 (2026-03-10)
 
 Full Changelog: [v0.7.0...v0.7.1](https://github.com/linq-team/linq-node/compare/v0.7.0...v0.7.1)
