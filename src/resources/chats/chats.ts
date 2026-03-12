@@ -208,15 +208,18 @@ export class Chats extends APIResource {
   }
 
   /**
-   * **Deprecated:** Use `POST /v3/my_cards/{chatId}/share` instead.
-   *
    * Share your contact information (Name and Photo Sharing) with a chat.
    *
    * **Note:** A contact card must be configured before sharing. You can set up your
    * contact card on the
    * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
    *
-   * @deprecated
+   * @example
+   * ```ts
+   * await client.chats.shareContactCard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
