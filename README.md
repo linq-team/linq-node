@@ -154,7 +154,7 @@ You can use the `for await … of` syntax to iterate through items across all pa
 async function fetchAllChats(params) {
   const allChats = [];
   // Automatically fetches more pages as needed.
-  for await (const chat of client.chats.listChats({ from: '+13343284472' })) {
+  for await (const chat of client.chats.listChats()) {
     allChats.push(chat);
   }
   return allChats;
@@ -164,7 +164,7 @@ async function fetchAllChats(params) {
 Alternatively, you can request a single page at a time:
 
 ```ts
-let page = await client.chats.listChats({ from: '+13343284472' });
+let page = await client.chats.listChats();
 for (const chat of page.chats) {
   console.log(chat);
 }

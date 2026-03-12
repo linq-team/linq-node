@@ -44,6 +44,32 @@ export class Chats extends APIResource {
    *
    * Only one effect type can be applied per message.
    *
+   * ## Inline Text Decorations (iMessage only)
+   *
+   * Use the `text_decorations` array on a text part to apply styling and animations
+   * to character ranges.
+   *
+   * Each decoration specifies a `range: [start, end)` and exactly one of `style` or
+   * `animation`.
+   *
+   * **Styles:** `bold`, `italic`, `strikethrough`, `underline` **Animations:**
+   * `big`, `small`, `shake`, `nod`, `explode`, `ripple`, `bloom`, `jitter`
+   *
+   * ```json
+   * {
+   *   "type": "text",
+   *   "value": "Hello world",
+   *   "text_decorations": [
+   *     { "range": [0, 5], "style": "bold" },
+   *     { "range": [6, 11], "animation": "shake" }
+   *   ]
+   * }
+   * ```
+   *
+   * **Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges
+   * must not overlap with other animations or styles. Text decorations only render
+   * for iMessage recipients. For SMS/RCS, text decorations are not applied.
+   *
    * @example
    * ```ts
    * const chat = await client.chats.create({
@@ -94,9 +120,15 @@ export class Chats extends APIResource {
   }
 
   /**
-   * Retrieves a paginated list of chats for the authenticated partner filtered by
-   * phone number. Returns all chats involving the specified phone number with their
-   * participants and recent activity.
+   * Retrieves a paginated list of chats for the authenticated partner.
+   *
+   * **Filtering:**
+   *
+   * - If `from` is provided, returns chats for that specific phone number
+   * - If `from` is omitted, returns chats across all phone numbers owned by the
+   *   partner
+   * - If `to` is provided, only returns chats where the specified handle is a
+   *   participant
    *
    * **Pagination:**
    *
@@ -115,15 +147,13 @@ export class Chats extends APIResource {
    * @example
    * ```ts
    * // Automatically fetches more pages as needed.
-   * for await (const chat of client.chats.listChats({
-   *   from: '+13343284472',
-   * })) {
+   * for await (const chat of client.chats.listChats()) {
    *   // ...
    * }
    * ```
    */
   listChats(
-    query: ChatListChatsParams,
+    query: ChatListChatsParams | null | undefined = {},
     options?: RequestOptions,
   ): PagePromise<ChatsListChatsPagination, Chat> {
     return this._client.getAPIList('/v3/chats', ListChatsPagination<Chat>, { query, ...options });
@@ -182,15 +212,18 @@ export class Chats extends APIResource {
   }
 
   /**
-   * **Deprecated:** Use `POST /v3/my_cards/{chatId}/share` instead.
-   *
    * Share your contact information (Name and Photo Sharing) with a chat.
    *
    * **Note:** A contact card must be configured before sharing. You can set up your
    * contact card on the
    * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
    *
-   * @deprecated
+   * @example
+   * ```ts
+   * await client.chats.shareContactCard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
@@ -361,9 +394,53 @@ export interface TextPart {
   type: 'text';
 
   /**
-   * The text content
+   * The text content of the message. This value is sent as-is with no parsing or
+   * transformation — Markdown syntax will be delivered as plain text. Use
+   * `text_decorations` to apply inline formatting and animations (iMessage only).
    */
   value: string;
+
+  /**
+   * Optional array of text decorations applied to character ranges in the `value`
+   * field (iMessage only).
+   *
+   * Each decoration specifies a character range `[start, end)` and exactly one of
+   * `style` or `animation`.
+   *
+   * **Styles:** `bold`, `italic`, `strikethrough`, `underline` **Animations:**
+   * `big`, `small`, `shake`, `nod`, `explode`, `ripple`, `bloom`, `jitter`
+   *
+   * Style ranges may overlap (e.g. bold + italic on the same text), but animation
+   * ranges must not overlap with other animations or styles.
+   *
+   * _Characters are measured as UTF-16 code units. Most characters count as 1; some
+   * emoji count as 2._
+   *
+   * **Note:** Text decorations only render for iMessage recipients. For SMS/RCS,
+   * text decorations are not applied.
+   */
+  text_decorations?: Array<TextPart.TextDecoration>;
+}
+
+export namespace TextPart {
+  export interface TextDecoration {
+    /**
+     * Character range `[start, end)` in the `value` string where the decoration
+     * applies. `start` is inclusive, `end` is exclusive. _Characters are measured as
+     * UTF-16 code units. Most characters count as 1; some emoji count as 2._
+     */
+    range: Array<number>;
+
+    /**
+     * Animated text effect to apply. Mutually exclusive with `style`.
+     */
+    animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter';
+
+    /**
+     * Text style to apply. Mutually exclusive with `animation`.
+     */
+    style?: 'bold' | 'italic' | 'strikethrough' | 'underline';
+  }
 }
 
 /**
@@ -550,11 +627,20 @@ export interface ChatUpdateParams {
 
 export interface ChatListChatsParams extends ListChatsPaginationParams {
   /**
-   * Phone number to filter chats by. Returns all chats made from this phone number.
-   * Must be in E.164 format (e.g., `+13343284472`). The `+` is automatically
+   * Phone number to filter chats by. Returns chats made from this phone number. Must
+   * be in E.164 format (e.g., `+13343284472`). The `+` is automatically URL-encoded
+   * by HTTP clients. If omitted, returns chats across all phone numbers owned by the
+   * partner.
+   */
+  from?: string;
+
+  /**
+   * Filter chats by a participant handle. Only returns chats where this handle is a
+   * participant. Can be an E.164 phone number (e.g., `+13343284472`) or an email
+   * address (e.g., `user@example.com`). For phone numbers, the `+` is automatically
    * URL-encoded by HTTP clients.
    */
-  from: string;
+  to?: string;
 }
 
 export interface ChatSendVoicememoParams {
