@@ -81,8 +81,8 @@ describe('resource chats', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('listChats: only required params', async () => {
-    const responsePromise = client.chats.listChats({ from: '+13343284472' });
+  test.skip('listChats', async () => {
+    const responsePromise = client.chats.listChats();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -93,12 +93,19 @@ describe('resource chats', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('listChats: required and optional params', async () => {
-    const response = await client.chats.listChats({
-      from: '+13343284472',
-      cursor: '20',
-      limit: 20,
-    });
+  test.skip('listChats: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.chats.listChats(
+        {
+          cursor: '20',
+          from: '+13343284472',
+          limit: 20,
+          to: '+13343284472',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(LinqAPIV3.NotFoundError);
   });
 
   // Mock server tests are disabled
