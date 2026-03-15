@@ -1111,12 +1111,12 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -1885,7 +1885,7 @@ packages:
         optional: true
 
   tsc-multi@https://github.com/stainless-api/tsc-multi/releases/download/v1.1.9/tsc-multi.tgz:
-    resolution: {integrity: sha512-tWyCXnx0WqCkVlo5s+4KMj7HC0/0YrCZY0PustUwX9F2lNwd8Kp07q/Q56uGvV9q80XaSDrhy0YqBmrX5TDNpQ==, tarball: https://github.com/stainless-api/tsc-multi/releases/download/v1.1.9/tsc-multi.tgz}
+    resolution: {tarball: https://github.com/stainless-api/tsc-multi/releases/download/v1.1.9/tsc-multi.tgz}
     version: 1.1.9
     engines: {node: '>=14'}
     hasBin: true
