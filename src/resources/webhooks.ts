@@ -443,7 +443,11 @@ export interface MessageSentV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -508,7 +512,11 @@ export interface MessageReceivedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -573,7 +581,11 @@ export interface MessageReadV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -638,7 +650,11 @@ export interface MessageDeliveredV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -687,7 +703,11 @@ export interface MessageFailedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -768,7 +788,11 @@ export interface ReactionAddedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -815,7 +839,11 @@ export interface ReactionRemovedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -862,7 +890,11 @@ export interface ParticipantAddedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -937,7 +969,11 @@ export interface ParticipantRemovedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1012,7 +1048,11 @@ export interface ChatGroupNameUpdatedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1091,7 +1131,11 @@ export interface ChatGroupIconUpdatedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1172,7 +1216,11 @@ export interface ChatGroupNameUpdateFailedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1245,7 +1293,11 @@ export interface ChatGroupIconUpdateFailedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1317,7 +1369,11 @@ export interface ChatCreatedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1409,7 +1465,11 @@ export interface ChatTypingIndicatorStartedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1468,7 +1528,11 @@ export interface ChatTypingIndicatorStoppedV2026WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1499,6 +1563,137 @@ export namespace ChatTypingIndicatorStoppedV2026WebhookEvent {
      * Chat identifier
      */
     chat_id: string;
+  }
+}
+
+/**
+ * Complete webhook payload for message.edited events (2026-02-03 format only)
+ */
+export interface MessageEditedV2026WebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for `message.edited` events (2026-02-03 format).
+   *
+   * Describes which part of a message was edited and when. Only text parts can be
+   * edited. Only available for subscriptions using `webhook_version: "2026-02-03"`.
+   */
+  data: MessageEditedV2026WebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace MessageEditedV2026WebhookEvent {
+  /**
+   * Payload for `message.edited` events (2026-02-03 format).
+   *
+   * Describes which part of a message was edited and when. Only text parts can be
+   * edited. Only available for subscriptions using `webhook_version: "2026-02-03"`.
+   */
+  export interface Data {
+    /**
+     * Message identifier
+     */
+    id: string;
+
+    /**
+     * Chat context
+     */
+    chat: Data.Chat;
+
+    /**
+     * "outbound" if you sent the original message, "inbound" if you received it
+     */
+    direction: 'outbound' | 'inbound';
+
+    /**
+     * When the edit occurred
+     */
+    edited_at: string;
+
+    /**
+     * The edited part
+     */
+    part: Data.Part;
+
+    /**
+     * The handle that sent (and edited) this message
+     */
+    sender_handle: Shared.ChatHandle;
+  }
+
+  export namespace Data {
+    /**
+     * Chat context
+     */
+    export interface Chat {
+      /**
+       * Chat identifier
+       */
+      id: string;
+
+      /**
+       * Whether this is a group chat
+       */
+      is_group: boolean;
+
+      /**
+       * The handle that owns this chat (your phone number)
+       */
+      owner_handle: Shared.ChatHandle;
+    }
+
+    /**
+     * The edited part
+     */
+    export interface Part {
+      /**
+       * Zero-based index of the edited part within the message
+       */
+      index: number;
+
+      /**
+       * New text content of the part
+       */
+      text: string;
+    }
   }
 }
 
@@ -1620,7 +1815,11 @@ export interface MessageSentV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1740,7 +1939,11 @@ export interface MessageReceivedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1860,7 +2063,11 @@ export interface MessageReadV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -1990,7 +2197,11 @@ export interface MessageDeliveredV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2121,7 +2332,11 @@ export interface MessageFailedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2202,7 +2417,11 @@ export interface ReactionAddedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2249,7 +2468,11 @@ export interface ReactionRemovedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2296,7 +2519,11 @@ export interface ParticipantAddedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2371,7 +2598,11 @@ export interface ParticipantRemovedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2446,7 +2677,11 @@ export interface ChatGroupNameUpdatedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2525,7 +2760,11 @@ export interface ChatGroupIconUpdatedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2606,7 +2845,11 @@ export interface ChatGroupNameUpdateFailedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2679,7 +2922,11 @@ export interface ChatGroupIconUpdateFailedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2751,7 +2998,11 @@ export interface ChatCreatedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2843,7 +3094,11 @@ export interface ChatTypingIndicatorStartedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -2902,7 +3157,11 @@ export interface ChatTypingIndicatorStoppedV2025WebhookEvent {
   event_id: string;
 
   /**
-   * Valid webhook event types that can be subscribed to
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
    */
   event_type: WebhookEventsAPI.WebhookEventType;
 
@@ -3048,6 +3307,7 @@ export type EventsWebhookEvent =
   | ChatCreatedV2026WebhookEvent
   | ChatTypingIndicatorStartedV2026WebhookEvent
   | ChatTypingIndicatorStoppedV2026WebhookEvent
+  | MessageEditedV2026WebhookEvent
   | PhoneNumberStatusUpdatedV2026WebhookEvent
   | MessageSentV2025WebhookEvent
   | MessageReceivedV2025WebhookEvent
@@ -3091,6 +3351,7 @@ export declare namespace Webhooks {
     type ChatCreatedV2026WebhookEvent as ChatCreatedV2026WebhookEvent,
     type ChatTypingIndicatorStartedV2026WebhookEvent as ChatTypingIndicatorStartedV2026WebhookEvent,
     type ChatTypingIndicatorStoppedV2026WebhookEvent as ChatTypingIndicatorStoppedV2026WebhookEvent,
+    type MessageEditedV2026WebhookEvent as MessageEditedV2026WebhookEvent,
     type PhoneNumberStatusUpdatedV2026WebhookEvent as PhoneNumberStatusUpdatedV2026WebhookEvent,
     type MessageSentV2025WebhookEvent as MessageSentV2025WebhookEvent,
     type MessageReceivedV2025WebhookEvent as MessageReceivedV2025WebhookEvent,

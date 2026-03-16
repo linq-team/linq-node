@@ -53,7 +53,7 @@ export namespace PhonenumberListResponse {
     /**
      * Deprecated. Always null.
      */
-    type?: 'TWILIO' | 'APPLE_ID';
+    type?: string | null;
   }
 
   export namespace PhoneNumber {
