@@ -112,13 +112,15 @@ export class Attachments extends APIResource {
    * as many messages as you want.
    *
    * ```json
-   * POST /v3/messages
+   * POST /v3/chats
    * {
-   *   "to": ["+15551234567"],
    *   "from": "+15559876543",
-   *   "parts": [
-   *     { "type": "media", "attachment_id": "<attachment_id from step 1>" }
-   *   ]
+   *   "to": ["+15551234567"],
+   *   "message": {
+   *     "parts": [
+   *       { "type": "media", "attachment_id": "<attachment_id from step 1>" }
+   *     ]
+   *   }
    * }
    * ```
    *

@@ -123,7 +123,6 @@ describe('resource chats', () => {
   // Mock server tests are disabled
   test.skip('sendVoicememo: only required params', async () => {
     const responsePromise = client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {
-      from: '+12052535597',
       voice_memo_url: 'https://example.com/voice-memo.m4a',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -138,7 +137,6 @@ describe('resource chats', () => {
   // Mock server tests are disabled
   test.skip('sendVoicememo: required and optional params', async () => {
     const response = await client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {
-      from: '+12052535597',
       voice_memo_url: 'https://example.com/voice-memo.m4a',
     });
   });

@@ -107,6 +107,10 @@ export class Chats extends APIResource {
   /**
    * Update chat properties such as display name and group chat icon.
    *
+   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
+   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
+   * events to confirm the outcome.
+   *
    * @example
    * ```ts
    * const chat = await client.chats.update(
@@ -115,7 +119,7 @@ export class Chats extends APIResource {
    * );
    * ```
    */
-  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<Chat> {
+  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
     return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
   }
 
@@ -196,10 +200,7 @@ export class Chats extends APIResource {
    * ```ts
    * const response = await client.chats.sendVoicememo(
    *   'f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd',
-   *   {
-   *     from: '+12052535597',
-   *     voice_memo_url: 'https://example.com/voice-memo.m4a',
-   *   },
+   *   { voice_memo_url: 'https://example.com/voice-memo.m4a' },
    * );
    * ```
    */
@@ -486,6 +487,12 @@ export namespace ChatCreateResponse {
   }
 }
 
+export interface ChatUpdateResponse {
+  chat_id?: string;
+
+  status?: string;
+}
+
 /**
  * Response for sending a voice memo to a chat
  */
@@ -645,11 +652,6 @@ export interface ChatListChatsParams extends ListChatsPaginationParams {
 
 export interface ChatSendVoicememoParams {
   /**
-   * Sender phone number in E.164 format
-   */
-  from: string;
-
-  /**
    * URL of the voice memo audio file. Must be a publicly accessible HTTPS URL.
    */
   voice_memo_url: string;
@@ -666,6 +668,7 @@ export declare namespace Chats {
     type MessageContent as MessageContent,
     type TextPart as TextPart,
     type ChatCreateResponse as ChatCreateResponse,
+    type ChatUpdateResponse as ChatUpdateResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
