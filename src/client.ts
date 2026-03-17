@@ -43,7 +43,6 @@ import {
   Message,
   MessageAddReactionParams,
   MessageAddReactionResponse,
-  MessageDeleteParams,
   MessageEffect,
   MessageListMessagesThreadParams,
   MessageUpdateParams,
@@ -1188,7 +1187,6 @@ export declare namespace LinqAPIV3 {
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageUpdateParams as MessageUpdateParams,
-    type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
   };

@@ -75,7 +75,7 @@ Methods:
 
 - <code title="get /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">retrieve</a>(messageID) -> Message</code>
 - <code title="patch /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">update</a>(messageID, { ...params }) -> Message</code>
-- <code title="delete /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">delete</a>(messageID, { ...params }) -> void</code>
+- <code title="delete /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">delete</a>(messageID) -> void</code>
 - <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages.ts">addReaction</a>(messageID, { ...params }) -> MessageAddReactionResponse</code>
 - <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages.ts">listMessagesThread</a>(messageID, { ...params }) -> MessagesListMessagesPagination</code>
 
