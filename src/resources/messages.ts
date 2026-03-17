@@ -59,13 +59,11 @@ export class Messages extends APIResource {
    * ```ts
    * await client.messages.delete(
    *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   *   { chat_id: '94c6bf33-31d9-40e3-a0e9-f94250ecedb9' },
    * );
    * ```
    */
-  delete(messageID: string, body: MessageDeleteParams, options?: RequestOptions): APIPromise<void> {
+  delete(messageID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.delete(path`/v3/messages/${messageID}`, {
-      body,
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -277,13 +275,6 @@ export interface MessageUpdateParams {
   part_index?: number;
 }
 
-export interface MessageDeleteParams {
-  /**
-   * ID of the chat containing the message to delete
-   */
-  chat_id: string;
-}
-
 export interface MessageAddReactionParams {
   /**
    * Whether to add or remove the reaction
@@ -325,7 +316,6 @@ export declare namespace Messages {
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageUpdateParams as MessageUpdateParams,
-    type MessageDeleteParams as MessageDeleteParams,
     type MessageAddReactionParams as MessageAddReactionParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
   };

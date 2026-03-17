@@ -43,10 +43,8 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('delete: only required params', async () => {
-    const responsePromise = client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
-      chat_id: '94c6bf33-31d9-40e3-a0e9-f94250ecedb9',
-    });
+  test.skip('delete', async () => {
+    const responsePromise = client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -54,13 +52,6 @@ describe('resource messages', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('delete: required and optional params', async () => {
-    const response = await client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
-      chat_id: '94c6bf33-31d9-40e3-a0e9-f94250ecedb9',
-    });
   });
 
   // Mock server tests are disabled
