@@ -7,6 +7,7 @@ export {
   type MessageContent,
   type TextPart,
   type ChatCreateResponse,
+  type ChatUpdateResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
   type ChatUpdateParams,

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.8.1 (2026-03-17)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/linq-team/linq-node/compare/v0.8.0...v0.8.1)
+
+### Bug Fixes
+
+* enforce server-side authorization on DELETE /v3/messages/{messageId} ([45ce9ad](https://github.com/linq-team/linq-node/commit/45ce9ad9e4af4756da27009f7dbde012523017b1))
+* **openapi:** correct schema errors and example inconsistencies ([b3a7d22](https://github.com/linq-team/linq-node/commit/b3a7d22064cc39fd7d00c66a85665bd5711b628f))
+
+
+### Chores
+
+* **internal:** tweak CI branches ([9b7ffaf](https://github.com/linq-team/linq-node/commit/9b7ffaf343497bd4298312a9de7312cdda8cf277))
+
 ## 0.8.0 (2026-03-12)
 
 Full Changelog: [v0.7.1...v0.8.0](https://github.com/linq-team/linq-node/compare/v0.7.1...v0.8.0)
