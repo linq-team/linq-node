@@ -364,7 +364,7 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<TextPart | MediaPart>;
+  parts: Array<TextPart | MediaPart | MessageContent.LinkPart>;
 
   /**
    * iMessage effect to apply to this message (screen or bubble effect)
@@ -386,6 +386,24 @@ export interface MessageContent {
    * Reply to another message to create a threaded conversation
    */
   reply_to?: MessagesAPI.ReplyTo;
+}
+
+export namespace MessageContent {
+  export interface LinkPart {
+    /**
+     * Indicates this is a rich link preview part
+     */
+    type: 'link';
+
+    /**
+     * URL to send with a rich link preview. The recipient will see an inline card with
+     * the page's title, description, and preview image (when available).
+     *
+     * A `link` part must be the **only** part in the message. To send a URL as plain
+     * text (no preview card), use a `text` part instead.
+     */
+    value: string;
+  }
 }
 
 export interface TextPart {
