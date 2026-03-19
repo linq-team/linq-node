@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0 (2026-03-19)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/linq-team/linq-node/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** update config ([8025138](https://github.com/linq-team/linq-node/commit/8025138a33d579a302785b711850dcad957730d8))
+
 ## 0.9.0 (2026-03-19)
 
 Full Changelog: [v0.8.1...v0.9.0](https://github.com/linq-team/linq-node/compare/v0.8.1...v0.9.0)

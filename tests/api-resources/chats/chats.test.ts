@@ -81,6 +81,18 @@ describe('resource chats', () => {
   });
 
   // Mock server tests are disabled
+  test.skip('leaveChat', async () => {
+    const responsePromise = client.chats.leaveChat('550e8400-e29b-41d4-a716-446655440000');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
   test.skip('listChats', async () => {
     const responsePromise = client.chats.listChats();
     const rawResponse = await responsePromise.asResponse();

@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import * as MessagesAPI from './messages';
+
 export interface ChatHandle {
   /**
    * Unique identifier for this handle
@@ -181,26 +183,5 @@ export interface TextPartResponse {
   /**
    * Text decorations applied to character ranges in the value
    */
-  text_decorations?: Array<TextPartResponse.TextDecoration> | null;
-}
-
-export namespace TextPartResponse {
-  export interface TextDecoration {
-    /**
-     * Character range `[start, end)` in the `value` string where the decoration
-     * applies. `start` is inclusive, `end` is exclusive. _Characters are measured as
-     * UTF-16 code units. Most characters count as 1; some emoji count as 2._
-     */
-    range: Array<number>;
-
-    /**
-     * Animated text effect to apply. Mutually exclusive with `style`.
-     */
-    animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter';
-
-    /**
-     * Text style to apply. Mutually exclusive with `animation`.
-     */
-    style?: 'bold' | 'italic' | 'strikethrough' | 'underline';
-  }
+  text_decorations?: Array<MessagesAPI.TextDecoration> | null;
 }
