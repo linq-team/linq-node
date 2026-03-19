@@ -1,4 +1,4 @@
 configured_endpoints: 30
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/linq%2Flinq-api-v3-bc23e821b5f770eb22ffb76bc45d922209eeb2621cb7888083345ac0de8c27df.yml
-openapi_spec_hash: 5c0c6af63888c81f7b4e72dfb26a0a42
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/linq%2Flinq-api-v3-35b2db9134452b0b8bd90272ed038771170f8064435f9ebdfcc9e4331327151b.yml
+openapi_spec_hash: 286f2256d95db220c2c01eee47489d31
 config_hash: 753facc33205255d960ef216db0b1821
