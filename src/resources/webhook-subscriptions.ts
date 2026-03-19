@@ -102,6 +102,16 @@ export class WebhookSubscriptions extends APIResource {
    * creation, a signing secret is generated for verifying webhook authenticity.
    * **Store this secret securely — it cannot be retrieved later.**
    *
+   * **Phone Number Filtering:**
+   *
+   * - Optionally specify `phone_numbers` to only receive events for specific lines
+   * - If omitted, events from all phone numbers are delivered (default behavior)
+   * - Use multiple subscriptions with different `phone_numbers` to route different
+   *   lines to different endpoints
+   * - Each `target_url` can only be used once per account. To route different lines
+   *   to different destinations, use a unique URL per subscription (e.g., append a
+   *   query parameter: `https://example.com/webhook?line=1`)
+   *
    * **Webhook Delivery:**
    *
    * - Events are sent via HTTP POST to the target URL
@@ -236,6 +246,12 @@ export interface WebhookSubscription {
    * When the subscription was last updated
    */
   updated_at: string;
+
+  /**
+   * Phone numbers this subscription filters for. If null or empty, events from all
+   * phone numbers are delivered.
+   */
+  phone_numbers?: Array<string> | null;
 }
 
 /**
@@ -278,6 +294,12 @@ export interface WebhookSubscriptionCreateResponse {
    * When the subscription was last updated
    */
   updated_at: string;
+
+  /**
+   * Phone numbers this subscription filters for. If null or empty, events from all
+   * phone numbers are delivered.
+   */
+  phone_numbers?: Array<string> | null;
 }
 
 export interface WebhookSubscriptionListResponse {
@@ -297,6 +319,14 @@ export interface WebhookSubscriptionCreateParams {
    * URL where webhook events will be sent. Must be HTTPS.
    */
   target_url: string;
+
+  /**
+   * Optional list of phone numbers to filter events for. Only events originating
+   * from these phone numbers will be delivered to this subscription. If omitted or
+   * empty, events from all phone numbers are delivered. Phone numbers must be in
+   * E.164 format.
+   */
+  phone_numbers?: Array<string>;
 }
 
 export interface WebhookSubscriptionUpdateParams {
@@ -304,6 +334,14 @@ export interface WebhookSubscriptionUpdateParams {
    * Activate or deactivate the subscription
    */
   is_active?: boolean;
+
+  /**
+   * Updated list of phone numbers to filter events for. Set to a non-empty array to
+   * filter events to specific phone numbers. Set to an empty array or null to remove
+   * the filter and receive events from all phone numbers. Phone numbers must be in
+   * E.164 format.
+   */
+  phone_numbers?: Array<string> | null;
 
   /**
    * Updated list of event types to subscribe to
