@@ -45,7 +45,6 @@ export {
   type Message,
   type MessageEffect,
   type ReplyTo,
-  type TextDecoration,
   type MessageAddReactionResponse,
   type MessageUpdateParams,
   type MessageAddReactionParams,
