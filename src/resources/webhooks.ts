@@ -2,7 +2,6 @@
 
 import { APIResource } from '../core/resource';
 import * as WebhooksAPI from './webhooks';
-import * as MessagesAPI from './messages';
 import * as Shared from './shared';
 import * as WebhookEventsAPI from './webhook-events';
 
@@ -377,7 +376,7 @@ export interface SchemasTextPartResponse {
   /**
    * Text decorations applied to character ranges in the value
    */
-  text_decorations?: Array<MessagesAPI.TextDecoration> | null;
+  text_decorations?: Array<Shared.TextDecoration> | null;
 }
 
 /**

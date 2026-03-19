@@ -462,7 +462,7 @@ export interface TextPart {
    * **Note:** Text decorations only render for iMessage recipients. For SMS/RCS,
    * text decorations are not applied.
    */
-  text_decorations?: Array<MessagesAPI.TextDecoration>;
+  text_decorations?: Array<Shared.TextDecoration>;
 }
 
 /**

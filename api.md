@@ -7,6 +7,7 @@ Types:
 - <code><a href="./src/resources/shared.ts">Reaction</a></code>
 - <code><a href="./src/resources/shared.ts">ReactionType</a></code>
 - <code><a href="./src/resources/shared.ts">ServiceType</a></code>
+- <code><a href="./src/resources/shared.ts">TextDecoration</a></code>
 - <code><a href="./src/resources/shared.ts">TextPartResponse</a></code>
 
 # Chats
@@ -72,7 +73,6 @@ Types:
 - <code><a href="./src/resources/messages.ts">Message</a></code>
 - <code><a href="./src/resources/messages.ts">MessageEffect</a></code>
 - <code><a href="./src/resources/messages.ts">ReplyTo</a></code>
-- <code><a href="./src/resources/messages.ts">TextDecoration</a></code>
 - <code><a href="./src/resources/messages.ts">MessageAddReactionResponse</a></code>
 
 Methods:
