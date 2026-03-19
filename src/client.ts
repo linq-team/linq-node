@@ -35,10 +35,18 @@ import {
 import {
   Capability,
   CapabilityCheckRCSParams,
-  CapabilityCheckRCSResponse,
   CapabilityCheckiMessageParams,
-  CapabilityCheckiMessageResponse,
+  HandleCheck,
+  HandleCheckResponse,
 } from './resources/capability';
+import {
+  ContactCard,
+  ContactCardCreateParams,
+  ContactCardRetrieveParams,
+  ContactCardRetrieveResponse,
+  ContactCardUpdateParams,
+  SetContactCard,
+} from './resources/contact-card';
 import {
   Message,
   MessageAddReactionParams,
@@ -49,6 +57,7 @@ import {
   Messages,
   MessagesListMessagesPagination,
   ReplyTo,
+  TextDecoration,
 } from './resources/messages';
 import { PhoneNumberListResponse, PhoneNumbers } from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
@@ -110,6 +119,7 @@ import {
   Chat,
   ChatCreateParams,
   ChatCreateResponse,
+  ChatLeaveChatResponse,
   ChatListChatsParams,
   ChatSendVoicememoParams,
   ChatSendVoicememoResponse,
@@ -117,6 +127,7 @@ import {
   ChatUpdateResponse,
   Chats,
   ChatsListChatsPagination,
+  LinkPart,
   MediaPart,
   MessageContent,
   TextPart,
@@ -1136,6 +1147,15 @@ export class LinqAPIV3 {
    */
   capability: API.Capability = new API.Capability(this);
   webhooks: API.Webhooks = new API.Webhooks(this);
+  /**
+   * Contact Card lets you set and share your contact information (name and profile photo) with chat participants via iMessage Name and Photo Sharing.
+   *
+   * Use `POST /v3/contact_card` to create or update a card for a phone number.
+   * Use `PATCH /v3/contact_card` to update an existing active card.
+   * Use `GET /v3/contact_card` to retrieve the active card(s) for your partner account.
+   *
+   */
+  contactCard: API.ContactCard = new API.ContactCard(this);
 }
 
 LinqAPIV3.Chats = Chats;
@@ -1147,6 +1167,7 @@ LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Capability = Capability;
 LinqAPIV3.Webhooks = Webhooks;
+LinqAPIV3.ContactCard = ContactCard;
 
 export declare namespace LinqAPIV3 {
   export type RequestOptions = Opts.RequestOptions;
@@ -1166,11 +1187,13 @@ export declare namespace LinqAPIV3 {
   export {
     Chats as Chats,
     type Chat as Chat,
+    type LinkPart as LinkPart,
     type MediaPart as MediaPart,
     type MessageContent as MessageContent,
     type TextPart as TextPart,
     type ChatCreateResponse as ChatCreateResponse,
     type ChatUpdateResponse as ChatUpdateResponse,
+    type ChatLeaveChatResponse as ChatLeaveChatResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
@@ -1184,6 +1207,7 @@ export declare namespace LinqAPIV3 {
     type Message as Message,
     type MessageEffect as MessageEffect,
     type ReplyTo as ReplyTo,
+    type TextDecoration as TextDecoration,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageUpdateParams as MessageUpdateParams,
@@ -1220,8 +1244,8 @@ export declare namespace LinqAPIV3 {
 
   export {
     Capability as Capability,
-    type CapabilityCheckiMessageResponse as CapabilityCheckiMessageResponse,
-    type CapabilityCheckRCSResponse as CapabilityCheckRCSResponse,
+    type HandleCheck as HandleCheck,
+    type HandleCheckResponse as HandleCheckResponse,
     type CapabilityCheckiMessageParams as CapabilityCheckiMessageParams,
     type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };
@@ -1270,6 +1294,15 @@ export declare namespace LinqAPIV3 {
     type ChatTypingIndicatorStoppedV2025WebhookEvent as ChatTypingIndicatorStoppedV2025WebhookEvent,
     type PhoneNumberStatusUpdatedV2025WebhookEvent as PhoneNumberStatusUpdatedV2025WebhookEvent,
     type EventsWebhookEvent as EventsWebhookEvent,
+  };
+
+  export {
+    ContactCard as ContactCard,
+    type SetContactCard as SetContactCard,
+    type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
+    type ContactCardCreateParams as ContactCardCreateParams,
+    type ContactCardRetrieveParams as ContactCardRetrieveParams,
+    type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 
   export type ChatHandle = API.ChatHandle;

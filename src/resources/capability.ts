@@ -14,15 +14,16 @@ export class Capability extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.capability.checkiMessage({
-   *   address: '+15551234567',
-   * });
+   * const handleCheckResponse =
+   *   await client.capability.checkiMessage({
+   *     address: '+15551234567',
+   *   });
    * ```
    */
   checkiMessage(
     body: CapabilityCheckiMessageParams,
     options?: RequestOptions,
-  ): APIPromise<CapabilityCheckiMessageResponse> {
+  ): APIPromise<HandleCheckResponse> {
     return this._client.post('/v3/capability/check_imessage', { body, ...options });
   }
 
@@ -31,29 +32,31 @@ export class Capability extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.capability.checkRCS({
-   *   address: '+15551234567',
-   * });
+   * const handleCheckResponse =
+   *   await client.capability.checkRCS({
+   *     address: '+15551234567',
+   *   });
    * ```
    */
-  checkRCS(body: CapabilityCheckRCSParams, options?: RequestOptions): APIPromise<CapabilityCheckRCSResponse> {
+  checkRCS(body: CapabilityCheckRCSParams, options?: RequestOptions): APIPromise<HandleCheckResponse> {
     return this._client.post('/v3/capability/check_rcs', { body, ...options });
   }
 }
 
-export interface CapabilityCheckiMessageResponse {
+export interface HandleCheck {
   /**
-   * The recipient address that was checked
+   * The recipient phone number or email address to check
    */
   address: string;
 
   /**
-   * Whether the recipient supports the checked messaging service
+   * Optional sender phone number. If omitted, an available phone from your pool is
+   * used automatically.
    */
-  available: boolean;
+  from?: string;
 }
 
-export interface CapabilityCheckRCSResponse {
+export interface HandleCheckResponse {
   /**
    * The recipient address that was checked
    */
@@ -93,8 +96,8 @@ export interface CapabilityCheckRCSParams {
 
 export declare namespace Capability {
   export {
-    type CapabilityCheckiMessageResponse as CapabilityCheckiMessageResponse,
-    type CapabilityCheckRCSResponse as CapabilityCheckRCSResponse,
+    type HandleCheck as HandleCheck,
+    type HandleCheckResponse as HandleCheckResponse,
     type CapabilityCheckiMessageParams as CapabilityCheckiMessageParams,
     type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };

@@ -3,11 +3,13 @@
 export {
   Chats,
   type Chat,
+  type LinkPart,
   type MediaPart,
   type MessageContent,
   type TextPart,
   type ChatCreateResponse,
   type ChatUpdateResponse,
+  type ChatLeaveChatResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
   type ChatUpdateParams,
