@@ -10,19 +10,21 @@ export {
 } from './attachments';
 export {
   Capability,
-  type CapabilityCheckiMessageResponse,
-  type CapabilityCheckRCSResponse,
+  type HandleCheck,
+  type HandleCheckResponse,
   type CapabilityCheckiMessageParams,
   type CapabilityCheckRCSParams,
 } from './capability';
 export {
   Chats,
   type Chat,
+  type LinkPart,
   type MediaPart,
   type MessageContent,
   type TextPart,
   type ChatCreateResponse,
   type ChatUpdateResponse,
+  type ChatLeaveChatResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
   type ChatUpdateParams,
@@ -31,10 +33,19 @@ export {
   type ChatsListChatsPagination,
 } from './chats/chats';
 export {
+  ContactCard,
+  type SetContactCard,
+  type ContactCardRetrieveResponse,
+  type ContactCardCreateParams,
+  type ContactCardRetrieveParams,
+  type ContactCardUpdateParams,
+} from './contact-card';
+export {
   Messages,
   type Message,
   type MessageEffect,
   type ReplyTo,
+  type TextDecoration,
   type MessageAddReactionResponse,
   type MessageUpdateParams,
   type MessageAddReactionParams,

@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as WebhooksAPI from './webhooks';
+import * as MessagesAPI from './messages';
 import * as Shared from './shared';
 import * as WebhookEventsAPI from './webhook-events';
 
@@ -376,28 +377,7 @@ export interface SchemasTextPartResponse {
   /**
    * Text decorations applied to character ranges in the value
    */
-  text_decorations?: Array<SchemasTextPartResponse.TextDecoration> | null;
-}
-
-export namespace SchemasTextPartResponse {
-  export interface TextDecoration {
-    /**
-     * Character range `[start, end)` in the `value` string where the decoration
-     * applies. `start` is inclusive, `end` is exclusive. _Characters are measured as
-     * UTF-16 code units. Most characters count as 1; some emoji count as 2._
-     */
-    range: Array<number>;
-
-    /**
-     * Animated text effect to apply. Mutually exclusive with `style`.
-     */
-    animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter';
-
-    /**
-     * Text style to apply. Mutually exclusive with `animation`.
-     */
-    style?: 'bold' | 'italic' | 'strikethrough' | 'underline';
-  }
+  text_decorations?: Array<MessagesAPI.TextDecoration> | null;
 }
 
 /**

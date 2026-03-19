@@ -14,11 +14,13 @@ Types:
 Types:
 
 - <code><a href="./src/resources/chats/chats.ts">Chat</a></code>
+- <code><a href="./src/resources/chats/chats.ts">LinkPart</a></code>
 - <code><a href="./src/resources/chats/chats.ts">MediaPart</a></code>
 - <code><a href="./src/resources/chats/chats.ts">MessageContent</a></code>
 - <code><a href="./src/resources/chats/chats.ts">TextPart</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatCreateResponse</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatUpdateResponse</a></code>
+- <code><a href="./src/resources/chats/chats.ts">ChatLeaveChatResponse</a></code>
 - <code><a href="./src/resources/chats/chats.ts">ChatSendVoicememoResponse</a></code>
 
 Methods:
@@ -26,6 +28,7 @@ Methods:
 - <code title="post /v3/chats">client.chats.<a href="./src/resources/chats/chats.ts">create</a>({ ...params }) -> ChatCreateResponse</code>
 - <code title="get /v3/chats/{chatId}">client.chats.<a href="./src/resources/chats/chats.ts">retrieve</a>(chatID) -> Chat</code>
 - <code title="put /v3/chats/{chatId}">client.chats.<a href="./src/resources/chats/chats.ts">update</a>(chatID, { ...params }) -> ChatUpdateResponse</code>
+- <code title="post /v3/chats/{chatId}/leave">client.chats.<a href="./src/resources/chats/chats.ts">leaveChat</a>(chatID) -> ChatLeaveChatResponse</code>
 - <code title="get /v3/chats">client.chats.<a href="./src/resources/chats/chats.ts">listChats</a>({ ...params }) -> ChatsListChatsPagination</code>
 - <code title="post /v3/chats/{chatId}/read">client.chats.<a href="./src/resources/chats/chats.ts">markAsRead</a>(chatID) -> void</code>
 - <code title="post /v3/chats/{chatId}/voicememo">client.chats.<a href="./src/resources/chats/chats.ts">sendVoicememo</a>(chatID, { ...params }) -> ChatSendVoicememoResponse</code>
@@ -69,6 +72,7 @@ Types:
 - <code><a href="./src/resources/messages.ts">Message</a></code>
 - <code><a href="./src/resources/messages.ts">MessageEffect</a></code>
 - <code><a href="./src/resources/messages.ts">ReplyTo</a></code>
+- <code><a href="./src/resources/messages.ts">TextDecoration</a></code>
 - <code><a href="./src/resources/messages.ts">MessageAddReactionResponse</a></code>
 
 Methods:
@@ -143,13 +147,13 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/capability.ts">CapabilityCheckiMessageResponse</a></code>
-- <code><a href="./src/resources/capability.ts">CapabilityCheckRCSResponse</a></code>
+- <code><a href="./src/resources/capability.ts">HandleCheck</a></code>
+- <code><a href="./src/resources/capability.ts">HandleCheckResponse</a></code>
 
 Methods:
 
-- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkiMessage</a>({ ...params }) -> CapabilityCheckiMessageResponse</code>
-- <code title="post /v3/capability/check_rcs">client.capability.<a href="./src/resources/capability.ts">checkRCS</a>({ ...params }) -> CapabilityCheckRCSResponse</code>
+- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkiMessage</a>({ ...params }) -> HandleCheckResponse</code>
+- <code title="post /v3/capability/check_rcs">client.capability.<a href="./src/resources/capability.ts">checkRCS</a>({ ...params }) -> HandleCheckResponse</code>
 
 # Webhooks
 
@@ -201,3 +205,16 @@ Types:
 Methods:
 
 - <code>client.webhooks.<a href="./src/resources/webhooks.ts">events</a>(body) -> void</code>
+
+# ContactCard
+
+Types:
+
+- <code><a href="./src/resources/contact-card.ts">SetContactCard</a></code>
+- <code><a href="./src/resources/contact-card.ts">ContactCardRetrieveResponse</a></code>
+
+Methods:
+
+- <code title="post /v3/contact_card">client.contactCard.<a href="./src/resources/contact-card.ts">create</a>({ ...params }) -> SetContactCard</code>
+- <code title="get /v3/contact_card">client.contactCard.<a href="./src/resources/contact-card.ts">retrieve</a>({ ...params }) -> ContactCardRetrieveResponse</code>
+- <code title="patch /v3/contact_card">client.contactCard.<a href="./src/resources/contact-card.ts">update</a>({ ...params }) -> SetContactCard</code>

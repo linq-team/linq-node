@@ -124,6 +124,32 @@ export class Chats extends APIResource {
   }
 
   /**
+   * Removes your phone number from a group chat. Once you leave, you will no longer
+   * receive messages from the group and all interaction endpoints (send message,
+   * typing, mark read, etc.) will return 409.
+   *
+   * A `participant.removed` webhook will fire once the leave has been processed.
+   *
+   * **Supported**
+   *
+   * - iMessage group chats with 4 or more active participants (including yourself)
+   *
+   * **Not supported**
+   *
+   * - DM (1-on-1) chats — use the chat directly to continue the conversation
+   *
+   * @example
+   * ```ts
+   * const response = await client.chats.leaveChat(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
+    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
+  }
+
+  /**
    * Retrieves a paginated list of chats for the authenticated partner.
    *
    * **Filtering:**
@@ -280,6 +306,22 @@ export interface Chat {
   service?: Shared.ServiceType | null;
 }
 
+export interface LinkPart {
+  /**
+   * Indicates this is a rich link preview part
+   */
+  type: 'link';
+
+  /**
+   * URL to send with a rich link preview. The recipient will see an inline card with
+   * the page's title, description, and preview image (when available).
+   *
+   * A `link` part must be the **only** part in the message. To send a URL as plain
+   * text (no preview card), use a `text` part instead.
+   */
+  value: string;
+}
+
 export interface MediaPart {
   /**
    * Indicates this is a media attachment part
@@ -364,7 +406,7 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<TextPart | MediaPart | MessageContent.LinkPart>;
+  parts: Array<TextPart | MediaPart | LinkPart>;
 
   /**
    * iMessage effect to apply to this message (screen or bubble effect)
@@ -386,24 +428,6 @@ export interface MessageContent {
    * Reply to another message to create a threaded conversation
    */
   reply_to?: MessagesAPI.ReplyTo;
-}
-
-export namespace MessageContent {
-  export interface LinkPart {
-    /**
-     * Indicates this is a rich link preview part
-     */
-    type: 'link';
-
-    /**
-     * URL to send with a rich link preview. The recipient will see an inline card with
-     * the page's title, description, and preview image (when available).
-     *
-     * A `link` part must be the **only** part in the message. To send a URL as plain
-     * text (no preview card), use a `text` part instead.
-     */
-    value: string;
-  }
 }
 
 export interface TextPart {
@@ -438,28 +462,7 @@ export interface TextPart {
    * **Note:** Text decorations only render for iMessage recipients. For SMS/RCS,
    * text decorations are not applied.
    */
-  text_decorations?: Array<TextPart.TextDecoration>;
-}
-
-export namespace TextPart {
-  export interface TextDecoration {
-    /**
-     * Character range `[start, end)` in the `value` string where the decoration
-     * applies. `start` is inclusive, `end` is exclusive. _Characters are measured as
-     * UTF-16 code units. Most characters count as 1; some emoji count as 2._
-     */
-    range: Array<number>;
-
-    /**
-     * Animated text effect to apply. Mutually exclusive with `style`.
-     */
-    animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter';
-
-    /**
-     * Text style to apply. Mutually exclusive with `animation`.
-     */
-    style?: 'bold' | 'italic' | 'strikethrough' | 'underline';
-  }
+  text_decorations?: Array<MessagesAPI.TextDecoration>;
 }
 
 /**
@@ -509,6 +512,14 @@ export interface ChatUpdateResponse {
   chat_id?: string;
 
   status?: string;
+}
+
+export interface ChatLeaveChatResponse {
+  message?: string;
+
+  status?: string;
+
+  trace_id?: string;
 }
 
 /**
@@ -682,11 +693,13 @@ Chats.Messages = Messages;
 export declare namespace Chats {
   export {
     type Chat as Chat,
+    type LinkPart as LinkPart,
     type MediaPart as MediaPart,
     type MessageContent as MessageContent,
     type TextPart as TextPart,
     type ChatCreateResponse as ChatCreateResponse,
     type ChatUpdateResponse as ChatUpdateResponse,
+    type ChatLeaveChatResponse as ChatLeaveChatResponse,
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
