@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.0 (2026-03-19)
+
+Full Changelog: [v0.8.1...v0.9.0](https://github.com/linq-team/linq-node/compare/v0.8.1...v0.9.0)
+
+### Features
+
+* BUG: support rich media ddscan in links ([f3f8952](https://github.com/linq-team/linq-node/commit/f3f8952f7024a5038070edf07cfe3728d674fbec))
+* PLT(Synapse): Add Content-Type validation for outbound presigned URL uploads ([343e03f](https://github.com/linq-team/linq-node/commit/343e03f0f63904c9c3c2f81ea9ebcfddd69c0e7d))
+
 ## 0.8.1 (2026-03-17)
 
 Full Changelog: [v0.8.0...v0.8.1](https://github.com/linq-team/linq-node/compare/v0.8.0...v0.8.1)
