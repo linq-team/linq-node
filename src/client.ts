@@ -860,13 +860,24 @@ export class LinqAPIV3 {
 
   chats: API.Chats = new API.Chats(this);
   /**
-   * Messages are individual text or multimedia communications within a chat thread.
+   * Messages are individual communications within a chat thread.
    *
-   * Messages can include text, attachments, special effects (like confetti or fireworks),
-   * and reactions. All messages are associated with a specific chat and sent from a
-   * phone number you own.
+   * Messages can include text, media attachments, rich link previews, special effects
+   * (like confetti or fireworks), and reactions. All messages are associated with a
+   * specific chat and sent from a phone number you own.
    *
    * Messages support delivery status tracking, read receipts, and editing capabilities.
+   *
+   * ## Rich Link Previews
+   *
+   * Send a URL as a `link` part to deliver it with a rich preview card showing the
+   * page's title, description, and image (when available). A `link` part must be the
+   * **only** part in the message — it cannot be combined with text or media parts.
+   * To send a URL without a preview card, include it in a `text` part instead.
+   *
+   * **Limitations:**
+   * - A `link` part cannot be combined with other parts in the same message.
+   * - Maximum URL length: 2,048 characters.
    *
    */
   messages: API.Messages = new API.Messages(this);

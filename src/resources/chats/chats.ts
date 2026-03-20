@@ -377,8 +377,15 @@ export interface MediaPart {
  */
 export interface MessageContent {
   /**
-   * Array of message parts. Each part can be either text or media. Parts are
-   * displayed in order. Text and media can be mixed.
+   * Array of message parts. Each part can be text, media, or link. Parts are
+   * displayed in order. Text and media can be mixed freely, but a `link` part must
+   * be the only part in the message.
+   *
+   * **Rich Link Previews:**
+   *
+   * - Use a `link` part to send a URL with a rich preview card
+   * - A `link` part must be the **only** part in the message
+   * - To send a URL as plain text (no preview), use a `text` part instead
    *
    * **Supported Media:**
    *
@@ -398,6 +405,8 @@ export interface MessageContent {
    *
    * **Validation Rules:**
    *
+   * - A `link` part must be the **only** part in the message. It cannot be combined
+   *   with text or media parts.
    * - Consecutive text parts are not allowed. Text parts must be separated by media
    *   parts. For example, [text, text] is invalid, but [text, media, text] is valid.
    * - Maximum of **100 parts** total.

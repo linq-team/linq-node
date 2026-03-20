@@ -51,7 +51,7 @@ export interface MessageEventV2 {
   /**
    * Message parts (text and/or media)
    */
-  parts: Array<SchemasTextPartResponse | SchemasMediaPartResponse>;
+  parts: Array<SchemasTextPartResponse | SchemasMediaPartResponse | MessageEventV2.SchemasLinkPartResponse>;
 
   /**
    * The handle that sent this message
@@ -121,6 +121,21 @@ export namespace MessageEventV2 {
   }
 
   /**
+   * A rich link preview part
+   */
+  export interface SchemasLinkPartResponse {
+    /**
+     * Indicates this is a rich link preview part
+     */
+    type: 'link';
+
+    /**
+     * The URL
+     */
+    value: string;
+  }
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   export interface ReplyTo {
@@ -173,7 +188,7 @@ export interface MessagePayload {
   /**
    * Message content parts (text and/or media)
    */
-  parts?: Array<SchemasTextPartResponse | SchemasMediaPartResponse>;
+  parts?: Array<SchemasTextPartResponse | SchemasMediaPartResponse | MessagePayload.SchemasLinkPartResponse>;
 
   /**
    * When the message was read
@@ -197,6 +212,21 @@ export interface MessagePayload {
 }
 
 export namespace MessagePayload {
+  /**
+   * A rich link preview part
+   */
+  export interface SchemasLinkPartResponse {
+    /**
+     * Indicates this is a rich link preview part
+     */
+    type: 'link';
+
+    /**
+     * The URL
+     */
+    value: string;
+  }
+
   /**
    * Reference to the message this is replying to
    */
