@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.12.0 (2026-03-20)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/linq-team/linq-node/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* add per-line phone number filtering for webhook subscriptions ([18003b4](https://github.com/linq-team/linq-node/commit/18003b4c7ca529ff7377431f4d61dca2905aa76f))
+
+
+### Bug Fixes
+
+* return link part type in API responses and webhooks ([d193949](https://github.com/linq-team/linq-node/commit/d1939493874f4bbd02e13ef9f54c9a4f9b4b4179))
+
 ## 0.11.0 (2026-03-19)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/linq-team/linq-node/compare/v0.10.0...v0.11.0)

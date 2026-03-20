@@ -28,6 +28,7 @@ describe('resource webhookSubscriptions', () => {
     const response = await client.webhookSubscriptions.create({
       subscribed_events: ['message.sent', 'message.delivered', 'message.read'],
       target_url: 'https://webhooks.example.com/linq/events',
+      phone_numbers: ['+12025551234', '+12025559876'],
     });
   });
 

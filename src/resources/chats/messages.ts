@@ -15,13 +15,24 @@ import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
 /**
- * Messages are individual text or multimedia communications within a chat thread.
+ * Messages are individual communications within a chat thread.
  *
- * Messages can include text, attachments, special effects (like confetti or fireworks),
- * and reactions. All messages are associated with a specific chat and sent from a
- * phone number you own.
+ * Messages can include text, media attachments, rich link previews, special effects
+ * (like confetti or fireworks), and reactions. All messages are associated with a
+ * specific chat and sent from a phone number you own.
  *
  * Messages support delivery status tracking, read receipts, and editing capabilities.
+ *
+ * ## Rich Link Previews
+ *
+ * Send a URL as a `link` part to deliver it with a rich preview card showing the
+ * page's title, description, and image (when available). A `link` part must be the
+ * **only** part in the message — it cannot be combined with text or media parts.
+ * To send a URL without a preview card, include it in a `text` part instead.
+ *
+ * **Limitations:**
+ * - A `link` part cannot be combined with other parts in the same message.
+ * - Maximum URL length: 2,048 characters.
  */
 export class Messages extends APIResource {
   /**
@@ -130,9 +141,9 @@ export interface SentMessage {
   is_read: boolean;
 
   /**
-   * Message parts in order (text and media)
+   * Message parts in order (text, media, and link)
    */
-  parts: Array<Shared.TextPartResponse | Shared.MediaPartResponse>;
+  parts: Array<Shared.TextPartResponse | Shared.MediaPartResponse | SentMessage.LinkPartResponse>;
 
   /**
    * When the message was sent
@@ -168,6 +179,28 @@ export interface SentMessage {
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
+}
+
+export namespace SentMessage {
+  /**
+   * A rich link preview part
+   */
+  export interface LinkPartResponse {
+    /**
+     * Reactions on this message part
+     */
+    reactions: Array<Shared.Reaction> | null;
+
+    /**
+     * Indicates this is a rich link preview part
+     */
+    type: 'link';
+
+    /**
+     * The URL
+     */
+    value: string;
+  }
 }
 
 /**
