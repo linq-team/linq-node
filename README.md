@@ -57,6 +57,20 @@ const chat: LinqAPIV3.ChatCreateResponse = await client.chats.create(params);
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
+### Importing types only
+
+If you only need types (e.g., for typing webhook payloads or shared interfaces) without any runtime code, use TypeScript's `import type` syntax. This is completely erased at compile time — no runtime code from the SDK is included in your bundle:
+
+<!-- prettier-ignore -->
+```ts
+import type {
+  Message,
+  Chat,
+  WebhookSubscription,
+  MessageReceivedV2026WebhookEvent,
+} from '@linqapp/sdk';
+```
+
 ## Handling errors
 
 When the library is unable to connect to the API,
