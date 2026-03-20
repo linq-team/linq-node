@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.1 (2026-03-20)
+
+Full Changelog: [v0.12.0...v0.12.1](https://github.com/linq-team/linq-node/compare/v0.12.0...v0.12.1)
+
+### Documentation
+
+* add import type guidance to README ([a21ee79](https://github.com/linq-team/linq-node/commit/a21ee796b79ad085e915ce48a8d8cd433f3f00e5))
+
 ## 0.12.0 (2026-03-20)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/linq-team/linq-node/compare/v0.11.0...v0.12.0)
