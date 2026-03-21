@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.2 (2026-03-21)
+
+Full Changelog: [v0.12.1...v0.12.2](https://github.com/linq-team/linq-node/compare/v0.12.1...v0.12.2)
+
 ## 0.12.1 (2026-03-20)
 
 Full Changelog: [v0.12.0...v0.12.1](https://github.com/linq-team/linq-node/compare/v0.12.0...v0.12.1)
