@@ -1751,7 +1751,14 @@ export interface PhoneNumberStatusUpdatedV2026WebhookEvent {
     | 'chat.group_icon_update_failed'
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
-    | 'phone_number.status_updated';
+    | 'phone_number.status_updated'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -3249,7 +3256,14 @@ export interface PhoneNumberStatusUpdatedV2025WebhookEvent {
     | 'chat.group_icon_update_failed'
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
-    | 'phone_number.status_updated';
+    | 'phone_number.status_updated'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
