@@ -412,7 +412,7 @@ export interface SchemasTextPartResponse {
 /**
  * Complete webhook payload for message.sent events (2026-02-03 format)
  */
-export interface MessageSentV2026WebhookEvent {
+export interface MessageSentV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -481,7 +481,7 @@ export interface MessageSentV2026WebhookEvent {
 /**
  * Complete webhook payload for message.received events (2026-02-03 format)
  */
-export interface MessageReceivedV2026WebhookEvent {
+export interface MessageReceivedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -550,7 +550,7 @@ export interface MessageReceivedV2026WebhookEvent {
 /**
  * Complete webhook payload for message.read events (2026-02-03 format)
  */
-export interface MessageReadV2026WebhookEvent {
+export interface MessageReadV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -619,7 +619,7 @@ export interface MessageReadV2026WebhookEvent {
 /**
  * Complete webhook payload for message.delivered events (2026-02-03 format)
  */
-export interface MessageDeliveredV2026WebhookEvent {
+export interface MessageDeliveredV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -688,7 +688,7 @@ export interface MessageDeliveredV2026WebhookEvent {
 /**
  * Complete webhook payload for message.failed events
  */
-export interface MessageFailedV2026WebhookEvent {
+export interface MessageFailedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -704,7 +704,7 @@ export interface MessageFailedV2026WebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    */
-  data: MessageFailedV2026WebhookEvent.Data;
+  data: MessageFailedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -738,7 +738,7 @@ export interface MessageFailedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace MessageFailedV2026WebhookEvent {
+export namespace MessageFailedV2026_02_03WebhookEvent {
   /**
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
@@ -775,7 +775,7 @@ export namespace MessageFailedV2026WebhookEvent {
 /**
  * Complete webhook payload for reaction.added events
  */
-export interface ReactionAddedV2026WebhookEvent {
+export interface ReactionAddedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -826,7 +826,7 @@ export interface ReactionAddedV2026WebhookEvent {
 /**
  * Complete webhook payload for reaction.removed events
  */
-export interface ReactionRemovedV2026WebhookEvent {
+export interface ReactionRemovedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -877,7 +877,7 @@ export interface ReactionRemovedV2026WebhookEvent {
 /**
  * Complete webhook payload for participant.added events
  */
-export interface ParticipantAddedV2026WebhookEvent {
+export interface ParticipantAddedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -891,7 +891,7 @@ export interface ParticipantAddedV2026WebhookEvent {
   /**
    * Payload for participant.added webhook events
    */
-  data: ParticipantAddedV2026WebhookEvent.Data;
+  data: ParticipantAddedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -925,7 +925,7 @@ export interface ParticipantAddedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ParticipantAddedV2026WebhookEvent {
+export namespace ParticipantAddedV2026_02_03WebhookEvent {
   /**
    * Payload for participant.added webhook events
    */
@@ -956,7 +956,7 @@ export namespace ParticipantAddedV2026WebhookEvent {
 /**
  * Complete webhook payload for participant.removed events
  */
-export interface ParticipantRemovedV2026WebhookEvent {
+export interface ParticipantRemovedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -970,7 +970,7 @@ export interface ParticipantRemovedV2026WebhookEvent {
   /**
    * Payload for participant.removed webhook events
    */
-  data: ParticipantRemovedV2026WebhookEvent.Data;
+  data: ParticipantRemovedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1004,7 +1004,7 @@ export interface ParticipantRemovedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ParticipantRemovedV2026WebhookEvent {
+export namespace ParticipantRemovedV2026_02_03WebhookEvent {
   /**
    * Payload for participant.removed webhook events
    */
@@ -1035,7 +1035,7 @@ export namespace ParticipantRemovedV2026WebhookEvent {
 /**
  * Complete webhook payload for chat.group_name_updated events
  */
-export interface ChatGroupNameUpdatedV2026WebhookEvent {
+export interface ChatGroupNameUpdatedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1049,7 +1049,7 @@ export interface ChatGroupNameUpdatedV2026WebhookEvent {
   /**
    * Payload for chat.group_name_updated webhook events
    */
-  data: ChatGroupNameUpdatedV2026WebhookEvent.Data;
+  data: ChatGroupNameUpdatedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1083,7 +1083,7 @@ export interface ChatGroupNameUpdatedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupNameUpdatedV2026WebhookEvent {
+export namespace ChatGroupNameUpdatedV2026_02_03WebhookEvent {
   /**
    * Payload for chat.group_name_updated webhook events
    */
@@ -1118,7 +1118,7 @@ export namespace ChatGroupNameUpdatedV2026WebhookEvent {
 /**
  * Complete webhook payload for chat.group_icon_updated events
  */
-export interface ChatGroupIconUpdatedV2026WebhookEvent {
+export interface ChatGroupIconUpdatedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1132,7 +1132,7 @@ export interface ChatGroupIconUpdatedV2026WebhookEvent {
   /**
    * Payload for chat.group_icon_updated webhook events
    */
-  data: ChatGroupIconUpdatedV2026WebhookEvent.Data;
+  data: ChatGroupIconUpdatedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1166,7 +1166,7 @@ export interface ChatGroupIconUpdatedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupIconUpdatedV2026WebhookEvent {
+export namespace ChatGroupIconUpdatedV2026_02_03WebhookEvent {
   /**
    * Payload for chat.group_icon_updated webhook events
    */
@@ -1201,7 +1201,7 @@ export namespace ChatGroupIconUpdatedV2026WebhookEvent {
 /**
  * Complete webhook payload for chat.group_name_update_failed events
  */
-export interface ChatGroupNameUpdateFailedV2026WebhookEvent {
+export interface ChatGroupNameUpdateFailedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1217,7 +1217,7 @@ export interface ChatGroupNameUpdateFailedV2026WebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    */
-  data: ChatGroupNameUpdateFailedV2026WebhookEvent.Data;
+  data: ChatGroupNameUpdateFailedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1251,7 +1251,7 @@ export interface ChatGroupNameUpdateFailedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupNameUpdateFailedV2026WebhookEvent {
+export namespace ChatGroupNameUpdateFailedV2026_02_03WebhookEvent {
   /**
    * Error details for chat.group_name_update_failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
@@ -1278,7 +1278,7 @@ export namespace ChatGroupNameUpdateFailedV2026WebhookEvent {
 /**
  * Complete webhook payload for chat.group_icon_update_failed events
  */
-export interface ChatGroupIconUpdateFailedV2026WebhookEvent {
+export interface ChatGroupIconUpdateFailedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1294,7 +1294,7 @@ export interface ChatGroupIconUpdateFailedV2026WebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    */
-  data: ChatGroupIconUpdateFailedV2026WebhookEvent.Data;
+  data: ChatGroupIconUpdateFailedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1328,7 +1328,7 @@ export interface ChatGroupIconUpdateFailedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupIconUpdateFailedV2026WebhookEvent {
+export namespace ChatGroupIconUpdateFailedV2026_02_03WebhookEvent {
   /**
    * Error details for chat.group_icon_update_failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
@@ -1355,7 +1355,7 @@ export namespace ChatGroupIconUpdateFailedV2026WebhookEvent {
 /**
  * Complete webhook payload for chat.created events
  */
-export interface ChatCreatedV2026WebhookEvent {
+export interface ChatCreatedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1370,7 +1370,7 @@ export interface ChatCreatedV2026WebhookEvent {
    * Payload for chat.created webhook events. Matches GET /v3/chats/{chatId}
    * response.
    */
-  data: ChatCreatedV2026WebhookEvent.Data;
+  data: ChatCreatedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1404,7 +1404,7 @@ export interface ChatCreatedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatCreatedV2026WebhookEvent {
+export namespace ChatCreatedV2026_02_03WebhookEvent {
   /**
    * Payload for chat.created webhook events. Matches GET /v3/chats/{chatId}
    * response.
@@ -1452,7 +1452,7 @@ export namespace ChatCreatedV2026WebhookEvent {
 /**
  * Complete webhook payload for chat.typing_indicator.started events
  */
-export interface ChatTypingIndicatorStartedV2026WebhookEvent {
+export interface ChatTypingIndicatorStartedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1466,7 +1466,7 @@ export interface ChatTypingIndicatorStartedV2026WebhookEvent {
   /**
    * Payload for chat.typing_indicator.started webhook events
    */
-  data: ChatTypingIndicatorStartedV2026WebhookEvent.Data;
+  data: ChatTypingIndicatorStartedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1500,7 +1500,7 @@ export interface ChatTypingIndicatorStartedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatTypingIndicatorStartedV2026WebhookEvent {
+export namespace ChatTypingIndicatorStartedV2026_02_03WebhookEvent {
   /**
    * Payload for chat.typing_indicator.started webhook events
    */
@@ -1515,7 +1515,7 @@ export namespace ChatTypingIndicatorStartedV2026WebhookEvent {
 /**
  * Complete webhook payload for chat.typing_indicator.stopped events
  */
-export interface ChatTypingIndicatorStoppedV2026WebhookEvent {
+export interface ChatTypingIndicatorStoppedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1529,7 +1529,7 @@ export interface ChatTypingIndicatorStoppedV2026WebhookEvent {
   /**
    * Payload for chat.typing_indicator.stopped webhook events
    */
-  data: ChatTypingIndicatorStoppedV2026WebhookEvent.Data;
+  data: ChatTypingIndicatorStoppedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1563,7 +1563,7 @@ export interface ChatTypingIndicatorStoppedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatTypingIndicatorStoppedV2026WebhookEvent {
+export namespace ChatTypingIndicatorStoppedV2026_02_03WebhookEvent {
   /**
    * Payload for chat.typing_indicator.stopped webhook events
    */
@@ -1578,7 +1578,7 @@ export namespace ChatTypingIndicatorStoppedV2026WebhookEvent {
 /**
  * Complete webhook payload for message.edited events (2026-02-03 format only)
  */
-export interface MessageEditedV2026WebhookEvent {
+export interface MessageEditedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1595,7 +1595,7 @@ export interface MessageEditedV2026WebhookEvent {
    * Describes which part of a message was edited and when. Only text parts can be
    * edited. Only available for subscriptions using `webhook_version: "2026-02-03"`.
    */
-  data: MessageEditedV2026WebhookEvent.Data;
+  data: MessageEditedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1629,7 +1629,7 @@ export interface MessageEditedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace MessageEditedV2026WebhookEvent {
+export namespace MessageEditedV2026_02_03WebhookEvent {
   /**
    * Payload for `message.edited` events (2026-02-03 format).
    *
@@ -1709,7 +1709,7 @@ export namespace MessageEditedV2026WebhookEvent {
 /**
  * Complete webhook payload for phone_number.status_updated events
  */
-export interface PhoneNumberStatusUpdatedV2026WebhookEvent {
+export interface PhoneNumberStatusUpdatedV2026_02_03WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1723,7 +1723,7 @@ export interface PhoneNumberStatusUpdatedV2026WebhookEvent {
   /**
    * Payload for phone_number.status_updated webhook events
    */
-  data: PhoneNumberStatusUpdatedV2026WebhookEvent.Data;
+  data: PhoneNumberStatusUpdatedV2026_02_03WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1778,7 +1778,7 @@ export interface PhoneNumberStatusUpdatedV2026WebhookEvent {
   webhook_version: string;
 }
 
-export namespace PhoneNumberStatusUpdatedV2026WebhookEvent {
+export namespace PhoneNumberStatusUpdatedV2026_02_03WebhookEvent {
   /**
    * Payload for phone_number.status_updated webhook events
    */
@@ -1808,7 +1808,7 @@ export namespace PhoneNumberStatusUpdatedV2026WebhookEvent {
 /**
  * Complete webhook payload for message.sent events (2025-01-01 format)
  */
-export interface MessageSentV2025WebhookEvent {
+export interface MessageSentV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1823,7 +1823,7 @@ export interface MessageSentV2025WebhookEvent {
    * Unified payload for message.sent and message.received webhook events (2025-01-01
    * format)
    */
-  data: MessageSentV2025WebhookEvent.Data;
+  data: MessageSentV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1857,7 +1857,7 @@ export interface MessageSentV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace MessageSentV2025WebhookEvent {
+export namespace MessageSentV2025_01_01WebhookEvent {
   /**
    * Unified payload for message.sent and message.received webhook events (2025-01-01
    * format)
@@ -1932,7 +1932,7 @@ export namespace MessageSentV2025WebhookEvent {
 /**
  * Complete webhook payload for message.received events (2025-01-01 format)
  */
-export interface MessageReceivedV2025WebhookEvent {
+export interface MessageReceivedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -1947,7 +1947,7 @@ export interface MessageReceivedV2025WebhookEvent {
    * Unified payload for message.sent and message.received webhook events (2025-01-01
    * format)
    */
-  data: MessageReceivedV2025WebhookEvent.Data;
+  data: MessageReceivedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -1981,7 +1981,7 @@ export interface MessageReceivedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace MessageReceivedV2025WebhookEvent {
+export namespace MessageReceivedV2025_01_01WebhookEvent {
   /**
    * Unified payload for message.sent and message.received webhook events (2025-01-01
    * format)
@@ -2056,7 +2056,7 @@ export namespace MessageReceivedV2025WebhookEvent {
 /**
  * Complete webhook payload for message.read events (2025-01-01 format)
  */
-export interface MessageReadV2025WebhookEvent {
+export interface MessageReadV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2071,7 +2071,7 @@ export interface MessageReadV2025WebhookEvent {
    * Payload for message.read webhook events (2025-01-01 format). Extends
    * MessageEvent with read_at and message_id.
    */
-  data: MessageReadV2025WebhookEvent.Data;
+  data: MessageReadV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2105,7 +2105,7 @@ export interface MessageReadV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace MessageReadV2025WebhookEvent {
+export namespace MessageReadV2025_01_01WebhookEvent {
   /**
    * Payload for message.read webhook events (2025-01-01 format). Extends
    * MessageEvent with read_at and message_id.
@@ -2190,7 +2190,7 @@ export namespace MessageReadV2025WebhookEvent {
 /**
  * Complete webhook payload for message.delivered events (2025-01-01 format)
  */
-export interface MessageDeliveredV2025WebhookEvent {
+export interface MessageDeliveredV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2205,7 +2205,7 @@ export interface MessageDeliveredV2025WebhookEvent {
    * Payload for message.delivered webhook events (2025-01-01 format). Extends
    * MessageEvent with delivered_at and message_id.
    */
-  data: MessageDeliveredV2025WebhookEvent.Data;
+  data: MessageDeliveredV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2239,7 +2239,7 @@ export interface MessageDeliveredV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace MessageDeliveredV2025WebhookEvent {
+export namespace MessageDeliveredV2025_01_01WebhookEvent {
   /**
    * Payload for message.delivered webhook events (2025-01-01 format). Extends
    * MessageEvent with delivered_at and message_id.
@@ -2324,7 +2324,7 @@ export namespace MessageDeliveredV2025WebhookEvent {
 /**
  * Complete webhook payload for message.failed events
  */
-export interface MessageFailedV2025WebhookEvent {
+export interface MessageFailedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2340,7 +2340,7 @@ export interface MessageFailedV2025WebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    */
-  data: MessageFailedV2025WebhookEvent.Data;
+  data: MessageFailedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2374,7 +2374,7 @@ export interface MessageFailedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace MessageFailedV2025WebhookEvent {
+export namespace MessageFailedV2025_01_01WebhookEvent {
   /**
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
@@ -2411,7 +2411,7 @@ export namespace MessageFailedV2025WebhookEvent {
 /**
  * Complete webhook payload for reaction.added events
  */
-export interface ReactionAddedV2025WebhookEvent {
+export interface ReactionAddedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2462,7 +2462,7 @@ export interface ReactionAddedV2025WebhookEvent {
 /**
  * Complete webhook payload for reaction.removed events
  */
-export interface ReactionRemovedV2025WebhookEvent {
+export interface ReactionRemovedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2513,7 +2513,7 @@ export interface ReactionRemovedV2025WebhookEvent {
 /**
  * Complete webhook payload for participant.added events
  */
-export interface ParticipantAddedV2025WebhookEvent {
+export interface ParticipantAddedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2527,7 +2527,7 @@ export interface ParticipantAddedV2025WebhookEvent {
   /**
    * Payload for participant.added webhook events
    */
-  data: ParticipantAddedV2025WebhookEvent.Data;
+  data: ParticipantAddedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2561,7 +2561,7 @@ export interface ParticipantAddedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ParticipantAddedV2025WebhookEvent {
+export namespace ParticipantAddedV2025_01_01WebhookEvent {
   /**
    * Payload for participant.added webhook events
    */
@@ -2592,7 +2592,7 @@ export namespace ParticipantAddedV2025WebhookEvent {
 /**
  * Complete webhook payload for participant.removed events
  */
-export interface ParticipantRemovedV2025WebhookEvent {
+export interface ParticipantRemovedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2606,7 +2606,7 @@ export interface ParticipantRemovedV2025WebhookEvent {
   /**
    * Payload for participant.removed webhook events
    */
-  data: ParticipantRemovedV2025WebhookEvent.Data;
+  data: ParticipantRemovedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2640,7 +2640,7 @@ export interface ParticipantRemovedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ParticipantRemovedV2025WebhookEvent {
+export namespace ParticipantRemovedV2025_01_01WebhookEvent {
   /**
    * Payload for participant.removed webhook events
    */
@@ -2671,7 +2671,7 @@ export namespace ParticipantRemovedV2025WebhookEvent {
 /**
  * Complete webhook payload for chat.group_name_updated events
  */
-export interface ChatGroupNameUpdatedV2025WebhookEvent {
+export interface ChatGroupNameUpdatedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2685,7 +2685,7 @@ export interface ChatGroupNameUpdatedV2025WebhookEvent {
   /**
    * Payload for chat.group_name_updated webhook events
    */
-  data: ChatGroupNameUpdatedV2025WebhookEvent.Data;
+  data: ChatGroupNameUpdatedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2719,7 +2719,7 @@ export interface ChatGroupNameUpdatedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupNameUpdatedV2025WebhookEvent {
+export namespace ChatGroupNameUpdatedV2025_01_01WebhookEvent {
   /**
    * Payload for chat.group_name_updated webhook events
    */
@@ -2754,7 +2754,7 @@ export namespace ChatGroupNameUpdatedV2025WebhookEvent {
 /**
  * Complete webhook payload for chat.group_icon_updated events
  */
-export interface ChatGroupIconUpdatedV2025WebhookEvent {
+export interface ChatGroupIconUpdatedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2768,7 +2768,7 @@ export interface ChatGroupIconUpdatedV2025WebhookEvent {
   /**
    * Payload for chat.group_icon_updated webhook events
    */
-  data: ChatGroupIconUpdatedV2025WebhookEvent.Data;
+  data: ChatGroupIconUpdatedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2802,7 +2802,7 @@ export interface ChatGroupIconUpdatedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupIconUpdatedV2025WebhookEvent {
+export namespace ChatGroupIconUpdatedV2025_01_01WebhookEvent {
   /**
    * Payload for chat.group_icon_updated webhook events
    */
@@ -2837,7 +2837,7 @@ export namespace ChatGroupIconUpdatedV2025WebhookEvent {
 /**
  * Complete webhook payload for chat.group_name_update_failed events
  */
-export interface ChatGroupNameUpdateFailedV2025WebhookEvent {
+export interface ChatGroupNameUpdateFailedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2853,7 +2853,7 @@ export interface ChatGroupNameUpdateFailedV2025WebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    */
-  data: ChatGroupNameUpdateFailedV2025WebhookEvent.Data;
+  data: ChatGroupNameUpdateFailedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2887,7 +2887,7 @@ export interface ChatGroupNameUpdateFailedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupNameUpdateFailedV2025WebhookEvent {
+export namespace ChatGroupNameUpdateFailedV2025_01_01WebhookEvent {
   /**
    * Error details for chat.group_name_update_failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
@@ -2914,7 +2914,7 @@ export namespace ChatGroupNameUpdateFailedV2025WebhookEvent {
 /**
  * Complete webhook payload for chat.group_icon_update_failed events
  */
-export interface ChatGroupIconUpdateFailedV2025WebhookEvent {
+export interface ChatGroupIconUpdateFailedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -2930,7 +2930,7 @@ export interface ChatGroupIconUpdateFailedV2025WebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    */
-  data: ChatGroupIconUpdateFailedV2025WebhookEvent.Data;
+  data: ChatGroupIconUpdateFailedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -2964,7 +2964,7 @@ export interface ChatGroupIconUpdateFailedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatGroupIconUpdateFailedV2025WebhookEvent {
+export namespace ChatGroupIconUpdateFailedV2025_01_01WebhookEvent {
   /**
    * Error details for chat.group_icon_update_failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
@@ -2991,7 +2991,7 @@ export namespace ChatGroupIconUpdateFailedV2025WebhookEvent {
 /**
  * Complete webhook payload for chat.created events
  */
-export interface ChatCreatedV2025WebhookEvent {
+export interface ChatCreatedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -3006,7 +3006,7 @@ export interface ChatCreatedV2025WebhookEvent {
    * Payload for chat.created webhook events. Matches GET /v3/chats/{chatId}
    * response.
    */
-  data: ChatCreatedV2025WebhookEvent.Data;
+  data: ChatCreatedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -3040,7 +3040,7 @@ export interface ChatCreatedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatCreatedV2025WebhookEvent {
+export namespace ChatCreatedV2025_01_01WebhookEvent {
   /**
    * Payload for chat.created webhook events. Matches GET /v3/chats/{chatId}
    * response.
@@ -3088,7 +3088,7 @@ export namespace ChatCreatedV2025WebhookEvent {
 /**
  * Complete webhook payload for chat.typing_indicator.started events
  */
-export interface ChatTypingIndicatorStartedV2025WebhookEvent {
+export interface ChatTypingIndicatorStartedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -3102,7 +3102,7 @@ export interface ChatTypingIndicatorStartedV2025WebhookEvent {
   /**
    * Payload for chat.typing_indicator.started webhook events
    */
-  data: ChatTypingIndicatorStartedV2025WebhookEvent.Data;
+  data: ChatTypingIndicatorStartedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -3136,7 +3136,7 @@ export interface ChatTypingIndicatorStartedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatTypingIndicatorStartedV2025WebhookEvent {
+export namespace ChatTypingIndicatorStartedV2025_01_01WebhookEvent {
   /**
    * Payload for chat.typing_indicator.started webhook events
    */
@@ -3151,7 +3151,7 @@ export namespace ChatTypingIndicatorStartedV2025WebhookEvent {
 /**
  * Complete webhook payload for chat.typing_indicator.stopped events
  */
-export interface ChatTypingIndicatorStoppedV2025WebhookEvent {
+export interface ChatTypingIndicatorStoppedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -3165,7 +3165,7 @@ export interface ChatTypingIndicatorStoppedV2025WebhookEvent {
   /**
    * Payload for chat.typing_indicator.stopped webhook events
    */
-  data: ChatTypingIndicatorStoppedV2025WebhookEvent.Data;
+  data: ChatTypingIndicatorStoppedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -3199,7 +3199,7 @@ export interface ChatTypingIndicatorStoppedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace ChatTypingIndicatorStoppedV2025WebhookEvent {
+export namespace ChatTypingIndicatorStoppedV2025_01_01WebhookEvent {
   /**
    * Payload for chat.typing_indicator.stopped webhook events
    */
@@ -3214,7 +3214,7 @@ export namespace ChatTypingIndicatorStoppedV2025WebhookEvent {
 /**
  * Complete webhook payload for phone_number.status_updated events
  */
-export interface PhoneNumberStatusUpdatedV2025WebhookEvent {
+export interface PhoneNumberStatusUpdatedV2025_01_01WebhookEvent {
   /**
    * API version for the webhook payload format
    */
@@ -3228,7 +3228,7 @@ export interface PhoneNumberStatusUpdatedV2025WebhookEvent {
   /**
    * Payload for phone_number.status_updated webhook events
    */
-  data: PhoneNumberStatusUpdatedV2025WebhookEvent.Data;
+  data: PhoneNumberStatusUpdatedV2025_01_01WebhookEvent.Data;
 
   /**
    * Unique identifier for this event (for deduplication)
@@ -3283,7 +3283,7 @@ export interface PhoneNumberStatusUpdatedV2025WebhookEvent {
   webhook_version: string;
 }
 
-export namespace PhoneNumberStatusUpdatedV2025WebhookEvent {
+export namespace PhoneNumberStatusUpdatedV2025_01_01WebhookEvent {
   /**
    * Payload for phone_number.status_updated webhook events
    */
@@ -3314,41 +3314,41 @@ export namespace PhoneNumberStatusUpdatedV2025WebhookEvent {
  * Complete webhook payload for message.sent events (2026-02-03 format)
  */
 export type EventsWebhookEvent =
-  | MessageSentV2026WebhookEvent
-  | MessageReceivedV2026WebhookEvent
-  | MessageReadV2026WebhookEvent
-  | MessageDeliveredV2026WebhookEvent
-  | MessageFailedV2026WebhookEvent
-  | ReactionAddedV2026WebhookEvent
-  | ReactionRemovedV2026WebhookEvent
-  | ParticipantAddedV2026WebhookEvent
-  | ParticipantRemovedV2026WebhookEvent
-  | ChatGroupNameUpdatedV2026WebhookEvent
-  | ChatGroupIconUpdatedV2026WebhookEvent
-  | ChatGroupNameUpdateFailedV2026WebhookEvent
-  | ChatGroupIconUpdateFailedV2026WebhookEvent
-  | ChatCreatedV2026WebhookEvent
-  | ChatTypingIndicatorStartedV2026WebhookEvent
-  | ChatTypingIndicatorStoppedV2026WebhookEvent
-  | MessageEditedV2026WebhookEvent
-  | PhoneNumberStatusUpdatedV2026WebhookEvent
-  | MessageSentV2025WebhookEvent
-  | MessageReceivedV2025WebhookEvent
-  | MessageReadV2025WebhookEvent
-  | MessageDeliveredV2025WebhookEvent
-  | MessageFailedV2025WebhookEvent
-  | ReactionAddedV2025WebhookEvent
-  | ReactionRemovedV2025WebhookEvent
-  | ParticipantAddedV2025WebhookEvent
-  | ParticipantRemovedV2025WebhookEvent
-  | ChatGroupNameUpdatedV2025WebhookEvent
-  | ChatGroupIconUpdatedV2025WebhookEvent
-  | ChatGroupNameUpdateFailedV2025WebhookEvent
-  | ChatGroupIconUpdateFailedV2025WebhookEvent
-  | ChatCreatedV2025WebhookEvent
-  | ChatTypingIndicatorStartedV2025WebhookEvent
-  | ChatTypingIndicatorStoppedV2025WebhookEvent
-  | PhoneNumberStatusUpdatedV2025WebhookEvent;
+  | MessageSentV2026_02_03WebhookEvent
+  | MessageReceivedV2026_02_03WebhookEvent
+  | MessageReadV2026_02_03WebhookEvent
+  | MessageDeliveredV2026_02_03WebhookEvent
+  | MessageFailedV2026_02_03WebhookEvent
+  | ReactionAddedV2026_02_03WebhookEvent
+  | ReactionRemovedV2026_02_03WebhookEvent
+  | ParticipantAddedV2026_02_03WebhookEvent
+  | ParticipantRemovedV2026_02_03WebhookEvent
+  | ChatGroupNameUpdatedV2026_02_03WebhookEvent
+  | ChatGroupIconUpdatedV2026_02_03WebhookEvent
+  | ChatGroupNameUpdateFailedV2026_02_03WebhookEvent
+  | ChatGroupIconUpdateFailedV2026_02_03WebhookEvent
+  | ChatCreatedV2026_02_03WebhookEvent
+  | ChatTypingIndicatorStartedV2026_02_03WebhookEvent
+  | ChatTypingIndicatorStoppedV2026_02_03WebhookEvent
+  | MessageEditedV2026_02_03WebhookEvent
+  | PhoneNumberStatusUpdatedV2026_02_03WebhookEvent
+  | MessageSentV2025_01_01WebhookEvent
+  | MessageReceivedV2025_01_01WebhookEvent
+  | MessageReadV2025_01_01WebhookEvent
+  | MessageDeliveredV2025_01_01WebhookEvent
+  | MessageFailedV2025_01_01WebhookEvent
+  | ReactionAddedV2025_01_01WebhookEvent
+  | ReactionRemovedV2025_01_01WebhookEvent
+  | ParticipantAddedV2025_01_01WebhookEvent
+  | ParticipantRemovedV2025_01_01WebhookEvent
+  | ChatGroupNameUpdatedV2025_01_01WebhookEvent
+  | ChatGroupIconUpdatedV2025_01_01WebhookEvent
+  | ChatGroupNameUpdateFailedV2025_01_01WebhookEvent
+  | ChatGroupIconUpdateFailedV2025_01_01WebhookEvent
+  | ChatCreatedV2025_01_01WebhookEvent
+  | ChatTypingIndicatorStartedV2025_01_01WebhookEvent
+  | ChatTypingIndicatorStoppedV2025_01_01WebhookEvent
+  | PhoneNumberStatusUpdatedV2025_01_01WebhookEvent;
 
 export declare namespace Webhooks {
   export {
@@ -3358,41 +3358,41 @@ export declare namespace Webhooks {
     type SchemasMediaPartResponse as SchemasMediaPartResponse,
     type SchemasMessageEffect as SchemasMessageEffect,
     type SchemasTextPartResponse as SchemasTextPartResponse,
-    type MessageSentV2026WebhookEvent as MessageSentV2026WebhookEvent,
-    type MessageReceivedV2026WebhookEvent as MessageReceivedV2026WebhookEvent,
-    type MessageReadV2026WebhookEvent as MessageReadV2026WebhookEvent,
-    type MessageDeliveredV2026WebhookEvent as MessageDeliveredV2026WebhookEvent,
-    type MessageFailedV2026WebhookEvent as MessageFailedV2026WebhookEvent,
-    type ReactionAddedV2026WebhookEvent as ReactionAddedV2026WebhookEvent,
-    type ReactionRemovedV2026WebhookEvent as ReactionRemovedV2026WebhookEvent,
-    type ParticipantAddedV2026WebhookEvent as ParticipantAddedV2026WebhookEvent,
-    type ParticipantRemovedV2026WebhookEvent as ParticipantRemovedV2026WebhookEvent,
-    type ChatGroupNameUpdatedV2026WebhookEvent as ChatGroupNameUpdatedV2026WebhookEvent,
-    type ChatGroupIconUpdatedV2026WebhookEvent as ChatGroupIconUpdatedV2026WebhookEvent,
-    type ChatGroupNameUpdateFailedV2026WebhookEvent as ChatGroupNameUpdateFailedV2026WebhookEvent,
-    type ChatGroupIconUpdateFailedV2026WebhookEvent as ChatGroupIconUpdateFailedV2026WebhookEvent,
-    type ChatCreatedV2026WebhookEvent as ChatCreatedV2026WebhookEvent,
-    type ChatTypingIndicatorStartedV2026WebhookEvent as ChatTypingIndicatorStartedV2026WebhookEvent,
-    type ChatTypingIndicatorStoppedV2026WebhookEvent as ChatTypingIndicatorStoppedV2026WebhookEvent,
-    type MessageEditedV2026WebhookEvent as MessageEditedV2026WebhookEvent,
-    type PhoneNumberStatusUpdatedV2026WebhookEvent as PhoneNumberStatusUpdatedV2026WebhookEvent,
-    type MessageSentV2025WebhookEvent as MessageSentV2025WebhookEvent,
-    type MessageReceivedV2025WebhookEvent as MessageReceivedV2025WebhookEvent,
-    type MessageReadV2025WebhookEvent as MessageReadV2025WebhookEvent,
-    type MessageDeliveredV2025WebhookEvent as MessageDeliveredV2025WebhookEvent,
-    type MessageFailedV2025WebhookEvent as MessageFailedV2025WebhookEvent,
-    type ReactionAddedV2025WebhookEvent as ReactionAddedV2025WebhookEvent,
-    type ReactionRemovedV2025WebhookEvent as ReactionRemovedV2025WebhookEvent,
-    type ParticipantAddedV2025WebhookEvent as ParticipantAddedV2025WebhookEvent,
-    type ParticipantRemovedV2025WebhookEvent as ParticipantRemovedV2025WebhookEvent,
-    type ChatGroupNameUpdatedV2025WebhookEvent as ChatGroupNameUpdatedV2025WebhookEvent,
-    type ChatGroupIconUpdatedV2025WebhookEvent as ChatGroupIconUpdatedV2025WebhookEvent,
-    type ChatGroupNameUpdateFailedV2025WebhookEvent as ChatGroupNameUpdateFailedV2025WebhookEvent,
-    type ChatGroupIconUpdateFailedV2025WebhookEvent as ChatGroupIconUpdateFailedV2025WebhookEvent,
-    type ChatCreatedV2025WebhookEvent as ChatCreatedV2025WebhookEvent,
-    type ChatTypingIndicatorStartedV2025WebhookEvent as ChatTypingIndicatorStartedV2025WebhookEvent,
-    type ChatTypingIndicatorStoppedV2025WebhookEvent as ChatTypingIndicatorStoppedV2025WebhookEvent,
-    type PhoneNumberStatusUpdatedV2025WebhookEvent as PhoneNumberStatusUpdatedV2025WebhookEvent,
+    type MessageSentV2026_02_03WebhookEvent as MessageSentV2026_02_03WebhookEvent,
+    type MessageReceivedV2026_02_03WebhookEvent as MessageReceivedV2026_02_03WebhookEvent,
+    type MessageReadV2026_02_03WebhookEvent as MessageReadV2026_02_03WebhookEvent,
+    type MessageDeliveredV2026_02_03WebhookEvent as MessageDeliveredV2026_02_03WebhookEvent,
+    type MessageFailedV2026_02_03WebhookEvent as MessageFailedV2026_02_03WebhookEvent,
+    type ReactionAddedV2026_02_03WebhookEvent as ReactionAddedV2026_02_03WebhookEvent,
+    type ReactionRemovedV2026_02_03WebhookEvent as ReactionRemovedV2026_02_03WebhookEvent,
+    type ParticipantAddedV2026_02_03WebhookEvent as ParticipantAddedV2026_02_03WebhookEvent,
+    type ParticipantRemovedV2026_02_03WebhookEvent as ParticipantRemovedV2026_02_03WebhookEvent,
+    type ChatGroupNameUpdatedV2026_02_03WebhookEvent as ChatGroupNameUpdatedV2026_02_03WebhookEvent,
+    type ChatGroupIconUpdatedV2026_02_03WebhookEvent as ChatGroupIconUpdatedV2026_02_03WebhookEvent,
+    type ChatGroupNameUpdateFailedV2026_02_03WebhookEvent as ChatGroupNameUpdateFailedV2026_02_03WebhookEvent,
+    type ChatGroupIconUpdateFailedV2026_02_03WebhookEvent as ChatGroupIconUpdateFailedV2026_02_03WebhookEvent,
+    type ChatCreatedV2026_02_03WebhookEvent as ChatCreatedV2026_02_03WebhookEvent,
+    type ChatTypingIndicatorStartedV2026_02_03WebhookEvent as ChatTypingIndicatorStartedV2026_02_03WebhookEvent,
+    type ChatTypingIndicatorStoppedV2026_02_03WebhookEvent as ChatTypingIndicatorStoppedV2026_02_03WebhookEvent,
+    type MessageEditedV2026_02_03WebhookEvent as MessageEditedV2026_02_03WebhookEvent,
+    type PhoneNumberStatusUpdatedV2026_02_03WebhookEvent as PhoneNumberStatusUpdatedV2026_02_03WebhookEvent,
+    type MessageSentV2025_01_01WebhookEvent as MessageSentV2025_01_01WebhookEvent,
+    type MessageReceivedV2025_01_01WebhookEvent as MessageReceivedV2025_01_01WebhookEvent,
+    type MessageReadV2025_01_01WebhookEvent as MessageReadV2025_01_01WebhookEvent,
+    type MessageDeliveredV2025_01_01WebhookEvent as MessageDeliveredV2025_01_01WebhookEvent,
+    type MessageFailedV2025_01_01WebhookEvent as MessageFailedV2025_01_01WebhookEvent,
+    type ReactionAddedV2025_01_01WebhookEvent as ReactionAddedV2025_01_01WebhookEvent,
+    type ReactionRemovedV2025_01_01WebhookEvent as ReactionRemovedV2025_01_01WebhookEvent,
+    type ParticipantAddedV2025_01_01WebhookEvent as ParticipantAddedV2025_01_01WebhookEvent,
+    type ParticipantRemovedV2025_01_01WebhookEvent as ParticipantRemovedV2025_01_01WebhookEvent,
+    type ChatGroupNameUpdatedV2025_01_01WebhookEvent as ChatGroupNameUpdatedV2025_01_01WebhookEvent,
+    type ChatGroupIconUpdatedV2025_01_01WebhookEvent as ChatGroupIconUpdatedV2025_01_01WebhookEvent,
+    type ChatGroupNameUpdateFailedV2025_01_01WebhookEvent as ChatGroupNameUpdateFailedV2025_01_01WebhookEvent,
+    type ChatGroupIconUpdateFailedV2025_01_01WebhookEvent as ChatGroupIconUpdateFailedV2025_01_01WebhookEvent,
+    type ChatCreatedV2025_01_01WebhookEvent as ChatCreatedV2025_01_01WebhookEvent,
+    type ChatTypingIndicatorStartedV2025_01_01WebhookEvent as ChatTypingIndicatorStartedV2025_01_01WebhookEvent,
+    type ChatTypingIndicatorStoppedV2025_01_01WebhookEvent as ChatTypingIndicatorStoppedV2025_01_01WebhookEvent,
+    type PhoneNumberStatusUpdatedV2025_01_01WebhookEvent as PhoneNumberStatusUpdatedV2025_01_01WebhookEvent,
     type EventsWebhookEvent as EventsWebhookEvent,
   };
 }
