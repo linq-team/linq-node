@@ -12,7 +12,7 @@ import { RequestOptions } from '../internal/request-options';
  * delivery status changes, reactions, typing indicators, and more.
  *
  * Failed deliveries (5xx, 429, network errors) are retried up to 10 times over
- * ~2 hours with exponential backoff. Each event includes a unique ID for
+ * ~25 minutes with exponential backoff. Each event includes a unique ID for
  * deduplication.
  *
  * ## Webhook Headers
@@ -129,7 +129,14 @@ export type WebhookEventType =
   | 'chat.group_icon_update_failed'
   | 'chat.typing_indicator.started'
   | 'chat.typing_indicator.stopped'
-  | 'phone_number.status_updated';
+  | 'phone_number.status_updated'
+  | 'call.initiated'
+  | 'call.ringing'
+  | 'call.answered'
+  | 'call.ended'
+  | 'call.failed'
+  | 'call.declined'
+  | 'call.no_answer';
 
 export interface WebhookEventListResponse {
   /**

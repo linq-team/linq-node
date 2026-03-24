@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.13.0 (2026-03-24)
+
+Full Changelog: [v0.12.2...v0.13.0](https://github.com/linq-team/linq-node/compare/v0.12.2...v0.13.0)
+
+### Features
+
+* BUG: soft delete messages in V3 ([103b592](https://github.com/linq-team/linq-node/commit/103b5921aa2496fc8ac8908c2c375670cab74773))
+* Pdev 6191 facetime orchestrator hub api service call service webhook ([91ffdae](https://github.com/linq-team/linq-node/commit/91ffdae7d99a024d4d0392da7a9bae436572e460))
+
+
+### Bug Fixes
+
+* **webhook:** add NATS BackOff retry + tighten squawk linter ([e32c182](https://github.com/linq-team/linq-node/commit/e32c182a2c073d2b4581929ccb426750797dd92e))
+
+
+### Chores
+
+* **internal:** update gitignore ([66925a3](https://github.com/linq-team/linq-node/commit/66925a373dea7610cb58b3bfe643fe9ea0651464))
+
 ## 0.12.2 (2026-03-21)
 
 Full Changelog: [v0.12.1...v0.12.2](https://github.com/linq-team/linq-node/compare/v0.12.1...v0.12.2)
