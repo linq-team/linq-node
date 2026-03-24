@@ -61,10 +61,7 @@ export class Messages extends APIResource {
 
   /**
    * Deletes a message from the Linq API only. This does NOT unsend or remove the
-   * message from the actual chat - recipients will still see the message.
-   *
-   * Use this endpoint to remove messages from your records and prevent them from
-   * appearing in API responses.
+   * message from the actual chat — recipients will still see the message.
    *
    * @example
    * ```ts
