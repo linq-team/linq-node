@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.0 (2026-03-24)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/linq-team/linq-node/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* Clean up mess in docs ([107202e](https://github.com/linq-team/linq-node/commit/107202ea7d267f68da3cea5befde82e91d576d69))
+
 ## 0.13.0 (2026-03-24)
 
 Full Changelog: [v0.12.2...v0.13.0](https://github.com/linq-team/linq-node/compare/v0.12.2...v0.13.0)
