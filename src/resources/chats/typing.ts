@@ -28,7 +28,8 @@ export class Typing extends APIResource {
   /**
    * Send a typing indicator to show that someone is typing in the chat.
    *
-   * **Note:** Group chat typing indicators are not currently supported.
+   * **Note:** Group chat typing indicators are not currently supported. Attempting
+   * to start a typing indicator in a group chat will return a `403` error.
    *
    * @example
    * ```ts
@@ -50,7 +51,8 @@ export class Typing extends APIResource {
    * **Note:** Typing indicators are automatically stopped when a message is sent, so
    * calling this endpoint after sending a message is unnecessary.
    *
-   * **Note:** Group chat typing indicators are not currently supported.
+   * **Note:** Group chat typing indicators are not currently supported. Attempting
+   * to stop a typing indicator in a group chat will return a `403` error.
    *
    * @example
    * ```ts
