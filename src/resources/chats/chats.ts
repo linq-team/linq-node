@@ -690,9 +690,19 @@ export interface ChatListChatsParams extends ListChatsPaginationParams {
 
 export interface ChatSendVoicememoParams {
   /**
-   * URL of the voice memo audio file. Must be a publicly accessible HTTPS URL.
+   * Reference to a voice memo file pre-uploaded via `POST /v3/attachments`. The file
+   * is already stored, so sends using this ID skip the download step.
+   *
+   * Either `voice_memo_url` or `attachment_id` must be provided, but not both.
    */
-  voice_memo_url: string;
+  attachment_id?: string;
+
+  /**
+   * URL of the voice memo audio file. Must be a publicly accessible HTTPS URL.
+   *
+   * Either `voice_memo_url` or `attachment_id` must be provided, but not both.
+   */
+  voice_memo_url?: string;
 }
 
 Chats.Participants = Participants;
