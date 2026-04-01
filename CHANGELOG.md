@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.15.0 (2026-04-01)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/linq-team/linq-node/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** fix webhook model ([afd1c46](https://github.com/linq-team/linq-node/commit/afd1c46adef96fa70919061219f5431d17c47350))
+* PLT(Synapse): Add attachment_id support and tests to voice memo endpoint ([a1564c5](https://github.com/linq-team/linq-node/commit/a1564c5610c2041d991ff9f630af1d4c1d45d52a))
+* Return 403 for group chat typing indicators ([539efd8](https://github.com/linq-team/linq-node/commit/539efd8ba92278fea1c7274af9541a44954ea136))
+
+
+### Bug Fixes
+
+* **internal:** gitignore generated `oidc` dir ([addc232](https://github.com/linq-team/linq-node/commit/addc23275ba8ecf42580b5c6e99f614879f2f91b))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([de73499](https://github.com/linq-team/linq-node/commit/de73499cb903d1a29f213408d28acc38a78edf74))
+
 ## 0.14.0 (2026-03-24)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/linq-team/linq-node/compare/v0.13.0...v0.14.0)
