@@ -1283,6 +1283,7 @@ export declare namespace LinqAPIV3 {
   };
 
   export type ChatHandle = API.ChatHandle;
+  export type LinkPartResponse = API.LinkPartResponse;
   export type MediaPartResponse = API.MediaPartResponse;
   export type Reaction = API.Reaction;
   export type ReactionType = API.ReactionType;
