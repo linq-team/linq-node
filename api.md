@@ -3,6 +3,7 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">ChatHandle</a></code>
+- <code><a href="./src/resources/shared.ts">LinkPartResponse</a></code>
 - <code><a href="./src/resources/shared.ts">MediaPartResponse</a></code>
 - <code><a href="./src/resources/shared.ts">Reaction</a></code>
 - <code><a href="./src/resources/shared.ts">ReactionType</a></code>

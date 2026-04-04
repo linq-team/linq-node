@@ -38,6 +38,26 @@ export interface ChatHandle {
 }
 
 /**
+ * A rich link preview part
+ */
+export interface LinkPartResponse {
+  /**
+   * Reactions on this message part
+   */
+  reactions: Array<Reaction> | null;
+
+  /**
+   * Indicates this is a rich link preview part
+   */
+  type: 'link';
+
+  /**
+   * The URL
+   */
+  value: string;
+}
+
+/**
  * A media attachment part
  */
 export interface MediaPartResponse {
