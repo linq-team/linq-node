@@ -199,7 +199,7 @@ export interface Message {
   /**
    * Message parts in order (text, media, and link)
    */
-  parts?: Array<Shared.TextPartResponse | Shared.MediaPartResponse | Message.LinkPartResponse> | null;
+  parts?: Array<Shared.TextPartResponse | Shared.MediaPartResponse | Shared.LinkPartResponse> | null;
 
   /**
    * Messaging service type
@@ -225,28 +225,6 @@ export interface Message {
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
-}
-
-export namespace Message {
-  /**
-   * A rich link preview part
-   */
-  export interface LinkPartResponse {
-    /**
-     * Reactions on this message part
-     */
-    reactions: Array<Shared.Reaction> | null;
-
-    /**
-     * Indicates this is a rich link preview part
-     */
-    type: 'link';
-
-    /**
-     * The URL
-     */
-    value: string;
-  }
 }
 
 /**

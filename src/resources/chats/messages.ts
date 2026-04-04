@@ -143,7 +143,7 @@ export interface SentMessage {
   /**
    * Message parts in order (text, media, and link)
    */
-  parts: Array<Shared.TextPartResponse | Shared.MediaPartResponse | SentMessage.LinkPartResponse>;
+  parts: Array<Shared.TextPartResponse | Shared.MediaPartResponse | Shared.LinkPartResponse>;
 
   /**
    * When the message was sent
@@ -179,28 +179,6 @@ export interface SentMessage {
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
-}
-
-export namespace SentMessage {
-  /**
-   * A rich link preview part
-   */
-  export interface LinkPartResponse {
-    /**
-     * Reactions on this message part
-     */
-    reactions: Array<Shared.Reaction> | null;
-
-    /**
-     * Indicates this is a rich link preview part
-     */
-    type: 'link';
-
-    /**
-     * The URL
-     */
-    value: string;
-  }
 }
 
 /**
