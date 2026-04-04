@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.0 (2026-04-04)
+
+Full Changelog: [v0.15.1...v0.16.0](https://github.com/linq-team/linq-node/compare/v0.15.1...v0.16.0)
+
+### Features
+
+* **api:** config cleanup ([ff28e0e](https://github.com/linq-team/linq-node/commit/ff28e0e2ccf8020f158299c645f58cc76badbb57))
+
 ## 0.15.1 (2026-04-01)
 
 Full Changelog: [v0.15.0...v0.15.1](https://github.com/linq-team/linq-node/compare/v0.15.0...v0.15.1)
