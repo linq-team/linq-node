@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.1 (2026-04-07)
+
+Full Changelog: [v0.16.0...v0.16.1](https://github.com/linq-team/linq-node/compare/v0.16.0...v0.16.1)
+
+### Bug Fixes
+
+* add SVG support to synapse attachments ([f50e954](https://github.com/linq-team/linq-node/commit/f50e954709037792e944e0343ceb776f522cc7f7))
+
 ## 0.16.0 (2026-04-04)
 
 Full Changelog: [v0.15.1...v0.16.0](https://github.com/linq-team/linq-node/compare/v0.15.1...v0.16.0)
