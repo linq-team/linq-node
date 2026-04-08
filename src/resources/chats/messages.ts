@@ -131,6 +131,11 @@ export interface SentMessage {
   id: string;
 
   /**
+   * When the message was created
+   */
+  created_at: string;
+
+  /**
    * Current delivery status of a message
    */
   delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'failed';
@@ -146,9 +151,9 @@ export interface SentMessage {
   parts: Array<Shared.TextPartResponse | Shared.MediaPartResponse | Shared.LinkPartResponse>;
 
   /**
-   * When the message was sent
+   * When the message was actually sent (null if still queued)
    */
-  sent_at: string;
+  sent_at: string | null;
 
   /**
    * When the message was delivered
