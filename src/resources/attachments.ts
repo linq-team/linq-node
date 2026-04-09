@@ -197,6 +197,10 @@ export class Attachments extends APIResource {
  * application/x-iwork-keynote-sffkey, application/epub+zip, application/zip,
  * application/x-gzip
  *
+ * **Transcoded on delivery:**
+ *
+ * - `audio/x-caf` — CAF files are transcoded to `audio/mp4` for delivery.
+ *
  * **Deprecated (accepted but transcoded):**
  *
  * - `audio/mp3` — Deprecated. Use `audio/mpeg` instead. Files sent as audio/mp3
@@ -328,6 +332,10 @@ export interface AttachmentRetrieveResponse {
    * application/x-iwork-keynote-sffkey, application/epub+zip, application/zip,
    * application/x-gzip
    *
+   * **Transcoded on delivery:**
+   *
+   * - `audio/x-caf` — CAF files are transcoded to `audio/mp4` for delivery.
+   *
    * **Deprecated (accepted but transcoded):**
    *
    * - `audio/mp3` — Deprecated. Use `audio/mpeg` instead. Files sent as audio/mp3
@@ -392,6 +400,10 @@ export interface AttachmentCreateParams {
    * application/x-iwork-pages-sffpages, application/x-iwork-numbers-sffnumbers,
    * application/x-iwork-keynote-sffkey, application/epub+zip, application/zip,
    * application/x-gzip
+   *
+   * **Transcoded on delivery:**
+   *
+   * - `audio/x-caf` — CAF files are transcoded to `audio/mp4` for delivery.
    *
    * **Deprecated (accepted but transcoded):**
    *
