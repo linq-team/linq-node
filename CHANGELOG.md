@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.16.2 (2026-04-09)
+
+Full Changelog: [v0.16.1...v0.16.2](https://github.com/linq-team/linq-node/compare/v0.16.1...v0.16.2)
+
+### Bug Fixes
+
+* **api-service:** add created_at and make sent_at nullable in SentMessage ([98ca7d9](https://github.com/linq-team/linq-node/commit/98ca7d95849f8520525aa03c43c94468653fb17d))
+* block SMS group participant changes and fix e2e test failures ([2f0e9eb](https://github.com/linq-team/linq-node/commit/2f0e9eb19e63c2c9e5ea86c1d41e7d32b39bcf6d))
+
+
+### Chores
+
+* **internal:** codegen related update ([878ea23](https://github.com/linq-team/linq-node/commit/878ea2329a5ade428dc8001059d1c3a1de7bfaaf))
+
 ## 0.16.1 (2026-04-07)
 
 Full Changelog: [v0.16.0...v0.16.1](https://github.com/linq-team/linq-node/compare/v0.16.0...v0.16.1)
