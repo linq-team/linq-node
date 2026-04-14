@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.3 (2026-04-14)
+
+Full Changelog: [v0.16.2...v0.16.3](https://github.com/linq-team/linq-node/compare/v0.16.2...v0.16.3)
+
+### Documentation
+
+* **openapi:** document typing indicator behavior and limitations ([efa2883](https://github.com/linq-team/linq-node/commit/efa28835343cb143c48a259518ea085bb1d79af2))
+
 ## 0.16.2 (2026-04-09)
 
 Full Changelog: [v0.16.1...v0.16.2](https://github.com/linq-team/linq-node/compare/v0.16.1...v0.16.2)
