@@ -47,6 +47,9 @@ export class Messages extends APIResource {
   /**
    * Edit the text content of a specific part of a previously sent message.
    *
+   * **Note:** A message can be edited up to 5 times, and only within 15 minutes of
+   * when it was originally sent.
+   *
    * @example
    * ```ts
    * const message = await client.messages.update(
