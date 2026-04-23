@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.4 (2026-04-20)
+
+Full Changelog: [v0.16.3...v0.16.4](https://github.com/linq-team/linq-node/compare/v0.16.3...v0.16.4)
+
+### Documentation
+
+* **api:** document edit message limits (BUG-7607) ([2e6f897](https://github.com/linq-team/linq-node/commit/2e6f89795cf0930b4ffb9ce48da82e2114a0fba2))
+
 ## 0.16.3 (2026-04-14)
 
 Full Changelog: [v0.16.2...v0.16.3](https://github.com/linq-team/linq-node/compare/v0.16.2...v0.16.3)
