@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.18.0 (2026-04-24)
+
+Full Changelog: [v0.17.0...v0.18.0](https://github.com/linq-team/linq-node/compare/v0.17.0...v0.18.0)
+
+### Features
+
+* make compliance webhooks (message.opt_out/opt_in) GA ([f3dbcbc](https://github.com/linq-team/linq-node/commit/f3dbcbc68da7593d0afe71a86ab4154d40e84e3d))
+
+
+### Documentation
+
+* **api:** add first outbound message link restriction note to POST /v3/chats ([868c76b](https://github.com/linq-team/linq-node/commit/868c76b21ea5f427c9fd66f6f394d08835f8542f))
+
 ## 0.17.0 (2026-04-23)
 
 Full Changelog: [v0.16.4...v0.17.0](https://github.com/linq-team/linq-node/compare/v0.16.4...v0.17.0)
