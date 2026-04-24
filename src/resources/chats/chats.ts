@@ -301,9 +301,31 @@ export interface Chat {
   updated_at: string;
 
   /**
+   * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+   */
+  health_score?: Chat.HealthScore | null;
+
+  /**
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
+}
+
+export namespace Chat {
+  /**
+   * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+   */
+  export interface HealthScore {
+    /**
+     * Short summary of what's affecting the score. Empty when the score is 100.
+     */
+    reason: string;
+
+    /**
+     * Health score from 0 to 100. Higher is healthier.
+     */
+    score: number;
+  }
 }
 
 export interface LinkPart {
@@ -514,6 +536,28 @@ export namespace ChatCreateResponse {
      * Messaging service type
      */
     service: Shared.ServiceType;
+
+    /**
+     * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+     */
+    health_score?: Chat.HealthScore | null;
+  }
+
+  export namespace Chat {
+    /**
+     * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+     */
+    export interface HealthScore {
+      /**
+       * Short summary of what's affecting the score. Empty when the score is 100.
+       */
+      reason: string;
+
+      /**
+       * Health score from 0 to 100. Higher is healthier.
+       */
+      score: number;
+    }
   }
 }
 

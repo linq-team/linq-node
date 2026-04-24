@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.17.0 (2026-04-23)
+
+Full Changelog: [v0.16.4...v0.17.0](https://github.com/linq-team/linq-node/compare/v0.16.4...v0.17.0)
+
+### Features
+
+* **api:** expose health_score on chats (BETA) ([0e9fb37](https://github.com/linq-team/linq-node/commit/0e9fb37dc04f19d7c511ff8eba8a044108416a45))
+
+
+### Chores
+
+* **internal:** more robust bootstrap script ([c04109f](https://github.com/linq-team/linq-node/commit/c04109f9c19282b7a2265787595ba352320cdedf))
+
 ## 0.16.4 (2026-04-20)
 
 Full Changelog: [v0.16.3...v0.16.4](https://github.com/linq-team/linq-node/compare/v0.16.3...v0.16.4)
