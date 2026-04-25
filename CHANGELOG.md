@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.18.1 (2026-04-25)
+
+Full Changelog: [v0.18.0...v0.18.1](https://github.com/linq-team/linq-node/compare/v0.18.0...v0.18.1)
+
+### Chores
+
+* configure new SDK language ([14cb42e](https://github.com/linq-team/linq-node/commit/14cb42e6030c8545e8b3f79b10bda99123a3bcf4))
+
 ## 0.18.0 (2026-04-24)
 
 Full Changelog: [v0.17.0...v0.18.0](https://github.com/linq-team/linq-node/compare/v0.17.0...v0.18.0)

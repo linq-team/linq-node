@@ -1,0 +1,47 @@
+{
+  "dxt_version": "0.2",
+  "name": "@linqapp/sdk-mcp",
+  "version": "0.18.1",
+  "description": "The official MCP Server for the Linq API V3 API",
+  "author": {
+    "name": "Linq API V3",
+    "email": "support@linq.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linq-team/linq-node.git"
+  },
+  "homepage": "https://github.com/linq-team/linq-node/tree/main/packages/mcp-server#readme",
+  "documentation": "https://apidocs.linqapp.com",
+  "server": {
+    "type": "node",
+    "entry_point": "index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/index.js"
+      ],
+      "env": {
+        "LINQ_API_V3_API_KEY": "${user_config.LINQ_API_V3_API_KEY}"
+      }
+    }
+  },
+  "user_config": {
+    "LINQ_API_V3_API_KEY": {
+      "title": "api_key",
+      "description": "Bearer token authentication. Include your API token in the Authorization header.\n\nFormat: `Authorization: Bearer <your-token>`\n",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "tools": [],
+  "tools_generated": true,
+  "compatibility": {
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "keywords": [
+    "api"
+  ]
+}
