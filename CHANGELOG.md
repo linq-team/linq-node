@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.19.0 (2026-04-26)
+
+Full Changelog: [v0.18.1...v0.19.0](https://github.com/linq-team/linq-node/compare/v0.18.1...v0.19.0)
+
+### Features
+
+* **api:** update docs link ([b303d22](https://github.com/linq-team/linq-node/commit/b303d229dd783b29db72b55d40f7190304ec938b))
+
 ## 0.18.1 (2026-04-25)
 
 Full Changelog: [v0.18.0...v0.18.1](https://github.com/linq-team/linq-node/compare/v0.18.0...v0.18.1)
