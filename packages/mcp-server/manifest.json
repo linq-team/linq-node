@@ -12,7 +12,7 @@
     "url": "git+https://github.com/linq-team/linq-node.git"
   },
   "homepage": "https://github.com/linq-team/linq-node/tree/main/packages/mcp-server#readme",
-  "documentation": "https://apidocs.linqapp.com",
+  "documentation": "https://docs.linqapp.com",
   "server": {
     "type": "node",
     "entry_point": "index.js",
