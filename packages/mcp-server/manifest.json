@@ -1,7 +1,7 @@
 {
   "dxt_version": "0.2",
   "name": "@linqapp/sdk-mcp",
-  "version": "0.18.1",
+  "version": "0.19.0",
   "description": "The official MCP Server for the Linq API V3 API",
   "author": {
     "name": "Linq API V3",
