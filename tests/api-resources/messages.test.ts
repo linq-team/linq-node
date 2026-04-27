@@ -74,7 +74,7 @@ describe('resource messages', () => {
     const response = await client.messages.addReaction('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
       operation: 'add',
       type: 'love',
-      custom_emoji: '😍',
+      custom_emoji: 'custom_emoji',
       part_index: 1,
     });
   });

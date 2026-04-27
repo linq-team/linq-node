@@ -320,7 +320,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.linqapp.com/api/partner/v3/chats/$CHAT_ID/voicememo \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY" \\\n    -d \'{\n          "attachment_id": "550e8400-e29b-41d4-a716-446655440000",\n          "voice_memo_url": "https://example.com/voice-memo.m4a"\n        }\'',
+          'curl https://api.linqapp.com/api/partner/v3/chats/$CHAT_ID/voicememo \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY" \\\n    -d \'{\n          "voice_memo_url": "https://example.com/voice-memo.m4a"\n        }\'',
       },
       python: {
         method: 'chats.send_voicememo',
@@ -679,7 +679,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.linqapp.com/api/partner/v3/messages/$MESSAGE_ID/reactions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY" \\\n    -d \'{\n          "operation": "add",\n          "type": "love",\n          "custom_emoji": "😍",\n          "part_index": 1\n        }\'',
+          'curl https://api.linqapp.com/api/partner/v3/messages/$MESSAGE_ID/reactions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY" \\\n    -d \'{\n          "operation": "add",\n          "type": "love",\n          "part_index": 1\n        }\'',
       },
       python: {
         method: 'messages.add_reaction',
