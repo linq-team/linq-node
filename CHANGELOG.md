@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.20.0 (2026-04-28)
+
+Full Changelog: [v0.19.0...v0.20.0](https://github.com/linq-team/linq-node/compare/v0.19.0...v0.20.0)
+
+### Features
+
+* support setting headers via env ([5c37041](https://github.com/linq-team/linq-node/commit/5c3704140d98bdef65f9022c287317d6cc1b0ff9))
+
+
+### Bug Fixes
+
+* **openapi:** enforce mutual exclusivity constraints on reaction and voice memo schemas ([949f01d](https://github.com/linq-team/linq-node/commit/949f01d6525ea830a24fb27c0ff666ea7d1a7e2a))
+
+
+### Chores
+
+* **internal:** codegen related update ([4e43abb](https://github.com/linq-team/linq-node/commit/4e43abb00444e2e62e66418857ddc7ff53333143))
+* restructure docs search code ([9e1820b](https://github.com/linq-team/linq-node/commit/9e1820bc4cab025b0079fdf30a57a9b23b8132f7))
+
 ## 0.19.0 (2026-04-26)
 
 Full Changelog: [v0.18.1...v0.19.0](https://github.com/linq-team/linq-node/compare/v0.18.1...v0.19.0)
