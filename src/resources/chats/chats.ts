@@ -312,7 +312,8 @@ export interface Chat {
   updated_at: string;
 
   /**
-   * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+   * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+   * when a score isn't available yet. Scoring may change during beta.
    */
   health_score?: Chat.HealthScore | null;
 
@@ -324,7 +325,8 @@ export interface Chat {
 
 export namespace Chat {
   /**
-   * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+   * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+   * when a score isn't available yet. Scoring may change during beta.
    */
   export interface HealthScore {
     /**
@@ -549,14 +551,16 @@ export namespace ChatCreateResponse {
     service: Shared.ServiceType;
 
     /**
-     * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+     * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+     * when a score isn't available yet. Scoring may change during beta.
      */
     health_score?: Chat.HealthScore | null;
   }
 
   export namespace Chat {
     /**
-     * **[BETA]** Health assessment for a chat. Higher `score` means a healthier chat.
+     * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+     * when a score isn't available yet. Scoring may change during beta.
      */
     export interface HealthScore {
       /**

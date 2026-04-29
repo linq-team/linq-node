@@ -73,6 +73,12 @@ export interface MessageEventV2 {
   effect?: SchemasMessageEffect | null;
 
   /**
+   * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+   * when a score isn't available yet. Scoring may change during beta.
+   */
+  health_score?: MessageEventV2.HealthScore | null;
+
+  /**
    * Idempotency key for deduplication of outbound messages.
    */
   idempotency_key?: string | null;
@@ -132,6 +138,22 @@ export namespace MessageEventV2 {
      * The URL
      */
     value: string;
+  }
+
+  /**
+   * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+   * when a score isn't available yet. Scoring may change during beta.
+   */
+  export interface HealthScore {
+    /**
+     * Short summary of what's affecting the score. Empty when the score is 100.
+     */
+    reason: string;
+
+    /**
+     * Health score from 0 to 100. Higher is healthier.
+     */
+    score: number;
   }
 
   /**
