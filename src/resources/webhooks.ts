@@ -109,6 +109,12 @@ export namespace MessageEventV2 {
     id: string;
 
     /**
+     * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+     * when a score isn't available yet. Scoring may change during beta.
+     */
+    health_score?: Chat.HealthScore | null;
+
+    /**
      * Whether this is a group chat
      */
     is_group?: boolean | null;
@@ -117,6 +123,24 @@ export namespace MessageEventV2 {
      * Your phone number's handle. Always has is_me=true.
      */
     owner_handle?: Shared.ChatHandle | null;
+  }
+
+  export namespace Chat {
+    /**
+     * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
+     * when a score isn't available yet. Scoring may change during beta.
+     */
+    export interface HealthScore {
+      /**
+       * Short summary of what's affecting the score. Empty when the score is 100.
+       */
+      reason: string;
+
+      /**
+       * Health score from 0 to 100. Higher is healthier.
+       */
+      score: number;
+    }
   }
 
   /**
@@ -1739,8 +1763,6 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'message.delivered'
     | 'message.failed'
     | 'message.edited'
-    | 'message.opt_out'
-    | 'message.opt_in'
     | 'reaction.added'
     | 'reaction.removed'
     | 'participant.added'
