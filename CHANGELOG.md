@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.21.0 (2026-04-30)
+
+Full Changelog: [v0.20.0...v0.21.0](https://github.com/linq-team/linq-node/compare/v0.20.0...v0.21.0)
+
+### Features
+
+* [PoC] sync risk lookup on message.received via NATS req/reply ([bacc070](https://github.com/linq-team/linq-node/commit/bacc070999eab6a1fb503372e0b91616dfbf4889))
+* **webhooks:** nest health_score under chat (PLT-540) + remove standalone opt_out/opt_in webhooks ([300066b](https://github.com/linq-team/linq-node/commit/300066b81096a54cb7d3c3db1b6db6f98b0528d3))
+
+
+### Chores
+
+* avoid formatting file that gets changed during releases ([16cf782](https://github.com/linq-team/linq-node/commit/16cf78284b247f5796feedc2ea486764663c5d96))
+* **format:** run eslint and prettier separately ([45ec4fc](https://github.com/linq-team/linq-node/commit/45ec4fcd049a73d0494491f56637a8eb1bb2620f))
+
 ## 0.20.0 (2026-04-28)
 
 Full Changelog: [v0.19.0...v0.20.0](https://github.com/linq-team/linq-node/compare/v0.19.0...v0.20.0)
