@@ -140,6 +140,11 @@ export namespace MessageEventV2 {
        * Health score from 0 to 100. Higher is healthier.
        */
       score: number;
+
+      /**
+       * When this health score was last computed.
+       */
+      updated_at: string;
     }
   }
 
