@@ -327,20 +327,6 @@ export interface Chat {
   updated_at: string;
 
   /**
-   * @deprecated **[BETA — DEPRECATED]** Legacy health assessment for a chat. Use
-   * `health_status` instead — it's the long-term contract.
-   *
-   * Higher `score` is healthier. `null` when a score isn't available yet. Low health
-   * scores across multiple chats increase risk of line flagging. Scoring model may
-   * change during beta. This field will be removed in a future release; partners on
-   * new integrations should switch on `health_status.status`.
-   *
-   * See the [Chat Health guide](/guides/chats/chat-health) for what we score on and
-   * how it relates to line health.
-   */
-  health_score?: Chat.HealthScore | null;
-
-  /**
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
@@ -375,35 +361,6 @@ export namespace Chat {
 
     /**
      * When this status last changed.
-     */
-    updated_at: string;
-  }
-
-  /**
-   * @deprecated **[BETA — DEPRECATED]** Legacy health assessment for a chat. Use
-   * `health_status` instead — it's the long-term contract.
-   *
-   * Higher `score` is healthier. `null` when a score isn't available yet. Low health
-   * scores across multiple chats increase risk of line flagging. Scoring model may
-   * change during beta. This field will be removed in a future release; partners on
-   * new integrations should switch on `health_status.status`.
-   *
-   * See the [Chat Health guide](/guides/chats/chat-health) for what we score on and
-   * how it relates to line health.
-   */
-  export interface HealthScore {
-    /**
-     * Short summary of what's affecting the score. Empty when the score is 100.
-     */
-    reason: string;
-
-    /**
-     * Health score from 0 to 100. Higher is healthier.
-     */
-    score: number;
-
-    /**
-     * When this health score was last computed.
      */
     updated_at: string;
   }
@@ -632,20 +589,6 @@ export namespace ChatCreateResponse {
      * Messaging service type
      */
     service: Shared.ServiceType;
-
-    /**
-     * @deprecated **[BETA — DEPRECATED]** Legacy health assessment for a chat. Use
-     * `health_status` instead — it's the long-term contract.
-     *
-     * Higher `score` is healthier. `null` when a score isn't available yet. Low health
-     * scores across multiple chats increase risk of line flagging. Scoring model may
-     * change during beta. This field will be removed in a future release; partners on
-     * new integrations should switch on `health_status.status`.
-     *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what we score on and
-     * how it relates to line health.
-     */
-    health_score?: Chat.HealthScore | null;
   }
 
   export namespace Chat {
@@ -677,35 +620,6 @@ export namespace ChatCreateResponse {
 
       /**
        * When this status last changed.
-       */
-      updated_at: string;
-    }
-
-    /**
-     * @deprecated **[BETA — DEPRECATED]** Legacy health assessment for a chat. Use
-     * `health_status` instead — it's the long-term contract.
-     *
-     * Higher `score` is healthier. `null` when a score isn't available yet. Low health
-     * scores across multiple chats increase risk of line flagging. Scoring model may
-     * change during beta. This field will be removed in a future release; partners on
-     * new integrations should switch on `health_status.status`.
-     *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what we score on and
-     * how it relates to line health.
-     */
-    export interface HealthScore {
-      /**
-       * Short summary of what's affecting the score. Empty when the score is 100.
-       */
-      reason: string;
-
-      /**
-       * Health score from 0 to 100. Higher is healthier.
-       */
-      score: number;
-
-      /**
-       * When this health score was last computed.
        */
       updated_at: string;
     }
