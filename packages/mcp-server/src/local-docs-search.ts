@@ -725,7 +725,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.linqapp.com/api/partner/v3/messages/$MESSAGE_ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY" \\\n    -d \'{\n          "text": "This is the edited message content"\n        }\'',
+          'curl https://api.linqapp.com/api/partner/v3/messages/$MESSAGE_ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY" \\\n    -d \'{\n          "text": "This is the edited message content",\n          "part_index": 0\n        }\'',
       },
     },
   },
