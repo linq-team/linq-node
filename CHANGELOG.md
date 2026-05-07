@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.1 (2026-05-07)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/linq-team/linq-node/compare/v0.22.0...v0.22.1)
+
+### Documentation
+
+* update http mcp docs ([9e0eddb](https://github.com/linq-team/linq-node/commit/9e0eddbeee0716060750c7d575ad86c7d829df5a))
+
 ## 0.22.0 (2026-05-07)
 
 Full Changelog: [v0.21.0...v0.22.0](https://github.com/linq-team/linq-node/compare/v0.21.0...v0.22.0)
