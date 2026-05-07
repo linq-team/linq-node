@@ -297,6 +297,21 @@ export interface Chat {
   handles: Array<Shared.ChatHandle>;
 
   /**
+   * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+   * and may shift based on engagement and delivery signals on the conversation. Many
+   * `at_risk` or `critical` chats on a single line increase the risk of line
+   * flagging.
+   *
+   * Switch on `status` to gate sends or surface line health in your UI — the enum is
+   * the long-term contract. Each status carries a `doc_url` that deep-links to the
+   * relevant section of the Chat Health guide.
+   *
+   * See the [Chat Health guide](/guides/chats/chat-health) for what each status
+   * means and how to react.
+   */
+  health_status: Chat.HealthStatus;
+
+  /**
    * Whether the chat is archived
    */
   is_archived: boolean;
@@ -312,12 +327,6 @@ export interface Chat {
   updated_at: string;
 
   /**
-   * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
-   * when a score isn't available yet. Scoring may change during beta.
-   */
-  health_score?: Chat.HealthScore | null;
-
-  /**
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
@@ -325,19 +334,35 @@ export interface Chat {
 
 export namespace Chat {
   /**
-   * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
-   * when a score isn't available yet. Scoring may change during beta.
+   * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+   * and may shift based on engagement and delivery signals on the conversation. Many
+   * `at_risk` or `critical` chats on a single line increase the risk of line
+   * flagging.
+   *
+   * Switch on `status` to gate sends or surface line health in your UI — the enum is
+   * the long-term contract. Each status carries a `doc_url` that deep-links to the
+   * relevant section of the Chat Health guide.
+   *
+   * See the [Chat Health guide](/guides/chats/chat-health) for what each status
+   * means and how to react.
    */
-  export interface HealthScore {
+  export interface HealthStatus {
     /**
-     * Short summary of what's affecting the score. Empty when the score is 100.
+     * Deep-link to the relevant section of the Chat Health guide for this status.
      */
-    reason: string;
+    doc_url: string;
 
     /**
-     * Health score from 0 to 100. Higher is healthier.
+     * Current health bucket for the chat. See the
+     * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
+     * to react. `doc_url` deep-links to the relevant section.
      */
-    score: number;
+    status: 'healthy' | 'at_risk' | 'critical' | 'opted_out';
+
+    /**
+     * When this status last changed.
+     */
+    updated_at: string;
   }
 }
 
@@ -536,6 +561,21 @@ export namespace ChatCreateResponse {
     handles: Array<Shared.ChatHandle>;
 
     /**
+     * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+     * and may shift based on engagement and delivery signals on the conversation. Many
+     * `at_risk` or `critical` chats on a single line increase the risk of line
+     * flagging.
+     *
+     * Switch on `status` to gate sends or surface line health in your UI — the enum is
+     * the long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide.
+     *
+     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
+     * means and how to react.
+     */
+    health_status: Chat.HealthStatus;
+
+    /**
      * Whether this is a group chat
      */
     is_group: boolean;
@@ -549,29 +589,39 @@ export namespace ChatCreateResponse {
      * Messaging service type
      */
     service: Shared.ServiceType;
-
-    /**
-     * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
-     * when a score isn't available yet. Scoring may change during beta.
-     */
-    health_score?: Chat.HealthScore | null;
   }
 
   export namespace Chat {
     /**
-     * **[BETA]** Health assessment for a chat. Higher `score` is healthier. `null`
-     * when a score isn't available yet. Scoring may change during beta.
+     * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+     * and may shift based on engagement and delivery signals on the conversation. Many
+     * `at_risk` or `critical` chats on a single line increase the risk of line
+     * flagging.
+     *
+     * Switch on `status` to gate sends or surface line health in your UI — the enum is
+     * the long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide.
+     *
+     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
+     * means and how to react.
      */
-    export interface HealthScore {
+    export interface HealthStatus {
       /**
-       * Short summary of what's affecting the score. Empty when the score is 100.
+       * Deep-link to the relevant section of the Chat Health guide for this status.
        */
-      reason: string;
+      doc_url: string;
 
       /**
-       * Health score from 0 to 100. Higher is healthier.
+       * Current health bucket for the chat. See the
+       * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
+       * to react. `doc_url` deep-links to the relevant section.
        */
-      score: number;
+      status: 'healthy' | 'at_risk' | 'critical' | 'opted_out';
+
+      /**
+       * When this status last changed.
+       */
+      updated_at: string;
     }
   }
 }

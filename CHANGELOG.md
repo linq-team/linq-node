@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.22.0 (2026-05-07)
+
+Full Changelog: [v0.21.0...v0.22.0](https://github.com/linq-team/linq-node/compare/v0.21.0...v0.22.0)
+
+### Features
+
+* **chat-service:** expose health_score.updated_at on chat reads + webhooks ([afc2416](https://github.com/linq-team/linq-node/commit/afc2416ad75b6300ebf8c0e06049e910057cce0c))
+* remove health_score from synapse — health_status is the contract ([96d4732](https://github.com/linq-team/linq-node/commit/96d473217ff46b765302950395e67942aa9dcd37))
+
+
+### Bug Fixes
+
+* **chat-service:** stamp health_status from risk-service sync reply ([5d4a725](https://github.com/linq-team/linq-node/commit/5d4a725ccd20ca575c01b349e3c004363c154f9b))
+
+
+### Documentation
+
+* **openapi:** add HealthStatus [BETA] + deprecate HealthScore ([6375085](https://github.com/linq-team/linq-node/commit/6375085333663f2f7a652d4075bc0d57d5696e68))
+* **openapi:** add named examples to unblock docs OpExample ([698268c](https://github.com/linq-team/linq-node/commit/698268cc261fe523338ecddb37b87bf896f59bd5))
+
 ## 0.21.0 (2026-04-30)
 
 Full Changelog: [v0.20.0...v0.21.0](https://github.com/linq-team/linq-node/compare/v0.20.0...v0.21.0)
