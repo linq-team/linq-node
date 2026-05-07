@@ -28,11 +28,11 @@ export class ContactCard extends APIResource {
    * @example
    * ```ts
    * const setContactCard = await client.contactCard.create({
-   *   first_name: 'John',
+   *   first_name: 'Acme',
    *   phone_number: '+15551234567',
    *   image_url:
    *     'https://cdn.linqapp.com/contact-card/example.jpg',
-   *   last_name: 'Doe',
+   *   last_name: 'Support',
    * });
    * ```
    */
