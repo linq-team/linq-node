@@ -10,7 +10,7 @@ const client = new LinqAPIV3({
 describe('resource contactCard', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.contactCard.create({ first_name: 'John', phone_number: '+15551234567' });
+    const responsePromise = client.contactCard.create({ first_name: 'Acme', phone_number: '+15551234567' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,10 +23,10 @@ describe('resource contactCard', () => {
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.contactCard.create({
-      first_name: 'John',
+      first_name: 'Acme',
       phone_number: '+15551234567',
       image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',
-      last_name: 'Doe',
+      last_name: 'Support',
     });
   });
 
