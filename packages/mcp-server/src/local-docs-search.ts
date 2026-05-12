@@ -771,14 +771,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     httpMethod: 'get',
     summary: 'Get attachment metadata',
     description:
-      'Retrieve metadata for a specific attachment including its status,\nfile information, and URLs for downloading.\n',
+      'Retrieve metadata for a specific attachment including file\ninformation, and URLs for downloading.\n\n`status`: (**deprecated** — will be removed in a future API version)\n',
     stainlessPath: '(resource) attachments > (method) retrieve',
     qualified: 'client.attachments.retrieve',
     params: ['attachmentId: string;'],
     response:
       "{ id: string; content_type: string; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }",
     markdown:
-      "## retrieve\n\n`client.attachments.retrieve(attachmentId: string): { id: string; content_type: supported_content_type; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n**get** `/v3/attachments/{attachmentId}`\n\nRetrieve metadata for a specific attachment including its status,\nfile information, and URLs for downloading.\n\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ id: string; content_type: string; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n  - `id: string`\n  - `content_type: string`\n  - `created_at: string`\n  - `filename: string`\n  - `size_bytes: number`\n  - `status: 'pending' | 'complete' | 'failed'`\n  - `download_url?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst attachment = await client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');\n\nconsole.log(attachment);\n```",
+      "## retrieve\n\n`client.attachments.retrieve(attachmentId: string): { id: string; content_type: supported_content_type; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n**get** `/v3/attachments/{attachmentId}`\n\nRetrieve metadata for a specific attachment including file\ninformation, and URLs for downloading.\n\n`status`: (**deprecated** — will be removed in a future API version)\n\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ id: string; content_type: string; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n  - `id: string`\n  - `content_type: string`\n  - `created_at: string`\n  - `filename: string`\n  - `size_bytes: number`\n  - `status: 'pending' | 'complete' | 'failed'`\n  - `download_url?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst attachment = await client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');\n\nconsole.log(attachment);\n```",
     perLanguage: {
       typescript: {
         method: 'client.attachments.retrieve',

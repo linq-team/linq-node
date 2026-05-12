@@ -158,8 +158,10 @@ export class Attachments extends APIResource {
   }
 
   /**
-   * Retrieve metadata for a specific attachment including its status, file
-   * information, and URLs for downloading.
+   * Retrieve metadata for a specific attachment including file information, and URLs
+   * for downloading.
+   *
+   * `status`: (**deprecated** — will be removed in a future API version)
    *
    * @example
    * ```ts
@@ -267,8 +269,7 @@ export type SupportedContentType =
 
 export interface AttachmentCreateResponse {
   /**
-   * Unique identifier for the attachment (for status checks via GET
-   * /v3/attachments/{id})
+   * Unique identifier for the attachment
    */
   attachment_id: string;
 
@@ -366,7 +367,7 @@ export interface AttachmentRetrieveResponse {
   size_bytes: number;
 
   /**
-   * Current upload/processing status
+   * @deprecated status is no longer a useful signal
    */
   status: 'pending' | 'complete' | 'failed';
 
