@@ -312,7 +312,7 @@ export interface Chat {
   health_status: Chat.HealthStatus;
 
   /**
-   * Whether the chat is archived
+   * @deprecated is_archived is no longer a useful signal
    */
   is_archived: boolean;
 
