@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.23.0 (2026-05-13)
+
+Full Changelog: [v0.22.1...v0.23.0](https://github.com/linq-team/linq-node/compare/v0.22.1...v0.23.0)
+
+### Features
+
+* **api:** add delete endpoint ([afd6b56](https://github.com/linq-team/linq-node/commit/afd6b56c50f891574e409a241624d6355d8929e6))
+
+
+### Chores
+
+* redact api-key headers in debug logs ([2eeac88](https://github.com/linq-team/linq-node/commit/2eeac88c9f6e4a2a9d3791736df565cd9ec54984))
+
+
+### Documentation
+
+* **api:** add attachment security, lifecycle, and compliance documentation ([35d1bb1](https://github.com/linq-team/linq-node/commit/35d1bb1a21ee0c53b257a441d6d281ed75bc8c16))
+* **api:** deprecate status field in attachments, is_archived in chats ([ecabbff](https://github.com/linq-team/linq-node/commit/ecabbff7ba7576277df8ddee86e1f3e987b80abc))
+
 ## 0.22.1 (2026-05-07)
 
 Full Changelog: [v0.22.0...v0.22.1](https://github.com/linq-team/linq-node/compare/v0.22.0...v0.22.1)
