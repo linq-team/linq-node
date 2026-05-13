@@ -44,4 +44,16 @@ describe('resource attachments', () => {
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
   });
+
+  // Mock server tests are disabled
+  test.skip('delete', async () => {
+    const responsePromise = client.attachments.delete('abc12345-1234-5678-9abc-def012345678');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
 });

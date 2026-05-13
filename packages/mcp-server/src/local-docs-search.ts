@@ -771,14 +771,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     httpMethod: 'get',
     summary: 'Get attachment metadata',
     description:
-      'Retrieve metadata for a specific attachment including its status,\nfile information, and URLs for downloading.\n',
+      'Retrieve metadata for a specific attachment including file\ninformation, and URLs for downloading.\n\n`status`: (**deprecated** — will be removed in a future API version)\n',
     stainlessPath: '(resource) attachments > (method) retrieve',
     qualified: 'client.attachments.retrieve',
     params: ['attachmentId: string;'],
     response:
       "{ id: string; content_type: string; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }",
     markdown:
-      "## retrieve\n\n`client.attachments.retrieve(attachmentId: string): { id: string; content_type: supported_content_type; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n**get** `/v3/attachments/{attachmentId}`\n\nRetrieve metadata for a specific attachment including its status,\nfile information, and URLs for downloading.\n\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ id: string; content_type: string; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n  - `id: string`\n  - `content_type: string`\n  - `created_at: string`\n  - `filename: string`\n  - `size_bytes: number`\n  - `status: 'pending' | 'complete' | 'failed'`\n  - `download_url?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst attachment = await client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');\n\nconsole.log(attachment);\n```",
+      "## retrieve\n\n`client.attachments.retrieve(attachmentId: string): { id: string; content_type: supported_content_type; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n**get** `/v3/attachments/{attachmentId}`\n\nRetrieve metadata for a specific attachment including file\ninformation, and URLs for downloading.\n\n`status`: (**deprecated** — will be removed in a future API version)\n\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ id: string; content_type: string; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n  - `id: string`\n  - `content_type: string`\n  - `created_at: string`\n  - `filename: string`\n  - `size_bytes: number`\n  - `status: 'pending' | 'complete' | 'failed'`\n  - `download_url?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst attachment = await client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');\n\nconsole.log(attachment);\n```",
     perLanguage: {
       typescript: {
         method: 'client.attachments.retrieve',
@@ -798,6 +798,39 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       http: {
         example:
           'curl https://api.linqapp.com/api/partner/v3/attachments/$ATTACHMENT_ID \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v3/attachments/{attachmentId}',
+    httpMethod: 'delete',
+    summary: 'Delete an attachment',
+    description: 'Permanently delete an attachment owned by the authenticated partner.',
+    stainlessPath: '(resource) attachments > (method) delete',
+    qualified: 'client.attachments.delete',
+    params: ['attachmentId: string;'],
+    markdown:
+      "## delete\n\n`client.attachments.delete(attachmentId: string): void`\n\n**delete** `/v3/attachments/{attachmentId}`\n\nPermanently delete an attachment owned by the authenticated partner.\n\n### Parameters\n\n- `attachmentId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.attachments.delete('abc12345-1234-5678-9abc-def012345678')\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.attachments.delete',
+        example:
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.attachments.delete('abc12345-1234-5678-9abc-def012345678');",
+      },
+      python: {
+        method: 'attachments.delete',
+        example:
+          'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.attachments.delete(\n    "abc12345-1234-5678-9abc-def012345678",\n)',
+      },
+      go: {
+        method: 'client.Attachments.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Attachments.Delete(context.TODO(), "abc12345-1234-5678-9abc-def012345678")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://api.linqapp.com/api/partner/v3/attachments/$ATTACHMENT_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY"',
       },
     },
   },

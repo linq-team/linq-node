@@ -96,6 +96,7 @@ Methods:
 
 - <code title="post /v3/attachments">client.attachments.<a href="./src/resources/attachments.ts">create</a>({ ...params }) -> AttachmentCreateResponse</code>
 - <code title="get /v3/attachments/{attachmentId}">client.attachments.<a href="./src/resources/attachments.ts">retrieve</a>(attachmentID) -> AttachmentRetrieveResponse</code>
+- <code title="delete /v3/attachments/{attachmentId}">client.attachments.<a href="./src/resources/attachments.ts">delete</a>(attachmentID) -> void</code>
 
 # Phonenumbers
 
