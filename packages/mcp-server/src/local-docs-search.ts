@@ -802,6 +802,39 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'delete',
+    endpoint: '/v3/attachments/{attachmentId}',
+    httpMethod: 'delete',
+    summary: 'Delete an attachment',
+    description: 'Permanently delete an attachment owned by the authenticated partner.',
+    stainlessPath: '(resource) attachments > (method) delete',
+    qualified: 'client.attachments.delete',
+    params: ['attachmentId: string;'],
+    markdown:
+      "## delete\n\n`client.attachments.delete(attachmentId: string): void`\n\n**delete** `/v3/attachments/{attachmentId}`\n\nPermanently delete an attachment owned by the authenticated partner.\n\n### Parameters\n\n- `attachmentId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.attachments.delete('abc12345-1234-5678-9abc-def012345678')\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.attachments.delete',
+        example:
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.attachments.delete('abc12345-1234-5678-9abc-def012345678');",
+      },
+      python: {
+        method: 'attachments.delete',
+        example:
+          'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.attachments.delete(\n    "abc12345-1234-5678-9abc-def012345678",\n)',
+      },
+      go: {
+        method: 'client.Attachments.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Attachments.Delete(context.TODO(), "abc12345-1234-5678-9abc-def012345678")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://api.linqapp.com/api/partner/v3/attachments/$ATTACHMENT_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'list',
     endpoint: '/v3/phonenumbers',
     httpMethod: 'get',

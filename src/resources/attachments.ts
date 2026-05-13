@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
+import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -288,6 +289,23 @@ export class Attachments extends APIResource {
    */
   retrieve(attachmentID: string, options?: RequestOptions): APIPromise<AttachmentRetrieveResponse> {
     return this._client.get(path`/v3/attachments/${attachmentID}`, options);
+  }
+
+  /**
+   * Permanently delete an attachment owned by the authenticated partner.
+   *
+   * @example
+   * ```ts
+   * await client.attachments.delete(
+   *   'abc12345-1234-5678-9abc-def012345678',
+   * );
+   * ```
+   */
+  delete(attachmentID: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/v3/attachments/${attachmentID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 

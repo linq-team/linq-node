@@ -128,6 +128,7 @@ const fuse = new Fuse(
     'client.messages.retrieve',
     'client.messages.update',
     'client.attachments.create',
+    'client.attachments.delete',
     'client.attachments.retrieve',
     'client.phonenumbers.list',
     'client.phoneNumbers.list',
