@@ -137,6 +137,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/attachments/{attachmentId}',
   },
   {
+    clientCallName: 'client.attachments.delete',
+    fullyQualifiedName: 'attachments.delete',
+    httpMethod: 'delete',
+    httpPath: '/v3/attachments/{attachmentId}',
+  },
+  {
     clientCallName: 'client.phonenumbers.list',
     fullyQualifiedName: 'phonenumbers.list',
     httpMethod: 'get',
