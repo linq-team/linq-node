@@ -297,9 +297,9 @@ export interface Chat {
   handles: Array<Shared.ChatHandle>;
 
   /**
-   * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+   * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
    * and may shift based on engagement and delivery signals on the conversation. Many
-   * `at_risk` or `critical` chats on a single line increase the risk of line
+   * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
    * flagging.
    *
    * Switch on `status` to gate sends or surface line health in your UI — the enum is
@@ -334,9 +334,9 @@ export interface Chat {
 
 export namespace Chat {
   /**
-   * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+   * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
    * and may shift based on engagement and delivery signals on the conversation. Many
-   * `at_risk` or `critical` chats on a single line increase the risk of line
+   * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
    * flagging.
    *
    * Switch on `status` to gate sends or surface line health in your UI — the enum is
@@ -357,7 +357,7 @@ export namespace Chat {
      * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
      * to react. `doc_url` deep-links to the relevant section.
      */
-    status: 'healthy' | 'at_risk' | 'critical' | 'opted_out';
+    status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
     /**
      * When this status last changed.
@@ -561,9 +561,9 @@ export namespace ChatCreateResponse {
     handles: Array<Shared.ChatHandle>;
 
     /**
-     * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+     * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
      * and may shift based on engagement and delivery signals on the conversation. Many
-     * `at_risk` or `critical` chats on a single line increase the risk of line
+     * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
      * Switch on `status` to gate sends or surface line health in your UI — the enum is
@@ -593,9 +593,9 @@ export namespace ChatCreateResponse {
 
   export namespace Chat {
     /**
-     * **[BETA]** Current health for a chat. Always present — chats start at `healthy`
+     * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
      * and may shift based on engagement and delivery signals on the conversation. Many
-     * `at_risk` or `critical` chats on a single line increase the risk of line
+     * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
      * Switch on `status` to gate sends or surface line health in your UI — the enum is
@@ -616,7 +616,7 @@ export namespace ChatCreateResponse {
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
        */
-      status: 'healthy' | 'at_risk' | 'critical' | 'opted_out';
+      status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
       /**
        * When this status last changed.
