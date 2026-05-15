@@ -39,9 +39,55 @@ export namespace PhoneNumberListResponse {
     id: string;
 
     /**
+     * **[BETA]** Current health for a phone line. Always present — lines start at
+     * `HEALTHY` and may shift based on aggregate engagement and delivery signals
+     * across all conversations on the line.
+     *
+     * Unlike chat health, line health does not include `opted_out` — opt-out applies
+     * to individual recipients, not the whole line.
+     *
+     * See the [Phone Health guide](/guides/phone-numbers/phone-health) for what each
+     * status means and how to react.
+     */
+    health_status: PhoneNumber.HealthStatus;
+
+    /**
      * Phone number in E.164 format
      */
     phone_number: string;
+  }
+
+  export namespace PhoneNumber {
+    /**
+     * **[BETA]** Current health for a phone line. Always present — lines start at
+     * `HEALTHY` and may shift based on aggregate engagement and delivery signals
+     * across all conversations on the line.
+     *
+     * Unlike chat health, line health does not include `opted_out` — opt-out applies
+     * to individual recipients, not the whole line.
+     *
+     * See the [Phone Health guide](/guides/phone-numbers/phone-health) for what each
+     * status means and how to react.
+     */
+    export interface HealthStatus {
+      /**
+       * Deep-link to the relevant section of the Phone Health guide for this status.
+       */
+      doc_url: string;
+
+      /**
+       * Current health of this phone line as assessed by risk-service.
+       *
+       * - `HEALTHY` — No elevated risk detected.
+       * - `AT_RISK` — Elevated risk indicators present; consider reducing send volume or
+       *   reviewing messaging patterns.
+       * - `CRITICAL` — High risk; further sending may result in line flagging or
+       *   restriction.
+       *
+       * Defaults to `HEALTHY` for lines that have not yet been scored.
+       */
+      status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
+    }
   }
 }
 

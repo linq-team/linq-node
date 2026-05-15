@@ -877,9 +877,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'Returns all phone numbers assigned to the authenticated partner.\nUse this endpoint to discover which phone numbers are available for\nuse as the `from` field when creating a chat, listing chats, or sending a voice memo.\n',
     stainlessPath: '(resource) phone_numbers > (method) list',
     qualified: 'client.phoneNumbers.list',
-    response: '{ phone_numbers: { id: string; phone_number: string; }[]; }',
+    response:
+      "{ phone_numbers: { id: string; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL'; }; phone_number: string; }[]; }",
     markdown:
-      "## list\n\n`client.phoneNumbers.list(): { phone_numbers: object[]; }`\n\n**get** `/v3/phone_numbers`\n\nReturns all phone numbers assigned to the authenticated partner.\nUse this endpoint to discover which phone numbers are available for\nuse as the `from` field when creating a chat, listing chats, or sending a voice memo.\n\n\n### Returns\n\n- `{ phone_numbers: { id: string; phone_number: string; }[]; }`\n\n  - `phone_numbers: { id: string; phone_number: string; }[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst phoneNumbers = await client.phoneNumbers.list();\n\nconsole.log(phoneNumbers);\n```",
+      "## list\n\n`client.phoneNumbers.list(): { phone_numbers: object[]; }`\n\n**get** `/v3/phone_numbers`\n\nReturns all phone numbers assigned to the authenticated partner.\nUse this endpoint to discover which phone numbers are available for\nuse as the `from` field when creating a chat, listing chats, or sending a voice memo.\n\n\n### Returns\n\n- `{ phone_numbers: { id: string; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL'; }; phone_number: string; }[]; }`\n\n  - `phone_numbers: { id: string; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL'; }; phone_number: string; }[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst phoneNumbers = await client.phoneNumbers.list();\n\nconsole.log(phoneNumbers);\n```",
     perLanguage: {
       typescript: {
         method: 'client.phoneNumbers.list',
