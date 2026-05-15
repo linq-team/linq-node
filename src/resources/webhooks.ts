@@ -1935,6 +1935,11 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
     changed_at: string;
 
     /**
+     * The new line health status
+     */
+    new_health_status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
+
+    /**
      * The new service status
      */
     new_status: 'ACTIVE' | 'FLAGGED';
@@ -1943,6 +1948,11 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
      * Phone number in E.164 format
      */
     phone_number: string;
+
+    /**
+     * The previous line health status
+     */
+    previous_health_status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
 
     /**
      * The previous service status
