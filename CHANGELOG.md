@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.24.0 (2026-05-15)
+
+Full Changelog: [v0.23.0...v0.24.0](https://github.com/linq-team/linq-node/compare/v0.23.0...v0.24.0)
+
+### Features
+
+* **api:** add health_status field to phone_numbers list response ([e2684c1](https://github.com/linq-team/linq-node/commit/e2684c1a193bddba2b2b7395e49caf2314f6ebfc))
+* **api:** add health_status to phone_numbers list and status webhook ([aafcadc](https://github.com/linq-team/linq-node/commit/aafcadc30371685f3b506f4746a96c10c506dc56))
+
+
+### Bug Fixes
+
+* **types:** update health_status enum to uppercase in chats/webhooks ([b14bc24](https://github.com/linq-team/linq-node/commit/b14bc24293e47d25644bfd6b6946455bf9b97a84))
+
 ## 0.23.0 (2026-05-13)
 
 Full Changelog: [v0.22.1...v0.23.0](https://github.com/linq-team/linq-node/compare/v0.22.1...v0.23.0)
