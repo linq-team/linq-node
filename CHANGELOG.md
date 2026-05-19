@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.24.1 (2026-05-19)
+
+Full Changelog: [v0.24.0...v0.24.1](https://github.com/linq-team/linq-node/compare/v0.24.0...v0.24.1)
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([bbed7e6](https://github.com/linq-team/linq-node/commit/bbed7e6d05e4bc8206ce3f6eb4d902fbde974b75))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([35d2194](https://github.com/linq-team/linq-node/commit/35d2194efbdf224716d9faf166796ca15828197b))
+
 ## 0.24.0 (2026-05-15)
 
 Full Changelog: [v0.23.0...v0.24.0](https://github.com/linq-team/linq-node/compare/v0.23.0...v0.24.0)
