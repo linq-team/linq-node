@@ -3,7 +3,6 @@ CHANGELOG.md
 /node_modules
 /deno
 /packages/mcp-server/manifest.json
-pnpm-lock.yaml
 
 # don't format tsc output, will break source maps
 dist
