@@ -15,6 +15,22 @@ import { RequestOptions } from '../internal/request-options';
  */
 export class ContactCard extends APIResource {
   /**
+   * Returns the contact card for a specific phone number, or all contact cards for
+   * the authenticated partner if no `phone_number` is provided.
+   *
+   * @example
+   * ```ts
+   * const contactCard = await client.contactCard.retrieve();
+   * ```
+   */
+  retrieve(
+    query: ContactCardRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ContactCardRetrieveResponse> {
+    return this._client.get('/v3/contact_card', { query, ...options });
+  }
+
+  /**
    * Creates a contact card for a phone number. This endpoint is intended for
    * initial, one-time setup only.
    *
@@ -38,22 +54,6 @@ export class ContactCard extends APIResource {
    */
   create(body: ContactCardCreateParams, options?: RequestOptions): APIPromise<SetContactCard> {
     return this._client.post('/v3/contact_card', { body, ...options });
-  }
-
-  /**
-   * Returns the contact card for a specific phone number, or all contact cards for
-   * the authenticated partner if no `phone_number` is provided.
-   *
-   * @example
-   * ```ts
-   * const contactCard = await client.contactCard.retrieve();
-   * ```
-   */
-  retrieve(
-    query: ContactCardRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ContactCardRetrieveResponse> {
-    return this._client.get('/v3/contact_card', { query, ...options });
   }
 
   /**
@@ -127,6 +127,14 @@ export namespace ContactCardRetrieveResponse {
   }
 }
 
+export interface ContactCardRetrieveParams {
+  /**
+   * E.164 phone number to filter by. If omitted, all my cards for the partner are
+   * returned.
+   */
+  phone_number?: string;
+}
+
 export interface ContactCardCreateParams {
   /**
    * First name for the contact card. Required.
@@ -148,14 +156,6 @@ export interface ContactCardCreateParams {
    * Last name for the contact card. Optional.
    */
   last_name?: string;
-}
-
-export interface ContactCardRetrieveParams {
-  /**
-   * E.164 phone number to filter by. If omitted, all my cards for the partner are
-   * returned.
-   */
-  phone_number?: string;
 }
 
 export interface ContactCardUpdateParams {
@@ -184,8 +184,8 @@ export declare namespace ContactCard {
   export {
     type SetContactCard as SetContactCard,
     type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
-    type ContactCardCreateParams as ContactCardCreateParams,
     type ContactCardRetrieveParams as ContactCardRetrieveParams,
+    type ContactCardCreateParams as ContactCardCreateParams,
     type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 }

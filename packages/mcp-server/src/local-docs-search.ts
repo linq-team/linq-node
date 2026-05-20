@@ -69,20 +69,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.chats.create(from: string, message: { parts: text_part | media_part | link_part[]; effect?: message_effect; idempotency_key?: string; preferred_service?: service_type; reply_to?: reply_to; }, to: string[]): { chat: object; }`\n\n**post** `/v3/chats`\n\nCreate a new chat with specified participants and send an initial message.\nThe initial message is required when creating a chat.\n\n## Message Effects\n\nYou can add iMessage effects to make your messages more expressive. Effects are\noptional and can be either screen effects (full-screen animations) or bubble effects\n(message bubble animations).\n\n**Screen Effects:** `confetti`, `fireworks`, `lasers`, `sparkles`, `celebration`,\n`hearts`, `love`, `balloons`, `happy_birthday`, `echo`, `spotlight`\n\n**Bubble Effects:** `slam`, `loud`, `gentle`, `invisible`\n\nOnly one effect type can be applied per message.\n\n## Inline Text Decorations (iMessage only)\n\nUse the `text_decorations` array on a text part to apply styling and animations to character ranges.\n\nEach decoration specifies a `range: [start, end)` and exactly one of `style` or `animation`.\n\n**Styles:** `bold`, `italic`, `strikethrough`, `underline`\n**Animations:** `big`, `small`, `shake`, `nod`, `explode`, `ripple`, `bloom`, `jitter`\n\n```json\n{\n  \"type\": \"text\",\n  \"value\": \"Hello world\",\n  \"text_decorations\": [\n    { \"range\": [0, 5], \"style\": \"bold\" },\n    { \"range\": [6, 11], \"animation\": \"shake\" }\n  ]\n}\n```\n\n**Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges must not overlap with other animations or styles. Text decorations only render for iMessage recipients.\nFor SMS/RCS, text decorations are not applied.\n\n## First-Message Link Restriction\n\nTo protect sender deliverability, the **first outbound message** of a new chat cannot be a link.\nThe request is rejected with `400` (error code `1005`) when:\n\n- The message contains a `link` part (explicit rich-preview link), or\n- Any `text` part contains a URL.\n\nThis rule applies only to `POST /v3/chats`. Follow-up messages on an existing chat\n(`POST /v3/chats/{chatId}/messages`) are not subject to this restriction.\n\n\n### Parameters\n\n- `from: string`\n  Sender phone number in E.164 format. Must be a phone number that the\nauthenticated partner has permission to send from.\n\n\n- `message: { parts: { type: 'text'; value: string; text_decorations?: text_decoration[]; } | { type: 'media'; attachment_id?: string; url?: string; } | { type: 'link'; value: string; }[]; effect?: { name?: string; type?: 'screen' | 'bubble'; }; idempotency_key?: string; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; reply_to?: { message_id: string; part_index?: number; }; }`\n  Message content container. Groups all message-related fields together,\nseparating the \"what\" (message content) from the \"where\" (routing fields like from/to).\n\n  - `parts: { type: 'text'; value: string; text_decorations?: { range: number[]; animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter'; style?: 'bold' | 'italic' | 'strikethrough' | 'underline'; }[]; } | { type: 'media'; attachment_id?: string; url?: string; } | { type: 'link'; value: string; }[]`\n    Array of message parts. Each part can be text, media, or link.\nParts are displayed in order. Text and media can be mixed freely,\nbut a `link` part must be the only part in the message.\n\n**Rich Link Previews:**\n- Use a `link` part to send a URL with a rich preview card\n- A `link` part must be the **only** part in the message\n- To send a URL as plain text (no preview), use a `text` part instead\n\n**Supported Media:**\n- Images: .jpg, .jpeg, .png, .gif, .heic, .heif, .tif, .tiff, .bmp\n- Videos: .mp4, .mov, .m4v, .mpeg, .mpg, .3gp\n- Audio: .m4a, .mp3, .aac, .caf, .wav, .aiff, .amr\n- Documents: .pdf, .txt, .rtf, .csv, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pages, .numbers, .key, .epub, .zip, .html, .htm\n- Contact & Calendar: .vcf, .ics\n\n**Audio:**\n- Audio files (.m4a, .mp3, .aac, .caf, .wav, .aiff, .amr) are fully supported as media parts\n- To send audio as an **iMessage voice memo bubble** (inline playback UI), use the dedicated\n  `/v3/chats/{chatId}/voicememo` endpoint instead\n\n**Validation Rules:**\n- A `link` part must be the **only** part in the message. It cannot be combined\n  with text or media parts.\n- Consecutive text parts are not allowed. Text parts must be separated by\n  media parts. For example, [text, text] is invalid, but [text, media, text] is valid.\n- Maximum of **100 parts** total.\n- Media parts using a public `url` (downloaded by the server on send) are\n  capped at **40**. Parts using `attachment_id` or presigned URLs\n  are exempt from this sub-limit. For bulk media sends exceeding 40 files,\n  pre-upload via `POST /v3/attachments` and reference by `attachment_id` or `download_url`.\n\n  - `effect?: { name?: string; type?: 'screen' | 'bubble'; }`\n    iMessage effect to apply to this message (screen or bubble effect)\n  - `idempotency_key?: string`\n    Optional idempotency key for this message.\nUse this to prevent duplicate sends of the same message.\n\n  - `preferred_service?: 'iMessage' | 'SMS' | 'RCS'`\n    Messaging service type\n  - `reply_to?: { message_id: string; part_index?: number; }`\n    Reply to another message to create a threaded conversation\n\n- `to: string[]`\n  Array of recipient handles (phone numbers in E.164 format or email addresses).\nFor individual chats, provide one recipient. For group chats, provide multiple.\n\n\n### Returns\n\n- `{ chat: { id: string; display_name: string; handles: object[]; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT'; updated_at: string; }; is_group: boolean; message: object; service: 'iMessage' | 'SMS' | 'RCS'; }; }`\n  Response for creating a new chat with an initial message\n\n  - `chat: { id: string; display_name: string; handles: { id: string; handle: string; joined_at: string; service: 'iMessage' | 'SMS' | 'RCS'; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }[]; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT'; updated_at: string; }; is_group: boolean; message: { id: string; created_at: string; delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'failed'; is_read: boolean; parts: object | object | object[]; sent_at: string; delivered_at?: string; effect?: object; from_handle?: object; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; reply_to?: object; service?: 'iMessage' | 'SMS' | 'RCS'; }; service: 'iMessage' | 'SMS' | 'RCS'; }`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst chat = await client.chats.create({\n  from: '+12052535597',\n  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },\n  to: ['+12052532136'],\n});\n\nconsole.log(chat);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.create',
+      go: {
+        method: 'client.Chats.New',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({\n  from: '+12052535597',\n  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },\n  to: ['+12052532136'],\n});\n\nconsole.log(chat.chat);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), linqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.Chat)\n}\n',
       },
       python: {
         method: 'chats.create',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    from_="+12052535597",\n    message={\n        "parts": [{\n            "type": "text",\n            "value": "Hello! How can I help you today?",\n        }]\n    },\n    to=["+12052532136"],\n)\nprint(chat.chat)',
       },
-      go: {
-        method: 'client.Chats.New',
+      typescript: {
+        method: 'client.chats.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), linqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.Chat)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({\n  from: '+12052535597',\n  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },\n  to: ['+12052532136'],\n});\n\nconsole.log(chat.chat);",
       },
       http: {
         example:
@@ -105,20 +105,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list_chats\n\n`client.chats.listChats(cursor?: string, from?: string, limit?: number, to?: string): { id: string; created_at: string; display_name: string; handles: chat_handle[]; health_status: object; is_archived: boolean; is_group: boolean; updated_at: string; service?: service_type; }`\n\n**get** `/v3/chats`\n\nRetrieves a paginated list of chats for the authenticated partner.\n\n**Filtering:**\n- If `from` is provided, returns chats for that specific phone number\n- If `from` is omitted, returns chats across all phone numbers owned by the partner\n- If `to` is provided, only returns chats where the specified handle is a participant\n\n**Pagination:**\n- Use `limit` to control page size (default: 20, max: 100)\n- The response includes `next_cursor` for fetching the next page\n- When `next_cursor` is `null`, there are no more results to fetch\n- Pass the `next_cursor` value as the `cursor` parameter for the next request\n\n**Example pagination flow:**\n1. First request: `GET /v3/chats?from=%2B12223334444&limit=20`\n2. Response includes `next_cursor: \"20\"` (more results exist)\n3. Next request: `GET /v3/chats?from=%2B12223334444&limit=20&cursor=20`\n4. Response includes `next_cursor: null` (no more results)\n\n\n### Parameters\n\n- `cursor?: string`\n  Pagination cursor from the previous response's `next_cursor` field.\nOmit this parameter for the first page of results.\n\n\n- `from?: string`\n  Phone number to filter chats by. Returns chats made from this phone number.\nMust be in E.164 format (e.g., `+13343284472`). The `+` is automatically URL-encoded by HTTP clients.\nIf omitted, returns chats across all phone numbers owned by the partner.\n\n\n- `limit?: number`\n  Maximum number of chats to return per page\n\n- `to?: string`\n  Filter chats by a participant handle. Only returns chats where this handle is a participant.\nCan be an E.164 phone number (e.g., `+13343284472`) or an email address (e.g., `user@example.com`).\nFor phone numbers, the `+` is automatically URL-encoded by HTTP clients.\n\n\n### Returns\n\n- `{ id: string; created_at: string; display_name: string; handles: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }[]; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT'; updated_at: string; }; is_archived: boolean; is_group: boolean; updated_at: string; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n  - `id: string`\n  - `created_at: string`\n  - `display_name: string`\n  - `handles: { id: string; handle: string; joined_at: string; service: 'iMessage' | 'SMS' | 'RCS'; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }[]`\n  - `health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT'; updated_at: string; }`\n  - `is_archived: boolean`\n  - `is_group: boolean`\n  - `updated_at: string`\n  - `service?: 'iMessage' | 'SMS' | 'RCS'`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\n// Automatically fetches more pages as needed.\nfor await (const chat of client.chats.listChats()) {\n  console.log(chat);\n}\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.listChats',
+      go: {
+        method: 'client.Chats.ListChats',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const chat of client.chats.listChats()) {\n  console.log(chat.id);\n}",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Chats.ListChats(context.TODO(), linqgo.ChatListChatsParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
       },
       python: {
         method: 'chats.list_chats',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\npage = client.chats.list_chats()\npage = page.chats[0]\nprint(page.id)',
       },
-      go: {
-        method: 'client.Chats.ListChats',
+      typescript: {
+        method: 'client.chats.listChats',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Chats.ListChats(context.TODO(), linqgo.ChatListChatsParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const chat of client.chats.listChats()) {\n  console.log(chat.id);\n}",
       },
       http: {
         example:
@@ -140,20 +140,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.chats.retrieve(chatId: string): { id: string; created_at: string; display_name: string; handles: chat_handle[]; health_status: object; is_archived: boolean; is_group: boolean; updated_at: string; service?: service_type; }`\n\n**get** `/v3/chats/{chatId}`\n\nRetrieve a chat by its unique identifier.\n\n### Parameters\n\n- `chatId: string`\n\n### Returns\n\n- `{ id: string; created_at: string; display_name: string; handles: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }[]; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT'; updated_at: string; }; is_archived: boolean; is_group: boolean; updated_at: string; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n  - `id: string`\n  - `created_at: string`\n  - `display_name: string`\n  - `handles: { id: string; handle: string; joined_at: string; service: 'iMessage' | 'SMS' | 'RCS'; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }[]`\n  - `health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT'; updated_at: string; }`\n  - `is_archived: boolean`\n  - `is_group: boolean`\n  - `updated_at: string`\n  - `service?: 'iMessage' | 'SMS' | 'RCS'`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst chat = await client.chats.retrieve('550e8400-e29b-41d4-a716-446655440000');\n\nconsole.log(chat);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.retrieve',
+      go: {
+        method: 'client.Chats.Get',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.retrieve('550e8400-e29b-41d4-a716-446655440000');\n\nconsole.log(chat.id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchat, err := client.Chats.Get(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.ID)\n}\n',
       },
       python: {
         method: 'chats.retrieve',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nchat = client.chats.retrieve(\n    "550e8400-e29b-41d4-a716-446655440000",\n)\nprint(chat.id)',
       },
-      go: {
-        method: 'client.Chats.Get',
+      typescript: {
+        method: 'client.chats.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchat, err := client.Chats.Get(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.ID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.retrieve('550e8400-e29b-41d4-a716-446655440000');\n\nconsole.log(chat.id);",
       },
       http: {
         example:
@@ -175,20 +175,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.chats.update(chatId: string, display_name?: string, group_chat_icon?: string): { chat_id?: string; status?: string; }`\n\n**put** `/v3/chats/{chatId}`\n\nUpdate chat properties such as display name and group chat icon.\n\nListen for `chat.group_name_updated`, `chat.group_icon_updated`,\n`chat.group_name_update_failed`, or `chat.group_icon_update_failed`\nwebhook events to confirm the outcome.\n\n\n### Parameters\n\n- `chatId: string`\n\n- `display_name?: string`\n  New display name for the chat (group chats only)\n\n- `group_chat_icon?: string`\n  URL of an image to set as the group chat icon (group chats only)\n\n### Returns\n\n- `{ chat_id?: string; status?: string; }`\n\n  - `chat_id?: string`\n  - `status?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst chat = await client.chats.update('550e8400-e29b-41d4-a716-446655440000');\n\nconsole.log(chat);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.update',
+      go: {
+        method: 'client.Chats.Update',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.update('550e8400-e29b-41d4-a716-446655440000', {\n  display_name: 'Team Discussion',\n});\n\nconsole.log(chat.chat_id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchat, err := client.Chats.Update(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatUpdateParams{\n\t\t\tDisplayName: linqgo.String("Team Discussion"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.ChatID)\n}\n',
       },
       python: {
         method: 'chats.update',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nchat = client.chats.update(\n    chat_id="550e8400-e29b-41d4-a716-446655440000",\n    display_name="Team Discussion",\n)\nprint(chat.chat_id)',
       },
-      go: {
-        method: 'client.Chats.Update',
+      typescript: {
+        method: 'client.chats.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tchat, err := client.Chats.Update(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatUpdateParams{\n\t\t\tDisplayName: linqgo.String("Team Discussion"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.ChatID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.update('550e8400-e29b-41d4-a716-446655440000', {\n  display_name: 'Team Discussion',\n});\n\nconsole.log(chat.chat_id);",
       },
       http: {
         example:
@@ -208,20 +208,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## mark_as_read\n\n`client.chats.markAsRead(chatId: string): void`\n\n**post** `/v3/chats/{chatId}/read`\n\nMark all messages in a chat as read.\n\n\n### Parameters\n\n- `chatId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.chats.markAsRead('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.markAsRead',
+      go: {
+        method: 'client.Chats.MarkAsRead',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.markAsRead('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.MarkAsRead(context.TODO(), "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'chats.mark_as_read',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.chats.mark_as_read(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
-      go: {
-        method: 'client.Chats.MarkAsRead',
+      typescript: {
+        method: 'client.chats.markAsRead',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.MarkAsRead(context.TODO(), "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.markAsRead('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
       http: {
         example:
@@ -243,20 +243,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## leave_chat\n\n`client.chats.leaveChat(chatId: string): { message?: string; status?: string; trace_id?: string; }`\n\n**post** `/v3/chats/{chatId}/leave`\n\nRemoves your phone number from a group chat. Once you leave, you will no longer receive messages from the group and all interaction endpoints (send message, typing, mark read, etc.) will return 409.\n\nA `participant.removed` webhook will fire once the leave has been processed.\n\n**Supported**\n- iMessage group chats with 4 or more active participants (including yourself)\n\n**Not supported**\n- DM (1-on-1) chats — use the chat directly to continue the conversation\n\n\n### Parameters\n\n- `chatId: string`\n\n### Returns\n\n- `{ message?: string; status?: string; trace_id?: string; }`\n\n  - `message?: string`\n  - `status?: string`\n  - `trace_id?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst response = await client.chats.leaveChat('550e8400-e29b-41d4-a716-446655440000');\n\nconsole.log(response);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.leaveChat',
+      go: {
+        method: 'client.Chats.LeaveChat',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.leaveChat('550e8400-e29b-41d4-a716-446655440000');\n\nconsole.log(response.trace_id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.LeaveChat(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.TraceID)\n}\n',
       },
       python: {
         method: 'chats.leave_chat',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.chats.leave_chat(\n    "550e8400-e29b-41d4-a716-446655440000",\n)\nprint(response.trace_id)',
       },
-      go: {
-        method: 'client.Chats.LeaveChat',
+      typescript: {
+        method: 'client.chats.leaveChat',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.LeaveChat(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.TraceID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.leaveChat('550e8400-e29b-41d4-a716-446655440000');\n\nconsole.log(response.trace_id);",
       },
       http: {
         example:
@@ -277,20 +277,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## share_contact_card\n\n`client.chats.shareContactCard(chatId: string): void`\n\n**post** `/v3/chats/{chatId}/share_contact_card`\n\nShare your contact information (Name and Photo Sharing) with a chat.\n\n**Note:** A contact card must be configured before sharing. You can set up your contact card via the [Contact Card API](#tag/Contact-Card) or on the [Linq dashboard](https://dashboard.linqapp.com/contact-cards).\n\n\n### Parameters\n\n- `chatId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.chats.shareContactCard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.shareContactCard',
+      go: {
+        method: 'client.Chats.ShareContactCard',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.shareContactCard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.ShareContactCard(context.TODO(), "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'chats.share_contact_card',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.chats.share_contact_card(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
-      go: {
-        method: 'client.Chats.ShareContactCard',
+      typescript: {
+        method: 'client.chats.shareContactCard',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.ShareContactCard(context.TODO(), "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.shareContactCard('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
       http: {
         example:
@@ -313,20 +313,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## send_voicememo\n\n`client.chats.sendVoicememo(chatId: string, attachment_id?: string, voice_memo_url?: string): { voice_memo: object; }`\n\n**post** `/v3/chats/{chatId}/voicememo`\n\nSend an audio file as an **iMessage voice memo bubble** to all participants in a chat.\nVoice memos appear with iMessage's native inline playback UI, unlike regular audio\nattachments sent via media parts which appear as downloadable files.\n\n**Supported audio formats:**\n- MP3 (audio/mpeg)\n- M4A (audio/x-m4a, audio/mp4)\n- AAC (audio/aac)\n- CAF (audio/x-caf) - Core Audio Format\n- WAV (audio/wav)\n- AIFF (audio/aiff, audio/x-aiff)\n- AMR (audio/amr)\n\n\n### Parameters\n\n- `chatId: string`\n\n- `attachment_id?: string`\n  Reference to a voice memo file pre-uploaded via `POST /v3/attachments`.\nThe file is already stored, so sends using this ID skip the download step.\n\nEither `voice_memo_url` or `attachment_id` must be provided, but not both.\n\n\n- `voice_memo_url?: string`\n  URL of the voice memo audio file. Must be a publicly accessible HTTPS URL.\n\nEither `voice_memo_url` or `attachment_id` must be provided, but not both.\n\n\n### Returns\n\n- `{ voice_memo: { id: string; chat: { id: string; handles: chat_handle[]; is_active: boolean; is_group: boolean; service: service_type; }; created_at: string; from: string; status: string; to: string[]; voice_memo: { id: string; filename: string; mime_type: string; size_bytes: number; url: string; duration_ms?: number; }; service?: 'iMessage' | 'SMS' | 'RCS'; }; }`\n  Response for sending a voice memo to a chat\n\n  - `voice_memo: { id: string; chat: { id: string; handles: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }[]; is_active: boolean; is_group: boolean; service: 'iMessage' | 'SMS' | 'RCS'; }; created_at: string; from: string; status: string; to: string[]; voice_memo: { id: string; filename: string; mime_type: string; size_bytes: number; url: string; duration_ms?: number; }; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst response = await client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd');\n\nconsole.log(response);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.sendVoicememo',
+      go: {
+        method: 'client.Chats.SendVoicememo',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {\n  voice_memo_url: 'https://example.com/voice-memo.m4a',\n});\n\nconsole.log(response.voice_memo);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.SendVoicememo(\n\t\tcontext.TODO(),\n\t\t"f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd",\n\t\tlinqgo.ChatSendVoicememoParams{\n\t\t\tVoiceMemoURL: linqgo.String("https://example.com/voice-memo.m4a"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.VoiceMemo)\n}\n',
       },
       python: {
         method: 'chats.send_voicememo',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.chats.send_voicememo(\n    chat_id="f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd",\n    voice_memo_url="https://example.com/voice-memo.m4a",\n)\nprint(response.voice_memo)',
       },
-      go: {
-        method: 'client.Chats.SendVoicememo',
+      typescript: {
+        method: 'client.chats.sendVoicememo',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.SendVoicememo(\n\t\tcontext.TODO(),\n\t\t"f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd",\n\t\tlinqgo.ChatSendVoicememoParams{\n\t\t\tVoiceMemoURL: linqgo.String("https://example.com/voice-memo.m4a"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.VoiceMemo)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.sendVoicememo('f19ee7b8-8533-4c5c-83ec-4ef8d6d1ddbd', {\n  voice_memo_url: 'https://example.com/voice-memo.m4a',\n});\n\nconsole.log(response.voice_memo);",
       },
       http: {
         example:
@@ -348,20 +348,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## add\n\n`client.chats.participants.add(chatId: string, handle: string): { message?: string; status?: string; trace_id?: string; }`\n\n**post** `/v3/chats/{chatId}/participants`\n\nAdd a new participant to an existing group chat.\n\n**Requirements:**\n- Group chats only (3+ existing participants)\n- New participant must support the same messaging service as the group\n- Cross-service additions not allowed (e.g., can't add RCS-only user to iMessage group)\n- For cross-service scenarios, create a new chat instead\n\n\n### Parameters\n\n- `chatId: string`\n\n- `handle: string`\n  Phone number (E.164 format) or email address of the participant to add\n\n### Returns\n\n- `{ message?: string; status?: string; trace_id?: string; }`\n\n  - `message?: string`\n  - `status?: string`\n  - `trace_id?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst response = await client.chats.participants.add('550e8400-e29b-41d4-a716-446655440000', { handle: '+12052499136' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.participants.add',
+      go: {
+        method: 'client.Chats.Participants.Add',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.participants.add('550e8400-e29b-41d4-a716-446655440000', {\n  handle: '+12052499136',\n});\n\nconsole.log(response.trace_id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.Participants.Add(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatParticipantAddParams{\n\t\t\tHandle: "+12052499136",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.TraceID)\n}\n',
       },
       python: {
         method: 'chats.participants.add',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.chats.participants.add(\n    chat_id="550e8400-e29b-41d4-a716-446655440000",\n    handle="+12052499136",\n)\nprint(response.trace_id)',
       },
-      go: {
-        method: 'client.Chats.Participants.Add',
+      typescript: {
+        method: 'client.chats.participants.add',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.Participants.Add(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatParticipantAddParams{\n\t\t\tHandle: "+12052499136",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.TraceID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.participants.add('550e8400-e29b-41d4-a716-446655440000', {\n  handle: '+12052499136',\n});\n\nconsole.log(response.trace_id);",
       },
       http: {
         example:
@@ -383,20 +383,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## remove\n\n`client.chats.participants.remove(chatId: string, handle: string): { message?: string; status?: string; trace_id?: string; }`\n\n**delete** `/v3/chats/{chatId}/participants`\n\nRemove a participant from an existing group chat.\n\n**Requirements:**\n- Group chats only\n- Must have 3+ participants after removal\n\n\n### Parameters\n\n- `chatId: string`\n\n- `handle: string`\n  Phone number (E.164 format) or email address of the participant to remove\n\n### Returns\n\n- `{ message?: string; status?: string; trace_id?: string; }`\n\n  - `message?: string`\n  - `status?: string`\n  - `trace_id?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst participant = await client.chats.participants.remove('550e8400-e29b-41d4-a716-446655440000', { handle: '+12052499136' });\n\nconsole.log(participant);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.participants.remove',
+      go: {
+        method: 'client.Chats.Participants.Remove',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst participant = await client.chats.participants.remove('550e8400-e29b-41d4-a716-446655440000', {\n  handle: '+12052499136',\n});\n\nconsole.log(participant.trace_id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tparticipant, err := client.Chats.Participants.Remove(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatParticipantRemoveParams{\n\t\t\tHandle: "+12052499136",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", participant.TraceID)\n}\n',
       },
       python: {
         method: 'chats.participants.remove',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nparticipant = client.chats.participants.remove(\n    chat_id="550e8400-e29b-41d4-a716-446655440000",\n    handle="+12052499136",\n)\nprint(participant.trace_id)',
       },
-      go: {
-        method: 'client.Chats.Participants.Remove',
+      typescript: {
+        method: 'client.chats.participants.remove',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tparticipant, err := client.Chats.Participants.Remove(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatParticipantRemoveParams{\n\t\t\tHandle: "+12052499136",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", participant.TraceID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst participant = await client.chats.participants.remove('550e8400-e29b-41d4-a716-446655440000', {\n  handle: '+12052499136',\n});\n\nconsole.log(participant.trace_id);",
       },
       http: {
         example:
@@ -417,20 +417,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## start\n\n`client.chats.typing.start(chatId: string): void`\n\n**post** `/v3/chats/{chatId}/typing`\n\nSend a typing indicator to show that someone is typing in the chat.\n\n## Behavior & Limitations\n\nTyping indicators are best-effort signals with the following limitations:\n\n- **Active conversations only:** The recipient must have sent or received a message\n  in this chat within the **last 5 minutes**. If the chat is inactive, the request is\n  still accepted (`204`) but the indicator will not reach the recipient's device.\n\n- **No delivery guarantee:** Even for active chats, a `204` response only indicates\n  the request was accepted for processing.\n\n- **Group chats not supported:** Attempting to start a typing indicator in a group chat\n  will return a `403` error.\n\n\n### Parameters\n\n- `chatId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.chats.typing.start('550e8400-e29b-41d4-a716-446655440000')\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.typing.start',
+      go: {
+        method: 'client.Chats.Typing.Start',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.typing.start('550e8400-e29b-41d4-a716-446655440000');",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.Typing.Start(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'chats.typing.start',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.chats.typing.start(\n    "550e8400-e29b-41d4-a716-446655440000",\n)',
       },
-      go: {
-        method: 'client.Chats.Typing.Start',
+      typescript: {
+        method: 'client.chats.typing.start',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.Typing.Start(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.typing.start('550e8400-e29b-41d4-a716-446655440000');",
       },
       http: {
         example:
@@ -451,20 +451,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## stop\n\n`client.chats.typing.stop(chatId: string): void`\n\n**delete** `/v3/chats/{chatId}/typing`\n\nStop the typing indicator for the chat.\n\nTyping indicators are automatically stopped when a message is sent, so calling\nthis endpoint after sending a message is unnecessary.\n\nSee the `POST` endpoint above for behavior details and limitations.\n\n**Note:** Group chats are not supported and will return a `403` error.\n\n\n### Parameters\n\n- `chatId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.chats.typing.stop('550e8400-e29b-41d4-a716-446655440000')\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.typing.stop',
+      go: {
+        method: 'client.Chats.Typing.Stop',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.typing.stop('550e8400-e29b-41d4-a716-446655440000');",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.Typing.Stop(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'chats.typing.stop',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.chats.typing.stop(\n    "550e8400-e29b-41d4-a716-446655440000",\n)',
       },
-      go: {
-        method: 'client.Chats.Typing.Stop',
+      typescript: {
+        method: 'client.chats.typing.stop',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Chats.Typing.Stop(context.TODO(), "550e8400-e29b-41d4-a716-446655440000")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.chats.typing.stop('550e8400-e29b-41d4-a716-446655440000');",
       },
       http: {
         example:
@@ -490,20 +490,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## send\n\n`client.chats.messages.send(chatId: string, message: { parts: text_part | media_part | link_part[]; effect?: message_effect; idempotency_key?: string; preferred_service?: service_type; reply_to?: reply_to; }): { chat_id: string; message: sent_message; }`\n\n**post** `/v3/chats/{chatId}/messages`\n\nSend a message to an existing chat. Use this endpoint when you already have\na chat ID and want to send additional messages to it.\n\n## Message Effects\n\nYou can add iMessage effects to make your messages more expressive. Effects are\noptional and can be either screen effects (full-screen animations) or bubble effects\n(message bubble animations).\n\n**Screen Effects:** `confetti`, `fireworks`, `lasers`, `sparkles`, `celebration`,\n`hearts`, `love`, `balloons`, `happy_birthday`, `echo`, `spotlight`\n\n**Bubble Effects:** `slam`, `loud`, `gentle`, `invisible`\n\nOnly one effect type can be applied per message.\n\n## Inline Text Decorations (iMessage only)\n\nUse the `text_decorations` array on a text part to apply styling and animations to character ranges.\n\nEach decoration specifies a `range: [start, end)` and exactly one of `style` or `animation`.\n\n**Styles:** `bold`, `italic`, `strikethrough`, `underline`\n**Animations:** `big`, `small`, `shake`, `nod`, `explode`, `ripple`, `bloom`, `jitter`\n\n```json\n{\n  \"type\": \"text\",\n  \"value\": \"Hello world\",\n  \"text_decorations\": [\n    { \"range\": [0, 5], \"style\": \"bold\" },\n    { \"range\": [6, 11], \"animation\": \"shake\" }\n  ]\n}\n```\n\n**Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges must not overlap with other animations or styles. Text decorations only render for iMessage recipients.\nFor SMS/RCS, text decorations are not applied.\n\n\n### Parameters\n\n- `chatId: string`\n\n- `message: { parts: { type: 'text'; value: string; text_decorations?: text_decoration[]; } | { type: 'media'; attachment_id?: string; url?: string; } | { type: 'link'; value: string; }[]; effect?: { name?: string; type?: 'screen' | 'bubble'; }; idempotency_key?: string; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; reply_to?: { message_id: string; part_index?: number; }; }`\n  Message content container. Groups all message-related fields together,\nseparating the \"what\" (message content) from the \"where\" (routing fields like from/to).\n\n  - `parts: { type: 'text'; value: string; text_decorations?: { range: number[]; animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter'; style?: 'bold' | 'italic' | 'strikethrough' | 'underline'; }[]; } | { type: 'media'; attachment_id?: string; url?: string; } | { type: 'link'; value: string; }[]`\n    Array of message parts. Each part can be text, media, or link.\nParts are displayed in order. Text and media can be mixed freely,\nbut a `link` part must be the only part in the message.\n\n**Rich Link Previews:**\n- Use a `link` part to send a URL with a rich preview card\n- A `link` part must be the **only** part in the message\n- To send a URL as plain text (no preview), use a `text` part instead\n\n**Supported Media:**\n- Images: .jpg, .jpeg, .png, .gif, .heic, .heif, .tif, .tiff, .bmp\n- Videos: .mp4, .mov, .m4v, .mpeg, .mpg, .3gp\n- Audio: .m4a, .mp3, .aac, .caf, .wav, .aiff, .amr\n- Documents: .pdf, .txt, .rtf, .csv, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pages, .numbers, .key, .epub, .zip, .html, .htm\n- Contact & Calendar: .vcf, .ics\n\n**Audio:**\n- Audio files (.m4a, .mp3, .aac, .caf, .wav, .aiff, .amr) are fully supported as media parts\n- To send audio as an **iMessage voice memo bubble** (inline playback UI), use the dedicated\n  `/v3/chats/{chatId}/voicememo` endpoint instead\n\n**Validation Rules:**\n- A `link` part must be the **only** part in the message. It cannot be combined\n  with text or media parts.\n- Consecutive text parts are not allowed. Text parts must be separated by\n  media parts. For example, [text, text] is invalid, but [text, media, text] is valid.\n- Maximum of **100 parts** total.\n- Media parts using a public `url` (downloaded by the server on send) are\n  capped at **40**. Parts using `attachment_id` or presigned URLs\n  are exempt from this sub-limit. For bulk media sends exceeding 40 files,\n  pre-upload via `POST /v3/attachments` and reference by `attachment_id` or `download_url`.\n\n  - `effect?: { name?: string; type?: 'screen' | 'bubble'; }`\n    iMessage effect to apply to this message (screen or bubble effect)\n  - `idempotency_key?: string`\n    Optional idempotency key for this message.\nUse this to prevent duplicate sends of the same message.\n\n  - `preferred_service?: 'iMessage' | 'SMS' | 'RCS'`\n    Messaging service type\n  - `reply_to?: { message_id: string; part_index?: number; }`\n    Reply to another message to create a threaded conversation\n\n### Returns\n\n- `{ chat_id: string; message: { id: string; created_at: string; delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'failed'; is_read: boolean; parts: text_part_response | media_part_response | link_part_response[]; sent_at: string; delivered_at?: string; effect?: message_effect; from_handle?: chat_handle; preferred_service?: service_type; reply_to?: reply_to; service?: service_type; }; }`\n  Response for sending a message to a chat\n\n  - `chat_id: string`\n  - `message: { id: string; created_at: string; delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'failed'; is_read: boolean; parts: { reactions: reaction[]; type: 'text'; value: string; text_decorations?: text_decoration[]; } | { id: string; filename: string; mime_type: string; reactions: reaction[]; size_bytes: number; type: 'media'; url: string; } | { reactions: reaction[]; type: 'link'; value: string; }[]; sent_at: string; delivered_at?: string; effect?: { name?: string; type?: 'screen' | 'bubble'; }; from_handle?: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; reply_to?: { message_id: string; part_index?: number; }; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst response = await client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', { message: { parts: [{ type: 'text', value: 'Hello, world!' }] } });\n\nconsole.log(response);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.messages.send',
+      go: {
+        method: 'client.Chats.Messages.Send',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {\n  message: { parts: [{ type: 'text', value: 'Hello, world!' }] },\n});\n\nconsole.log(response.chat_id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.Messages.Send(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatMessageSendParams{\n\t\t\tMessage: linqgo.MessageContentParam{\n\t\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\t\tValue: "Hello, world!",\n\t\t\t\t\t},\n\t\t\t\t}},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ChatID)\n}\n',
       },
       python: {
         method: 'chats.messages.send',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.chats.messages.send(\n    chat_id="550e8400-e29b-41d4-a716-446655440000",\n    message={\n        "parts": [{\n            "type": "text",\n            "value": "Hello, world!",\n        }]\n    },\n)\nprint(response.chat_id)',
       },
-      go: {
-        method: 'client.Chats.Messages.Send',
+      typescript: {
+        method: 'client.chats.messages.send',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Chats.Messages.Send(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatMessageSendParams{\n\t\t\tMessage: linqgo.MessageContentParam{\n\t\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\t\tValue: "Hello, world!",\n\t\t\t\t\t},\n\t\t\t\t}},\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ChatID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {\n  message: { parts: [{ type: 'text', value: 'Hello, world!' }] },\n});\n\nconsole.log(response.chat_id);",
       },
       http: {
         example:
@@ -525,20 +525,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.chats.messages.list(chatId: string, cursor?: string, limit?: number): { id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: message_effect; from?: string; from_handle?: chat_handle; parts?: text_part_response | media_part_response | link_part_response[]; preferred_service?: service_type; read_at?: string; reply_to?: reply_to; sent_at?: string; service?: service_type; }`\n\n**get** `/v3/chats/{chatId}/messages`\n\nRetrieve messages from a specific chat with pagination support.\n\n\n### Parameters\n\n- `chatId: string`\n\n- `cursor?: string`\n  Pagination cursor from previous next_cursor response\n\n- `limit?: number`\n  Maximum number of messages to return\n\n### Returns\n\n- `{ id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: { name?: string; type?: 'screen' | 'bubble'; }; from?: string; from_handle?: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }; parts?: { reactions: reaction[]; type: 'text'; value: string; text_decorations?: text_decoration[]; } | { id: string; filename: string; mime_type: string; reactions: reaction[]; size_bytes: number; type: 'media'; url: string; } | { reactions: reaction[]; type: 'link'; value: string; }[]; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; read_at?: string; reply_to?: { message_id: string; part_index?: number; }; sent_at?: string; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n  - `id: string`\n  - `chat_id: string`\n  - `created_at: string`\n  - `is_delivered: boolean`\n  - `is_from_me: boolean`\n  - `is_read: boolean`\n  - `updated_at: string`\n  - `delivered_at?: string`\n  - `effect?: { name?: string; type?: 'screen' | 'bubble'; }`\n  - `from?: string`\n  - `from_handle?: { id: string; handle: string; joined_at: string; service: 'iMessage' | 'SMS' | 'RCS'; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }`\n  - `parts?: { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'text'; value: string; text_decorations?: { range: number[]; animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter'; style?: 'bold' | 'italic' | 'strikethrough' | 'underline'; }[]; } | { id: string; filename: string; mime_type: string; reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; size_bytes: number; type: 'media'; url: string; } | { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'link'; value: string; }[]`\n  - `preferred_service?: 'iMessage' | 'SMS' | 'RCS'`\n  - `read_at?: string`\n  - `reply_to?: { message_id: string; part_index?: number; }`\n  - `sent_at?: string`\n  - `service?: 'iMessage' | 'SMS' | 'RCS'`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.chats.messages.list('550e8400-e29b-41d4-a716-446655440000')) {\n  console.log(message);\n}\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.chats.messages.list',
+      go: {
+        method: 'client.Chats.Messages.List',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.chats.messages.list('550e8400-e29b-41d4-a716-446655440000')) {\n  console.log(message.id);\n}",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Chats.Messages.List(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatMessageListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
       },
       python: {
         method: 'chats.messages.list',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\npage = client.chats.messages.list(\n    chat_id="550e8400-e29b-41d4-a716-446655440000",\n)\npage = page.messages[0]\nprint(page.id)',
       },
-      go: {
-        method: 'client.Chats.Messages.List',
+      typescript: {
+        method: 'client.chats.messages.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Chats.Messages.List(\n\t\tcontext.TODO(),\n\t\t"550e8400-e29b-41d4-a716-446655440000",\n\t\tlinqgo.ChatMessageListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.chats.messages.list('550e8400-e29b-41d4-a716-446655440000')) {\n  console.log(message.id);\n}",
       },
       http: {
         example:
@@ -561,20 +561,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list_messages_thread\n\n`client.messages.listMessagesThread(messageId: string, cursor?: string, limit?: number, order?: 'asc' | 'desc'): { id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: message_effect; from?: string; from_handle?: chat_handle; parts?: text_part_response | media_part_response | link_part_response[]; preferred_service?: service_type; read_at?: string; reply_to?: reply_to; sent_at?: string; service?: service_type; }`\n\n**get** `/v3/messages/{messageId}/thread`\n\nRetrieve all messages in a conversation thread. Given any message ID in the thread,\nreturns the originator message and all replies in chronological order.\n\nIf the message is not part of a thread, returns just that single message.\n\nSupports pagination and configurable ordering.\n\n\n### Parameters\n\n- `messageId: string`\n\n- `cursor?: string`\n  Pagination cursor from previous next_cursor response\n\n- `limit?: number`\n  Maximum number of messages to return\n\n- `order?: 'asc' | 'desc'`\n  Sort order for messages (asc = oldest first, desc = newest first)\n\n### Returns\n\n- `{ id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: { name?: string; type?: 'screen' | 'bubble'; }; from?: string; from_handle?: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }; parts?: { reactions: reaction[]; type: 'text'; value: string; text_decorations?: text_decoration[]; } | { id: string; filename: string; mime_type: string; reactions: reaction[]; size_bytes: number; type: 'media'; url: string; } | { reactions: reaction[]; type: 'link'; value: string; }[]; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; read_at?: string; reply_to?: { message_id: string; part_index?: number; }; sent_at?: string; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n  - `id: string`\n  - `chat_id: string`\n  - `created_at: string`\n  - `is_delivered: boolean`\n  - `is_from_me: boolean`\n  - `is_read: boolean`\n  - `updated_at: string`\n  - `delivered_at?: string`\n  - `effect?: { name?: string; type?: 'screen' | 'bubble'; }`\n  - `from?: string`\n  - `from_handle?: { id: string; handle: string; joined_at: string; service: 'iMessage' | 'SMS' | 'RCS'; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }`\n  - `parts?: { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'text'; value: string; text_decorations?: { range: number[]; animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter'; style?: 'bold' | 'italic' | 'strikethrough' | 'underline'; }[]; } | { id: string; filename: string; mime_type: string; reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; size_bytes: number; type: 'media'; url: string; } | { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'link'; value: string; }[]`\n  - `preferred_service?: 'iMessage' | 'SMS' | 'RCS'`\n  - `read_at?: string`\n  - `reply_to?: { message_id: string; part_index?: number; }`\n  - `sent_at?: string`\n  - `service?: 'iMessage' | 'SMS' | 'RCS'`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.listMessagesThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a')) {\n  console.log(message);\n}\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.messages.listMessagesThread',
+      go: {
+        method: 'client.Messages.ListMessagesThread',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.listMessagesThread(\n  '69a37c7d-af4f-4b5e-af42-e28e98ce873a',\n)) {\n  console.log(message.id);\n}",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Messages.ListMessagesThread(\n\t\tcontext.TODO(),\n\t\t"69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n\t\tlinqgo.MessageListMessagesThreadParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
       },
       python: {
         method: 'messages.list_messages_thread',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\npage = client.messages.list_messages_thread(\n    message_id="69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n)\npage = page.messages[0]\nprint(page.id)',
       },
-      go: {
-        method: 'client.Messages.ListMessagesThread',
+      typescript: {
+        method: 'client.messages.listMessagesThread',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tpage, err := client.Messages.ListMessagesThread(\n\t\tcontext.TODO(),\n\t\t"69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n\t\tlinqgo.MessageListMessagesThreadParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", page)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.listMessagesThread(\n  '69a37c7d-af4f-4b5e-af42-e28e98ce873a',\n)) {\n  console.log(message.id);\n}",
       },
       http: {
         example:
@@ -597,20 +597,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.messages.retrieve(messageId: string): { id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: message_effect; from?: string; from_handle?: chat_handle; parts?: text_part_response | media_part_response | link_part_response[]; preferred_service?: service_type; read_at?: string; reply_to?: reply_to; sent_at?: string; service?: service_type; }`\n\n**get** `/v3/messages/{messageId}`\n\nRetrieve a specific message by its ID. This endpoint returns the full message\ndetails including text, attachments, reactions, and metadata.\n\n\n### Parameters\n\n- `messageId: string`\n\n### Returns\n\n- `{ id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: { name?: string; type?: 'screen' | 'bubble'; }; from?: string; from_handle?: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }; parts?: { reactions: reaction[]; type: 'text'; value: string; text_decorations?: text_decoration[]; } | { id: string; filename: string; mime_type: string; reactions: reaction[]; size_bytes: number; type: 'media'; url: string; } | { reactions: reaction[]; type: 'link'; value: string; }[]; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; read_at?: string; reply_to?: { message_id: string; part_index?: number; }; sent_at?: string; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n  - `id: string`\n  - `chat_id: string`\n  - `created_at: string`\n  - `is_delivered: boolean`\n  - `is_from_me: boolean`\n  - `is_read: boolean`\n  - `updated_at: string`\n  - `delivered_at?: string`\n  - `effect?: { name?: string; type?: 'screen' | 'bubble'; }`\n  - `from?: string`\n  - `from_handle?: { id: string; handle: string; joined_at: string; service: 'iMessage' | 'SMS' | 'RCS'; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }`\n  - `parts?: { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'text'; value: string; text_decorations?: { range: number[]; animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter'; style?: 'bold' | 'italic' | 'strikethrough' | 'underline'; }[]; } | { id: string; filename: string; mime_type: string; reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; size_bytes: number; type: 'media'; url: string; } | { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'link'; value: string; }[]`\n  - `preferred_service?: 'iMessage' | 'SMS' | 'RCS'`\n  - `read_at?: string`\n  - `reply_to?: { message_id: string; part_index?: number; }`\n  - `sent_at?: string`\n  - `service?: 'iMessage' | 'SMS' | 'RCS'`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst message = await client.messages.retrieve('69a37c7d-af4f-4b5e-af42-e28e98ce873a');\n\nconsole.log(message);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.messages.retrieve',
+      go: {
+        method: 'client.Messages.Get',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst message = await client.messages.retrieve('69a37c7d-af4f-4b5e-af42-e28e98ce873a');\n\nconsole.log(message.id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmessage, err := client.Messages.Get(context.TODO(), "69a37c7d-af4f-4b5e-af42-e28e98ce873a")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", message.ID)\n}\n',
       },
       python: {
         method: 'messages.retrieve',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nmessage = client.messages.retrieve(\n    "69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n)\nprint(message.id)',
       },
-      go: {
-        method: 'client.Messages.Get',
+      typescript: {
+        method: 'client.messages.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmessage, err := client.Messages.Get(context.TODO(), "69a37c7d-af4f-4b5e-af42-e28e98ce873a")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", message.ID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst message = await client.messages.retrieve('69a37c7d-af4f-4b5e-af42-e28e98ce873a');\n\nconsole.log(message.id);",
       },
       http: {
         example:
@@ -631,20 +631,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.messages.delete(messageId: string): void`\n\n**delete** `/v3/messages/{messageId}`\n\nDeletes a message from the Linq API only. This does NOT unsend or remove the message\nfrom the actual chat — recipients will still see the message.\n\n\n### Parameters\n\n- `messageId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a')\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.messages.delete',
+      go: {
+        method: 'client.Messages.Delete',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a');",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Messages.Delete(context.TODO(), "69a37c7d-af4f-4b5e-af42-e28e98ce873a")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'messages.delete',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.messages.delete(\n    "69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n)',
       },
-      go: {
-        method: 'client.Messages.Delete',
+      typescript: {
+        method: 'client.messages.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Messages.Delete(context.TODO(), "69a37c7d-af4f-4b5e-af42-e28e98ce873a")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.messages.delete('69a37c7d-af4f-4b5e-af42-e28e98ce873a');",
       },
       http: {
         example:
@@ -672,20 +672,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## add_reaction\n\n`client.messages.addReaction(messageId: string, operation: 'add' | 'remove', type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom' | 'sticker', custom_emoji?: string, part_index?: number): { message?: string; status?: string; trace_id?: string; }`\n\n**post** `/v3/messages/{messageId}/reactions`\n\nAdd or remove emoji reactions to messages. Reactions let users express\ntheir response to a message without sending a new message.\n\n**Supported Reactions:**\n- love ❤️\n- like 👍\n- dislike 👎\n- laugh 😂\n- emphasize ‼️\n- question ❓\n- custom - any emoji (use `custom_emoji` field to specify)\n\n\n### Parameters\n\n- `messageId: string`\n\n- `operation: 'add' | 'remove'`\n  Whether to add or remove the reaction\n\n- `type: 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom' | 'sticker'`\n  Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh, emphasize, question.\nCustom emoji reactions have type \"custom\" with the actual emoji in the custom_emoji field.\nSticker reactions have type \"sticker\" with sticker attachment details in the sticker field.\n\n\n- `custom_emoji?: string`\n  Custom emoji string. Required when type is \"custom\".\n\n\n- `part_index?: number`\n  Optional index of the message part to react to.\nIf not provided, reacts to the entire message (part 0).\n\n\n### Returns\n\n- `{ message?: string; status?: string; trace_id?: string; }`\n\n  - `message?: string`\n  - `status?: string`\n  - `trace_id?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst response = await client.messages.addReaction('69a37c7d-af4f-4b5e-af42-e28e98ce873a', { operation: 'add', type: 'love' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.messages.addReaction',
+      go: {
+        method: 'client.Messages.AddReaction',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.messages.addReaction('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {\n  operation: 'add',\n  type: 'love',\n});\n\nconsole.log(response.trace_id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n\t"github.com/linq-team/linq-go/shared"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Messages.AddReaction(\n\t\tcontext.TODO(),\n\t\t"69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n\t\tlinqgo.MessageAddReactionParams{\n\t\t\tOperation: linqgo.MessageAddReactionParamsOperationAdd,\n\t\t\tType:      shared.ReactionTypeLove,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.TraceID)\n}\n',
       },
       python: {
         method: 'messages.add_reaction',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.messages.add_reaction(\n    message_id="69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n    operation="add",\n    type="love",\n)\nprint(response.trace_id)',
       },
-      go: {
-        method: 'client.Messages.AddReaction',
+      typescript: {
+        method: 'client.messages.addReaction',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n\t"github.com/linq-team/linq-go/shared"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tresponse, err := client.Messages.AddReaction(\n\t\tcontext.TODO(),\n\t\t"69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n\t\tlinqgo.MessageAddReactionParams{\n\t\t\tOperation: linqgo.MessageAddReactionParamsOperationAdd,\n\t\t\tType:      shared.ReactionTypeLove,\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.TraceID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.messages.addReaction('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {\n  operation: 'add',\n  type: 'love',\n});\n\nconsole.log(response.trace_id);",
       },
       http: {
         example:
@@ -708,20 +708,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.messages.update(messageId: string, text: string, part_index?: number): { id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: message_effect; from?: string; from_handle?: chat_handle; parts?: text_part_response | media_part_response | link_part_response[]; preferred_service?: service_type; read_at?: string; reply_to?: reply_to; sent_at?: string; service?: service_type; }`\n\n**patch** `/v3/messages/{messageId}`\n\nEdit the text content of a specific part of a previously sent message.\n\n**Note:** A message can be edited up to 5 times, and only within 15 minutes of when it was originally sent.\n\n\n### Parameters\n\n- `messageId: string`\n\n- `text: string`\n  New text content for the message part\n\n- `part_index?: number`\n  Index of the message part to edit. Defaults to 0.\n\n### Returns\n\n- `{ id: string; chat_id: string; created_at: string; is_delivered: boolean; is_from_me: boolean; is_read: boolean; updated_at: string; delivered_at?: string; effect?: { name?: string; type?: 'screen' | 'bubble'; }; from?: string; from_handle?: { id: string; handle: string; joined_at: string; service: service_type; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }; parts?: { reactions: reaction[]; type: 'text'; value: string; text_decorations?: text_decoration[]; } | { id: string; filename: string; mime_type: string; reactions: reaction[]; size_bytes: number; type: 'media'; url: string; } | { reactions: reaction[]; type: 'link'; value: string; }[]; preferred_service?: 'iMessage' | 'SMS' | 'RCS'; read_at?: string; reply_to?: { message_id: string; part_index?: number; }; sent_at?: string; service?: 'iMessage' | 'SMS' | 'RCS'; }`\n\n  - `id: string`\n  - `chat_id: string`\n  - `created_at: string`\n  - `is_delivered: boolean`\n  - `is_from_me: boolean`\n  - `is_read: boolean`\n  - `updated_at: string`\n  - `delivered_at?: string`\n  - `effect?: { name?: string; type?: 'screen' | 'bubble'; }`\n  - `from?: string`\n  - `from_handle?: { id: string; handle: string; joined_at: string; service: 'iMessage' | 'SMS' | 'RCS'; is_me?: boolean; left_at?: string; status?: 'active' | 'left' | 'removed'; }`\n  - `parts?: { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'text'; value: string; text_decorations?: { range: number[]; animation?: 'big' | 'small' | 'shake' | 'nod' | 'explode' | 'ripple' | 'bloom' | 'jitter'; style?: 'bold' | 'italic' | 'strikethrough' | 'underline'; }[]; } | { id: string; filename: string; mime_type: string; reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; size_bytes: number; type: 'media'; url: string; } | { reactions: { handle: chat_handle; is_me: boolean; type: reaction_type; custom_emoji?: string; sticker?: object; }[]; type: 'link'; value: string; }[]`\n  - `preferred_service?: 'iMessage' | 'SMS' | 'RCS'`\n  - `read_at?: string`\n  - `reply_to?: { message_id: string; part_index?: number; }`\n  - `sent_at?: string`\n  - `service?: 'iMessage' | 'SMS' | 'RCS'`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst message = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', { text: 'This is the edited message content' });\n\nconsole.log(message);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.messages.update',
+      go: {
+        method: 'client.Messages.Update',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst message = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {\n  text: 'This is the edited message content',\n});\n\nconsole.log(message.id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmessage, err := client.Messages.Update(\n\t\tcontext.TODO(),\n\t\t"69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n\t\tlinqgo.MessageUpdateParams{\n\t\t\tText: "This is the edited message content",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", message.ID)\n}\n',
       },
       python: {
         method: 'messages.update',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nmessage = client.messages.update(\n    message_id="69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n    text="This is the edited message content",\n    part_index=0,\n)\nprint(message.id)',
       },
-      go: {
-        method: 'client.Messages.Update',
+      typescript: {
+        method: 'client.messages.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tmessage, err := client.Messages.Update(\n\t\tcontext.TODO(),\n\t\t"69a37c7d-af4f-4b5e-af42-e28e98ce873a",\n\t\tlinqgo.MessageUpdateParams{\n\t\t\tText: "This is the edited message content",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", message.ID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst message = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {\n  text: 'This is the edited message content',\n});\n\nconsole.log(message.id);",
       },
       http: {
         example:
@@ -744,20 +744,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       '## create\n\n`client.attachments.create(content_type: string, filename: string, size_bytes: number): { attachment_id: string; download_url: string; expires_at: string; http_method: \'PUT\'; required_headers: object; upload_url: string; }`\n\n**post** `/v3/attachments`\n\n**This endpoint is optional.** You can send media by simply providing a URL in your\nmessage\'s media part — no pre-upload required. Use this endpoint only when you want\nto upload a file ahead of time for reuse or latency optimization.\n\nReturns a presigned upload URL and a permanent `attachment_id` you can reference\nin future messages.\n\n## Step 1: Request an upload URL\n\nCall this endpoint with file metadata:\n\n```json\nPOST /v3/attachments\n{\n  "filename": "photo.jpg",\n  "content_type": "image/jpeg",\n  "size_bytes": 1024000\n}\n```\n\nThe response includes an `upload_url` (valid for 15 minutes) and a permanent `attachment_id`.\n\n## Step 2: Upload the file\n\nMake a PUT request to the `upload_url` with the raw file bytes as the request body.\nYou **must** include all headers from `required_headers` exactly as returned — the presigned URL\nis signed with these values and S3 will reject the upload if they don\'t match.\n\nThe request body is the binary file content — **not** JSON, **not** multipart form data.\nThe file must equal `size_bytes` bytes (the value you declared in step 1).\n\n```bash\ncurl -X PUT "<upload_url from step 1>" \\\n  -H "Content-Type: image/jpeg" \\\n  -H "Content-Length: 1024000" \\\n  --data-binary @photo.jpg\n```\n\n## Step 3: Send a message with the attachment\n\nReference the `attachment_id` in a media part. The ID never expires — use it in as many messages as you want.\n\n```json\nPOST /v3/chats\n{\n  "from": "+15559876543",\n  "to": ["+15551234567"],\n  "message": {\n    "parts": [\n      { "type": "media", "attachment_id": "<attachment_id from step 1>" }\n    ]\n  }\n}\n```\n\n## When to use this instead of a URL in the media part\n\n- Sending the same file to multiple recipients (avoids re-downloading each time)\n- Large files where you want to separate upload from message send\n- Latency-sensitive sends where the file should already be stored\n\nIf you just need to send a file once, skip all of this and pass a `url` directly in the media part instead.\n\n**File Size Limit:** 100MB\n\n**Unsupported Types:** WebP, SVG, FLAC, OGG, and executable files are explicitly rejected.\n\n\n### Parameters\n\n- `content_type: string`\n  Supported MIME types for file attachments and media URLs.\n\n**Images:** image/jpeg, image/png, image/gif, image/heic, image/heif, image/tiff, image/bmp, image/svg+xml, image/webp, image/x-icon\n\n**Videos:** video/mp4, video/quicktime, video/mpeg, video/mpeg2, video/x-msvideo, video/3gpp\n\n**Audio:** audio/mpeg, audio/x-m4a, audio/x-caf, audio/x-wav, audio/x-aiff, audio/aac, audio/midi, audio/amr\n\n**Documents:** application/pdf, text/plain, text/markdown, text/vcard, text/rtf, text/csv, text/html, text/calendar, text/xml, application/json, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/x-iwork-pages-sffpages, application/x-iwork-numbers-sffnumbers, application/x-iwork-keynote-sffkey, application/epub+zip, application/zip, application/x-gzip\n\n**Transcoded on delivery:**\n- `audio/x-caf` — CAF files are transcoded to `audio/mp4` for delivery.\n\n**Deprecated (accepted but transcoded):**\n- `audio/mp3` — Deprecated. Use `audio/mpeg` instead. Files sent as audio/mp3 will be delivered as audio/mpeg.\n- `audio/mp4` — Deprecated. Use `audio/x-m4a` instead. Files sent as audio/mp4 will be delivered as audio/x-m4a.\n- `audio/aiff` — Deprecated. Use `audio/x-aiff` instead. Files sent as audio/aiff will be delivered as audio/x-aiff.\n- `image/tiff` — Accepted, but TIFF images are transcoded to JPEG for delivery.\n\n**Unsupported:** FLAC, OGG, and executable files are explicitly rejected.\n\n\n- `filename: string`\n  Name of the file to upload\n\n- `size_bytes: number`\n  Size of the file in bytes (max 100MB)\n\n### Returns\n\n- `{ attachment_id: string; download_url: string; expires_at: string; http_method: \'PUT\'; required_headers: object; upload_url: string; }`\n\n  - `attachment_id: string`\n  - `download_url: string`\n  - `expires_at: string`\n  - `http_method: \'PUT\'`\n  - `required_headers: object`\n  - `upload_url: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from \'@linqapp/sdk\';\n\nconst client = new LinqAPIV3();\n\nconst attachment = await client.attachments.create({\n  content_type: \'image/jpeg\',\n  filename: \'photo.jpg\',\n  size_bytes: 1024000,\n});\n\nconsole.log(attachment);\n```',
     perLanguage: {
-      typescript: {
-        method: 'client.attachments.create',
+      go: {
+        method: 'client.Attachments.New',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.create({\n  content_type: 'image/jpeg',\n  filename: 'photo.jpg',\n  size_bytes: 1024000,\n});\n\nconsole.log(attachment.attachment_id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tattachment, err := client.Attachments.New(context.TODO(), linqgo.AttachmentNewParams{\n\t\tContentType: linqgo.SupportedContentTypeImageJpeg,\n\t\tFilename:    "photo.jpg",\n\t\tSizeBytes:   1024000,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", attachment.AttachmentID)\n}\n',
       },
       python: {
         method: 'attachments.create',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.create(\n    content_type="image/jpeg",\n    filename="photo.jpg",\n    size_bytes=1024000,\n)\nprint(attachment.attachment_id)',
       },
-      go: {
-        method: 'client.Attachments.New',
+      typescript: {
+        method: 'client.attachments.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tattachment, err := client.Attachments.New(context.TODO(), linqgo.AttachmentNewParams{\n\t\tContentType: linqgo.SupportedContentTypeImageJpeg,\n\t\tFilename:    "photo.jpg",\n\t\tSizeBytes:   1024000,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", attachment.AttachmentID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.create({\n  content_type: 'image/jpeg',\n  filename: 'photo.jpg',\n  size_bytes: 1024000,\n});\n\nconsole.log(attachment.attachment_id);",
       },
       http: {
         example:
@@ -780,20 +780,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.attachments.retrieve(attachmentId: string): { id: string; content_type: supported_content_type; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n**get** `/v3/attachments/{attachmentId}`\n\nRetrieve metadata for a specific attachment including file\ninformation, and URLs for downloading.\n\n`status`: (**deprecated** — will be removed in a future API version)\n\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ id: string; content_type: string; created_at: string; filename: string; size_bytes: number; status: 'pending' | 'complete' | 'failed'; download_url?: string; }`\n\n  - `id: string`\n  - `content_type: string`\n  - `created_at: string`\n  - `filename: string`\n  - `size_bytes: number`\n  - `status: 'pending' | 'complete' | 'failed'`\n  - `download_url?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst attachment = await client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');\n\nconsole.log(attachment);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.attachments.retrieve',
+      go: {
+        method: 'client.Attachments.Get',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');\n\nconsole.log(attachment.id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tattachment, err := client.Attachments.Get(context.TODO(), "abc12345-1234-5678-9abc-def012345678")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", attachment.ID)\n}\n',
       },
       python: {
         method: 'attachments.retrieve',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.retrieve(\n    "abc12345-1234-5678-9abc-def012345678",\n)\nprint(attachment.id)',
       },
-      go: {
-        method: 'client.Attachments.Get',
+      typescript: {
+        method: 'client.attachments.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tattachment, err := client.Attachments.Get(context.TODO(), "abc12345-1234-5678-9abc-def012345678")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", attachment.ID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.retrieve('abc12345-1234-5678-9abc-def012345678');\n\nconsole.log(attachment.id);",
       },
       http: {
         example:
@@ -813,20 +813,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.attachments.delete(attachmentId: string): void`\n\n**delete** `/v3/attachments/{attachmentId}`\n\nPermanently delete an attachment owned by the authenticated partner.\n\n### Parameters\n\n- `attachmentId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.attachments.delete('abc12345-1234-5678-9abc-def012345678')\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.attachments.delete',
+      go: {
+        method: 'client.Attachments.Delete',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.attachments.delete('abc12345-1234-5678-9abc-def012345678');",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Attachments.Delete(context.TODO(), "abc12345-1234-5678-9abc-def012345678")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'attachments.delete',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.attachments.delete(\n    "abc12345-1234-5678-9abc-def012345678",\n)',
       },
-      go: {
-        method: 'client.Attachments.Delete',
+      typescript: {
+        method: 'client.attachments.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Attachments.Delete(context.TODO(), "abc12345-1234-5678-9abc-def012345678")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.attachments.delete('abc12345-1234-5678-9abc-def012345678');",
       },
       http: {
         example:
@@ -847,20 +847,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.phonenumbers.list(): { phone_numbers: object[]; }`\n\n**get** `/v3/phonenumbers`\n\n**Deprecated.** Use `GET /v3/phone_numbers` instead.\n\n\n### Returns\n\n- `{ phone_numbers: { id: string; phone_number: string; capabilities?: { mms: boolean; sms: boolean; voice: boolean; }; country_code?: string; type?: string; }[]; }`\n\n  - `phone_numbers: { id: string; phone_number: string; capabilities?: { mms: boolean; sms: boolean; voice: boolean; }; country_code?: string; type?: string; }[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst phonenumbers = await client.phonenumbers.list();\n\nconsole.log(phonenumbers);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.phonenumbers.list',
+      go: {
+        method: 'client.Phonenumbers.List',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst phonenumbers = await client.phonenumbers.list();\n\nconsole.log(phonenumbers.phone_numbers);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tphonenumbers, err := client.Phonenumbers.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", phonenumbers.PhoneNumbers)\n}\n',
       },
       python: {
         method: 'phonenumbers.list',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nphonenumbers = client.phonenumbers.list()\nprint(phonenumbers.phone_numbers)',
       },
-      go: {
-        method: 'client.Phonenumbers.List',
+      typescript: {
+        method: 'client.phonenumbers.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tphonenumbers, err := client.Phonenumbers.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", phonenumbers.PhoneNumbers)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst phonenumbers = await client.phonenumbers.list();\n\nconsole.log(phonenumbers.phone_numbers);",
       },
       http: {
         example:
@@ -882,20 +882,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.phoneNumbers.list(): { phone_numbers: object[]; }`\n\n**get** `/v3/phone_numbers`\n\nReturns all phone numbers assigned to the authenticated partner.\nUse this endpoint to discover which phone numbers are available for\nuse as the `from` field when creating a chat, listing chats, or sending a voice memo.\n\n\n### Returns\n\n- `{ phone_numbers: { id: string; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL'; }; phone_number: string; }[]; }`\n\n  - `phone_numbers: { id: string; health_status: { doc_url: string; status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL'; }; phone_number: string; }[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst phoneNumbers = await client.phoneNumbers.list();\n\nconsole.log(phoneNumbers);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.phoneNumbers.list',
+      go: {
+        method: 'client.PhoneNumbers.List',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst phoneNumbers = await client.phoneNumbers.list();\n\nconsole.log(phoneNumbers.phone_numbers);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tphoneNumbers, err := client.PhoneNumbers.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", phoneNumbers.PhoneNumbers)\n}\n',
       },
       python: {
         method: 'phone_numbers.list',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nphone_numbers = client.phone_numbers.list()\nprint(phone_numbers.phone_numbers)',
       },
-      go: {
-        method: 'client.PhoneNumbers.List',
+      typescript: {
+        method: 'client.phoneNumbers.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tphoneNumbers, err := client.PhoneNumbers.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", phoneNumbers.PhoneNumbers)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst phoneNumbers = await client.phoneNumbers.list();\n\nconsole.log(phoneNumbers.phone_numbers);",
       },
       http: {
         example:
@@ -916,20 +916,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.webhookEvents.list(): { doc_url: 'https://apidocs.linqapp.com/documentation/webhook-events'; events: webhook_event_type[]; }`\n\n**get** `/v3/webhook-events`\n\nReturns all available webhook event types that can be subscribed to.\nUse this endpoint to discover valid values for the `subscribed_events`\nfield when creating or updating webhook subscriptions.\n\n\n### Returns\n\n- `{ doc_url: 'https://apidocs.linqapp.com/documentation/webhook-events'; events: string[]; }`\n\n  - `doc_url: 'https://apidocs.linqapp.com/documentation/webhook-events'`\n  - `events: string[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst webhookEvents = await client.webhookEvents.list();\n\nconsole.log(webhookEvents);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.webhookEvents.list',
+      go: {
+        method: 'client.WebhookEvents.List',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookEvents = await client.webhookEvents.list();\n\nconsole.log(webhookEvents.doc_url);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookEvents, err := client.WebhookEvents.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookEvents.DocURL)\n}\n',
       },
       python: {
         method: 'webhook_events.list',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nwebhook_events = client.webhook_events.list()\nprint(webhook_events.doc_url)',
       },
-      go: {
-        method: 'client.WebhookEvents.List',
+      typescript: {
+        method: 'client.webhookEvents.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookEvents, err := client.WebhookEvents.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookEvents.DocURL)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookEvents = await client.webhookEvents.list();\n\nconsole.log(webhookEvents.doc_url);",
       },
       http: {
         example:
@@ -952,20 +952,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.webhookSubscriptions.create(subscribed_events: string[], target_url: string, phone_numbers?: string[]): { id: string; created_at: string; is_active: boolean; signing_secret: string; subscribed_events: webhook_event_type[]; target_url: string; updated_at: string; phone_numbers?: string[]; }`\n\n**post** `/v3/webhook-subscriptions`\n\nCreate a new webhook subscription to receive events at a target URL.\nUpon creation, a signing secret is generated for verifying webhook\nauthenticity. **Store this secret securely — it cannot be retrieved later.**\n\n**Phone Number Filtering:**\n- Optionally specify `phone_numbers` to only receive events for specific lines\n- If omitted, events from all phone numbers are delivered (default behavior)\n- Use multiple subscriptions with different `phone_numbers` to route different lines to different endpoints\n- Each `target_url` can only be used once per account. To route different\n  lines to different destinations, use a unique URL per subscription\n  (e.g., append a query parameter: `https://example.com/webhook?line=1`)\n\n**Webhook Delivery:**\n- Events are sent via HTTP POST to the target URL\n- Each request includes `X-Webhook-Signature` and `X-Webhook-Timestamp` headers\n- Signature is HMAC-SHA256 over `{timestamp}.{payload}` — see [Webhook Events](/docs/webhook-events) for verification details\n- Failed deliveries (5xx, 429, network errors) are retried up to 10 times over ~25 minutes with exponential backoff\n- Client errors (4xx except 429) are not retried\n\n\n### Parameters\n\n- `subscribed_events: string[]`\n  List of event types to subscribe to\n\n- `target_url: string`\n  URL where webhook events will be sent. Must be HTTPS.\n\n- `phone_numbers?: string[]`\n  Optional list of phone numbers to filter events for. Only events originating from these phone numbers will be delivered to this subscription. If omitted or empty, events from all phone numbers are delivered. Phone numbers must be in E.164 format.\n\n### Returns\n\n- `{ id: string; created_at: string; is_active: boolean; signing_secret: string; subscribed_events: string[]; target_url: string; updated_at: string; phone_numbers?: string[]; }`\n  Response returned when creating a webhook subscription. Includes the signing secret which is only shown once.\n\n  - `id: string`\n  - `created_at: string`\n  - `is_active: boolean`\n  - `signing_secret: string`\n  - `subscribed_events: string[]`\n  - `target_url: string`\n  - `updated_at: string`\n  - `phone_numbers?: string[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst webhookSubscription = await client.webhookSubscriptions.create({ subscribed_events: ['message.sent', 'message.delivered', 'message.read'], target_url: 'https://webhooks.example.com/linq/events' });\n\nconsole.log(webhookSubscription);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.webhookSubscriptions.create',
+      go: {
+        method: 'client.WebhookSubscriptions.New',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscription = await client.webhookSubscriptions.create({\n  subscribed_events: ['message.sent', 'message.delivered', 'message.read'],\n  target_url: 'https://webhooks.example.com/linq/events',\n});\n\nconsole.log(webhookSubscription.id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscription, err := client.WebhookSubscriptions.New(context.TODO(), linqgo.WebhookSubscriptionNewParams{\n\t\tSubscribedEvents: []linqgo.WebhookEventType{linqgo.WebhookEventTypeMessageSent, linqgo.WebhookEventTypeMessageDelivered, linqgo.WebhookEventTypeMessageRead},\n\t\tTargetURL:        "https://webhooks.example.com/linq/events",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscription.ID)\n}\n',
       },
       python: {
         method: 'webhook_subscriptions.create',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nwebhook_subscription = client.webhook_subscriptions.create(\n    subscribed_events=["message.sent", "message.delivered", "message.read"],\n    target_url="https://webhooks.example.com/linq/events",\n)\nprint(webhook_subscription.id)',
       },
-      go: {
-        method: 'client.WebhookSubscriptions.New',
+      typescript: {
+        method: 'client.webhookSubscriptions.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscription, err := client.WebhookSubscriptions.New(context.TODO(), linqgo.WebhookSubscriptionNewParams{\n\t\tSubscribedEvents: []linqgo.WebhookEventType{linqgo.WebhookEventTypeMessageSent, linqgo.WebhookEventTypeMessageDelivered, linqgo.WebhookEventTypeMessageRead},\n\t\tTargetURL:        "https://webhooks.example.com/linq/events",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscription.ID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscription = await client.webhookSubscriptions.create({\n  subscribed_events: ['message.sent', 'message.delivered', 'message.read'],\n  target_url: 'https://webhooks.example.com/linq/events',\n});\n\nconsole.log(webhookSubscription.id);",
       },
       http: {
         example:
@@ -987,20 +987,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.webhookSubscriptions.list(): { subscriptions: webhook_subscription[]; }`\n\n**get** `/v3/webhook-subscriptions`\n\nRetrieve all webhook subscriptions for the authenticated partner.\nReturns a list of active and inactive subscriptions with their\nconfiguration and status.\n\n\n### Returns\n\n- `{ subscriptions: { id: string; created_at: string; is_active: boolean; subscribed_events: webhook_event_type[]; target_url: string; updated_at: string; phone_numbers?: string[]; }[]; }`\n\n  - `subscriptions: { id: string; created_at: string; is_active: boolean; subscribed_events: string[]; target_url: string; updated_at: string; phone_numbers?: string[]; }[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst webhookSubscriptions = await client.webhookSubscriptions.list();\n\nconsole.log(webhookSubscriptions);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.webhookSubscriptions.list',
+      go: {
+        method: 'client.WebhookSubscriptions.List',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscriptions = await client.webhookSubscriptions.list();\n\nconsole.log(webhookSubscriptions.subscriptions);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscriptions, err := client.WebhookSubscriptions.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscriptions.Subscriptions)\n}\n',
       },
       python: {
         method: 'webhook_subscriptions.list',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nwebhook_subscriptions = client.webhook_subscriptions.list()\nprint(webhook_subscriptions.subscriptions)',
       },
-      go: {
-        method: 'client.WebhookSubscriptions.List',
+      typescript: {
+        method: 'client.webhookSubscriptions.list',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscriptions, err := client.WebhookSubscriptions.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscriptions.Subscriptions)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscriptions = await client.webhookSubscriptions.list();\n\nconsole.log(webhookSubscriptions.subscriptions);",
       },
       http: {
         example:
@@ -1023,20 +1023,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.webhookSubscriptions.retrieve(subscriptionId: string): { id: string; created_at: string; is_active: boolean; subscribed_events: webhook_event_type[]; target_url: string; updated_at: string; phone_numbers?: string[]; }`\n\n**get** `/v3/webhook-subscriptions/{subscriptionId}`\n\nRetrieve details for a specific webhook subscription including its\ntarget URL, subscribed events, and current status.\n\n\n### Parameters\n\n- `subscriptionId: string`\n\n### Returns\n\n- `{ id: string; created_at: string; is_active: boolean; subscribed_events: string[]; target_url: string; updated_at: string; phone_numbers?: string[]; }`\n\n  - `id: string`\n  - `created_at: string`\n  - `is_active: boolean`\n  - `subscribed_events: string[]`\n  - `target_url: string`\n  - `updated_at: string`\n  - `phone_numbers?: string[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst webhookSubscription = await client.webhookSubscriptions.retrieve('b2c3d4e5-f6a7-8901-bcde-f23456789012');\n\nconsole.log(webhookSubscription);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.webhookSubscriptions.retrieve',
+      go: {
+        method: 'client.WebhookSubscriptions.Get',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscription = await client.webhookSubscriptions.retrieve(\n  'b2c3d4e5-f6a7-8901-bcde-f23456789012',\n);\n\nconsole.log(webhookSubscription.id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscription, err := client.WebhookSubscriptions.Get(context.TODO(), "b2c3d4e5-f6a7-8901-bcde-f23456789012")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscription.ID)\n}\n',
       },
       python: {
         method: 'webhook_subscriptions.retrieve',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nwebhook_subscription = client.webhook_subscriptions.retrieve(\n    "b2c3d4e5-f6a7-8901-bcde-f23456789012",\n)\nprint(webhook_subscription.id)',
       },
-      go: {
-        method: 'client.WebhookSubscriptions.Get',
+      typescript: {
+        method: 'client.webhookSubscriptions.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscription, err := client.WebhookSubscriptions.Get(context.TODO(), "b2c3d4e5-f6a7-8901-bcde-f23456789012")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscription.ID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscription = await client.webhookSubscriptions.retrieve(\n  'b2c3d4e5-f6a7-8901-bcde-f23456789012',\n);\n\nconsole.log(webhookSubscription.id);",
       },
       http: {
         example:
@@ -1065,20 +1065,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.webhookSubscriptions.update(subscriptionId: string, is_active?: boolean, phone_numbers?: string[], subscribed_events?: string[], target_url?: string): { id: string; created_at: string; is_active: boolean; subscribed_events: webhook_event_type[]; target_url: string; updated_at: string; phone_numbers?: string[]; }`\n\n**put** `/v3/webhook-subscriptions/{subscriptionId}`\n\nUpdate an existing webhook subscription. You can modify the target URL,\nsubscribed events, or activate/deactivate the subscription.\n\n**Note:** The signing secret cannot be changed via this endpoint.\n\n\n### Parameters\n\n- `subscriptionId: string`\n\n- `is_active?: boolean`\n  Activate or deactivate the subscription\n\n- `phone_numbers?: string[]`\n  Updated list of phone numbers to filter events for. Set to a non-empty array to filter events to specific phone numbers. Set to an empty array or null to remove the filter and receive events from all phone numbers. Phone numbers must be in E.164 format.\n\n- `subscribed_events?: string[]`\n  Updated list of event types to subscribe to\n\n- `target_url?: string`\n  New target URL for webhook events\n\n### Returns\n\n- `{ id: string; created_at: string; is_active: boolean; subscribed_events: string[]; target_url: string; updated_at: string; phone_numbers?: string[]; }`\n\n  - `id: string`\n  - `created_at: string`\n  - `is_active: boolean`\n  - `subscribed_events: string[]`\n  - `target_url: string`\n  - `updated_at: string`\n  - `phone_numbers?: string[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst webhookSubscription = await client.webhookSubscriptions.update('b2c3d4e5-f6a7-8901-bcde-f23456789012');\n\nconsole.log(webhookSubscription);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.webhookSubscriptions.update',
+      go: {
+        method: 'client.WebhookSubscriptions.Update',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscription = await client.webhookSubscriptions.update(\n  'b2c3d4e5-f6a7-8901-bcde-f23456789012',\n  { target_url: 'https://webhooks.example.com/linq/events' },\n);\n\nconsole.log(webhookSubscription.id);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscription, err := client.WebhookSubscriptions.Update(\n\t\tcontext.TODO(),\n\t\t"b2c3d4e5-f6a7-8901-bcde-f23456789012",\n\t\tlinqgo.WebhookSubscriptionUpdateParams{\n\t\t\tTargetURL: linqgo.String("https://webhooks.example.com/linq/events"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscription.ID)\n}\n',
       },
       python: {
         method: 'webhook_subscriptions.update',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nwebhook_subscription = client.webhook_subscriptions.update(\n    subscription_id="b2c3d4e5-f6a7-8901-bcde-f23456789012",\n    target_url="https://webhooks.example.com/linq/events",\n)\nprint(webhook_subscription.id)',
       },
-      go: {
-        method: 'client.WebhookSubscriptions.Update',
+      typescript: {
+        method: 'client.webhookSubscriptions.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\twebhookSubscription, err := client.WebhookSubscriptions.Update(\n\t\tcontext.TODO(),\n\t\t"b2c3d4e5-f6a7-8901-bcde-f23456789012",\n\t\tlinqgo.WebhookSubscriptionUpdateParams{\n\t\t\tTargetURL: linqgo.String("https://webhooks.example.com/linq/events"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookSubscription.ID)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookSubscription = await client.webhookSubscriptions.update(\n  'b2c3d4e5-f6a7-8901-bcde-f23456789012',\n  { target_url: 'https://webhooks.example.com/linq/events' },\n);\n\nconsole.log(webhookSubscription.id);",
       },
       http: {
         example:
@@ -1098,20 +1098,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.webhookSubscriptions.delete(subscriptionId: string): void`\n\n**delete** `/v3/webhook-subscriptions/{subscriptionId}`\n\nDelete a webhook subscription.\n\n### Parameters\n\n- `subscriptionId: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.webhookSubscriptions.delete('b2c3d4e5-f6a7-8901-bcde-f23456789012')\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.webhookSubscriptions.delete',
+      go: {
+        method: 'client.WebhookSubscriptions.Delete',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhookSubscriptions.delete('b2c3d4e5-f6a7-8901-bcde-f23456789012');",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.WebhookSubscriptions.Delete(context.TODO(), "b2c3d4e5-f6a7-8901-bcde-f23456789012")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'webhook_subscriptions.delete',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.webhook_subscriptions.delete(\n    "b2c3d4e5-f6a7-8901-bcde-f23456789012",\n)',
       },
-      go: {
-        method: 'client.WebhookSubscriptions.Delete',
+      typescript: {
+        method: 'client.webhookSubscriptions.delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.WebhookSubscriptions.Delete(context.TODO(), "b2c3d4e5-f6a7-8901-bcde-f23456789012")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhookSubscriptions.delete('b2c3d4e5-f6a7-8901-bcde-f23456789012');",
       },
       http: {
         example:
@@ -1132,20 +1132,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## check_imessage\n\n`client.capability.checkiMessage(address: string, from?: string): { address: string; available: boolean; }`\n\n**post** `/v3/capability/check_imessage`\n\nCheck whether a recipient address (phone number or email) is reachable via iMessage.\n\n\n### Parameters\n\n- `address: string`\n  The recipient phone number or email address to check\n\n- `from?: string`\n  Optional sender phone number. If omitted, an available phone from your pool is used automatically.\n\n### Returns\n\n- `{ address: string; available: boolean; }`\n\n  - `address: string`\n  - `available: boolean`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst handleCheckResponse = await client.capability.checkiMessage({ address: '+15551234567' });\n\nconsole.log(handleCheckResponse);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.capability.checkiMessage',
+      go: {
+        method: 'client.Capability.CheckiMessage',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst handleCheckResponse = await client.capability.checkiMessage({ address: '+15551234567' });\n\nconsole.log(handleCheckResponse.address);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\thandleCheckResponse, err := client.Capability.CheckiMessage(context.TODO(), linqgo.CapabilityCheckiMessageParams{\n\t\tHandleCheck: linqgo.HandleCheckParam{\n\t\t\tAddress: "+15551234567",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", handleCheckResponse.Address)\n}\n',
       },
       python: {
         method: 'capability.check_i_message',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nhandle_check_response = client.capability.check_i_message(\n    address="+15551234567",\n)\nprint(handle_check_response.address)',
       },
-      go: {
-        method: 'client.Capability.CheckiMessage',
+      typescript: {
+        method: 'client.capability.checkiMessage',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\thandleCheckResponse, err := client.Capability.CheckiMessage(context.TODO(), linqgo.CapabilityCheckiMessageParams{\n\t\tHandleCheck: linqgo.HandleCheckParam{\n\t\t\tAddress: "+15551234567",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", handleCheckResponse.Address)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst handleCheckResponse = await client.capability.checkiMessage({ address: '+15551234567' });\n\nconsole.log(handleCheckResponse.address);",
       },
       http: {
         example:
@@ -1166,20 +1166,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## check_rcs\n\n`client.capability.checkRCS(address: string, from?: string): { address: string; available: boolean; }`\n\n**post** `/v3/capability/check_rcs`\n\nCheck whether a recipient address (phone number) supports RCS messaging.\n\n\n### Parameters\n\n- `address: string`\n  The recipient phone number or email address to check\n\n- `from?: string`\n  Optional sender phone number. If omitted, an available phone from your pool is used automatically.\n\n### Returns\n\n- `{ address: string; available: boolean; }`\n\n  - `address: string`\n  - `available: boolean`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst handleCheckResponse = await client.capability.checkRCS({ address: '+15551234567' });\n\nconsole.log(handleCheckResponse);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.capability.checkRCS',
+      go: {
+        method: 'client.Capability.CheckRCS',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst handleCheckResponse = await client.capability.checkRCS({ address: '+15551234567' });\n\nconsole.log(handleCheckResponse.address);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\thandleCheckResponse, err := client.Capability.CheckRCS(context.TODO(), linqgo.CapabilityCheckRCSParams{\n\t\tHandleCheck: linqgo.HandleCheckParam{\n\t\t\tAddress: "+15551234567",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", handleCheckResponse.Address)\n}\n',
       },
       python: {
         method: 'capability.check_RCS',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nhandle_check_response = client.capability.check_RCS(\n    address="+15551234567",\n)\nprint(handle_check_response.address)',
       },
-      go: {
-        method: 'client.Capability.CheckRCS',
+      typescript: {
+        method: 'client.capability.checkRCS',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\thandleCheckResponse, err := client.Capability.CheckRCS(context.TODO(), linqgo.CapabilityCheckRCSParams{\n\t\tHandleCheck: linqgo.HandleCheckParam{\n\t\t\tAddress: "+15551234567",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", handleCheckResponse.Address)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst handleCheckResponse = await client.capability.checkRCS({ address: '+15551234567' });\n\nconsole.log(handleCheckResponse.address);",
       },
       http: {
         example:
@@ -1196,20 +1196,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) webhooks > (method) events',
     qualified: 'client.webhooks.events',
     perLanguage: {
-      typescript: {
-        method: 'client.webhooks.events',
+      go: {
+        method: 'client.Webhooks.Events',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhooks.events();",
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Webhooks.Events(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       python: {
         method: 'webhooks.events',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.webhooks.events()',
       },
-      go: {
-        method: 'client.Webhooks.Events',
+      typescript: {
+        method: 'client.webhooks.events',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Webhooks.Events(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhooks.events();",
       },
     },
   },
@@ -1228,20 +1228,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## retrieve\n\n`client.contactCard.retrieve(phone_number?: string): { contact_cards: object[]; }`\n\n**get** `/v3/contact_card`\n\nReturns the contact card for a specific phone number, or all contact cards for the\nauthenticated partner if no `phone_number` is provided.\n\n\n### Parameters\n\n- `phone_number?: string`\n  E.164 phone number to filter by. If omitted, all my cards for the partner are returned.\n\n### Returns\n\n- `{ contact_cards: { first_name: string; is_active: boolean; phone_number: string; image_url?: string; last_name?: string; }[]; }`\n\n  - `contact_cards: { first_name: string; is_active: boolean; phone_number: string; image_url?: string; last_name?: string; }[]`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst contactCard = await client.contactCard.retrieve();\n\nconsole.log(contactCard);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.contactCard.retrieve',
+      go: {
+        method: 'client.ContactCard.Get',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst contactCard = await client.contactCard.retrieve();\n\nconsole.log(contactCard.contact_cards);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcontactCard, err := client.ContactCard.Get(context.TODO(), linqgo.ContactCardGetParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", contactCard.ContactCards)\n}\n',
       },
       python: {
         method: 'contact_card.retrieve',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\ncontact_card = client.contact_card.retrieve()\nprint(contact_card.contact_cards)',
       },
-      go: {
-        method: 'client.ContactCard.Get',
+      typescript: {
+        method: 'client.contactCard.retrieve',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tcontactCard, err := client.ContactCard.Get(context.TODO(), linqgo.ContactCardGetParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", contactCard.ContactCards)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst contactCard = await client.contactCard.retrieve();\n\nconsole.log(contactCard.contact_cards);",
       },
       http: {
         example:
@@ -1264,20 +1264,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.contactCard.create(first_name: string, phone_number: string, image_url?: string, last_name?: string): { first_name: string; is_active: boolean; phone_number: string; image_url?: string; last_name?: string; }`\n\n**post** `/v3/contact_card`\n\nCreates a contact card for a phone number. This endpoint is intended for initial, one-time setup only.\n\nThe contact card is stored in an inactive state first. Once it's applied successfully,\nit is activated and `is_active` is returned as `true`. On failure, `is_active` is `false`.\n\n**Note:** To update an existing contact card after setup, use `PATCH /v3/contact_card` instead.\n\n\n### Parameters\n\n- `first_name: string`\n  First name for the contact card. Required.\n\n- `phone_number: string`\n  E.164 phone number to associate the contact card with\n\n- `image_url?: string`\n  URL of the profile image to rehost on the CDN. Only re-uploaded when a new value is provided.\n\n- `last_name?: string`\n  Last name for the contact card. Optional.\n\n### Returns\n\n- `{ first_name: string; is_active: boolean; phone_number: string; image_url?: string; last_name?: string; }`\n\n  - `first_name: string`\n  - `is_active: boolean`\n  - `phone_number: string`\n  - `image_url?: string`\n  - `last_name?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst setContactCard = await client.contactCard.create({ first_name: 'Acme', phone_number: '+15551234567' });\n\nconsole.log(setContactCard);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.contactCard.create',
+      go: {
+        method: 'client.ContactCard.New',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst setContactCard = await client.contactCard.create({\n  first_name: 'Acme',\n  phone_number: '+15551234567',\n  image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',\n  last_name: 'Support',\n});\n\nconsole.log(setContactCard.first_name);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tsetContactCard, err := client.ContactCard.New(context.TODO(), linqgo.ContactCardNewParams{\n\t\tFirstName:   "Acme",\n\t\tPhoneNumber: "+15551234567",\n\t\tImageURL:    linqgo.String("https://cdn.linqapp.com/contact-card/example.jpg"),\n\t\tLastName:    linqgo.String("Support"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", setContactCard.FirstName)\n}\n',
       },
       python: {
         method: 'contact_card.create',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nset_contact_card = client.contact_card.create(\n    first_name="Acme",\n    phone_number="+15551234567",\n    image_url="https://cdn.linqapp.com/contact-card/example.jpg",\n    last_name="Support",\n)\nprint(set_contact_card.first_name)',
       },
-      go: {
-        method: 'client.ContactCard.New',
+      typescript: {
+        method: 'client.contactCard.create',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tsetContactCard, err := client.ContactCard.New(context.TODO(), linqgo.ContactCardNewParams{\n\t\tFirstName:   "Acme",\n\t\tPhoneNumber: "+15551234567",\n\t\tImageURL:    linqgo.String("https://cdn.linqapp.com/contact-card/example.jpg"),\n\t\tLastName:    linqgo.String("Support"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", setContactCard.FirstName)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst setContactCard = await client.contactCard.create({\n  first_name: 'Acme',\n  phone_number: '+15551234567',\n  image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',\n  last_name: 'Support',\n});\n\nconsole.log(setContactCard.first_name);",
       },
       http: {
         example:
@@ -1300,20 +1300,20 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.contactCard.update(phone_number: string, first_name?: string, image_url?: string, last_name?: string): { first_name: string; is_active: boolean; phone_number: string; image_url?: string; last_name?: string; }`\n\n**patch** `/v3/contact_card`\n\nPartially updates an existing active contact card for a phone number.\n\nFetches the current active contact card and merges the provided fields.\nOnly fields present in the request body are updated; omitted fields retain their existing values.\n\nRequires an active contact card to exist for the phone number.\n\n\n### Parameters\n\n- `phone_number: string`\n  E.164 phone number of the contact card to update\n\n- `first_name?: string`\n  Updated first name. If omitted, the existing value is kept.\n\n- `image_url?: string`\n  Updated profile image URL. If omitted, the existing image is kept.\n\n- `last_name?: string`\n  Updated last name. If omitted, the existing value is kept.\n\n### Returns\n\n- `{ first_name: string; is_active: boolean; phone_number: string; image_url?: string; last_name?: string; }`\n\n  - `first_name: string`\n  - `is_active: boolean`\n  - `phone_number: string`\n  - `image_url?: string`\n  - `last_name?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst setContactCard = await client.contactCard.update({ phone_number: '+15551234567' });\n\nconsole.log(setContactCard);\n```",
     perLanguage: {
-      typescript: {
-        method: 'client.contactCard.update',
+      go: {
+        method: 'client.ContactCard.Update',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst setContactCard = await client.contactCard.update({\n  phone_number: '+15551234567',\n  first_name: 'John',\n  image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',\n  last_name: 'Doe',\n});\n\nconsole.log(setContactCard.first_name);",
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tsetContactCard, err := client.ContactCard.Update(context.TODO(), linqgo.ContactCardUpdateParams{\n\t\tPhoneNumber: "+15551234567",\n\t\tFirstName:   linqgo.String("John"),\n\t\tImageURL:    linqgo.String("https://cdn.linqapp.com/contact-card/example.jpg"),\n\t\tLastName:    linqgo.String("Doe"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", setContactCard.FirstName)\n}\n',
       },
       python: {
         method: 'contact_card.update',
         example:
           'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nset_contact_card = client.contact_card.update(\n    phone_number="+15551234567",\n    first_name="John",\n    image_url="https://cdn.linqapp.com/contact-card/example.jpg",\n    last_name="Doe",\n)\nprint(set_contact_card.first_name)',
       },
-      go: {
-        method: 'client.ContactCard.Update',
+      typescript: {
+        method: 'client.contactCard.update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tsetContactCard, err := client.ContactCard.Update(context.TODO(), linqgo.ContactCardUpdateParams{\n\t\tPhoneNumber: "+15551234567",\n\t\tFirstName:   linqgo.String("John"),\n\t\tImageURL:    linqgo.String("https://cdn.linqapp.com/contact-card/example.jpg"),\n\t\tLastName:    linqgo.String("Doe"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", setContactCard.FirstName)\n}\n',
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst setContactCard = await client.contactCard.update({\n  phone_number: '+15551234567',\n  first_name: 'John',\n  image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',\n  last_name: 'Doe',\n});\n\nconsole.log(setContactCard.first_name);",
       },
       http: {
         example:
@@ -1327,7 +1327,7 @@ const EMBEDDED_READMES: { language: string; content: string }[] = [
   {
     language: 'go',
     content:
-      '# Linq API V3 Go API Library\n\n<a href="https://pkg.go.dev/github.com/linq-team/linq-go"><img src="https://pkg.go.dev/badge/github.com/linq-team/linq-go.svg" alt="Go Reference"></a>\n\nThe Linq API V3 Go library provides convenient access to the [Linq API V3 REST API](https://docs.linqapp.com)\nfrom applications written in Go.\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Linq API V3 MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40linqapp%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsaW5xYXBwL3Nkay1tY3AiXSwiZW52Ijp7IkxJTlFfQVBJX1YzX0FQSV9LRVkiOiJNeSBBUEkgS2V5In19)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40linqapp%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40linqapp%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22LINQ_API_V3_API_KEY%22%3A%22My%20API%20Key%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Installation\n\n<!-- x-release-please-start-version -->\n\n```go\nimport (\n\t"github.com/linq-team/linq-go" // imported as SDK_PackageName\n)\n```\n\n<!-- x-release-please-end -->\n\nOr to pin the version:\n\n<!-- x-release-please-start-version -->\n\n```sh\ngo get -u \'github.com/linq-team/linq-go@v0.0.1\'\n```\n\n<!-- x-release-please-end -->\n\n## Requirements\n\nThis library requires Go 1.22+.\n\n## Usage\n\nThe full API of this library can be found in [api.md](api.md).\n\n```go\npackage main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"), // defaults to os.LookupEnv("LINQ_API_V3_API_KEY")\n\t)\n\tchat, err := client.Chats.New(context.TODO(), linqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.Chat)\n}\n\n```\n\n### Request fields\n\nAll request parameters are wrapped in a generic `Field` type,\nwhich we use to distinguish zero values from null or omitted fields.\n\nThis prevents accidentally sending a zero value if you forget a required parameter,\nand enables explicitly sending `null`, `false`, `\'\'`, or `0` on optional parameters.\nAny field not specified is not sent.\n\nTo construct fields with values, use the helpers `String()`, `Int()`, `Float()`, or most commonly, the generic `F[T]()`.\nTo send a null, use `Null[T]()`, and to send a nonconforming value, use `Raw[T](any)`. For example:\n\n```go\nparams := FooParams{\n\tName: SDK_PackageName.F("hello"),\n\n\t// Explicitly send `"description": null`\n\tDescription: SDK_PackageName.Null[string](),\n\n\tPoint: SDK_PackageName.F(SDK_PackageName.Point{\n\t\tX: SDK_PackageName.Int(0),\n\t\tY: SDK_PackageName.Int(1),\n\n\t\t// In cases where the API specifies a given type,\n\t\t// but you want to send something else, use `Raw`:\n\t\tZ: SDK_PackageName.Raw[int64](0.01), // sends a float\n\t}),\n}\n```\n\n### Response objects\n\nAll fields in response structs are value types (not pointers or wrappers).\n\nIf a given field is `null`, not present, or invalid, the corresponding field\nwill simply be its zero value.\n\nAll response structs also include a special `JSON` field, containing more detailed\ninformation about each property, which you can use like so:\n\n```go\nif res.Name == "" {\n\t// true if `"name"` is either not present or explicitly null\n\tres.JSON.Name.IsNull()\n\n\t// true if the `"name"` key was not present in the response JSON at all\n\tres.JSON.Name.IsMissing()\n\n\t// When the API returns data that cannot be coerced to the expected type:\n\tif res.JSON.Name.IsInvalid() {\n\t\traw := res.JSON.Name.Raw()\n\n\t\tlegacyName := struct{\n\t\t\tFirst string `json:"first"`\n\t\t\tLast  string `json:"last"`\n\t\t}{}\n\t\tjson.Unmarshal([]byte(raw), &legacyName)\n\t\tname = legacyName.First + " " + legacyName.Last\n\t}\n}\n```\n\nThese `.JSON` structs also include an `Extras` map containing\nany properties in the json response that were not specified\nin the struct. This can be useful for API features not yet\npresent in the SDK.\n\n```go\nbody := res.JSON.ExtraFields["my_unexpected_field"].Raw()\n```\n\n### RequestOptions\n\nThis library uses the functional options pattern. Functions defined in the\n`SDK_PackageOptionName` package return a `RequestOption`, which is a closure that mutates a\n`RequestConfig`. These options can be supplied to the client or at individual\nrequests. For example:\n\n```go\nclient := SDK_PackageName.SDK_ClientInitializerName(\n\t// Adds a header to every request made by the client\n\tSDK_PackageOptionName.WithHeader("X-Some-Header", "custom_header_info"),\n)\n\nclient.Chats.New(context.TODO(), ...,\n\t// Override the header\n\tSDK_PackageOptionName.WithHeader("X-Some-Header", "some_other_custom_header_info"),\n\t// Add an undocumented field to the request body, using sjson syntax\n\tSDK_PackageOptionName.WithJSONSet("some.json.path", map[string]string{"my": "object"}),\n)\n```\n\nSee the [full list of request options](https://pkg.go.dev/github.com/linq-team/linq-go/SDK_PackageOptionName).\n\n### Pagination\n\nThis library provides some conveniences for working with paginated list endpoints.\n\nYou can use `.ListAutoPaging()` methods to iterate through items across all pages:\n\n```go\niter := client.Chats.ListChatsAutoPaging(context.TODO(), linqgo.ChatListChatsParams{})\n// Automatically fetches more pages as needed.\nfor iter.Next() {\n\tchat := iter.Current()\n\tfmt.Printf("%+v\\n", chat)\n}\nif err := iter.Err(); err != nil {\n\tpanic(err.Error())\n}\n```\n\nOr you can use simple `.List()` methods to fetch a single page and receive a standard response object\nwith additional helper methods like `.GetNextPage()`, e.g.:\n\n```go\npage, err := client.Chats.ListChats(context.TODO(), linqgo.ChatListChatsParams{})\nfor page != nil {\n\tfor _, chat := range page.Chats {\n\t\tfmt.Printf("%+v\\n", chat)\n\t}\n\tpage, err = page.GetNextPage()\n}\nif err != nil {\n\tpanic(err.Error())\n}\n```\n\n### Errors\n\nWhen the API returns a non-success status code, we return an error with type\n`*SDK_PackageName.Error`. This contains the `StatusCode`, `*http.Request`, and\n`*http.Response` values of the request, as well as the JSON of the error body\n(much like other response objects in the SDK).\n\nTo handle errors, we recommend that you use the `errors.As` pattern:\n\n```go\n_, err := client.Chats.New(context.TODO(), linqgo.ChatNewParams{\n\tFrom: "+12052535597",\n\tMessage: linqgo.MessageContentParam{\n\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t},\n\t\t}},\n\t},\n\tTo: []string{"+12052532136"},\n})\nif err != nil {\n\tvar apierr *linqgo.Error\n\tif errors.As(err, &apierr) {\n\t\tprintln(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request\n\t\tprintln(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response\n\t}\n\tpanic(err.Error()) // GET "/v3/chats": 400 Bad Request { ... }\n}\n```\n\nWhen other errors occur, they are returned unwrapped; for example,\nif HTTP transport fails, you might receive `*url.Error` wrapping `*net.OpError`.\n\n### Timeouts\n\nRequests do not time out by default; use context to configure a timeout for a request lifecycle.\n\nNote that if a request is [retried](#retries), the context timeout does not start over.\nTo set a per-retry timeout, use `SDK_PackageOptionName.WithRequestTimeout()`.\n\n```go\n// This sets the timeout for the request, including all the retries.\nctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)\ndefer cancel()\nclient.Chats.New(\n\tctx,\n\tlinqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t},\n\t// This sets the per-retry timeout\n\toption.WithRequestTimeout(20*time.Second),\n)\n```\n\n### File uploads\n\nRequest parameters that correspond to file uploads in multipart requests are typed as\n`param.Field[io.Reader]`. The contents of the `io.Reader` will by default be sent as a multipart form\npart with the file name of "anonymous_file" and content-type of "application/octet-stream".\n\nThe file name and content-type can be customized by implementing `Name() string` or `ContentType()\nstring` on the run-time type of `io.Reader`. Note that `os.File` implements `Name() string`, so a\nfile returned by `os.Open` will be sent with the file name on disk.\n\nWe also provide a helper `SDK_PackageName.FileParam(reader io.Reader, filename string, contentType string)`\nwhich can be used to wrap any `io.Reader` with the appropriate file name and content type.\n\n\n\n### Retries\n\nCertain errors will be automatically retried 2 times by default, with a short exponential backoff.\nWe retry by default all connection errors, 408 Request Timeout, 409 Conflict, 429 Rate Limit,\nand >=500 Internal errors.\n\nYou can use the `WithMaxRetries` option to configure or disable this:\n\n```go\n// Configure the default for all requests:\nclient := linqgo.NewClient(\n\toption.WithMaxRetries(0), // default is 2\n)\n\n// Override per-request:\nclient.Chats.New(\n\tcontext.TODO(),\n\tlinqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t},\n\toption.WithMaxRetries(5),\n)\n```\n\n\n### Accessing raw response data (e.g. response headers)\n\nYou can access the raw HTTP response data by using the `option.WithResponseInto()` request option. This is useful when\nyou need to examine response headers, status codes, or other details.\n\n```go\n// Create a variable to store the HTTP response\nvar response *http.Response\nchat, err := client.Chats.New(\n\tcontext.TODO(),\n\tlinqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t},\n\toption.WithResponseInto(&response),\n)\nif err != nil {\n\t// handle error\n}\nfmt.Printf("%+v\\n", chat)\n\nfmt.Printf("Status Code: %d\\n", response.StatusCode)\nfmt.Printf("Headers: %+#v\\n", response.Header)\n```\n\n### Making custom/undocumented requests\n\nThis library is typed for convenient access to the documented API. If you need to access undocumented\nendpoints, params, or response properties, the library can still be used.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints, you can use `client.Get`, `client.Post`, and other HTTP verbs.\n`RequestOptions` on the client, such as retries, will be respected when making these requests.\n\n```go\nvar (\n    // params can be an io.Reader, a []byte, an encoding/json serializable object,\n    // or a "…Params" struct defined in this library.\n    params map[string]interface{}\n\n    // result can be an []byte, *http.Response, a encoding/json deserializable object,\n    // or a model defined in this library.\n    result *http.Response\n)\nerr := client.Post(context.Background(), "/unspecified", params, &result)\nif err != nil {\n    …\n}\n```\n\n#### Undocumented request params\n\nTo make requests using undocumented parameters, you may use either the `SDK_PackageOptionName.WithQuerySet()`\nor the `SDK_PackageOptionName.WithJSONSet()` methods.\n\n```go\nparams := FooNewParams{\n    ID:   SDK_PackageName.F("id_xxxx"),\n    Data: SDK_PackageName.F(FooNewParamsData{\n        FirstName: SDK_PackageName.F("John"),\n    }),\n}\nclient.Foo.New(context.Background(), params, SDK_PackageOptionName.WithJSONSet("data.last_name", "Doe"))\n```\n\n#### Undocumented response properties\n\nTo access undocumented response properties, you may either access the raw JSON of the response as a string\nwith `result.JSON.RawJSON()`, or get the raw JSON of a particular field on the result with\n`result.JSON.Foo.Raw()`.\n\nAny fields that are not present on the response struct will be saved and can be accessed by `result.JSON.ExtraFields()` which returns the extra fields as a `map[string]Field`.\n\n### Middleware\n\nWe provide `SDK_PackageOptionName.WithMiddleware` which applies the given\nmiddleware to requests.\n\n```go\nfunc Logger(req *http.Request, next SDK_PackageOptionName.MiddlewareNext) (res *http.Response, err error) {\n\t// Before the request\n\tstart := time.Now()\n\tLogReq(req)\n\n\t// Forward the request to the next handler\n\tres, err = next(req)\n\n\t// Handle stuff after the request\n\tend := time.Now()\n\tLogRes(res, err, start - end)\n\n    return res, err\n}\n\nclient := SDK_PackageName.SDK_ClientInitializerName(\n\tSDK_PackageOptionName.WithMiddleware(Logger),\n)\n```\n\nWhen multiple middlewares are provided as variadic arguments, the middlewares\nare applied left to right. If `SDK_PackageOptionName.WithMiddleware` is given\nmultiple times, for example first in the client then the method, the\nmiddleware in the client will run first and the middleware given in the method\nwill run next.\n\nYou may also replace the default `http.Client` with\n`SDK_PackageOptionName.WithHTTPClient(client)`. Only one http client is\naccepted (this overwrites any previous client) and receives requests after any\nmiddleware has been applied.\n\n## Semantic versioning\n\nThis package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:\n\n1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_\n2. Changes that we do not expect to impact the vast majority of users in practice.\n\nWe take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.\n\nWe are keen for your feedback; please open an [issue](https://www.github.com/linq-team/linq-go/issues) with questions, bugs, or suggestions.\n\n## Contributing\n\nSee [the contributing documentation](./CONTRIBUTING.md).\n',
+      '# Linq API V3 Go API Library\n\n<a href="https://pkg.go.dev/github.com/linq-team/linq-go"><img src="https://pkg.go.dev/badge/github.com/linq-team/linq-go.svg" alt="Go Reference"></a>\n\nThe Linq API V3 Go library provides convenient access to the [Linq API V3 REST API](https://docs.linqapp.com)\nfrom applications written in Go.\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Linq API V3 MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40linqapp%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsaW5xYXBwL3Nkay1tY3AiXSwiZW52Ijp7IkxJTlFfQVBJX1YzX0FQSV9LRVkiOiJNeSBBUEkgS2V5In19)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40linqapp%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40linqapp%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22LINQ_API_V3_API_KEY%22%3A%22My%20API%20Key%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Installation\n\n<!-- x-release-please-start-version -->\n\n```go\nimport (\n\t"github.com/linq-team/linq-go" // imported as SDK_PackageName\n)\n```\n\n<!-- x-release-please-end -->\n\nOr to pin the version:\n\n<!-- x-release-please-start-version -->\n\n```sh\ngo get -u \'github.com/linq-team/linq-go@v0.21.0\'\n```\n\n<!-- x-release-please-end -->\n\n## Requirements\n\nThis library requires Go 1.22+.\n\n## Usage\n\nThe full API of this library can be found in [api.md](api.md).\n\n```go\npackage main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"), // defaults to os.LookupEnv("LINQ_API_V3_API_KEY")\n\t)\n\tchat, err := client.Chats.New(context.TODO(), linqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", chat.Chat)\n}\n\n```\n\n### Request fields\n\nAll request parameters are wrapped in a generic `Field` type,\nwhich we use to distinguish zero values from null or omitted fields.\n\nThis prevents accidentally sending a zero value if you forget a required parameter,\nand enables explicitly sending `null`, `false`, `\'\'`, or `0` on optional parameters.\nAny field not specified is not sent.\n\nTo construct fields with values, use the helpers `String()`, `Int()`, `Float()`, or most commonly, the generic `F[T]()`.\nTo send a null, use `Null[T]()`, and to send a nonconforming value, use `Raw[T](any)`. For example:\n\n```go\nparams := FooParams{\n\tName: SDK_PackageName.F("hello"),\n\n\t// Explicitly send `"description": null`\n\tDescription: SDK_PackageName.Null[string](),\n\n\tPoint: SDK_PackageName.F(SDK_PackageName.Point{\n\t\tX: SDK_PackageName.Int(0),\n\t\tY: SDK_PackageName.Int(1),\n\n\t\t// In cases where the API specifies a given type,\n\t\t// but you want to send something else, use `Raw`:\n\t\tZ: SDK_PackageName.Raw[int64](0.01), // sends a float\n\t}),\n}\n```\n\n### Response objects\n\nAll fields in response structs are value types (not pointers or wrappers).\n\nIf a given field is `null`, not present, or invalid, the corresponding field\nwill simply be its zero value.\n\nAll response structs also include a special `JSON` field, containing more detailed\ninformation about each property, which you can use like so:\n\n```go\nif res.Name == "" {\n\t// true if `"name"` is either not present or explicitly null\n\tres.JSON.Name.IsNull()\n\n\t// true if the `"name"` key was not present in the response JSON at all\n\tres.JSON.Name.IsMissing()\n\n\t// When the API returns data that cannot be coerced to the expected type:\n\tif res.JSON.Name.IsInvalid() {\n\t\traw := res.JSON.Name.Raw()\n\n\t\tlegacyName := struct{\n\t\t\tFirst string `json:"first"`\n\t\t\tLast  string `json:"last"`\n\t\t}{}\n\t\tjson.Unmarshal([]byte(raw), &legacyName)\n\t\tname = legacyName.First + " " + legacyName.Last\n\t}\n}\n```\n\nThese `.JSON` structs also include an `Extras` map containing\nany properties in the json response that were not specified\nin the struct. This can be useful for API features not yet\npresent in the SDK.\n\n```go\nbody := res.JSON.ExtraFields["my_unexpected_field"].Raw()\n```\n\n### RequestOptions\n\nThis library uses the functional options pattern. Functions defined in the\n`SDK_PackageOptionName` package return a `RequestOption`, which is a closure that mutates a\n`RequestConfig`. These options can be supplied to the client or at individual\nrequests. For example:\n\n```go\nclient := SDK_PackageName.SDK_ClientInitializerName(\n\t// Adds a header to every request made by the client\n\tSDK_PackageOptionName.WithHeader("X-Some-Header", "custom_header_info"),\n)\n\nclient.Chats.New(context.TODO(), ...,\n\t// Override the header\n\tSDK_PackageOptionName.WithHeader("X-Some-Header", "some_other_custom_header_info"),\n\t// Add an undocumented field to the request body, using sjson syntax\n\tSDK_PackageOptionName.WithJSONSet("some.json.path", map[string]string{"my": "object"}),\n)\n```\n\nSee the [full list of request options](https://pkg.go.dev/github.com/linq-team/linq-go/SDK_PackageOptionName).\n\n### Pagination\n\nThis library provides some conveniences for working with paginated list endpoints.\n\nYou can use `.ListAutoPaging()` methods to iterate through items across all pages:\n\n```go\niter := client.Chats.ListChatsAutoPaging(context.TODO(), linqgo.ChatListChatsParams{})\n// Automatically fetches more pages as needed.\nfor iter.Next() {\n\tchat := iter.Current()\n\tfmt.Printf("%+v\\n", chat)\n}\nif err := iter.Err(); err != nil {\n\tpanic(err.Error())\n}\n```\n\nOr you can use simple `.List()` methods to fetch a single page and receive a standard response object\nwith additional helper methods like `.GetNextPage()`, e.g.:\n\n```go\npage, err := client.Chats.ListChats(context.TODO(), linqgo.ChatListChatsParams{})\nfor page != nil {\n\tfor _, chat := range page.Chats {\n\t\tfmt.Printf("%+v\\n", chat)\n\t}\n\tpage, err = page.GetNextPage()\n}\nif err != nil {\n\tpanic(err.Error())\n}\n```\n\n### Errors\n\nWhen the API returns a non-success status code, we return an error with type\n`*SDK_PackageName.Error`. This contains the `StatusCode`, `*http.Request`, and\n`*http.Response` values of the request, as well as the JSON of the error body\n(much like other response objects in the SDK).\n\nTo handle errors, we recommend that you use the `errors.As` pattern:\n\n```go\n_, err := client.Chats.New(context.TODO(), linqgo.ChatNewParams{\n\tFrom: "+12052535597",\n\tMessage: linqgo.MessageContentParam{\n\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t},\n\t\t}},\n\t},\n\tTo: []string{"+12052532136"},\n})\nif err != nil {\n\tvar apierr *linqgo.Error\n\tif errors.As(err, &apierr) {\n\t\tprintln(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request\n\t\tprintln(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response\n\t}\n\tpanic(err.Error()) // GET "/v3/chats": 400 Bad Request { ... }\n}\n```\n\nWhen other errors occur, they are returned unwrapped; for example,\nif HTTP transport fails, you might receive `*url.Error` wrapping `*net.OpError`.\n\n### Timeouts\n\nRequests do not time out by default; use context to configure a timeout for a request lifecycle.\n\nNote that if a request is [retried](#retries), the context timeout does not start over.\nTo set a per-retry timeout, use `SDK_PackageOptionName.WithRequestTimeout()`.\n\n```go\n// This sets the timeout for the request, including all the retries.\nctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)\ndefer cancel()\nclient.Chats.New(\n\tctx,\n\tlinqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t},\n\t// This sets the per-retry timeout\n\toption.WithRequestTimeout(20*time.Second),\n)\n```\n\n### File uploads\n\nRequest parameters that correspond to file uploads in multipart requests are typed as\n`param.Field[io.Reader]`. The contents of the `io.Reader` will by default be sent as a multipart form\npart with the file name of "anonymous_file" and content-type of "application/octet-stream".\n\nThe file name and content-type can be customized by implementing `Name() string` or `ContentType()\nstring` on the run-time type of `io.Reader`. Note that `os.File` implements `Name() string`, so a\nfile returned by `os.Open` will be sent with the file name on disk.\n\nWe also provide a helper `SDK_PackageName.FileParam(reader io.Reader, filename string, contentType string)`\nwhich can be used to wrap any `io.Reader` with the appropriate file name and content type.\n\n\n\n### Retries\n\nCertain errors will be automatically retried 2 times by default, with a short exponential backoff.\nWe retry by default all connection errors, 408 Request Timeout, 409 Conflict, 429 Rate Limit,\nand >=500 Internal errors.\n\nYou can use the `WithMaxRetries` option to configure or disable this:\n\n```go\n// Configure the default for all requests:\nclient := linqgo.NewClient(\n\toption.WithMaxRetries(0), // default is 2\n)\n\n// Override per-request:\nclient.Chats.New(\n\tcontext.TODO(),\n\tlinqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t},\n\toption.WithMaxRetries(5),\n)\n```\n\n\n### Accessing raw response data (e.g. response headers)\n\nYou can access the raw HTTP response data by using the `option.WithResponseInto()` request option. This is useful when\nyou need to examine response headers, status codes, or other details.\n\n```go\n// Create a variable to store the HTTP response\nvar response *http.Response\nchat, err := client.Chats.New(\n\tcontext.TODO(),\n\tlinqgo.ChatNewParams{\n\t\tFrom: "+12052535597",\n\t\tMessage: linqgo.MessageContentParam{\n\t\t\tParts: []linqgo.MessageContentPartUnionParam{{\n\t\t\t\tOfText: &linqgo.TextPartParam{\n\t\t\t\t\tType:  linqgo.TextPartTypeText,\n\t\t\t\t\tValue: "Hello! How can I help you today?",\n\t\t\t\t},\n\t\t\t}},\n\t\t},\n\t\tTo: []string{"+12052532136"},\n\t},\n\toption.WithResponseInto(&response),\n)\nif err != nil {\n\t// handle error\n}\nfmt.Printf("%+v\\n", chat)\n\nfmt.Printf("Status Code: %d\\n", response.StatusCode)\nfmt.Printf("Headers: %+#v\\n", response.Header)\n```\n\n### Making custom/undocumented requests\n\nThis library is typed for convenient access to the documented API. If you need to access undocumented\nendpoints, params, or response properties, the library can still be used.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints, you can use `client.Get`, `client.Post`, and other HTTP verbs.\n`RequestOptions` on the client, such as retries, will be respected when making these requests.\n\n```go\nvar (\n    // params can be an io.Reader, a []byte, an encoding/json serializable object,\n    // or a "…Params" struct defined in this library.\n    params map[string]interface{}\n\n    // result can be an []byte, *http.Response, a encoding/json deserializable object,\n    // or a model defined in this library.\n    result *http.Response\n)\nerr := client.Post(context.Background(), "/unspecified", params, &result)\nif err != nil {\n    …\n}\n```\n\n#### Undocumented request params\n\nTo make requests using undocumented parameters, you may use either the `SDK_PackageOptionName.WithQuerySet()`\nor the `SDK_PackageOptionName.WithJSONSet()` methods.\n\n```go\nparams := FooNewParams{\n    ID:   SDK_PackageName.F("id_xxxx"),\n    Data: SDK_PackageName.F(FooNewParamsData{\n        FirstName: SDK_PackageName.F("John"),\n    }),\n}\nclient.Foo.New(context.Background(), params, SDK_PackageOptionName.WithJSONSet("data.last_name", "Doe"))\n```\n\n#### Undocumented response properties\n\nTo access undocumented response properties, you may either access the raw JSON of the response as a string\nwith `result.JSON.RawJSON()`, or get the raw JSON of a particular field on the result with\n`result.JSON.Foo.Raw()`.\n\nAny fields that are not present on the response struct will be saved and can be accessed by `result.JSON.ExtraFields()` which returns the extra fields as a `map[string]Field`.\n\n### Middleware\n\nWe provide `SDK_PackageOptionName.WithMiddleware` which applies the given\nmiddleware to requests.\n\n```go\nfunc Logger(req *http.Request, next SDK_PackageOptionName.MiddlewareNext) (res *http.Response, err error) {\n\t// Before the request\n\tstart := time.Now()\n\tLogReq(req)\n\n\t// Forward the request to the next handler\n\tres, err = next(req)\n\n\t// Handle stuff after the request\n\tend := time.Now()\n\tLogRes(res, err, start - end)\n\n    return res, err\n}\n\nclient := SDK_PackageName.SDK_ClientInitializerName(\n\tSDK_PackageOptionName.WithMiddleware(Logger),\n)\n```\n\nWhen multiple middlewares are provided as variadic arguments, the middlewares\nare applied left to right. If `SDK_PackageOptionName.WithMiddleware` is given\nmultiple times, for example first in the client then the method, the\nmiddleware in the client will run first and the middleware given in the method\nwill run next.\n\nYou may also replace the default `http.Client` with\n`SDK_PackageOptionName.WithHTTPClient(client)`. Only one http client is\naccepted (this overwrites any previous client) and receives requests after any\nmiddleware has been applied.\n\n## Semantic versioning\n\nThis package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:\n\n1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_\n2. Changes that we do not expect to impact the vast majority of users in practice.\n\nWe take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.\n\nWe are keen for your feedback; please open an [issue](https://www.github.com/linq-team/linq-go/issues) with questions, bugs, or suggestions.\n\n## Contributing\n\nSee [the contributing documentation](./CONTRIBUTING.md).\n',
   },
   {
     language: 'python',
