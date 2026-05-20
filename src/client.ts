@@ -1320,8 +1320,8 @@ export declare namespace LinqAPIV3 {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatUpdateParams as ChatUpdateParams,
     type ChatListChatsParams as ChatListChatsParams,
+    type ChatUpdateParams as ChatUpdateParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1332,9 +1332,9 @@ export declare namespace LinqAPIV3 {
     type ReplyTo as ReplyTo,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
-    type MessageUpdateParams as MessageUpdateParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageUpdateParams as MessageUpdateParams,
   };
 
   export {
@@ -1405,8 +1405,8 @@ export declare namespace LinqAPIV3 {
     ContactCard as ContactCard,
     type SetContactCard as SetContactCard,
     type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
-    type ContactCardCreateParams as ContactCardCreateParams,
     type ContactCardRetrieveParams as ContactCardRetrieveParams,
+    type ContactCardCreateParams as ContactCardCreateParams,
     type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 
