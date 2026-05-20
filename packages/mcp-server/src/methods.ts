@@ -17,6 +17,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats',
   },
   {
+    clientCallName: 'client.chats.listChats',
+    fullyQualifiedName: 'chats.listChats',
+    httpMethod: 'get',
+    httpPath: '/v3/chats',
+  },
+  {
     clientCallName: 'client.chats.retrieve',
     fullyQualifiedName: 'chats.retrieve',
     httpMethod: 'get',
@@ -29,34 +35,28 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats/{chatId}',
   },
   {
-    clientCallName: 'client.chats.leaveChat',
-    fullyQualifiedName: 'chats.leaveChat',
-    httpMethod: 'post',
-    httpPath: '/v3/chats/{chatId}/leave',
-  },
-  {
-    clientCallName: 'client.chats.listChats',
-    fullyQualifiedName: 'chats.listChats',
-    httpMethod: 'get',
-    httpPath: '/v3/chats',
-  },
-  {
     clientCallName: 'client.chats.markAsRead',
     fullyQualifiedName: 'chats.markAsRead',
     httpMethod: 'post',
     httpPath: '/v3/chats/{chatId}/read',
   },
   {
-    clientCallName: 'client.chats.sendVoicememo',
-    fullyQualifiedName: 'chats.sendVoicememo',
+    clientCallName: 'client.chats.leaveChat',
+    fullyQualifiedName: 'chats.leaveChat',
     httpMethod: 'post',
-    httpPath: '/v3/chats/{chatId}/voicememo',
+    httpPath: '/v3/chats/{chatId}/leave',
   },
   {
     clientCallName: 'client.chats.shareContactCard',
     fullyQualifiedName: 'chats.shareContactCard',
     httpMethod: 'post',
     httpPath: '/v3/chats/{chatId}/share_contact_card',
+  },
+  {
+    clientCallName: 'client.chats.sendVoicememo',
+    fullyQualifiedName: 'chats.sendVoicememo',
+    httpMethod: 'post',
+    httpPath: '/v3/chats/{chatId}/voicememo',
   },
   {
     clientCallName: 'client.chats.participants.add',
@@ -83,27 +83,27 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats/{chatId}/typing',
   },
   {
-    clientCallName: 'client.chats.messages.list',
-    fullyQualifiedName: 'chats.messages.list',
-    httpMethod: 'get',
-    httpPath: '/v3/chats/{chatId}/messages',
-  },
-  {
     clientCallName: 'client.chats.messages.send',
     fullyQualifiedName: 'chats.messages.send',
     httpMethod: 'post',
     httpPath: '/v3/chats/{chatId}/messages',
   },
   {
+    clientCallName: 'client.chats.messages.list',
+    fullyQualifiedName: 'chats.messages.list',
+    httpMethod: 'get',
+    httpPath: '/v3/chats/{chatId}/messages',
+  },
+  {
+    clientCallName: 'client.messages.listMessagesThread',
+    fullyQualifiedName: 'messages.listMessagesThread',
+    httpMethod: 'get',
+    httpPath: '/v3/messages/{messageId}/thread',
+  },
+  {
     clientCallName: 'client.messages.retrieve',
     fullyQualifiedName: 'messages.retrieve',
     httpMethod: 'get',
-    httpPath: '/v3/messages/{messageId}',
-  },
-  {
-    clientCallName: 'client.messages.update',
-    fullyQualifiedName: 'messages.update',
-    httpMethod: 'patch',
     httpPath: '/v3/messages/{messageId}',
   },
   {
@@ -119,10 +119,10 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/messages/{messageId}/reactions',
   },
   {
-    clientCallName: 'client.messages.listMessagesThread',
-    fullyQualifiedName: 'messages.listMessagesThread',
-    httpMethod: 'get',
-    httpPath: '/v3/messages/{messageId}/thread',
+    clientCallName: 'client.messages.update',
+    fullyQualifiedName: 'messages.update',
+    httpMethod: 'patch',
+    httpPath: '/v3/messages/{messageId}',
   },
   {
     clientCallName: 'client.attachments.create',
@@ -167,6 +167,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/webhook-subscriptions',
   },
   {
+    clientCallName: 'client.webhookSubscriptions.list',
+    fullyQualifiedName: 'webhookSubscriptions.list',
+    httpMethod: 'get',
+    httpPath: '/v3/webhook-subscriptions',
+  },
+  {
     clientCallName: 'client.webhookSubscriptions.retrieve',
     fullyQualifiedName: 'webhookSubscriptions.retrieve',
     httpMethod: 'get',
@@ -177,12 +183,6 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'webhookSubscriptions.update',
     httpMethod: 'put',
     httpPath: '/v3/webhook-subscriptions/{subscriptionId}',
-  },
-  {
-    clientCallName: 'client.webhookSubscriptions.list',
-    fullyQualifiedName: 'webhookSubscriptions.list',
-    httpMethod: 'get',
-    httpPath: '/v3/webhook-subscriptions',
   },
   {
     clientCallName: 'client.webhookSubscriptions.delete',
@@ -204,15 +204,15 @@ export const sdkMethods: SdkMethod[] = [
   },
   { clientCallName: 'client.webhooks.events', fullyQualifiedName: 'webhooks.events' },
   {
-    clientCallName: 'client.contactCard.create',
-    fullyQualifiedName: 'contactCard.create',
-    httpMethod: 'post',
-    httpPath: '/v3/contact_card',
-  },
-  {
     clientCallName: 'client.contactCard.retrieve',
     fullyQualifiedName: 'contactCard.retrieve',
     httpMethod: 'get',
+    httpPath: '/v3/contact_card',
+  },
+  {
+    clientCallName: 'client.contactCard.create',
+    fullyQualifiedName: 'contactCard.create',
+    httpMethod: 'post',
     httpPath: '/v3/contact_card',
   },
   {

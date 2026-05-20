@@ -102,65 +102,6 @@ export class Chats extends APIResource {
   }
 
   /**
-   * Retrieve a chat by its unique identifier.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.retrieve(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
-    return this._client.get(path`/v3/chats/${chatID}`, options);
-  }
-
-  /**
-   * Update chat properties such as display name and group chat icon.
-   *
-   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
-   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
-   * events to confirm the outcome.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.update(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   *   { display_name: 'Team Discussion' },
-   * );
-   * ```
-   */
-  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
-    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
-  }
-
-  /**
-   * Removes your phone number from a group chat. Once you leave, you will no longer
-   * receive messages from the group and all interaction endpoints (send message,
-   * typing, mark read, etc.) will return 409.
-   *
-   * A `participant.removed` webhook will fire once the leave has been processed.
-   *
-   * **Supported**
-   *
-   * - iMessage group chats with 4 or more active participants (including yourself)
-   *
-   * **Not supported**
-   *
-   * - DM (1-on-1) chats — use the chat directly to continue the conversation
-   *
-   * @example
-   * ```ts
-   * const response = await client.chats.leaveChat(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
-    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
-  }
-
-  /**
    * Retrieves a paginated list of chats for the authenticated partner.
    *
    * **Filtering:**
@@ -201,6 +142,39 @@ export class Chats extends APIResource {
   }
 
   /**
+   * Retrieve a chat by its unique identifier.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.retrieve(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
+    return this._client.get(path`/v3/chats/${chatID}`, options);
+  }
+
+  /**
+   * Update chat properties such as display name and group chat icon.
+   *
+   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
+   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
+   * events to confirm the outcome.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.update(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   *   { display_name: 'Team Discussion' },
+   * );
+   * ```
+   */
+  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
+    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
+  }
+
+  /**
    * Mark all messages in a chat as read.
    *
    * @example
@@ -212,6 +186,53 @@ export class Chats extends APIResource {
    */
   markAsRead(chatID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.post(path`/v3/chats/${chatID}/read`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
+  }
+
+  /**
+   * Removes your phone number from a group chat. Once you leave, you will no longer
+   * receive messages from the group and all interaction endpoints (send message,
+   * typing, mark read, etc.) will return 409.
+   *
+   * A `participant.removed` webhook will fire once the leave has been processed.
+   *
+   * **Supported**
+   *
+   * - iMessage group chats with 4 or more active participants (including yourself)
+   *
+   * **Not supported**
+   *
+   * - DM (1-on-1) chats — use the chat directly to continue the conversation
+   *
+   * @example
+   * ```ts
+   * const response = await client.chats.leaveChat(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
+    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
+  }
+
+  /**
+   * Share your contact information (Name and Photo Sharing) with a chat.
+   *
+   * **Note:** A contact card must be configured before sharing. You can set up your
+   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
+   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
+   *
+   * @example
+   * ```ts
+   * await client.chats.shareContactCard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -247,27 +268,6 @@ export class Chats extends APIResource {
     options?: RequestOptions,
   ): APIPromise<ChatSendVoicememoResponse> {
     return this._client.post(path`/v3/chats/${chatID}/voicememo`, { body, ...options });
-  }
-
-  /**
-   * Share your contact information (Name and Photo Sharing) with a chat.
-   *
-   * **Note:** A contact card must be configured before sharing. You can set up your
-   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
-   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
-   *
-   * @example
-   * ```ts
-   * await client.chats.shareContactCard(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
-    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
   }
 }
 
@@ -767,18 +767,6 @@ export interface ChatCreateParams {
   to: Array<string>;
 }
 
-export interface ChatUpdateParams {
-  /**
-   * New display name for the chat (group chats only)
-   */
-  display_name?: string;
-
-  /**
-   * URL of an image to set as the group chat icon (group chats only)
-   */
-  group_chat_icon?: string;
-}
-
 export interface ChatListChatsParams extends ListChatsPaginationParams {
   /**
    * Phone number to filter chats by. Returns chats made from this phone number. Must
@@ -795,6 +783,18 @@ export interface ChatListChatsParams extends ListChatsPaginationParams {
    * URL-encoded by HTTP clients.
    */
   to?: string;
+}
+
+export interface ChatUpdateParams {
+  /**
+   * New display name for the chat (group chats only)
+   */
+  display_name?: string;
+
+  /**
+   * URL of an image to set as the group chat icon (group chats only)
+   */
+  group_chat_icon?: string;
 }
 
 export interface ChatSendVoicememoParams {
@@ -831,8 +831,8 @@ export declare namespace Chats {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatUpdateParams as ChatUpdateParams,
     type ChatListChatsParams as ChatListChatsParams,
+    type ChatUpdateParams as ChatUpdateParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -850,7 +850,7 @@ export declare namespace Chats {
     Messages as Messages,
     type SentMessage as SentMessage,
     type MessageSendResponse as MessageSendResponse,
-    type MessageListParams as MessageListParams,
     type MessageSendParams as MessageSendParams,
+    type MessageListParams as MessageListParams,
   };
 }

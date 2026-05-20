@@ -143,6 +143,20 @@ export class WebhookSubscriptions extends APIResource {
   }
 
   /**
+   * Retrieve all webhook subscriptions for the authenticated partner. Returns a list
+   * of active and inactive subscriptions with their configuration and status.
+   *
+   * @example
+   * ```ts
+   * const webhookSubscriptions =
+   *   await client.webhookSubscriptions.list();
+   * ```
+   */
+  list(options?: RequestOptions): APIPromise<WebhookSubscriptionListResponse> {
+    return this._client.get('/v3/webhook-subscriptions', options);
+  }
+
+  /**
    * Retrieve details for a specific webhook subscription including its target URL,
    * subscribed events, and current status.
    *
@@ -182,20 +196,6 @@ export class WebhookSubscriptions extends APIResource {
     options?: RequestOptions,
   ): APIPromise<WebhookSubscription> {
     return this._client.put(path`/v3/webhook-subscriptions/${subscriptionID}`, { body, ...options });
-  }
-
-  /**
-   * Retrieve all webhook subscriptions for the authenticated partner. Returns a list
-   * of active and inactive subscriptions with their configuration and status.
-   *
-   * @example
-   * ```ts
-   * const webhookSubscriptions =
-   *   await client.webhookSubscriptions.list();
-   * ```
-   */
-  list(options?: RequestOptions): APIPromise<WebhookSubscriptionListResponse> {
-    return this._client.get('/v3/webhook-subscriptions', options);
   }
 
   /**
