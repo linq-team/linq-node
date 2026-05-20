@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.24.2 (2026-05-20)
+
+Full Changelog: [v0.24.1...v0.24.2](https://github.com/linq-team/linq-node/compare/v0.24.1...v0.24.2)
+
+### Chores
+
+* remove custom code ([ae22163](https://github.com/linq-team/linq-node/commit/ae221630e2fe0b00b27ab23d220f3b46c82baf26))
+
 ## 0.24.1 (2026-05-19)
 
 Full Changelog: [v0.24.0...v0.24.1](https://github.com/linq-team/linq-node/compare/v0.24.0...v0.24.1)
