@@ -30,6 +30,35 @@ import { path } from '../internal/utils/path';
  */
 export class Messages extends APIResource {
   /**
+   * Retrieve all messages in a conversation thread. Given any message ID in the
+   * thread, returns the originator message and all replies in chronological order.
+   *
+   * If the message is not part of a thread, returns just that single message.
+   *
+   * Supports pagination and configurable ordering.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.messages.listMessagesThread(
+   *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
+   * )) {
+   *   // ...
+   * }
+   * ```
+   */
+  listMessagesThread(
+    messageID: string,
+    query: MessageListMessagesThreadParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MessagesListMessagesPagination, Message> {
+    return this._client.getAPIList(path`/v3/messages/${messageID}/thread`, ListMessagesPagination<Message>, {
+      query,
+      ...options,
+    });
+  }
+
+  /**
    * Retrieve a specific message by its ID. This endpoint returns the full message
    * details including text, attachments, reactions, and metadata.
    *
@@ -42,24 +71,6 @@ export class Messages extends APIResource {
    */
   retrieve(messageID: string, options?: RequestOptions): APIPromise<Message> {
     return this._client.get(path`/v3/messages/${messageID}`, options);
-  }
-
-  /**
-   * Edit the text content of a specific part of a previously sent message.
-   *
-   * **Note:** A message can be edited up to 5 times, and only within 15 minutes of
-   * when it was originally sent.
-   *
-   * @example
-   * ```ts
-   * const message = await client.messages.update(
-   *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   *   { text: 'This is the edited message content' },
-   * );
-   * ```
-   */
-  update(messageID: string, body: MessageUpdateParams, options?: RequestOptions): APIPromise<Message> {
-    return this._client.patch(path`/v3/messages/${messageID}`, { body, ...options });
   }
 
   /**
@@ -111,32 +122,21 @@ export class Messages extends APIResource {
   }
 
   /**
-   * Retrieve all messages in a conversation thread. Given any message ID in the
-   * thread, returns the originator message and all replies in chronological order.
+   * Edit the text content of a specific part of a previously sent message.
    *
-   * If the message is not part of a thread, returns just that single message.
-   *
-   * Supports pagination and configurable ordering.
+   * **Note:** A message can be edited up to 5 times, and only within 15 minutes of
+   * when it was originally sent.
    *
    * @example
    * ```ts
-   * // Automatically fetches more pages as needed.
-   * for await (const message of client.messages.listMessagesThread(
+   * const message = await client.messages.update(
    *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   * )) {
-   *   // ...
-   * }
+   *   { text: 'This is the edited message content' },
+   * );
    * ```
    */
-  listMessagesThread(
-    messageID: string,
-    query: MessageListMessagesThreadParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<MessagesListMessagesPagination, Message> {
-    return this._client.getAPIList(path`/v3/messages/${messageID}/thread`, ListMessagesPagination<Message>, {
-      query,
-      ...options,
-    });
+  update(messageID: string, body: MessageUpdateParams, options?: RequestOptions): APIPromise<Message> {
+    return this._client.patch(path`/v3/messages/${messageID}`, { body, ...options });
   }
 }
 
@@ -274,16 +274,11 @@ export interface MessageAddReactionResponse {
   trace_id?: string;
 }
 
-export interface MessageUpdateParams {
+export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
   /**
-   * New text content for the message part
+   * Sort order for messages (asc = oldest first, desc = newest first)
    */
-  text: string;
-
-  /**
-   * Index of the message part to edit. Defaults to 0.
-   */
-  part_index?: number;
+  order?: 'asc' | 'desc';
 }
 
 export interface MessageAddReactionParams {
@@ -312,11 +307,16 @@ export interface MessageAddReactionParams {
   part_index?: number;
 }
 
-export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
+export interface MessageUpdateParams {
   /**
-   * Sort order for messages (asc = oldest first, desc = newest first)
+   * New text content for the message part
    */
-  order?: 'asc' | 'desc';
+  text: string;
+
+  /**
+   * Index of the message part to edit. Defaults to 0.
+   */
+  part_index?: number;
 }
 
 export declare namespace Messages {
@@ -326,8 +326,8 @@ export declare namespace Messages {
     type ReplyTo as ReplyTo,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
-    type MessageUpdateParams as MessageUpdateParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageUpdateParams as MessageUpdateParams,
   };
 }
