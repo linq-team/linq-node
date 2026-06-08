@@ -95,6 +95,18 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats/{chatId}/messages',
   },
   {
+    clientCallName: 'client.chats.location.request',
+    fullyQualifiedName: 'chats.location.request',
+    httpMethod: 'post',
+    httpPath: '/v3/chats/{chatId}/location/request',
+  },
+  {
+    clientCallName: 'client.chats.location.retrieve',
+    fullyQualifiedName: 'chats.location.retrieve',
+    httpMethod: 'get',
+    httpPath: '/v3/chats/{chatId}/location',
+  },
+  {
     clientCallName: 'client.messages.listMessagesThread',
     fullyQualifiedName: 'messages.listMessagesThread',
     httpMethod: 'get',
