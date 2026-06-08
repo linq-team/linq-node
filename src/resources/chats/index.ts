@@ -17,6 +17,7 @@ export {
   type ChatSendVoicememoParams,
   type ChatsListChatsPagination,
 } from './chats';
+export { Location, type GetChatLocationResponse, type LocationRequestResponse } from './location';
 export {
   Messages,
   type SentMessage,

@@ -67,6 +67,18 @@ Methods:
 - <code title="post /v3/chats/{chatId}/messages">client.chats.messages.<a href="./src/resources/chats/messages.ts">send</a>(chatID, { ...params }) -> MessageSendResponse</code>
 - <code title="get /v3/chats/{chatId}/messages">client.chats.messages.<a href="./src/resources/chats/messages.ts">list</a>(chatID, { ...params }) -> MessagesListMessagesPagination</code>
 
+## Location
+
+Types:
+
+- <code><a href="./src/resources/chats/location.ts">GetChatLocationResponse</a></code>
+- <code><a href="./src/resources/chats/location.ts">LocationRequestResponse</a></code>
+
+Methods:
+
+- <code title="post /v3/chats/{chatId}/location/request">client.chats.location.<a href="./src/resources/chats/location.ts">request</a>(chatID) -> LocationRequestResponse</code>
+- <code title="get /v3/chats/{chatId}/location">client.chats.location.<a href="./src/resources/chats/location.ts">retrieve</a>(chatID) -> GetChatLocationResponse</code>
+
 # Messages
 
 Types:

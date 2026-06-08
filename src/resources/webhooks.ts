@@ -794,7 +794,7 @@ export namespace MessageFailedWebhookEvent {
    */
   export interface Data {
     /**
-     * Error codes in webhook failure events (3007, 4001).
+     * Error codes in webhook failure events (3007, 4001, 4005).
      */
     code: number;
 
@@ -1638,7 +1638,7 @@ export namespace ChatGroupNameUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001).
+     * Error codes in webhook failure events (3007, 4001, 4005).
      */
     error_code: number;
 
@@ -1715,7 +1715,7 @@ export namespace ChatGroupIconUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001).
+     * Error codes in webhook failure events (3007, 4001, 4005).
      */
     error_code: number;
 
@@ -1904,7 +1904,9 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'call.ended'
     | 'call.failed'
     | 'call.declined'
-    | 'call.no_answer';
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.

@@ -122,6 +122,8 @@ const fuse = new Fuse(
     'client.chats.typing.stop',
     'client.chats.messages.list',
     'client.chats.messages.send',
+    'client.chats.location.request',
+    'client.chats.location.retrieve',
     'client.messages.addReaction',
     'client.messages.delete',
     'client.messages.listMessagesThread',

@@ -3,6 +3,8 @@
 import { APIResource } from '../../core/resource';
 import * as MessagesAPI from '../messages';
 import * as Shared from '../shared';
+import * as LocationAPI from './location';
+import { GetChatLocationResponse, Location, LocationRequestResponse } from './location';
 import * as ChatsMessagesAPI from './messages';
 import { MessageListParams, MessageSendParams, MessageSendResponse, Messages, SentMessage } from './messages';
 import * as ParticipantsAPI from './participants';
@@ -25,6 +27,7 @@ export class Chats extends APIResource {
   participants: ParticipantsAPI.Participants = new ParticipantsAPI.Participants(this._client);
   typing: TypingAPI.Typing = new TypingAPI.Typing(this._client);
   messages: ChatsMessagesAPI.Messages = new ChatsMessagesAPI.Messages(this._client);
+  location: LocationAPI.Location = new LocationAPI.Location(this._client);
 
   /**
    * Create a new chat with specified participants and send an initial message. The
@@ -817,6 +820,7 @@ export interface ChatSendVoicememoParams {
 Chats.Participants = Participants;
 Chats.Typing = Typing;
 Chats.Messages = Messages;
+Chats.Location = Location;
 
 export declare namespace Chats {
   export {
@@ -852,5 +856,11 @@ export declare namespace Chats {
     type MessageSendResponse as MessageSendResponse,
     type MessageSendParams as MessageSendParams,
     type MessageListParams as MessageListParams,
+  };
+
+  export {
+    Location as Location,
+    type GetChatLocationResponse as GetChatLocationResponse,
+    type LocationRequestResponse as LocationRequestResponse,
   };
 }
