@@ -138,10 +138,11 @@ export interface SentMessage {
   /**
    * Current delivery status of a message
    */
-  delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'failed';
+  delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'received' | 'read' | 'failed';
 
   /**
-   * Whether the message has been read
+   * @deprecated DEPRECATED: Use `delivery_status == "read"` instead. Whether the
+   * message has been read.
    */
   is_read: boolean;
 

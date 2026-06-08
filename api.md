@@ -197,11 +197,11 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStartedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStoppedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">EventsWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">UnwrapWebhookEvent</a></code>
 
 Methods:
 
-- <code>client.webhooks.<a href="./src/resources/webhooks.ts">events</a>(body) -> void</code>
+- <code>client.webhooks.<a href="./src/resources/webhooks.ts">unwrap</a>(body) -> void</code>
 
 # ContactCard
 

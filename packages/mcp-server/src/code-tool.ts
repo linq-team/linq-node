@@ -213,6 +213,7 @@ const localDenoHandler = async ({
       const opts = {
         ...(client.baseURL != null ? { baseURL: client.baseURL } : undefined),
         ...(client.apiKey != null ? { apiKey: client.apiKey } : undefined),
+        ...(client.webhookSecret != null ? { webhookSecret: client.webhookSecret } : undefined),
         defaultHeaders: {
           'X-Stainless-MCP': 'true',
         },

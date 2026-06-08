@@ -159,7 +159,14 @@ export interface Message {
   created_at: string;
 
   /**
-   * Whether the message has been delivered
+   * Current delivery status of a message
+   */
+  delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'received' | 'read' | 'failed';
+
+  /**
+   * @deprecated DEPRECATED: Use `delivery_status` instead (true when
+   * `delivery_status` is `delivered` or `read`). Whether the message has been
+   * delivered.
    */
   is_delivered: boolean;
 
@@ -169,7 +176,8 @@ export interface Message {
   is_from_me: boolean;
 
   /**
-   * Whether the message has been read
+   * @deprecated DEPRECATED: Use `delivery_status == "read"` instead. Whether the
+   * message has been read.
    */
   is_read: boolean;
 
