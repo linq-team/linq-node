@@ -142,7 +142,7 @@ const fuse = new Fuse(
     'client.webhookSubscriptions.update',
     'client.capability.checkRCS',
     'client.capability.checkiMessage',
-    'client.webhooks.events',
+    'client.webhooks.unwrap',
     'client.contactCard.create',
     'client.contactCard.retrieve',
     'client.contactCard.update',

@@ -22,7 +22,8 @@
         "${__dirname}/index.js"
       ],
       "env": {
-        "LINQ_API_V3_API_KEY": "${user_config.LINQ_API_V3_API_KEY}"
+        "LINQ_API_V3_API_KEY": "${user_config.LINQ_API_V3_API_KEY}",
+        "LINQ_WEBHOOK_SECRET": "${user_config.LINQ_WEBHOOK_SECRET}"
       }
     }
   },
@@ -31,6 +32,12 @@
       "title": "api_key",
       "description": "Bearer token authentication. Include your API token in the Authorization header.\n\nFormat: `Authorization: Bearer <your-token>`\n",
       "required": true,
+      "type": "string"
+    },
+    "LINQ_WEBHOOK_SECRET": {
+      "title": "webhook_secret",
+      "description": "Webhook signing secret used by `client.webhooks.unwrap()` to verify the\nStandard Webhooks signature on incoming webhook requests.\n\nFormat: a base64-encoded key, optionally with a `whsec_` prefix\n(e.g. `whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw7Jxx2Oll+OE=`).\n",
+      "required": false,
       "type": "string"
     }
   },

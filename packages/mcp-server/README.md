@@ -10,6 +10,7 @@ You can run the MCP Server directly via `npx`:
 
 ```sh
 export LINQ_API_V3_API_KEY="My API Key"
+export LINQ_WEBHOOK_SECRET="My Webhook Secret"
 npx -y @linqapp/sdk-mcp@latest
 ```
 
@@ -27,7 +28,8 @@ For clients with a configuration JSON, it might look something like this:
       "command": "npx",
       "args": ["-y", "@linqapp/sdk-mcp"],
       "env": {
-        "LINQ_API_V3_API_KEY": "My API Key"
+        "LINQ_API_V3_API_KEY": "My API Key",
+        "LINQ_WEBHOOK_SECRET": "My Webhook Secret"
       }
     }
   }
@@ -39,14 +41,14 @@ For clients with a configuration JSON, it might look something like this:
 If you use Cursor, you can install the MCP server by using the button below. You will need to set your environment variables
 in Cursor's `mcp.json`, which can be found in Cursor Settings > Tools & MCP > New MCP Server.
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40linqapp%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsaW5xYXBwL3Nkay1tY3AiXSwiZW52Ijp7IkxJTlFfQVBJX1YzX0FQSV9LRVkiOiJNeSBBUEkgS2V5In19)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40linqapp%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsaW5xYXBwL3Nkay1tY3AiXSwiZW52Ijp7IkxJTlFfQVBJX1YzX0FQSV9LRVkiOiJNeSBBUEkgS2V5IiwiTElOUV9XRUJIT09LX1NFQ1JFVCI6Ik15IFdlYmhvb2sgU2VjcmV0In19)
 
 ### VS Code
 
 If you use MCP, you can install the MCP server by clicking the link below. You will need to set your environment variables
 in VS Code's `mcp.json`, which can be found via Command Palette > MCP: Open User Configuration.
 
-[Open VS Code](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40linqapp%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40linqapp%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22LINQ_API_V3_API_KEY%22%3A%22My%20API%20Key%22%7D%7D)
+[Open VS Code](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40linqapp%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40linqapp%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22LINQ_API_V3_API_KEY%22%3A%22My%20API%20Key%22%2C%22LINQ_WEBHOOK_SECRET%22%3A%22My%20Webhook%20Secret%22%7D%7D)
 
 ### Claude Code
 
@@ -54,7 +56,7 @@ If you use Claude Code, you can install the MCP server by running the command be
 environment variables in Claude Code's `.claude.json`, which can be found in your home directory.
 
 ```
-claude mcp add linqapp_sdk_mcp_api --env LINQ_API_V3_API_KEY="My API Key" -- npx -y @linqapp/sdk-mcp
+claude mcp add linqapp_sdk_mcp_api --env LINQ_API_V3_API_KEY="My API Key" LINQ_WEBHOOK_SECRET="My Webhook Secret" -- npx -y @linqapp/sdk-mcp
 ```
 
 ## Code Mode

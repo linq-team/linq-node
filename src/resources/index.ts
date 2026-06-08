@@ -88,5 +88,5 @@ export {
   type ChatTypingIndicatorStartedWebhookEvent,
   type ChatTypingIndicatorStoppedWebhookEvent,
   type PhoneNumberStatusUpdatedWebhookEvent,
-  type EventsWebhookEvent,
+  type UnwrapWebhookEvent,
 } from './webhooks';

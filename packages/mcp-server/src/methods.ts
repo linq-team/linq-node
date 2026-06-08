@@ -214,7 +214,7 @@ export const sdkMethods: SdkMethod[] = [
     httpMethod: 'post',
     httpPath: '/v3/capability/check_rcs',
   },
-  { clientCallName: 'client.webhooks.events', fullyQualifiedName: 'webhooks.events' },
+  { clientCallName: 'client.webhooks.unwrap', fullyQualifiedName: 'webhooks.unwrap' },
   {
     clientCallName: 'client.contactCard.retrieve',
     fullyQualifiedName: 'contactCard.retrieve',
