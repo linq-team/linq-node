@@ -3,10 +3,20 @@
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
 import * as WebhookEventsAPI from './webhook-events';
+import { Webhook } from 'standardwebhooks';
 
 export class Webhooks extends APIResource {
-  events(body: string): EventsWebhookEvent {
-    return JSON.parse(body) as EventsWebhookEvent;
+  unwrap(
+    body: string,
+    { headers, key }: { headers: Record<string, string>; key?: string },
+  ): UnwrapWebhookEvent {
+    if (headers !== undefined) {
+      const keyStr: string | null = key === undefined ? this._client.webhookSecret : key;
+      if (keyStr === null) throw new Error('Webhook key must not be null in order to unwrap');
+      const wh = new Webhook(keyStr);
+      wh.verify(body, headers);
+    }
+    return JSON.parse(body) as UnwrapWebhookEvent;
   }
 }
 
@@ -1966,7 +1976,7 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
 /**
  * Complete webhook payload for message.sent events (2026-02-03 format)
  */
-export type EventsWebhookEvent =
+export type UnwrapWebhookEvent =
   | MessageSentWebhookEvent
   | MessageReceivedWebhookEvent
   | MessageReadWebhookEvent
@@ -2012,6 +2022,6 @@ export declare namespace Webhooks {
     type ChatTypingIndicatorStartedWebhookEvent as ChatTypingIndicatorStartedWebhookEvent,
     type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
-    type EventsWebhookEvent as EventsWebhookEvent,
+    type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
 }

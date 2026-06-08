@@ -77,7 +77,6 @@ import {
   ChatGroupNameUpdatedWebhookEvent,
   ChatTypingIndicatorStartedWebhookEvent,
   ChatTypingIndicatorStoppedWebhookEvent,
-  EventsWebhookEvent,
   MessageDeliveredWebhookEvent,
   MessageEditedWebhookEvent,
   MessageEventV2,
@@ -95,6 +94,7 @@ import {
   SchemasMediaPartResponse,
   SchemasMessageEffect,
   SchemasTextPartResponse,
+  UnwrapWebhookEvent,
   Webhooks,
 } from './resources/webhooks';
 import {
@@ -135,6 +135,16 @@ export interface ClientOptions {
    *
    */
   apiKey?: string | undefined;
+
+  /**
+   * Webhook signing secret used by `client.webhooks.unwrap()` to verify the
+   * Standard Webhooks signature on incoming webhook requests.
+   *
+   * Format: a base64-encoded key, optionally with a `whsec_` prefix
+   * (e.g. `whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw7Jxx2Oll+OE=`).
+   *
+   */
+  webhookSecret?: string | null | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -210,6 +220,7 @@ export interface ClientOptions {
  */
 export class LinqAPIV3 {
   apiKey: string;
+  webhookSecret: string | null;
 
   baseURL: string;
   maxRetries: number;
@@ -227,6 +238,7 @@ export class LinqAPIV3 {
    * API Client for interfacing with the Linq API V3 API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['LINQ_API_V3_API_KEY'] ?? undefined]
+   * @param {string | null | undefined} [opts.webhookSecret=process.env['LINQ_WEBHOOK_SECRET'] ?? null]
    * @param {string} [opts.baseURL=process.env['LINQ_API_V3_BASE_URL'] ?? https://api.linqapp.com/api/partner] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -238,6 +250,7 @@ export class LinqAPIV3 {
   constructor({
     baseURL = readEnv('LINQ_API_V3_BASE_URL'),
     apiKey = readEnv('LINQ_API_V3_API_KEY'),
+    webhookSecret = readEnv('LINQ_WEBHOOK_SECRET') ?? null,
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
@@ -248,6 +261,7 @@ export class LinqAPIV3 {
 
     const options: ClientOptions = {
       apiKey,
+      webhookSecret,
       ...opts,
       baseURL: baseURL || `https://api.linqapp.com/api/partner`,
     };
@@ -282,6 +296,7 @@ export class LinqAPIV3 {
     this._options = options;
 
     this.apiKey = apiKey;
+    this.webhookSecret = webhookSecret;
   }
 
   /**
@@ -298,6 +313,7 @@ export class LinqAPIV3 {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
+      webhookSecret: this.webhookSecret,
       ...options,
     });
     return client;
@@ -1476,7 +1492,7 @@ export declare namespace LinqAPIV3 {
     type ChatTypingIndicatorStartedWebhookEvent as ChatTypingIndicatorStartedWebhookEvent,
     type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
-    type EventsWebhookEvent as EventsWebhookEvent,
+    type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
 
   export {
