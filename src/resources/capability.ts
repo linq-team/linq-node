@@ -15,13 +15,13 @@ export class Capability extends APIResource {
    * @example
    * ```ts
    * const handleCheckResponse =
-   *   await client.capability.checkiMessage({
+   *   await client.capability.checkIMessage({
    *     address: '+15551234567',
    *   });
    * ```
    */
-  checkiMessage(
-    body: CapabilityCheckiMessageParams,
+  checkIMessage(
+    body: CapabilityCheckIMessageParams,
     options?: RequestOptions,
   ): APIPromise<HandleCheckResponse> {
     return this._client.post('/v3/capability/check_imessage', { body, ...options });
@@ -68,7 +68,7 @@ export interface HandleCheckResponse {
   available: boolean;
 }
 
-export interface CapabilityCheckiMessageParams {
+export interface CapabilityCheckIMessageParams {
   /**
    * The recipient phone number or email address to check
    */
@@ -98,7 +98,7 @@ export declare namespace Capability {
   export {
     type HandleCheck as HandleCheck,
     type HandleCheckResponse as HandleCheckResponse,
-    type CapabilityCheckiMessageParams as CapabilityCheckiMessageParams,
+    type CapabilityCheckIMessageParams as CapabilityCheckIMessageParams,
     type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };
 }

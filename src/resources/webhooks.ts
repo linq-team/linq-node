@@ -60,7 +60,12 @@ export interface MessageEventV2 {
   /**
    * Message parts (text and/or media)
    */
-  parts: Array<SchemasTextPartResponse | SchemasMediaPartResponse | MessageEventV2.SchemasLinkPartResponse>;
+  parts: Array<
+    | SchemasTextPartResponse
+    | SchemasMediaPartResponse
+    | MessageEventV2.SchemasLinkPartResponse
+    | MessageEventV2.SchemasIMessageAppPartResponse
+  >;
 
   /**
    * The handle that sent this message
@@ -194,6 +199,108 @@ export namespace MessageEventV2 {
   }
 
   /**
+   * An iMessage app card part.
+   */
+  export interface SchemasIMessageAppPartResponse {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    app: SchemasIMessageAppPartResponse.App;
+
+    /**
+     * Visible layout of the card.
+     */
+    layout: SchemasIMessageAppPartResponse.Layout;
+
+    /**
+     * Indicates this is an iMessage app card part.
+     */
+    type: 'imessage_app';
+
+    /**
+     * The URL delivered to the iMessage app on tap.
+     */
+    url: string;
+
+    /**
+     * Fallback text for surfaces that cannot render the card.
+     */
+    fallback_text?: string | null;
+
+    /**
+     * Client-supplied session identifier, echoed back when provided.
+     */
+    session_id?: string | null;
+  }
+
+  export namespace SchemasIMessageAppPartResponse {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    export interface App {
+      /**
+       * Bundle identifier of the Messages app extension.
+       */
+      bundle_id: string;
+
+      /**
+       * Display name of the app.
+       */
+      name: string;
+
+      /**
+       * The app's 10-character team identifier.
+       */
+      team_id: string;
+
+      /**
+       * The owning app's App Store id, when known.
+       */
+      app_store_id?: number | null;
+    }
+
+    /**
+     * Visible layout of the card.
+     */
+    export interface Layout {
+      /**
+       * Primary label, top-left and bold.
+       */
+      caption?: string | null;
+
+      /**
+       * Overlay text shown below image_title.
+       */
+      image_subtitle?: string | null;
+
+      /**
+       * Overlay text shown above the image.
+       */
+      image_title?: string | null;
+
+      /**
+       * Presigned URL of the card preview image, when present.
+       */
+      image_url?: string | null;
+
+      /**
+       * Secondary label, below caption on the left.
+       */
+      subcaption?: string | null;
+
+      /**
+       * Label shown top-right.
+       */
+      trailing_caption?: string | null;
+
+      /**
+       * Label shown below trailing_caption.
+       */
+      trailing_subcaption?: string | null;
+    }
+  }
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   export interface ReplyTo {
@@ -246,7 +353,12 @@ export interface MessagePayload {
   /**
    * Message content parts (text and/or media)
    */
-  parts?: Array<SchemasTextPartResponse | SchemasMediaPartResponse | MessagePayload.SchemasLinkPartResponse>;
+  parts?: Array<
+    | SchemasTextPartResponse
+    | SchemasMediaPartResponse
+    | MessagePayload.SchemasLinkPartResponse
+    | MessagePayload.SchemasIMessageAppPartResponse
+  >;
 
   /**
    * When the message was read
@@ -283,6 +395,108 @@ export namespace MessagePayload {
      * The URL
      */
     value: string;
+  }
+
+  /**
+   * An iMessage app card part.
+   */
+  export interface SchemasIMessageAppPartResponse {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    app: SchemasIMessageAppPartResponse.App;
+
+    /**
+     * Visible layout of the card.
+     */
+    layout: SchemasIMessageAppPartResponse.Layout;
+
+    /**
+     * Indicates this is an iMessage app card part.
+     */
+    type: 'imessage_app';
+
+    /**
+     * The URL delivered to the iMessage app on tap.
+     */
+    url: string;
+
+    /**
+     * Fallback text for surfaces that cannot render the card.
+     */
+    fallback_text?: string | null;
+
+    /**
+     * Client-supplied session identifier, echoed back when provided.
+     */
+    session_id?: string | null;
+  }
+
+  export namespace SchemasIMessageAppPartResponse {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    export interface App {
+      /**
+       * Bundle identifier of the Messages app extension.
+       */
+      bundle_id: string;
+
+      /**
+       * Display name of the app.
+       */
+      name: string;
+
+      /**
+       * The app's 10-character team identifier.
+       */
+      team_id: string;
+
+      /**
+       * The owning app's App Store id, when known.
+       */
+      app_store_id?: number | null;
+    }
+
+    /**
+     * Visible layout of the card.
+     */
+    export interface Layout {
+      /**
+       * Primary label, top-left and bold.
+       */
+      caption?: string | null;
+
+      /**
+       * Overlay text shown below image_title.
+       */
+      image_subtitle?: string | null;
+
+      /**
+       * Overlay text shown above the image.
+       */
+      image_title?: string | null;
+
+      /**
+       * Presigned URL of the card preview image, when present.
+       */
+      image_url?: string | null;
+
+      /**
+       * Secondary label, below caption on the left.
+       */
+      subcaption?: string | null;
+
+      /**
+       * Label shown top-right.
+       */
+      trailing_caption?: string | null;
+
+      /**
+       * Label shown below trailing_caption.
+       */
+      trailing_subcaption?: string | null;
+    }
   }
 
   /**

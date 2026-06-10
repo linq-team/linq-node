@@ -9,8 +9,8 @@ const client = new LinqAPIV3({
 
 describe('resource capability', () => {
   // Mock server tests are disabled
-  test.skip('checkiMessage: only required params', async () => {
-    const responsePromise = client.capability.checkiMessage({ address: '+15551234567' });
+  test.skip('checkIMessage: only required params', async () => {
+    const responsePromise = client.capability.checkIMessage({ address: '+15551234567' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,8 +21,8 @@ describe('resource capability', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('checkiMessage: required and optional params', async () => {
-    const response = await client.capability.checkiMessage({ address: '+15551234567', from: '+15559876543' });
+  test.skip('checkIMessage: required and optional params', async () => {
+    const response = await client.capability.checkIMessage({ address: '+15551234567', from: '+15559876543' });
   });
 
   // Mock server tests are disabled

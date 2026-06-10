@@ -34,8 +34,8 @@ import {
 } from './resources/attachments';
 import {
   Capability,
+  CapabilityCheckIMessageParams,
   CapabilityCheckRCSParams,
-  CapabilityCheckiMessageParams,
   HandleCheck,
   HandleCheckResponse,
 } from './resources/capability';
@@ -1462,7 +1462,7 @@ export declare namespace LinqAPIV3 {
     Capability as Capability,
     type HandleCheck as HandleCheck,
     type HandleCheckResponse as HandleCheckResponse,
-    type CapabilityCheckiMessageParams as CapabilityCheckiMessageParams,
+    type CapabilityCheckIMessageParams as CapabilityCheckIMessageParams,
     type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };
 

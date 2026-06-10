@@ -12,7 +12,7 @@ export {
   Capability,
   type HandleCheck,
   type HandleCheckResponse,
-  type CapabilityCheckiMessageParams,
+  type CapabilityCheckIMessageParams,
   type CapabilityCheckRCSParams,
 } from './capability';
 export {
