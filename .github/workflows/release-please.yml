@@ -18,3 +18,17 @@ jobs:
         id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+
+      # Merge the release PR as soon as release-please opens/updates it, so a
+      # code merge to main flows straight through to a tag + npm publish without
+      # a second manual merge. main has no required checks and the repo has
+      # "Allow auto-merge" disabled, so `gh pr merge --auto` is unavailable
+      # ("clean status" error) — merge directly instead. Only squash is enabled.
+      # When this merge lands, release-please runs again, cuts the GitHub
+      # Release, and publish-npm.yml publishes on the `release: published` event.
+      - name: Merge the release PR
+        if: ${{ steps.release.outputs.pr }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr).number }}
+        run: gh pr merge "$PR_NUMBER" --squash
