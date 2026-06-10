@@ -30,5 +30,9 @@ jobs:
         if: ${{ steps.release.outputs.pr }}
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr).number }}
-        run: gh pr merge "$PR_NUMBER" --squash
+          # Pass the raw output through and parse it in the shell. Do NOT call
+          # fromJSON() here: on runs where release-please cuts the release there
+          # is no open PR, `pr` is empty, and fromJSON('') fails the whole
+          # workflow with a template error even though `if` skips the step.
+          RELEASE_PR: ${{ steps.release.outputs.pr }}
+        run: gh pr merge "$(jq -r '.number' <<< "$RELEASE_PR")" --squash
