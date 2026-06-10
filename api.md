@@ -166,7 +166,7 @@ Types:
 
 Methods:
 
-- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkiMessage</a>({ ...params }) -> HandleCheckResponse</code>
+- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkIMessage</a>({ ...params }) -> HandleCheckResponse</code>
 - <code title="post /v3/capability/check_rcs">client.capability.<a href="./src/resources/capability.ts">checkRCS</a>({ ...params }) -> HandleCheckResponse</code>
 
 # Webhooks

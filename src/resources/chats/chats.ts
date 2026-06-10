@@ -478,7 +478,7 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<TextPart | MediaPart | LinkPart>;
+  parts: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
 
   /**
    * iMessage effect to apply to this message (screen or bubble effect)
@@ -500,6 +500,122 @@ export interface MessageContent {
    * Reply to another message to create a threaded conversation
    */
   reply_to?: MessagesAPI.ReplyTo;
+}
+
+export namespace MessageContent {
+  /**
+   * An iMessage app card, backed by a Messages app extension. iMessage only — an
+   * `imessage_app` part must be the **only** part in the message and is never
+   * delivered over SMS/RCS. See the IMessageAppServiceUnsupported (2018) and
+   * RecipientUnsupportedMessageType (4005) error codes.
+   */
+  export interface IMessageAppPart {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    app: IMessageAppPart.App;
+
+    /**
+     * Visible layout of the card. At least one of `caption`, `subcaption`,
+     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
+     * the card renders as an empty bubble.
+     */
+    layout: IMessageAppPart.Layout;
+
+    /**
+     * Indicates this is an iMessage app card part.
+     */
+    type: 'imessage_app';
+
+    /**
+     * Absolute HTTPS URL delivered to the recipient's installed iMessage app when they
+     * tap the card. Opaque to Messages.
+     */
+    url: string;
+
+    /**
+     * Text shown on surfaces that cannot render the card (notifications, lock screen).
+     * Defaults to the caption when omitted.
+     */
+    fallback_text?: string;
+
+    /**
+     * Optional client-supplied identifier to correlate updatable/collaborative app
+     * sessions (advanced). Not interpreted by Synapse.
+     */
+    session_id?: string;
+  }
+
+  export namespace IMessageAppPart {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    export interface App {
+      /**
+       * Bundle identifier of the Messages app extension. Must not contain `:`.
+       */
+      bundle_id: string;
+
+      /**
+       * Display name of the app, shown by Messages' fallback UI.
+       */
+      name: string;
+
+      /**
+       * The app's 10-character uppercase alphanumeric team identifier.
+       */
+      team_id: string;
+
+      /**
+       * The owning app's App Store id (optional). When set, recipients without the
+       * iMessage app installed see a "Get the app" affordance.
+       */
+      app_store_id?: number;
+    }
+
+    /**
+     * Visible layout of the card. At least one of `caption`, `subcaption`,
+     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
+     * the card renders as an empty bubble.
+     */
+    export interface Layout {
+      /**
+       * Primary label, top-left and bold.
+       */
+      caption?: string;
+
+      /**
+       * Overlay text shown below `image_title`. Requires `image_url`.
+       */
+      image_subtitle?: string;
+
+      /**
+       * Overlay text shown above the image. Requires `image_url`.
+       */
+      image_title?: string;
+
+      /**
+       * Optional HTTPS URL of a preview image. The server downloads it and embeds it in
+       * the card as JPEG (10MB max, same fetch rules as media parts).
+       */
+      image_url?: string;
+
+      /**
+       * Secondary label, below `caption` on the left.
+       */
+      subcaption?: string;
+
+      /**
+       * Label shown top-right.
+       */
+      trailing_caption?: string;
+
+      /**
+       * Label shown below `trailing_caption`, on the right.
+       */
+      trailing_subcaption?: string;
+    }
+  }
 }
 
 export interface TextPart {

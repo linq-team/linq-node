@@ -203,8 +203,8 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/webhook-subscriptions/{subscriptionId}',
   },
   {
-    clientCallName: 'client.capability.checkiMessage',
-    fullyQualifiedName: 'capability.checkiMessage',
+    clientCallName: 'client.capability.checkIMessage',
+    fullyQualifiedName: 'capability.checkIMessage',
     httpMethod: 'post',
     httpPath: '/v3/capability/check_imessage',
   },

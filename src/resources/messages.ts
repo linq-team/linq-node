@@ -159,7 +159,14 @@ export interface Message {
   created_at: string;
 
   /**
-   * Whether the message has been delivered
+   * Current delivery status of a message
+   */
+  delivery_status: 'pending' | 'queued' | 'sent' | 'delivered' | 'received' | 'read' | 'failed';
+
+  /**
+   * @deprecated DEPRECATED: Use `delivery_status` instead (true when
+   * `delivery_status` is `delivered` or `read`). Whether the message has been
+   * delivered.
    */
   is_delivered: boolean;
 
@@ -169,7 +176,8 @@ export interface Message {
   is_from_me: boolean;
 
   /**
-   * Whether the message has been read
+   * @deprecated DEPRECATED: Use `delivery_status == "read"` instead. Whether the
+   * message has been read.
    */
   is_read: boolean;
 
@@ -202,7 +210,12 @@ export interface Message {
   /**
    * Message parts in order (text, media, and link)
    */
-  parts?: Array<Shared.TextPartResponse | Shared.MediaPartResponse | Shared.LinkPartResponse> | null;
+  parts?: Array<
+    | Shared.TextPartResponse
+    | Shared.MediaPartResponse
+    | Shared.LinkPartResponse
+    | Message.IMessageAppPartResponse
+  > | null;
 
   /**
    * Messaging service type
@@ -228,6 +241,121 @@ export interface Message {
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
+}
+
+export namespace Message {
+  /**
+   * An iMessage app card part.
+   */
+  export interface IMessageAppPartResponse {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    app: IMessageAppPartResponse.App;
+
+    /**
+     * Visible layout of the card. At least one of `caption`, `subcaption`,
+     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
+     * the card renders as an empty bubble.
+     */
+    layout: IMessageAppPartResponse.Layout;
+
+    /**
+     * Reactions on this message part
+     */
+    reactions: Array<Shared.Reaction> | null;
+
+    /**
+     * Indicates this is an iMessage app card part.
+     */
+    type: 'imessage_app';
+
+    /**
+     * The URL delivered to the iMessage app on tap.
+     */
+    url: string;
+
+    /**
+     * Fallback text for surfaces that cannot render the card.
+     */
+    fallback_text?: string | null;
+
+    /**
+     * Client-supplied session identifier, echoed back when provided.
+     */
+    session_id?: string | null;
+  }
+
+  export namespace IMessageAppPartResponse {
+    /**
+     * Identifies the iMessage app (Messages app extension) that backs the card.
+     */
+    export interface App {
+      /**
+       * Bundle identifier of the Messages app extension. Must not contain `:`.
+       */
+      bundle_id: string;
+
+      /**
+       * Display name of the app, shown by Messages' fallback UI.
+       */
+      name: string;
+
+      /**
+       * The app's 10-character uppercase alphanumeric team identifier.
+       */
+      team_id: string;
+
+      /**
+       * The owning app's App Store id (optional). When set, recipients without the
+       * iMessage app installed see a "Get the app" affordance.
+       */
+      app_store_id?: number;
+    }
+
+    /**
+     * Visible layout of the card. At least one of `caption`, `subcaption`,
+     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
+     * the card renders as an empty bubble.
+     */
+    export interface Layout {
+      /**
+       * Primary label, top-left and bold.
+       */
+      caption?: string;
+
+      /**
+       * Overlay text shown below `image_title`. Requires `image_url`.
+       */
+      image_subtitle?: string;
+
+      /**
+       * Overlay text shown above the image. Requires `image_url`.
+       */
+      image_title?: string;
+
+      /**
+       * Optional HTTPS URL of a preview image. The server downloads it and embeds it in
+       * the card as JPEG (10MB max, same fetch rules as media parts).
+       */
+      image_url?: string;
+
+      /**
+       * Secondary label, below `caption` on the left.
+       */
+      subcaption?: string;
+
+      /**
+       * Label shown top-right.
+       */
+      trailing_caption?: string;
+
+      /**
+       * Label shown below `trailing_caption`, on the right.
+       */
+      trailing_subcaption?: string;
+    }
+  }
 }
 
 /**
