@@ -30,6 +30,9 @@ jobs:
         if: ${{ steps.release.outputs.pr }}
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          # This workflow never checks out the repo (release-please works via
+          # the API), so gh has no git context — point it at the repo explicitly.
+          GH_REPO: ${{ github.repository }}
           # Pass the raw output through and parse it in the shell. Do NOT call
           # fromJSON() here: on runs where release-please cuts the release there
           # is no open PR, `pr` is empty, and fromJSON('') fails the whole
