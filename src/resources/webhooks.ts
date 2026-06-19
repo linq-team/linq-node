@@ -226,11 +226,6 @@ export namespace MessageEventV2 {
      * Fallback text for surfaces that cannot render the card.
      */
     fallback_text?: string | null;
-
-    /**
-     * Client-supplied session identifier, echoed back when provided.
-     */
-    session_id?: string | null;
   }
 
   export namespace SchemasIMessageAppPartResponse {
@@ -267,21 +262,6 @@ export namespace MessageEventV2 {
        * Primary label, top-left and bold.
        */
       caption?: string | null;
-
-      /**
-       * Overlay text shown below image_title.
-       */
-      image_subtitle?: string | null;
-
-      /**
-       * Overlay text shown above the image.
-       */
-      image_title?: string | null;
-
-      /**
-       * Presigned URL of the card preview image, when present.
-       */
-      image_url?: string | null;
 
       /**
        * Secondary label, below caption on the left.
@@ -425,11 +405,6 @@ export namespace MessagePayload {
      * Fallback text for surfaces that cannot render the card.
      */
     fallback_text?: string | null;
-
-    /**
-     * Client-supplied session identifier, echoed back when provided.
-     */
-    session_id?: string | null;
   }
 
   export namespace SchemasIMessageAppPartResponse {
@@ -466,21 +441,6 @@ export namespace MessagePayload {
        * Primary label, top-left and bold.
        */
       caption?: string | null;
-
-      /**
-       * Overlay text shown below image_title.
-       */
-      image_subtitle?: string | null;
-
-      /**
-       * Overlay text shown above the image.
-       */
-      image_title?: string | null;
-
-      /**
-       * Presigned URL of the card preview image, when present.
-       */
-      image_url?: string | null;
 
       /**
        * Secondary label, below caption on the left.
@@ -2161,9 +2121,22 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
     changed_at: string;
 
     /**
-     * The new line health status
+     * @deprecated Current reputation of this phone line as assessed by risk-service.
+     *
+     * - `HEALTHY` — No elevated risk detected.
+     * - `AT_RISK` — Elevated risk indicators present; consider reducing send volume or
+     *   reviewing messaging patterns.
+     * - `CRITICAL` — High risk; further sending may result in line flagging or
+     *   restriction.
+     *
+     * Defaults to `HEALTHY` for lines that have not yet been scored.
      */
     new_health_status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
+
+    /**
+     * The new line reputation
+     */
+    new_reputation: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
 
     /**
      * The new service status
@@ -2176,9 +2149,22 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
     phone_number: string;
 
     /**
-     * The previous line health status
+     * @deprecated Current reputation of this phone line as assessed by risk-service.
+     *
+     * - `HEALTHY` — No elevated risk detected.
+     * - `AT_RISK` — Elevated risk indicators present; consider reducing send volume or
+     *   reviewing messaging patterns.
+     * - `CRITICAL` — High risk; further sending may result in line flagging or
+     *   restriction.
+     *
+     * Defaults to `HEALTHY` for lines that have not yet been scored.
      */
     previous_health_status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
+
+    /**
+     * The previous line reputation
+     */
+    previous_reputation: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
 
     /**
      * The previous service status
