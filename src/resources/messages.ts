@@ -255,8 +255,9 @@ export namespace Message {
 
     /**
      * Visible layout of the card. At least one of `caption`, `subcaption`,
-     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
-     * the card renders as an empty bubble.
+     * `trailing_caption`, or `trailing_subcaption` must be set, otherwise the card
+     * renders as an empty bubble. Any image on the card is drawn by the recipient's
+     * installed app extension; it cannot be supplied here.
      */
     layout: IMessageAppPartResponse.Layout;
 
@@ -279,11 +280,6 @@ export namespace Message {
      * Fallback text for surfaces that cannot render the card.
      */
     fallback_text?: string | null;
-
-    /**
-     * Client-supplied session identifier, echoed back when provided.
-     */
-    session_id?: string | null;
   }
 
   export namespace IMessageAppPartResponse {
@@ -315,30 +311,15 @@ export namespace Message {
 
     /**
      * Visible layout of the card. At least one of `caption`, `subcaption`,
-     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
-     * the card renders as an empty bubble.
+     * `trailing_caption`, or `trailing_subcaption` must be set, otherwise the card
+     * renders as an empty bubble. Any image on the card is drawn by the recipient's
+     * installed app extension; it cannot be supplied here.
      */
     export interface Layout {
       /**
        * Primary label, top-left and bold.
        */
       caption?: string;
-
-      /**
-       * Overlay text shown below `image_title`. Requires `image_url`.
-       */
-      image_subtitle?: string;
-
-      /**
-       * Overlay text shown above the image. Requires `image_url`.
-       */
-      image_title?: string;
-
-      /**
-       * Optional HTTPS URL of a preview image. The server downloads it and embeds it in
-       * the card as JPEG (10MB max, same fetch rules as media parts).
-       */
-      image_url?: string;
 
       /**
        * Secondary label, below `caption` on the left.
