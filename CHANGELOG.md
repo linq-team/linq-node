@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.0](https://github.com/linq-team/linq-node/compare/v0.27.1...v0.28.0) (2026-06-21)
+
+
+### Features
+
+* phone line reputation + group chat icon ([#79](https://github.com/linq-team/linq-node/issues/79)) ([8964a11](https://github.com/linq-team/linq-node/commit/8964a1129bce0b216363dc9f3cd7f47a1c5c47e9))
+
 ## [0.27.1](https://github.com/linq-team/linq-node/compare/v0.27.0...v0.27.1) (2026-06-10)
 
 
