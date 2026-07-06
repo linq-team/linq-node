@@ -167,6 +167,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/phone_numbers',
   },
   {
+    clientCallName: 'client.phoneNumbers.update',
+    fullyQualifiedName: 'phoneNumbers.update',
+    httpMethod: 'put',
+    httpPath: '/v3/phone_numbers/{phoneNumberId}',
+  },
+  {
     clientCallName: 'client.webhookEvents.list',
     fullyQualifiedName: 'webhookEvents.list',
     httpMethod: 'get',

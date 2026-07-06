@@ -51,7 +51,12 @@ export {
   type MessageUpdateParams,
   type MessagesListMessagesPagination,
 } from './messages';
-export { PhoneNumbers, type PhoneNumberListResponse } from './phone-numbers';
+export {
+  PhoneNumbers,
+  type PhoneNumberUpdateResponse,
+  type PhoneNumberListResponse,
+  type PhoneNumberUpdateParams,
+} from './phone-numbers';
 export { Phonenumbers, type PhonenumberListResponse } from './phonenumbers';
 export { WebhookEvents, type WebhookEventType, type WebhookEventListResponse } from './webhook-events';
 export {

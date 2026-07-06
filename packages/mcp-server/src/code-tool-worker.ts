@@ -134,6 +134,7 @@ const fuse = new Fuse(
     'client.attachments.retrieve',
     'client.phonenumbers.list',
     'client.phoneNumbers.list',
+    'client.phoneNumbers.update',
     'client.webhookEvents.list',
     'client.webhookSubscriptions.create',
     'client.webhookSubscriptions.delete',
