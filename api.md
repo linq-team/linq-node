@@ -86,15 +86,19 @@ Types:
 - <code><a href="./src/resources/messages.ts">Message</a></code>
 - <code><a href="./src/resources/messages.ts">MessageEffect</a></code>
 - <code><a href="./src/resources/messages.ts">ReplyTo</a></code>
+- <code><a href="./src/resources/messages.ts">MessageCreateResponse</a></code>
 - <code><a href="./src/resources/messages.ts">MessageAddReactionResponse</a></code>
+- <code><a href="./src/resources/messages.ts">MessageUpdateAppCardResponse</a></code>
 
 Methods:
 
+- <code title="post /v3/messages">client.messages.<a href="./src/resources/messages.ts">create</a>({ ...params }) -> MessageCreateResponse</code>
 - <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages.ts">listMessagesThread</a>(messageID, { ...params }) -> MessagesListMessagesPagination</code>
 - <code title="get /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">retrieve</a>(messageID) -> Message</code>
 - <code title="delete /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">delete</a>(messageID) -> void</code>
 - <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages.ts">addReaction</a>(messageID, { ...params }) -> MessageAddReactionResponse</code>
 - <code title="patch /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">update</a>(messageID, { ...params }) -> Message</code>
+- <code title="post /v3/messages/{messageId}/update">client.messages.<a href="./src/resources/messages.ts">updateAppCard</a>(messageID, { ...params }) -> MessageUpdateAppCardResponse</code>
 
 # Attachments
 
@@ -124,11 +128,23 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/phone-numbers.ts">PhoneNumberUpdateResponse</a></code>
 - <code><a href="./src/resources/phone-numbers.ts">PhoneNumberListResponse</a></code>
 
 Methods:
 
 - <code title="get /v3/phone_numbers">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">list</a>() -> PhoneNumberListResponse</code>
+- <code title="put /v3/phone_numbers/{phoneNumberId}">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">update</a>(phoneNumberID, { ...params }) -> PhoneNumberUpdateResponse</code>
+
+# AvailableNumber
+
+Types:
+
+- <code><a href="./src/resources/available-number.ts">AvailableNumberRetrieveResponse</a></code>
+
+Methods:
+
+- <code title="get /v3/available_number">client.availableNumber.<a href="./src/resources/available-number.ts">retrieve</a>({ ...params }) -> AvailableNumberRetrieveResponse</code>
 
 # WebhookEvents
 

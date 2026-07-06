@@ -9,6 +9,54 @@ const client = new LinqAPIV3({
 
 describe('resource messages', () => {
   // Mock server tests are disabled
+  test.skip('create: only required params', async () => {
+    const responsePromise = client.messages.create({
+      message: { parts: [{ type: 'text', value: 'Hi! Thanks for reaching out — how can we help?' }] },
+      to: ['+14155559876'],
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('create: required and optional params', async () => {
+    const response = await client.messages.create({
+      message: {
+        parts: [
+          {
+            type: 'text',
+            value: 'Hi! Thanks for reaching out — how can we help?',
+            text_decorations: [
+              {
+                range: [0, 5],
+                animation: 'shake',
+                style: 'bold',
+              },
+              {
+                range: [6, 11],
+                animation: 'shake',
+                style: 'bold',
+              },
+            ],
+          },
+        ],
+        effect: { name: 'confetti', type: 'screen' },
+        idempotency_key: 'msg-abc123xyz',
+        preferred_service: 'iMessage',
+        reply_to: { message_id: '550e8400-e29b-41d4-a716-446655440000', part_index: 0 },
+      },
+      to: ['+14155559876'],
+      continuation_message: { text: "Hi, it's Acme Support reaching you from a new number." },
+      'Idempotency-Key': 'send-abc123xyz',
+    });
+  });
+
+  // Mock server tests are disabled
   test.skip('listMessagesThread', async () => {
     const responsePromise = client.messages.listMessagesThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
@@ -104,6 +152,38 @@ describe('resource messages', () => {
     const response = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
       text: 'This is the edited message content',
       part_index: 0,
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('updateAppCard: only required params', async () => {
+    const responsePromise = client.messages.updateAppCard('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
+      layout: {},
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('updateAppCard: required and optional params', async () => {
+    const response = await client.messages.updateAppCard('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
+      layout: {
+        caption: 'Score: 2 – 1',
+        image_subtitle: 'Tonight, 7:30 PM',
+        image_title: 'Table for 2',
+        image_url: 'https://cdn.linqapp.com/example/card-preview.jpg',
+        subcaption: 'You said: hello',
+        trailing_caption: '2 min',
+        trailing_subcaption: 'expires',
+      },
+      fallback_text: 'Score update',
+      interactive: true,
+      url: 'https://app.example.com/card?game=7f3a&move=2',
     });
   });
 });

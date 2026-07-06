@@ -33,6 +33,46 @@ import { path } from '../../internal/utils/path';
  * **Limitations:**
  * - A `link` part cannot be combined with other parts in the same message.
  * - Maximum URL length: 2,048 characters.
+ *
+ * ## Ephemeral Messages (Privacy Tier)
+ *
+ * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is automatically given a fixed **24-hour retention window** — after that window the platform permanently deletes the message from Linq storage. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+ *
+ * You can request it at two scopes:
+ *
+ * | Scope | Effect |
+ * |---|---|
+ * | **Partner-wide** | Every outbound and inbound message on every phone number under your account is retained for 24 hours, then deleted. |
+ * | **Per phone number** | Only the specified phone numbers have their messages auto-deleted. The rest follow the standard message-retention policy. |
+ *
+ * **Behavioral differences vs the standard default:**
+ *
+ * | Aspect | Standard | Ephemeral |
+ * |---|---|---|
+ * | Retention | Retained per the standard message-retention policy | **Hard backstop: 24 hours** from when the message is created |
+ * | After expiry | Message stays retrievable | Message is permanently deleted — `GET /v3/messages/{messageId}` returns `404` and it no longer appears in `GET /v3/chats/{chatId}/messages` |
+ * | Content on expiry | N/A | Text, formatting, and attachment references are scrubbed; the message is gone, not blanked out |
+ * | Cross-partner isolation | Enforced | Enforced |
+ *
+ * **How the 24-hour window works:**
+ *
+ * - The window is fixed at **24 hours from message creation** (`created_at`) and cannot be configured per message.
+ * - It mirrors the ephemeral *attachments* 1-day backstop, so a message and any media it carries expire together.
+ * - Expiry is delivery-independent — the clock starts when the message is created, not when it is delivered or read.
+ *
+ * **What you observe:**
+ *
+ * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time. If you need it, compute `created_at + 24h` yourself.
+ * - **No deletion webhook is sent.** There is no `message.deleted` event — a message simply stops being retrievable once its window passes.
+ * - **Delivery is unaffected.** Ephemeral messages send, deliver, and fire the usual `message.sent` / `message.received` and status webhooks exactly like standard messages. Only retention changes.
+ *
+ * **When to choose ephemeral:**
+ *
+ * - You have a compliance requirement that the platform must not retain message content beyond a short window.
+ * - The conversation is high-sensitivity (PHI, financial, identity verification) and you do not want it sitting in storage long-term.
+ * - Your application is the system of record — you capture what you need from the delivery webhook in real time and do not rely on reading message history back from Linq later.
+ *
+ * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message after 24 hours, persist anything you need to keep from the webhook payload at the time it is delivered.
  */
 export class Messages extends APIResource {
   /**
@@ -204,9 +244,19 @@ export namespace SentMessage {
 
     /**
      * Visible layout of the card. At least one of `caption`, `subcaption`,
-     * `trailing_caption`, or `trailing_subcaption` must be set, otherwise the card
-     * renders as an empty bubble. Any image on the card is drawn by the recipient's
-     * installed app extension; it cannot be supplied here.
+     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
+     * the card renders as an empty bubble.
+     *
+     * `image_url` displays a preview image at the top of the card. The image renders
+     * on the recipient's card whether or not they have your app installed. The small
+     * icon beside the caption is the app's own icon and is not settable here.
+     *
+     * `* Note - requires a trusted chat w/ inbound activity`
+     *
+     * `image_title` and `image_subtitle` render as text overlaid on the image (title
+     * bold, subtitle beneath it). They only appear when `image_url` is set — without
+     * an image there is nothing to overlay — so setting either without `image_url` is
+     * rejected.
      */
     layout: IMessageAppPartResponse.Layout;
 
@@ -260,15 +310,46 @@ export namespace SentMessage {
 
     /**
      * Visible layout of the card. At least one of `caption`, `subcaption`,
-     * `trailing_caption`, or `trailing_subcaption` must be set, otherwise the card
-     * renders as an empty bubble. Any image on the card is drawn by the recipient's
-     * installed app extension; it cannot be supplied here.
+     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
+     * the card renders as an empty bubble.
+     *
+     * `image_url` displays a preview image at the top of the card. The image renders
+     * on the recipient's card whether or not they have your app installed. The small
+     * icon beside the caption is the app's own icon and is not settable here.
+     *
+     * `* Note - requires a trusted chat w/ inbound activity`
+     *
+     * `image_title` and `image_subtitle` render as text overlaid on the image (title
+     * bold, subtitle beneath it). They only appear when `image_url` is set — without
+     * an image there is nothing to overlay — so setting either without `image_url` is
+     * rejected.
      */
     export interface Layout {
       /**
        * Primary label, top-left and bold.
        */
       caption?: string;
+
+      /**
+       * Text shown below `image_title`, overlaid on the card image. Requires
+       * `image_url`.
+       */
+      image_subtitle?: string;
+
+      /**
+       * Bold text overlaid on the card image. Requires `image_url` (rejected without
+       * it).
+       */
+      image_title?: string;
+
+      /**
+       * URL of an image (JPEG, PNG, HEIF, or WebP) to display as the card's preview
+       * image; an unreachable or non-image URL returns a validation error. Renders for
+       * all recipients regardless of whether they have the app. Note - requires a
+       * trusted chat w/ inbound activity. In responses, this is the re-hosted
+       * `cdn.linqapp.com` copy of the image you supplied, not your original URL.
+       */
+      image_url?: string;
 
       /**
        * Secondary label, below `caption` on the left.

@@ -36,7 +36,7 @@
     },
     "LINQ_WEBHOOK_SECRET": {
       "title": "webhook_secret",
-      "description": "Webhook signing secret used by `client.webhooks.unwrap()` to verify the\nStandard Webhooks signature on incoming webhook requests.\n\nFormat: a base64-encoded key, optionally with a `whsec_` prefix\n(e.g. `whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw7Jxx2Oll+OE=`).\n",
+      "description": "Webhook signing secret used by `client.webhooks.unwrap()` to verify the\nStandard Webhooks signature on incoming webhook requests.\n\nFormat: a base64-encoded key, optionally with a `whsec_` prefix\n(e.g. `whsec_<your-webhook-signing-secret>`).\n",
       "required": false,
       "type": "string"
     }

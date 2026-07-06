@@ -147,8 +147,7 @@ export interface ContactCardCreateParams {
   phone_number: string;
 
   /**
-   * URL of the profile image to rehost on the CDN. Only re-uploaded when a new value
-   * is provided.
+   * Profile image URL for the contact card.
    */
   image_url?: string;
 
