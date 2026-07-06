@@ -330,6 +330,12 @@ export interface Chat {
   updated_at: string;
 
   /**
+   * URL of the group chat icon. Only set for group chats that have an icon; `null`
+   * otherwise.
+   */
+  group_chat_icon?: string | null;
+
+  /**
    * Messaging service type
    */
   service?: Shared.ServiceType | null;
@@ -517,8 +523,9 @@ export namespace MessageContent {
 
     /**
      * Visible layout of the card. At least one of `caption`, `subcaption`,
-     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
-     * the card renders as an empty bubble.
+     * `trailing_caption`, or `trailing_subcaption` must be set, otherwise the card
+     * renders as an empty bubble. Any image on the card is drawn by the recipient's
+     * installed app extension; it cannot be supplied here.
      */
     layout: IMessageAppPart.Layout;
 
@@ -528,22 +535,15 @@ export namespace MessageContent {
     type: 'imessage_app';
 
     /**
-     * Absolute HTTPS URL delivered to the recipient's installed iMessage app when they
-     * tap the card. Opaque to Messages.
-     */
-    url: string;
-
-    /**
      * Text shown on surfaces that cannot render the card (notifications, lock screen).
      * Defaults to the caption when omitted.
      */
     fallback_text?: string;
 
     /**
-     * Optional client-supplied identifier to correlate updatable/collaborative app
-     * sessions (advanced). Not interpreted by Synapse.
+     * URL the recipient's app opens when they tap the card.
      */
-    session_id?: string;
+    url?: string;
   }
 
   export namespace IMessageAppPart {
@@ -575,30 +575,15 @@ export namespace MessageContent {
 
     /**
      * Visible layout of the card. At least one of `caption`, `subcaption`,
-     * `trailing_caption`, `trailing_subcaption`, or `image_url` must be set, otherwise
-     * the card renders as an empty bubble.
+     * `trailing_caption`, or `trailing_subcaption` must be set, otherwise the card
+     * renders as an empty bubble. Any image on the card is drawn by the recipient's
+     * installed app extension; it cannot be supplied here.
      */
     export interface Layout {
       /**
        * Primary label, top-left and bold.
        */
       caption?: string;
-
-      /**
-       * Overlay text shown below `image_title`. Requires `image_url`.
-       */
-      image_subtitle?: string;
-
-      /**
-       * Overlay text shown above the image. Requires `image_url`.
-       */
-      image_title?: string;
-
-      /**
-       * Optional HTTPS URL of a preview image. The server downloads it and embeds it in
-       * the card as JPEG (10MB max, same fetch rules as media parts).
-       */
-      image_url?: string;
 
       /**
        * Secondary label, below `caption` on the left.

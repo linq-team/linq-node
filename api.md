@@ -124,11 +124,13 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/phone-numbers.ts">PhoneNumberUpdateResponse</a></code>
 - <code><a href="./src/resources/phone-numbers.ts">PhoneNumberListResponse</a></code>
 
 Methods:
 
 - <code title="get /v3/phone_numbers">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">list</a>() -> PhoneNumberListResponse</code>
+- <code title="put /v3/phone_numbers/{phoneNumberId}">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">update</a>(phoneNumberID, { ...params }) -> PhoneNumberUpdateResponse</code>
 
 # WebhookEvents
 
