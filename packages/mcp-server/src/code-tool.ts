@@ -215,7 +215,6 @@ const localDenoHandler = async ({
   const workerPath = getWorkerPath();
 
   const client = reqContext.client;
-  const baseURLHostname = new URL(client.baseURL).hostname;
   const { code } = args as { code: string };
 
   let denoPath: string;
@@ -267,7 +266,10 @@ const localDenoHandler = async ({
     runFlags: [
       `--node-modules-dir=manual`,
       `--allow-read=${allowRead}`,
-      `--allow-net=${baseURLHostname}`,
+      // Bare --allow-net: the worker transport is a unix socket in os.tmpdir() whose
+      // random path we can't predict, and modern Deno gates that socket under --allow-net.
+      // A host-scoped `--allow-net=<apiHost>` excludes it and crashes every run.
+      `--allow-net`,
       // Allow environment variables because instantiating the client will try to read from them,
       // even though they are not set.
       '--allow-env',
