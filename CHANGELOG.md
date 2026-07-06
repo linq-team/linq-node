@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.2](https://github.com/linq-team/linq-node/compare/v0.28.1...v0.28.2) (2026-07-06)
+
+
+### Bug Fixes
+
+* **mcp-server:** unblock code execute tool on modern Deno ([#84](https://github.com/linq-team/linq-node/issues/84)) ([f8bdf2d](https://github.com/linq-team/linq-node/commit/f8bdf2d6f3b737a5ede4ae62f34f556700447969))
+
 ## [0.28.1](https://github.com/linq-team/linq-node/compare/v0.28.0...v0.28.1) (2026-07-06)
 
 
