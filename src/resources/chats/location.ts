@@ -40,16 +40,17 @@ export class Location extends APIResource {
   /**
    * Retrieve the current location for contacts sharing with you in a chat.
    *
-   * Returns a [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946)
-   * `FeatureCollection` with a `Feature` for each participant actively sharing their
-   * location.
+   * The response is wrapped in the standard `{ "success": true, "data": ... }`
+   * envelope — the body is **not** a bare GeoJSON document. `data` is a
+   * [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946) `FeatureCollection`
+   * with a `Feature` for each participant actively sharing their location.
    *
-   * Works for both 1:1 and group chats. In group chats, returns a separate feature
-   * for each participant who is sharing. Each feature's `properties.handle`
-   * identifies the user.
+   * Works for both 1:1 and group chats. In group chats, `data.features` contains a
+   * separate feature for each participant who is sharing. Each feature's
+   * `properties.handle` identifies the user.
    *
-   * Returns an empty `features` array if no one is sharing or no location data is
-   * available yet.
+   * Returns an empty `data.features` array if no one is sharing or no location data
+   * is available yet.
    *
    * @example
    * ```ts

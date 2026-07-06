@@ -107,6 +107,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats/{chatId}/location',
   },
   {
+    clientCallName: 'client.messages.create',
+    fullyQualifiedName: 'messages.create',
+    httpMethod: 'post',
+    httpPath: '/v3/messages',
+  },
+  {
     clientCallName: 'client.messages.listMessagesThread',
     fullyQualifiedName: 'messages.listMessagesThread',
     httpMethod: 'get',
@@ -137,6 +143,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/messages/{messageId}',
   },
   {
+    clientCallName: 'client.messages.updateAppCard',
+    fullyQualifiedName: 'messages.updateAppCard',
+    httpMethod: 'post',
+    httpPath: '/v3/messages/{messageId}/update',
+  },
+  {
     clientCallName: 'client.attachments.create',
     fullyQualifiedName: 'attachments.create',
     httpMethod: 'post',
@@ -165,6 +177,18 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'phoneNumbers.list',
     httpMethod: 'get',
     httpPath: '/v3/phone_numbers',
+  },
+  {
+    clientCallName: 'client.phoneNumbers.update',
+    fullyQualifiedName: 'phoneNumbers.update',
+    httpMethod: 'put',
+    httpPath: '/v3/phone_numbers/{phoneNumberId}',
+  },
+  {
+    clientCallName: 'client.availableNumber.retrieve',
+    fullyQualifiedName: 'availableNumber.retrieve',
+    httpMethod: 'get',
+    httpPath: '/v3/available_number',
   },
   {
     clientCallName: 'client.webhookEvents.list',

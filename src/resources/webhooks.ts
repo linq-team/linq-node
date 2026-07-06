@@ -218,7 +218,7 @@ export namespace MessageEventV2 {
     type: 'imessage_app';
 
     /**
-     * The URL delivered to the iMessage app on tap.
+     * The URL the recipient's app opens when the user taps the card.
      */
     url: string;
 
@@ -397,7 +397,7 @@ export namespace MessagePayload {
     type: 'imessage_app';
 
     /**
-     * The URL delivered to the iMessage app on tap.
+     * The URL the recipient's app opens when the user taps the card.
      */
     url: string;
 
@@ -2121,13 +2121,13 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
     changed_at: string;
 
     /**
-     * @deprecated Current reputation of this phone line as assessed by risk-service.
+     * @deprecated Current reputation of this phone line.
      *
-     * - `HEALTHY` — No elevated risk detected.
-     * - `AT_RISK` — Elevated risk indicators present; consider reducing send volume or
-     *   reviewing messaging patterns.
-     * - `CRITICAL` — High risk; further sending may result in line flagging or
-     *   restriction.
+     * - `HEALTHY` — The line is in good standing. Send normally.
+     * - `AT_RISK` — The line's overall engagement is trending down. Slow the line's
+     *   send pace and review your messaging patterns.
+     * - `CRITICAL` — Strong signals that messages from this line aren't landing well.
+     *   Pause outbound on the line until it recovers.
      *
      * Defaults to `HEALTHY` for lines that have not yet been scored.
      */
@@ -2149,13 +2149,13 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
     phone_number: string;
 
     /**
-     * @deprecated Current reputation of this phone line as assessed by risk-service.
+     * @deprecated Current reputation of this phone line.
      *
-     * - `HEALTHY` — No elevated risk detected.
-     * - `AT_RISK` — Elevated risk indicators present; consider reducing send volume or
-     *   reviewing messaging patterns.
-     * - `CRITICAL` — High risk; further sending may result in line flagging or
-     *   restriction.
+     * - `HEALTHY` — The line is in good standing. Send normally.
+     * - `AT_RISK` — The line's overall engagement is trending down. Slow the line's
+     *   send pace and review your messaging patterns.
+     * - `CRITICAL` — Strong signals that messages from this line aren't landing well.
+     *   Pause outbound on the line until it recovers.
      *
      * Defaults to `HEALTHY` for lines that have not yet been scored.
      */

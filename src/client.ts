@@ -33,6 +33,11 @@ import {
   SupportedContentType,
 } from './resources/attachments';
 import {
+  AvailableNumber,
+  AvailableNumberRetrieveParams,
+  AvailableNumberRetrieveResponse,
+} from './resources/available-number';
+import {
   Capability,
   CapabilityCheckIMessageParams,
   CapabilityCheckRCSParams,
@@ -51,14 +56,23 @@ import {
   Message,
   MessageAddReactionParams,
   MessageAddReactionResponse,
+  MessageCreateParams,
+  MessageCreateResponse,
   MessageEffect,
   MessageListMessagesThreadParams,
+  MessageUpdateAppCardParams,
+  MessageUpdateAppCardResponse,
   MessageUpdateParams,
   Messages,
   MessagesListMessagesPagination,
   ReplyTo,
 } from './resources/messages';
-import { PhoneNumberListResponse, PhoneNumbers } from './resources/phone-numbers';
+import {
+  PhoneNumberListResponse,
+  PhoneNumberUpdateParams,
+  PhoneNumberUpdateResponse,
+  PhoneNumbers,
+} from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
 import { WebhookEventListResponse, WebhookEventType, WebhookEvents } from './resources/webhook-events';
 import {
@@ -141,7 +155,7 @@ export interface ClientOptions {
    * Standard Webhooks signature on incoming webhook requests.
    *
    * Format: a base64-encoded key, optionally with a `whsec_` prefix
-   * (e.g. `whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw7Jxx2Oll+OE=`).
+   * (e.g. `whsec_<your-webhook-signing-secret>`).
    *
    */
   webhookSecret?: string | null | undefined;
@@ -338,9 +352,6 @@ export class LinqAPIV3 {
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
-  /**
-   * Basic re-implementation of `qs.stringify` for primitive types.
-   */
   protected stringifyQuery(query: object | Record<string, unknown>): string {
     return stringifyQuery(query);
   }
@@ -805,11 +816,19 @@ export class LinqAPIV3 {
     return () => controller.abort();
   }
 
-  private buildBody({ options: { body, headers: rawHeaders } }: { options: FinalRequestOptions }): {
+  private buildBody({ options }: { options: FinalRequestOptions }): {
     bodyHeaders: HeadersLike;
     body: BodyInit | undefined;
   } {
+    const { body, headers: rawHeaders } = options;
     if (!body) {
+      // A resource method always passes a `body` key when its operation defines a
+      // request body, even if the caller omitted an optional body param. Keep the
+      // content-type for those, and only elide it for operations with no body at
+      // all (e.g. GET/DELETE).
+      if (body == null && 'body' in options) {
+        return this.#encoder({ body, headers: buildHeaders([rawHeaders]) });
+      }
       return { bodyHeaders: undefined, body: undefined };
     }
     const headers = buildHeaders([rawHeaders]);
@@ -889,6 +908,46 @@ export class LinqAPIV3 {
    * **Limitations:**
    * - A `link` part cannot be combined with other parts in the same message.
    * - Maximum URL length: 2,048 characters.
+   *
+   * ## Ephemeral Messages (Privacy Tier)
+   *
+   * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is automatically given a fixed **24-hour retention window** — after that window the platform permanently deletes the message from Linq storage. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+   *
+   * You can request it at two scopes:
+   *
+   * | Scope | Effect |
+   * |---|---|
+   * | **Partner-wide** | Every outbound and inbound message on every phone number under your account is retained for 24 hours, then deleted. |
+   * | **Per phone number** | Only the specified phone numbers have their messages auto-deleted. The rest follow the standard message-retention policy. |
+   *
+   * **Behavioral differences vs the standard default:**
+   *
+   * | Aspect | Standard | Ephemeral |
+   * |---|---|---|
+   * | Retention | Retained per the standard message-retention policy | **Hard backstop: 24 hours** from when the message is created |
+   * | After expiry | Message stays retrievable | Message is permanently deleted — `GET /v3/messages/{messageId}` returns `404` and it no longer appears in `GET /v3/chats/{chatId}/messages` |
+   * | Content on expiry | N/A | Text, formatting, and attachment references are scrubbed; the message is gone, not blanked out |
+   * | Cross-partner isolation | Enforced | Enforced |
+   *
+   * **How the 24-hour window works:**
+   *
+   * - The window is fixed at **24 hours from message creation** (`created_at`) and cannot be configured per message.
+   * - It mirrors the ephemeral *attachments* 1-day backstop, so a message and any media it carries expire together.
+   * - Expiry is delivery-independent — the clock starts when the message is created, not when it is delivered or read.
+   *
+   * **What you observe:**
+   *
+   * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time. If you need it, compute `created_at + 24h` yourself.
+   * - **No deletion webhook is sent.** There is no `message.deleted` event — a message simply stops being retrievable once its window passes.
+   * - **Delivery is unaffected.** Ephemeral messages send, deliver, and fire the usual `message.sent` / `message.received` and status webhooks exactly like standard messages. Only retention changes.
+   *
+   * **When to choose ephemeral:**
+   *
+   * - You have a compliance requirement that the platform must not retain message content beyond a short window.
+   * - The conversation is high-sensitivity (PHI, financial, identity verification) and you do not want it sitting in storage long-term.
+   * - Your application is the system of record — you capture what you need from the delivery webhook in real time and do not rely on reading message history back from Linq later.
+   *
+   * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message after 24 hours, persist anything you need to keep from the webhook payload at the time it is delivered.
    *
    */
   messages: API.Messages = new API.Messages(this);
@@ -1056,7 +1115,7 @@ export class LinqAPIV3 {
    * |---|---|---|
    * | Attachment bytes | Retained until you `DELETE` | **Auto-removed after 1 day**, also removable via `DELETE` |
    * | Attachment metadata (id, filename, mime type, size) | Retained until you `DELETE` | Removed alongside the bytes |
-   * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy |
+   * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy — unless the line also has **ephemeral messages** enabled (see the Messages page), in which case the message and its parts are deleted 24 hours after creation |
    * | Audit log of deletions | Retained per platform retention policy | Retained per platform retention policy |
    *
    * **In transit:** TLS 1.2+ everywhere. **At rest:** AES-256 (server-side encryption).
@@ -1096,6 +1155,17 @@ export class LinqAPIV3 {
    *
    */
   phoneNumbers: API.PhoneNumbers = new API.PhoneNumbers(this);
+  /**
+   * Phone Numbers represent the phone numbers assigned to your partner account.
+   *
+   * Use the list phone numbers endpoint to discover which phone numbers are available
+   * for sending messages.
+   *
+   * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
+   * in the `from` field.
+   *
+   */
+  availableNumber: API.AvailableNumber = new API.AvailableNumber(this);
   /**
    * Webhook Subscriptions allow you to receive real-time notifications when events
    * occur on your account.
@@ -1380,6 +1450,7 @@ LinqAPIV3.Messages = Messages;
 LinqAPIV3.Attachments = Attachments;
 LinqAPIV3.Phonenumbers = Phonenumbers;
 LinqAPIV3.PhoneNumbers = PhoneNumbers;
+LinqAPIV3.AvailableNumber = AvailableNumber;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Capability = Capability;
@@ -1424,11 +1495,15 @@ export declare namespace LinqAPIV3 {
     type Message as Message,
     type MessageEffect as MessageEffect,
     type ReplyTo as ReplyTo,
+    type MessageCreateResponse as MessageCreateResponse,
     type MessageAddReactionResponse as MessageAddReactionResponse,
+    type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
+    type MessageCreateParams as MessageCreateParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageAddReactionParams as MessageAddReactionParams,
     type MessageUpdateParams as MessageUpdateParams,
+    type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
   };
 
   export {
@@ -1441,7 +1516,18 @@ export declare namespace LinqAPIV3 {
 
   export { Phonenumbers as Phonenumbers, type PhonenumberListResponse as PhonenumberListResponse };
 
-  export { PhoneNumbers as PhoneNumbers, type PhoneNumberListResponse as PhoneNumberListResponse };
+  export {
+    PhoneNumbers as PhoneNumbers,
+    type PhoneNumberUpdateResponse as PhoneNumberUpdateResponse,
+    type PhoneNumberListResponse as PhoneNumberListResponse,
+    type PhoneNumberUpdateParams as PhoneNumberUpdateParams,
+  };
+
+  export {
+    AvailableNumber as AvailableNumber,
+    type AvailableNumberRetrieveResponse as AvailableNumberRetrieveResponse,
+    type AvailableNumberRetrieveParams as AvailableNumberRetrieveParams,
+  };
 
   export {
     WebhookEvents as WebhookEvents,
