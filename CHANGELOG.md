@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.1](https://github.com/linq-team/linq-node/compare/v0.28.0...v0.28.1) (2026-07-06)
+
+
+### Documentation
+
+* clarify phone line reputation status descriptions ([#82](https://github.com/linq-team/linq-node/issues/82)) ([7110051](https://github.com/linq-team/linq-node/commit/711005190d8b80f6187cba2e2ddef4bf37027498))
+
 ## [0.28.0](https://github.com/linq-team/linq-node/compare/v0.27.1...v0.28.0) (2026-06-21)
 
 
