@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.0](https://github.com/linq-team/linq-node/compare/v0.28.2...v0.29.0) (2026-07-24)
+
+
+### Features
+
+* add natural payment rail support with e.164 identifiers ([#86](https://github.com/linq-team/linq-node/issues/86)) ([567485d](https://github.com/linq-team/linq-node/commit/567485d1cf340d6fa37759abaf17e9daeec270de))
+
 ## [0.28.2](https://github.com/linq-team/linq-node/compare/v0.28.1...v0.28.2) (2026-07-06)
 
 
