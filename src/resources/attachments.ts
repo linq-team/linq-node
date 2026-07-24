@@ -321,6 +321,8 @@ export class Attachments extends APIResource {
  * **Audio:** audio/mpeg, audio/x-m4a, audio/x-caf, audio/x-wav, audio/x-aiff,
  * audio/aac, audio/midi, audio/amr
  *
+ * **Wallet passes:** application/vnd.apple.pkpass
+ *
  * **Documents:** application/pdf, text/plain, text/markdown, text/vcard, text/rtf,
  * text/csv, text/html, text/calendar, text/xml, application/json,
  * application/msword,
@@ -379,6 +381,7 @@ export type SupportedContentType =
   | 'audio/midi'
   | 'audio/amr'
   | 'application/pdf'
+  | 'application/vnd.apple.pkpass'
   | 'text/plain'
   | 'text/markdown'
   | 'text/vcard'
@@ -455,6 +458,8 @@ export interface AttachmentRetrieveResponse {
    * **Audio:** audio/mpeg, audio/x-m4a, audio/x-caf, audio/x-wav, audio/x-aiff,
    * audio/aac, audio/midi, audio/amr
    *
+   * **Wallet passes:** application/vnd.apple.pkpass
+   *
    * **Documents:** application/pdf, text/plain, text/markdown, text/vcard, text/rtf,
    * text/csv, text/html, text/calendar, text/xml, application/json,
    * application/msword,
@@ -523,6 +528,8 @@ export interface AttachmentCreateParams {
    *
    * **Audio:** audio/mpeg, audio/x-m4a, audio/x-caf, audio/x-wav, audio/x-aiff,
    * audio/aac, audio/midi, audio/amr
+   *
+   * **Wallet passes:** application/vnd.apple.pkpass
    *
    * **Documents:** application/pdf, text/plain, text/markdown, text/vcard, text/rtf,
    * text/csv, text/html, text/calendar, text/xml, application/json,

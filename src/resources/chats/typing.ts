@@ -28,20 +28,54 @@ export class Typing extends APIResource {
   /**
    * Send a typing indicator to show that someone is typing in the chat.
    *
-   * ## Behavior & Limitations
+   * ## Behavior
    *
-   * Typing indicators are best-effort signals with the following limitations:
+   * Typing indicators are best-effort signals that behave as follows:
    *
-   * - **Active conversations only:** The recipient must have sent or received a
-   *   message in this chat within the **last 5 minutes**. If the chat is inactive,
-   *   the request is still accepted (`204`) but the indicator will not reach the
-   *   recipient's device.
+   * - **iMessage chats only:** Typing indicators are only supported for iMessage
+   *   chats. Requests for RCS or SMS chats are accepted (`204`) but no indicator is
+   *   delivered.
+   *
+   * - **Send a message first for reliable delivery:** Typing indicators are
+   *   best-effort. If you have not sent a message in this chat recently (roughly the
+   *   **last 5 minutes**), a typing indicator may not reach the recipient — the
+   *   request is still accepted (`204`), but delivery is not deterministic. Once you
+   *   have sent a message in the chat, typing indicators reliably reach the
+   *   recipient.
    *
    * - **No delivery guarantee:** Even for active chats, a `204` response only
    *   indicates the request was accepted for processing.
    *
    * - **Group chats not supported:** Attempting to start a typing indicator in a
    *   group chat will return a `403` error.
+   *
+   * ## Duration & keeping it visible
+   *
+   * - A single call shows the indicator for about **85–90 seconds**, then it clears
+   *   automatically.
+   *
+   * - To keep it visible longer, call this endpoint again every **60 seconds**. Each
+   *   call refreshes the indicator so it stays visible continuously.
+   *
+   * - Sending a message clears the indicator.
+   *
+   * - To resume typing after sending a message, call this endpoint again.
+   *
+   * - Incoming messages do not affect the indicator.
+   *
+   * ## Recipient re-opening the chat
+   *
+   * If the recipient brings their messaging app to the foreground while the chat has
+   * an unread message, their device clears any showing typing indicator. Calling
+   * this endpoint again on its own may not bring it back. To make it reappear,
+   * either send a message, or call `DELETE /v3/chats/{chatId}/typing` (stop) and
+   * then call start typing again.
+   *
+   * ## Recommended usage
+   *
+   * Call this endpoint when composing begins, call it again every 60 seconds while
+   * composing, and send the message to clear the indicator. To clear the indicator
+   * without sending a message, call `DELETE /v3/chats/{chatId}/typing`.
    *
    * @example
    * ```ts
@@ -58,12 +92,14 @@ export class Typing extends APIResource {
   }
 
   /**
-   * Stop the typing indicator for the chat.
+   * Immediately clears the typing indicator for the chat, without sending a message.
    *
-   * Typing indicators are automatically stopped when a message is sent, so calling
-   * this endpoint after sending a message is unnecessary.
+   * The typing indicator also clears automatically when you send a message, or about
+   * 85–90 seconds after the last `POST /v3/chats/{chatId}/typing` (start typing)
+   * request.
    *
-   * See the `POST` endpoint above for behavior details and limitations.
+   * See the start typing endpoint (`POST /v3/chats/{chatId}/typing`) above for
+   * behavior details.
    *
    * **Note:** Group chats are not supported and will return a `403` error.
    *

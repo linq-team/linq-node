@@ -61,6 +61,13 @@ export {
   type MessagesListMessagesPagination,
 } from './messages';
 export {
+  PaymentRequests,
+  type PaymentRequest,
+  type PaymentRequestListResponse,
+  type PaymentRequestCreateParams,
+  type PaymentRequestListParams,
+} from './payment-requests';
+export {
   PhoneNumbers,
   type PhoneNumberUpdateResponse,
   type PhoneNumberListResponse,

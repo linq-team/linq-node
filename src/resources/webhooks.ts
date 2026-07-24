@@ -2079,6 +2079,7 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'chat.group_icon_updated'
     | 'chat.group_name_update_failed'
     | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
@@ -2090,7 +2091,10 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'call.declined'
     | 'call.no_answer'
     | 'location.sharing.started'
-    | 'location.sharing.stopped';
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -2121,19 +2125,6 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
     changed_at: string;
 
     /**
-     * @deprecated Current reputation of this phone line.
-     *
-     * - `HEALTHY` — The line is in good standing. Send normally.
-     * - `AT_RISK` — The line's overall engagement is trending down. Slow the line's
-     *   send pace and review your messaging patterns.
-     * - `CRITICAL` — Strong signals that messages from this line aren't landing well.
-     *   Pause outbound on the line until it recovers.
-     *
-     * Defaults to `HEALTHY` for lines that have not yet been scored.
-     */
-    new_health_status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
-
-    /**
      * The new line reputation
      */
     new_reputation: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
@@ -2147,19 +2138,6 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
      * Phone number in E.164 format
      */
     phone_number: string;
-
-    /**
-     * @deprecated Current reputation of this phone line.
-     *
-     * - `HEALTHY` — The line is in good standing. Send normally.
-     * - `AT_RISK` — The line's overall engagement is trending down. Slow the line's
-     *   send pace and review your messaging patterns.
-     * - `CRITICAL` — Strong signals that messages from this line aren't landing well.
-     *   Pause outbound on the line until it recovers.
-     *
-     * Defaults to `HEALTHY` for lines that have not yet been scored.
-     */
-    previous_health_status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
 
     /**
      * The previous line reputation

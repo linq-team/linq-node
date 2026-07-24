@@ -68,6 +68,13 @@ import {
   ReplyTo,
 } from './resources/messages';
 import {
+  PaymentRequest,
+  PaymentRequestCreateParams,
+  PaymentRequestListParams,
+  PaymentRequestListResponse,
+  PaymentRequests,
+} from './resources/payment-requests';
+import {
   PhoneNumberListResponse,
   PhoneNumberUpdateParams,
   PhoneNumberUpdateResponse,
@@ -1167,6 +1174,121 @@ export class LinqAPIV3 {
    */
   availableNumber: API.AvailableNumber = new API.AvailableNumber(this);
   /**
+   * Request a payment from a recipient over iMessage. You create a payment
+   * request, send its `checkout_url` to the recipient, and they pay with Apple
+   * Pay or card. Funds settle **directly to your own Stripe account** — Linq
+   * never holds the money.
+   *
+   * ## How it works
+   *
+   * 1. **Create** a payment request with an amount and currency. You get back a
+   *    `checkout_url` and a `status` of `requested`.
+   * 2. **Send** the `checkout_url` to the recipient as a `link` message part so
+   *    it arrives as a tappable card (see *Sending the link* below).
+   * 3. The recipient **pays** on the hosted checkout (Apple Pay App Clip on a
+   *    supported iPhone, web checkout everywhere else).
+   * 4. You receive a **`payment.succeeded`** webhook and the request's `status`
+   *    becomes `succeeded`. Requests you don't collect eventually `expire`.
+   *
+   * ## Connected accounts (Stripe Standard, direct charges)
+   *
+   * Agent Pay runs on **Stripe Connect Standard accounts** using **direct
+   * charges**: the charge is created on *your* connected account and **you are
+   * the merchant of record**. That means the money, the payout schedule, the
+   * customer relationship, and the compliance surface are all yours — Linq
+   * orchestrates the request and the checkout but is never in the funds flow.
+   *
+   * **Refunds, disputes, and chargebacks are handled by you, in your own Stripe
+   * Dashboard.** Because charges settle directly to your account, Linq has no
+   * custody of the funds and cannot issue refunds or contest disputes on your
+   * behalf — and there is no refund/dispute endpoint in this API by design. Use
+   * the Stripe Dashboard (or the Stripe API on your own account) for the money
+   * lifecycle after a payment succeeds.
+   *
+   * ## Getting set up
+   *
+   * Open **Agent Pay** in your Linq dashboard
+   * (`https://zero.linqapp.com/organization/payments`), click **Connect Stripe**,
+   * and complete Stripe's onboarding (business details + a bank account). When
+   * your account reaches `charges_enabled`, request creation unlocks; until you
+   * connect Stripe, `POST /v3/payment_requests` returns `403`. You can keep
+   * collecting even while Stripe finishes background verification.
+   *
+   * ## Subscriptions
+   *
+   * Set `mode: subscription` on `POST /v3/payment_requests` to start an
+   * **auto-renewing subscription** instead of a one-time charge. Instead of an
+   * amount, you pass a `price_id` — an active **recurring Price** on your
+   * connected Stripe account (create one in your Stripe Dashboard under
+   * Product catalog; if you sell through Stripe Payment Links today, reuse the
+   * price your link is built from). The recipient pays the first invoice at
+   * the same checkout, and their payment method is saved to the subscription
+   * for automatic renewals.
+   *
+   * The division of labor is deliberate: **Linq handles the first payment,
+   * your Stripe account handles the rest.** The request reaches `succeeded`
+   * when the first invoice is paid; from then on the subscription lives
+   * entirely on your connected account. The response's `stripe` object gives
+   * you the join keys — `customer_id` and `subscription_id` — so renewals,
+   * plan changes, dunning, and cancellation are managed with your own Stripe
+   * Dashboard/API and your own Stripe webhooks. Your `metadata` is stamped on
+   * the Customer and Subscription, so correlating in either direction is
+   * trivial. There are no renewal webhooks from Linq by design.
+   *
+   * ### Free trials
+   *
+   * Add `trial_period_days` (or a fixed `trial_end` timestamp) to start the
+   * subscription with a free trial. The checkout still collects the
+   * recipient's payment method — the pay sheet shows "$0 due today" with the
+   * first charge date — and saves it to the subscription; Stripe bills it
+   * automatically when the trial ends. The request reaches `succeeded` when
+   * the card is collected, and the response carries `trial_end`. If the trial
+   * would end without a payment method on file, the subscription cancels
+   * rather than generating unpayable invoices. Trial lifecycle after checkout
+   * (extending, ending early) is managed in your own Stripe account via
+   * `stripe.subscription_id`.
+   *
+   * A subscription request you cancel (or that expires unpaid) cancels the
+   * incomplete Stripe subscription — nothing lingers on your account.
+   *
+   * ## Pre-created customers
+   *
+   * By default each request stands alone: payment mode attaches no Customer,
+   * and subscription mode creates a fresh one. If you already manage
+   * Customers on your connected account, pass their id as `customer_id`
+   * (`cus_...`) on create — in payment mode the charge lands on that
+   * customer's payment history, and in subscription mode the subscription is
+   * created on them instead of on a new Customer. The id must reference an
+   * existing, non-deleted customer on your connected account or the request
+   * fails with `400`. We never modify a customer you pass — no metadata is
+   * stamped on it.
+   *
+   * ## Sending the link
+   *
+   * Deliver the `checkout_url` as a **`link` message part** via
+   * `POST /v3/chats/{chatId}/messages` — it renders as a rich card with your
+   * branding (title, amount, image) instead of a bare URL, which converts far
+   * better. A `link` part must be the only part in the message. See
+   * [Rich Link Previews](/guides/messaging/sending-messages).
+   *
+   * On a supported iPhone the link opens an **Apple Pay App Clip** — a native,
+   * no-install checkout sheet. Everywhere else (Android, desktop, iPhones
+   * without the App Clip yet) the same URL opens the web checkout, so the link
+   * always works. The App Clip experience for your payment links is registered
+   * automatically by Linq and refreshed whenever you update your Agent Pay
+   * branding; a newly registered experience can take up to ~24 hours to
+   * activate on Apple's side, during which links open the web checkout.
+   *
+   * ## Webhooks
+   *
+   * Subscribe to payment lifecycle events to reconcile server-side rather than
+   * polling: `payment.succeeded`, `payment.canceled`, and `payment.expired`.
+   * Each event carries the payment request id, amount, currency, and your
+   * `metadata`. See [Webhooks](/guides/webhooks).
+   *
+   */
+  paymentRequests: API.PaymentRequests = new API.PaymentRequests(this);
+  /**
    * Webhook Subscriptions allow you to receive real-time notifications when events
    * occur on your account.
    *
@@ -1451,6 +1573,7 @@ LinqAPIV3.Attachments = Attachments;
 LinqAPIV3.Phonenumbers = Phonenumbers;
 LinqAPIV3.PhoneNumbers = PhoneNumbers;
 LinqAPIV3.AvailableNumber = AvailableNumber;
+LinqAPIV3.PaymentRequests = PaymentRequests;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Capability = Capability;
@@ -1527,6 +1650,14 @@ export declare namespace LinqAPIV3 {
     AvailableNumber as AvailableNumber,
     type AvailableNumberRetrieveResponse as AvailableNumberRetrieveResponse,
     type AvailableNumberRetrieveParams as AvailableNumberRetrieveParams,
+  };
+
+  export {
+    PaymentRequests as PaymentRequests,
+    type PaymentRequest as PaymentRequest,
+    type PaymentRequestListResponse as PaymentRequestListResponse,
+    type PaymentRequestCreateParams as PaymentRequestCreateParams,
+    type PaymentRequestListParams as PaymentRequestListParams,
   };
 
   export {
