@@ -146,6 +146,20 @@ Methods:
 
 - <code title="get /v3/available_number">client.availableNumber.<a href="./src/resources/available-number.ts">retrieve</a>({ ...params }) -> AvailableNumberRetrieveResponse</code>
 
+# PaymentRequests
+
+Types:
+
+- <code><a href="./src/resources/payment-requests.ts">PaymentRequest</a></code>
+- <code><a href="./src/resources/payment-requests.ts">PaymentRequestListResponse</a></code>
+
+Methods:
+
+- <code title="post /v3/payment_requests">client.paymentRequests.<a href="./src/resources/payment-requests.ts">create</a>({ ...params }) -> PaymentRequest</code>
+- <code title="get /v3/payment_requests/{paymentRequestId}">client.paymentRequests.<a href="./src/resources/payment-requests.ts">retrieve</a>(paymentRequestID) -> PaymentRequest</code>
+- <code title="get /v3/payment_requests">client.paymentRequests.<a href="./src/resources/payment-requests.ts">list</a>({ ...params }) -> PaymentRequestListResponse</code>
+- <code title="post /v3/payment_requests/{paymentRequestId}/cancel">client.paymentRequests.<a href="./src/resources/payment-requests.ts">cancel</a>(paymentRequestID) -> PaymentRequest</code>
+
 # WebhookEvents
 
 Types:

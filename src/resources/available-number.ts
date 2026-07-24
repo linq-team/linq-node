@@ -18,15 +18,18 @@ export class AvailableNumber extends APIResource {
    * Returns the best available line (E.164) to send from, applying smart number
    * assignment. Optionally pass `to` recipients to make the choice "sticky" —
    * reusing the line an existing chat with those recipients is already on. Without
-   * `to`, the best healthy line is chosen.
+   * `to`, the best available line is chosen, always preferring lines with a
+   * healthier reputation.
    *
-   * This is advisory: it does not reserve the line or change selection state. Pass
-   * the returned `phone_number` as `from` when you create the chat to guarantee the
-   * same line.
+   * This does not reserve the line. Without `to`, the least-recently-used available
+   * line is returned — suggestions and your own sends (including an explicit `from`
+   * on chat creation) both count as use, so successive calls cycle through your
+   * available lines and traffic spreads evenly. Pass the returned `phone_number` as
+   * `from` when you create the chat to guarantee the same line.
    *
    * Also returns `vcf_url`: a time-limited link to a vCard (`.vcf`) for the chosen
    * line, carrying its contact card (name/photo) with the chosen number as the
-   * primary `TEL` and the partner's other healthy lines as backups. Share it with
+   * primary `TEL` and the partner's other available lines as backups. Share it with
    * recipients so they can save the line as a contact.
    */
   retrieve(
@@ -49,7 +52,7 @@ export interface AvailableNumberRetrieveResponse {
   /**
    * Time-limited link to a vCard (`.vcf`) for the selected line. The card carries
    * the line's contact details with the selected number as the primary `TEL` and the
-   * partner's other healthy lines as backups. The link expires; re-call this
+   * partner's other available lines as backups. The link expires; re-call this
    * endpoint to mint a fresh one.
    */
   vcf_url: string;

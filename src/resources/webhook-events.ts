@@ -166,6 +166,7 @@ export type WebhookEventType =
   | 'chat.group_icon_updated'
   | 'chat.group_name_update_failed'
   | 'chat.group_icon_update_failed'
+  | 'chat.background_updated'
   | 'chat.typing_indicator.started'
   | 'chat.typing_indicator.stopped'
   | 'phone_number.status_updated'
@@ -177,7 +178,10 @@ export type WebhookEventType =
   | 'call.declined'
   | 'call.no_answer'
   | 'location.sharing.started'
-  | 'location.sharing.stopped';
+  | 'location.sharing.stopped'
+  | 'payment.succeeded'
+  | 'payment.canceled'
+  | 'payment.expired';
 
 export interface WebhookEventListResponse {
   /**

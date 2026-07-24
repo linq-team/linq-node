@@ -191,6 +191,30 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/available_number',
   },
   {
+    clientCallName: 'client.paymentRequests.create',
+    fullyQualifiedName: 'paymentRequests.create',
+    httpMethod: 'post',
+    httpPath: '/v3/payment_requests',
+  },
+  {
+    clientCallName: 'client.paymentRequests.retrieve',
+    fullyQualifiedName: 'paymentRequests.retrieve',
+    httpMethod: 'get',
+    httpPath: '/v3/payment_requests/{paymentRequestId}',
+  },
+  {
+    clientCallName: 'client.paymentRequests.list',
+    fullyQualifiedName: 'paymentRequests.list',
+    httpMethod: 'get',
+    httpPath: '/v3/payment_requests',
+  },
+  {
+    clientCallName: 'client.paymentRequests.cancel',
+    fullyQualifiedName: 'paymentRequests.cancel',
+    httpMethod: 'post',
+    httpPath: '/v3/payment_requests/{paymentRequestId}/cancel',
+  },
+  {
     clientCallName: 'client.webhookEvents.list',
     fullyQualifiedName: 'webhookEvents.list',
     httpMethod: 'get',
