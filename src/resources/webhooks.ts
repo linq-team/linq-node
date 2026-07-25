@@ -2094,7 +2094,11 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'location.sharing.stopped'
     | 'payment.succeeded'
     | 'payment.canceled'
-    | 'payment.expired';
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.

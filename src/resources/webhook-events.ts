@@ -181,7 +181,11 @@ export type WebhookEventType =
   | 'location.sharing.stopped'
   | 'payment.succeeded'
   | 'payment.canceled'
-  | 'payment.expired';
+  | 'payment.expired'
+  | 'payment.declined'
+  | 'payment.authorized'
+  | 'connection.created'
+  | 'connection.revoked';
 
 export interface WebhookEventListResponse {
   /**

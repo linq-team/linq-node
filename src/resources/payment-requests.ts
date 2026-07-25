@@ -474,7 +474,7 @@ export interface PaymentRequestListParams {
   /**
    * Filter by lifecycle status.
    */
-  status?: 'requested' | 'succeeded' | 'canceled' | 'expired';
+  status?: 'requested' | 'authorized' | 'succeeded' | 'canceled' | 'expired' | 'declined';
 }
 
 export declare namespace PaymentRequests {
