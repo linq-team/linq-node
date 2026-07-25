@@ -165,14 +165,7 @@ export namespace Reaction {
  * sticker attachment details in the sticker field.
  */
 export type ReactionType =
-  | 'love'
-  | 'like'
-  | 'dislike'
-  | 'laugh'
-  | 'emphasize'
-  | 'question'
-  | 'custom'
-  | 'sticker';
+  'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question' | 'custom' | 'sticker';
 
 /**
  * Messaging service type

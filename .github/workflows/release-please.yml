@@ -18,30 +18,3 @@ jobs:
         id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-
-      # Merge the release PR as soon as release-please opens/updates it, so a
-      # code merge to main flows straight through to a tag + npm publish without
-      # a second manual merge. main has no required checks and the repo has
-      # "Allow auto-merge" disabled, so `gh pr merge --auto` is unavailable
-      # ("clean status" error) — merge directly instead. Only squash is enabled.
-      # When this merge lands, release-please runs again, cuts the GitHub
-      # Release, and publish-npm.yml publishes on the `release: published` event.
-      - name: Merge the release PR
-        if: ${{ steps.release.outputs.pr }}
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          # This workflow never checks out the repo (release-please works via
-          # the API), so gh has no git context — point it at the repo explicitly.
-          GH_REPO: ${{ github.repository }}
-          # Pass the raw output through and parse it in the shell. Do NOT call
-          # fromJSON() here: on runs where release-please cuts the release there
-          # is no open PR, `pr` is empty, and fromJSON('') fails the whole
-          # workflow with a template error even though `if` skips the step.
-          RELEASE_PR: ${{ steps.release.outputs.pr }}
-        run: |
-          N=$(jq -r '.number' <<< "$RELEASE_PR")
-          # The main ruleset requires reviews and only allows the merge-commit
-          # method, which the bot token cannot satisfy — merging needs an
-          # explicit admin bypass. Try a plain merge first so this keeps
-          # working if the policy is ever relaxed.
-          gh pr merge "$N" --squash || gh pr merge "$N" --squash --admin
