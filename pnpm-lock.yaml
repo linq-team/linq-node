@@ -101,6 +101,9 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
+      deno:
+        specifier: ^2.9.1
+        version: 2.9.4
       express:
         specifier: ^5.1.0
         version: 5.2.1
@@ -533,6 +536,56 @@ packages:
         integrity: sha512-X4xqRHqN8ACt2aHVe51OxeA2HjbcL4MqFqXkrmQszJ1NOUuUu5u6Vqx/0lZSVNku7velL5FC/s5uEAj1lsBMhA==,
       }
     engines: { node: '>=12' }
+
+  '@deno/darwin-arm64@2.9.4':
+    resolution:
+      {
+        integrity: sha512-Pjq1OdRauzaWtFB8W4FJuXp0U/if2tEzlQEgbmVflNIUJhUVJh0jUjxAgVP84P5vYSaKJTzXAHaftNH5PbQcFA==,
+      }
+    cpu: [arm64]
+    os: [darwin]
+
+  '@deno/darwin-x64@2.9.4':
+    resolution:
+      {
+        integrity: sha512-gsKNBOeU0iOgl/kYLItvdtcrAQhK3W0z4EdPVyF8NVZfzB+iqkZbTwbq0tgIcZbo3fpKFaJ6gT53XvaFIwVK5Q==,
+      }
+    cpu: [x64]
+    os: [darwin]
+
+  '@deno/linux-arm64-glibc@2.9.4':
+    resolution:
+      {
+        integrity: sha512-SHHmaFnfOtFe0RWEAqo0lGlKFww21O6utyNzcFNYpIFRyQSKXKrfegwYMYP7hN1GEhZ49bDPKIpjJHjPbGFqyw==,
+      }
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@deno/linux-x64-glibc@2.9.4':
+    resolution:
+      {
+        integrity: sha512-Or3ItpBDUC4GKtE723T4LpWs1nKOAQ4Zt8E+tufFeEnX9k+OhYOQTnu8kXqz+8FM42JKeuegfss8pr7k0PVQTQ==,
+      }
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@deno/win32-arm64@2.9.4':
+    resolution:
+      {
+        integrity: sha512-Xcvs+3W7vAoSQAzyhXr954s6hDC6N95oCHQelWiZt3fbUWPJjUzxtUP4EC4AygC+EC0zYBgIlDGv6tmJ8dwSAQ==,
+      }
+    cpu: [arm64]
+    os: [win32]
+
+  '@deno/win32-x64@2.9.4':
+    resolution:
+      {
+        integrity: sha512-u69MJjnr/4ttQ1a/lMVch57LJJgzplEIDiHepZX+yHOw9Q4FdWinr9Gj0oZ/hpEnTvVtih/CZc3IvYagBqQBag==,
+      }
+    cpu: [x64]
+    os: [win32]
 
   '@eslint-community/eslint-utils@4.4.0':
     resolution:
@@ -1981,6 +2034,13 @@ packages:
         integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==,
       }
     engines: { node: '>=0.10.0' }
+
+  deno@2.9.4:
+    resolution:
+      {
+        integrity: sha512-fK8l+v1DGlsLN8Xich0tP6zCKU9wD22lmtZObebSXTqX8ZzVqasDguUz+V0OwOwCuzUtq9jweHfOrvvocQftYQ==,
+      }
+    hasBin: true
 
   depd@2.0.0:
     resolution:
@@ -3989,14 +4049,6 @@ packages:
       }
     hasBin: true
 
-  semver@7.7.1:
-    resolution:
-      {
-        integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==,
-      }
-    engines: { node: '>=10' }
-    hasBin: true
-
   semver@7.7.3:
     resolution:
       {
@@ -4948,6 +5000,24 @@ snapshots:
   '@cspotcode/source-map-support@0.7.0':
     dependencies:
       '@cspotcode/source-map-consumer': 0.8.0
+
+  '@deno/darwin-arm64@2.9.4':
+    optional: true
+
+  '@deno/darwin-x64@2.9.4':
+    optional: true
+
+  '@deno/linux-arm64-glibc@2.9.4':
+    optional: true
+
+  '@deno/linux-x64-glibc@2.9.4':
+    optional: true
+
+  '@deno/win32-arm64@2.9.4':
+    optional: true
+
+  '@deno/win32-x64@2.9.4':
+    optional: true
 
   '@eslint-community/eslint-utils@4.4.0(eslint@9.39.1)':
     dependencies:
@@ -6007,6 +6077,15 @@ snapshots:
   deep-is@0.1.4: {}
 
   deepmerge@4.3.1: {}
+
+  deno@2.9.4:
+    optionalDependencies:
+      '@deno/darwin-arm64': 2.9.4
+      '@deno/darwin-x64': 2.9.4
+      '@deno/linux-arm64-glibc': 2.9.4
+      '@deno/linux-x64-glibc': 2.9.4
+      '@deno/win32-arm64': 2.9.4
+      '@deno/win32-x64': 2.9.4
 
   depd@2.0.0: {}
 
@@ -7379,8 +7458,6 @@ snapshots:
   secure-json-parse@4.1.0: {}
 
   semver@6.3.1: {}
-
-  semver@7.7.1: {}
 
   semver@7.7.3: {}
 
