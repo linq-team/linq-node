@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.31.0](https://github.com/linq-team/linq-node/compare/v0.30.0...v0.31.0) (2026-07-26)
+
+
+### Features
+
+* regenerate SDKs from updated API spec ([#92](https://github.com/linq-team/linq-node/issues/92)) ([969edb3](https://github.com/linq-team/linq-node/commit/969edb38ecac7587e86de9e81213034c3dd8a4a5))
+
 ## [0.30.0](https://github.com/linq-team/linq-node/compare/v0.29.0...v0.30.0) (2026-07-26)
 
 
