@@ -6,6 +6,7 @@ import { launchStdioServer } from './stdio';
 import { launchStreamableHTTPServer } from './http';
 import type { McpTool } from './types';
 import { configureLogger, getLogger } from './logger';
+import { applyLinqCliCredentials } from './linq-cli-credentials';
 
 async function main() {
   const options = parseOptionsOrError();
@@ -13,6 +14,13 @@ async function main() {
     level: options.debug ? 'debug' : 'info',
     pretty: options.logFormat === 'pretty',
   });
+
+  // Fall back to the credential `linq login` already wrote. Must run before any
+  // client is constructed. See linq-cli-credentials.ts for why the env var alone
+  // is not reachable for desktop MCP clients.
+  if (applyLinqCliCredentials()) {
+    getLogger().info('Using the API key from ~/.linq/config.json');
+  }
 
   const selectedTools = await selectToolsOrError(options);
 
