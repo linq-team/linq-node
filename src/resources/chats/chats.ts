@@ -84,6 +84,24 @@ export class Chats extends APIResource {
    * This rule applies only to `POST /v3/chats`. Follow-up messages on an existing
    * chat (`POST /v3/chats/{chatId}/messages`) are not subject to this restriction.
    *
+   * ## Reusing an Existing Chat
+   *
+   * Chats are keyed on the `from` line plus the exact set of `to` handles. Repeating
+   * this request with the same `from` and `to` returns the **existing** chat and
+   * sends the message into it instead of starting a second conversation.
+   *
+   * A group chat that has a `display_name` is excluded from that matching. To run
+   * several parallel groups over the same participants, name each one with
+   * `PUT /v3/chats/{chatId}` before creating the next: the following
+   * `POST /v3/chats` with the same `to` then returns a new, separate `chat_id`. Two
+   * other cases also produce a new chat instead of reusing one — the participant set
+   * changed (a participant was added or removed), or the `from` line left the group.
+   *
+   * Whenever the response is a new chat, the first-message rules above apply to that
+   * request: no link in the first message, and no `reply_to` or message effect. To
+   * send into a chat you already know, use `POST /v3/chats/{chatId}/messages` with
+   * its `chat_id`.
+   *
    * @example
    * ```ts
    * const chat = await client.chats.create({
