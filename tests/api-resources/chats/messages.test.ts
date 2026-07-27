@@ -11,7 +11,7 @@ describe('resource messages', () => {
   // Mock server tests are disabled
   test.skip('send: only required params', async () => {
     const responsePromise = client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {
-      message: { parts: [{ type: 'text', value: 'Hello, world!' }] },
+      message: {},
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -26,6 +26,8 @@ describe('resource messages', () => {
   test.skip('send: required and optional params', async () => {
     const response = await client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {
       message: {
+        effect: { name: 'confetti', type: 'screen' },
+        idempotency_key: 'msg-abc123xyz',
         parts: [
           {
             type: 'text',
@@ -44,8 +46,6 @@ describe('resource messages', () => {
             ],
           },
         ],
-        effect: { name: 'confetti', type: 'screen' },
-        idempotency_key: 'msg-abc123xyz',
         preferred_service: 'iMessage',
         reply_to: { message_id: '550e8400-e29b-41d4-a716-446655440000', part_index: 0 },
       },

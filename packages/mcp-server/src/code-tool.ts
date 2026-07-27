@@ -18,7 +18,7 @@ For example:
 async function run(client) {
   const chat = await client.chats.create({
     from: '+12052535597',
-    message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+    message: {},
     to: ['+12052532136'],
   });
 

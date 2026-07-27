@@ -461,8 +461,24 @@ export interface MediaPart {
  * Message content container. Groups all message-related fields together,
  * separating the "what" (message content) from the "where" (routing fields like
  * from/to).
+ *
+ * A message carries EITHER `parts` — text and attachments, which compose into one
+ * bubble — or a single `action`, which invokes an experience inside Linq's
+ * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+ * cannot coexist with text), so copy and a card are two sends, not one.
  */
 export interface MessageContent {
+  /**
+   * iMessage effect to apply to this message (screen or bubble effect)
+   */
+  effect?: MessagesAPI.MessageEffect;
+
+  /**
+   * Optional idempotency key for this message. Use this to prevent duplicate sends
+   * of the same message.
+   */
+  idempotency_key?: string;
+
   /**
    * Array of message parts. Each part can be text, media, or link. Parts are
    * displayed in order. Text and media can be mixed freely, but a `link` part must
@@ -502,18 +518,7 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
-
-  /**
-   * iMessage effect to apply to this message (screen or bubble effect)
-   */
-  effect?: MessagesAPI.MessageEffect;
-
-  /**
-   * Optional idempotency key for this message. Use this to prevent duplicate sends
-   * of the same message.
-   */
-  idempotency_key?: string;
+  parts?: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
 
   /**
    * Messaging service type
@@ -932,6 +937,11 @@ export interface ChatCreateParams {
    * Message content container. Groups all message-related fields together,
    * separating the "what" (message content) from the "where" (routing fields like
    * from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `action`, which invokes an experience inside Linq's
+   * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+   * cannot coexist with text), so copy and a card are two sends, not one.
    */
   message: MessageContent;
 
