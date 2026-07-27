@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.32.0](https://github.com/linq-team/linq-node/compare/v0.31.0...v0.32.0) (2026-07-27)
+
+
+### Features
+
+* add action field to message content for app experiences ([171757e](https://github.com/linq-team/linq-node/commit/171757e83e40a28fee7ff50c3efd1267ce8d3e9b))
+
 ## [0.31.0](https://github.com/linq-team/linq-node/compare/v0.30.0...v0.31.0) (2026-07-26)
 
 
