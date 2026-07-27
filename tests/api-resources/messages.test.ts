@@ -11,7 +11,7 @@ describe('resource messages', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.messages.create({
-      message: { parts: [{ type: 'text', value: 'Hi! Thanks for reaching out — how can we help?' }] },
+      message: {},
       to: ['+14155559876'],
     });
     const rawResponse = await responsePromise.asResponse();
@@ -27,6 +27,8 @@ describe('resource messages', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.messages.create({
       message: {
+        effect: { name: 'confetti', type: 'screen' },
+        idempotency_key: 'msg-abc123xyz',
         parts: [
           {
             type: 'text',
@@ -45,8 +47,6 @@ describe('resource messages', () => {
             ],
           },
         ],
-        effect: { name: 'confetti', type: 'screen' },
-        idempotency_key: 'msg-abc123xyz',
         preferred_service: 'iMessage',
         reply_to: { message_id: '550e8400-e29b-41d4-a716-446655440000', part_index: 0 },
       },
