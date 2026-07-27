@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.32.1](https://github.com/linq-team/linq-node/compare/v0.32.0...v0.32.1) (2026-07-27)
+
+
+### Documentation
+
+* restructure README around getting started ([#96](https://github.com/linq-team/linq-node/issues/96)) ([1c41047](https://github.com/linq-team/linq-node/commit/1c41047b8c112a1a143f87886013d05093e03478))
+
 ## [0.32.0](https://github.com/linq-team/linq-node/compare/v0.31.0...v0.32.0) (2026-07-27)
 
 
