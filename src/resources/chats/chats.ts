@@ -84,6 +84,24 @@ export class Chats extends APIResource {
    * This rule applies only to `POST /v3/chats`. Follow-up messages on an existing
    * chat (`POST /v3/chats/{chatId}/messages`) are not subject to this restriction.
    *
+   * ## Reusing an Existing Chat
+   *
+   * Chats are keyed on the `from` line plus the exact set of `to` handles. Repeating
+   * this request with the same `from` and `to` returns the **existing** chat and
+   * sends the message into it instead of starting a second conversation.
+   *
+   * A group chat that has a `display_name` is excluded from that matching. To run
+   * several parallel groups over the same participants, name each one with
+   * `PUT /v3/chats/{chatId}` before creating the next: the following
+   * `POST /v3/chats` with the same `to` then returns a new, separate `chat_id`. Two
+   * other cases also produce a new chat instead of reusing one — the participant set
+   * changed (a participant was added or removed), or the `from` line left the group.
+   *
+   * Whenever the response is a new chat, the first-message rules above apply to that
+   * request: no link in the first message, and no `reply_to` or message effect. To
+   * send into a chat you already know, use `POST /v3/chats/{chatId}/messages` with
+   * its `chat_id`.
+   *
    * @example
    * ```ts
    * const chat = await client.chats.create({
@@ -443,8 +461,24 @@ export interface MediaPart {
  * Message content container. Groups all message-related fields together,
  * separating the "what" (message content) from the "where" (routing fields like
  * from/to).
+ *
+ * A message carries EITHER `parts` — text and attachments, which compose into one
+ * bubble — or a single `action`, which invokes an experience inside Linq's
+ * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+ * cannot coexist with text), so copy and a card are two sends, not one.
  */
 export interface MessageContent {
+  /**
+   * iMessage effect to apply to this message (screen or bubble effect)
+   */
+  effect?: MessagesAPI.MessageEffect;
+
+  /**
+   * Optional idempotency key for this message. Use this to prevent duplicate sends
+   * of the same message.
+   */
+  idempotency_key?: string;
+
   /**
    * Array of message parts. Each part can be text, media, or link. Parts are
    * displayed in order. Text and media can be mixed freely, but a `link` part must
@@ -484,18 +518,7 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
-
-  /**
-   * iMessage effect to apply to this message (screen or bubble effect)
-   */
-  effect?: MessagesAPI.MessageEffect;
-
-  /**
-   * Optional idempotency key for this message. Use this to prevent duplicate sends
-   * of the same message.
-   */
-  idempotency_key?: string;
+  parts?: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
 
   /**
    * Messaging service type
@@ -914,6 +937,11 @@ export interface ChatCreateParams {
    * Message content container. Groups all message-related fields together,
    * separating the "what" (message content) from the "where" (routing fields like
    * from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `action`, which invokes an experience inside Linq's
+   * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+   * cannot coexist with text), so copy and a card are two sends, not one.
    */
   message: MessageContent;
 

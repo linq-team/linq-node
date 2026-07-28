@@ -12,7 +12,7 @@ describe('resource chats', () => {
   test.skip('create: only required params', async () => {
     const responsePromise = client.chats.create({
       from: '+12052535597',
-      message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+      message: {},
       to: ['+12052532136'],
     });
     const rawResponse = await responsePromise.asResponse();
@@ -29,6 +29,8 @@ describe('resource chats', () => {
     const response = await client.chats.create({
       from: '+12052535597',
       message: {
+        effect: { name: 'confetti', type: 'screen' },
+        idempotency_key: 'msg-abc123xyz',
         parts: [
           {
             type: 'text',
@@ -47,8 +49,6 @@ describe('resource chats', () => {
             ],
           },
         ],
-        effect: { name: 'confetti', type: 'screen' },
-        idempotency_key: 'msg-abc123xyz',
         preferred_service: 'iMessage',
         reply_to: { message_id: '550e8400-e29b-41d4-a716-446655440000', part_index: 0 },
       },
