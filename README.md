@@ -1,92 +1,50 @@
-<div align="center">
-  <h1>Linq</h1>
-  <p><strong>iMessage, RCS, and SMS from your backend.</strong></p>
+# Linq API V3 TypeScript API Library
 
-The official TypeScript SDK for the Linq Partner API — typed access to chats, messages, attachments, phone numbers, payment requests, and webhooks.
+[![NPM version](<https://img.shields.io/npm/v/@linqapp/sdk.svg?label=npm%20(stable)>)](https://npmjs.org/package/@linqapp/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@linqapp/sdk)
 
-  <p>
-    <a href="https://www.npmjs.com/package/@linqapp/sdk"><img src="https://img.shields.io/npm/v/@linqapp/sdk.svg?style=flat&colorA=1a1a1a&colorB=3178c6" alt="npm version" /></a>
-    <a href="https://www.npmjs.com/package/@linqapp/sdk"><img src="https://img.shields.io/npm/dm/@linqapp/sdk.svg?style=flat&colorA=1a1a1a&colorB=3178c6" alt="npm downloads" /></a>
-    <a href="https://github.com/linq-team/linq-node/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@linqapp/sdk.svg?style=flat&colorA=1a1a1a&colorB=3178c6" alt="license" /></a>
-    <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-4.9+-3178c6?style=flat&colorA=1a1a1a&colorB=3178c6" alt="TypeScript" /></a>
-  </p>
-</div>
+This library provides convenient access to the Linq API V3 REST API from server-side TypeScript or JavaScript.
 
-## About Linq
+The REST API documentation can be found on [docs.linqapp.com](https://docs.linqapp.com). The full API of this library can be found in [api.md](api.md).
 
-**[Linq](https://linqapp.com)** is messaging infrastructure for businesses that want to talk to customers on the channels they already use. You get real phone numbers that send and receive native **iMessage** — with typing indicators, reactions, effects, and read receipts — and fall back to **RCS** and **SMS** when iMessage isn't available.
+It is generated with [Stainless](https://www.stainless.com/).
 
-Learn more at **https://linqapp.com**.
+## MCP Server
 
-## Getting Started
+Use the Linq API V3 MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.
 
-1. Generate an API token at **[dashboard.linqapp.com/api-tooling](https://dashboard.linqapp.com/api-tooling)** (API → Overview → Generate new token).
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40linqapp%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsaW5xYXBwL3Nkay1tY3AiXSwiZW52Ijp7IkxJTlFfQVBJX1YzX0FQSV9LRVkiOiJNeSBBUEkgS2V5IiwiTElOUV9XRUJIT09LX1NFQ1JFVCI6Ik15IFdlYmhvb2sgU2VjcmV0In19)
+[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40linqapp%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40linqapp%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22LINQ_API_V3_API_KEY%22%3A%22My%20API%20Key%22%2C%22LINQ_WEBHOOK_SECRET%22%3A%22My%20Webhook%20Secret%22%7D%7D)
 
-2. Install the SDK:
+> Note: You may need to set environment variables in your MCP client.
 
-   ```sh
-   npm install @linqapp/sdk
-   ```
+## Installation
 
-3. Send your first message:
-
-   ```ts
-   import LinqAPIV3 from '@linqapp/sdk';
-
-   const client = new LinqAPIV3({
-     apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted
-   });
-
-   const { message } = await client.messages.create({
-     to: ['+14155559876'],
-     message: {
-       parts: [{ type: 'text', value: 'Hi! Thanks for reaching out — how can we help?' }],
-     },
-   });
-
-   console.log(message);
-   ```
-
-   Sending to a handle you haven't messaged before creates the chat for you; `client.chats.create` gives you explicit control over group chats and the sending number.
-
-## Documentation
-
-Visit **[docs.linqapp.com](https://docs.linqapp.com)** for guides and the REST API reference. Every method, request param, and response field in this library is listed in **[api.md](api.md)** and documented in docstrings that appear on hover in most editors.
-
-## Resources
-
-| Resource                      | What it does                                                    |
-| ----------------------------- | --------------------------------------------------------------- |
-| `client.messages`             | Send, edit, retrieve, delete messages; add reactions            |
-| `client.chats`                | Create and update chats, participants, typing indicators, reads |
-| `client.attachments`          | Upload media to send as message parts                           |
-| `client.phoneNumbers`         | List and configure your sending numbers                         |
-| `client.availableNumber`      | Search numbers available to provision                           |
-| `client.capability`           | Check whether a handle can receive iMessage or RCS              |
-| `client.contactCard`          | Read the contact card recipients see                            |
-| `client.paymentRequests`      | Request and collect payments in a chat                          |
-| `client.webhookSubscriptions` | Manage webhook endpoints and subscribed events                  |
-| `client.webhooks`             | Verify and parse incoming webhook payloads                      |
-
-## Webhooks
-
-Inbound messages, reactions, and delivery updates arrive as webhooks. `client.webhooks.unwrap` verifies the signature and returns a typed, discriminated event:
-
-```ts
-const client = new LinqAPIV3({
-  webhookSecret: process.env['LINQ_WEBHOOK_SECRET'], // This is the default and can be omitted
-});
-
-const event = client.webhooks.unwrap(rawRequestBody, { headers: requestHeaders });
-
-if (event.event_type === 'message.received') {
-  console.log(event.data);
-}
+```sh
+npm install @linqapp/sdk
 ```
 
-Pass the **raw** request body — parsing it first breaks signature verification.
+## Usage
 
-## Request & Response types
+The full API of this library can be found in [api.md](api.md).
+
+<!-- prettier-ignore -->
+```js
+import LinqAPIV3 from '@linqapp/sdk';
+
+const client = new LinqAPIV3({
+  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted
+});
+
+const chat = await client.chats.create({
+  from: '+12052535597',
+  message: {},
+  to: ['+12052532136'],
+});
+
+console.log(chat.chat);
+```
+
+### Request & Response types
 
 This library includes TypeScript definitions for all request params and response fields. You may import and use them like so:
 
@@ -94,14 +52,19 @@ This library includes TypeScript definitions for all request params and response
 ```ts
 import LinqAPIV3 from '@linqapp/sdk';
 
-const client = new LinqAPIV3();
+const client = new LinqAPIV3({
+  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted
+});
 
-const params: LinqAPIV3.MessageCreateParams = {
-  to: ['+14155559876'],
-  message: { parts: [{ type: 'text', value: 'Hello!' }] },
+const params: LinqAPIV3.ChatCreateParams = {
+  from: '+12052535597',
+  message: {},
+  to: ['+12052532136'],
 };
-const response: LinqAPIV3.MessageCreateResponse = await client.messages.create(params);
+const chat: LinqAPIV3.ChatCreateResponse = await client.chats.create(params);
 ```
+
+Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
 ## Handling errors
 
@@ -111,8 +74,12 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const message = await client.messages
-  .create({ to: ['+14155559876'], message: {} })
+const chat = await client.chats
+  .create({
+    from: '+12052535597',
+    message: {},
+    to: ['+12052532136'],
+  })
   .catch(async (err) => {
     if (err instanceof LinqAPIV3.APIError) {
       console.log(err.status); // 400
@@ -153,7 +120,11 @@ const client = new LinqAPIV3({
 });
 
 // Or, configure per-request:
-await client.messages.create({ to: ['+14155559876'], message: {} }, {
+await client.chats.create({
+  from: '+12052535597',
+  message: {},
+  to: ['+12052532136'],
+}, {
   maxRetries: 5,
 });
 ```
@@ -170,7 +141,11 @@ const client = new LinqAPIV3({
 });
 
 // Override per-request:
-await client.messages.create({ to: ['+14155559876'], message: {} }, {
+await client.chats.create({
+  from: '+12052535597',
+  message: {},
+  to: ['+12052532136'],
+}, {
   timeout: 5 * 1000,
 });
 ```
@@ -210,15 +185,6 @@ while (page.hasNextPage()) {
 }
 ```
 
-## MCP Server
-
-Use the Linq MCP Server to let AI assistants explore endpoints, make test requests, and use the documentation while integrating this SDK.
-
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40linqapp%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsaW5xYXBwL3Nkay1tY3AiXSwiZW52Ijp7IkxJTlFfQVBJX1YzX0FQSV9LRVkiOiJNeSBBUEkgS2V5IiwiTElOUV9XRUJIT09LX1NFQ1JFVCI6Ik15IFdlYmhvb2sgU2VjcmV0In19)
-[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40linqapp%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40linqapp%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22LINQ_API_V3_API_KEY%22%3A%22My%20API%20Key%22%2C%22LINQ_WEBHOOK_SECRET%22%3A%22My%20Webhook%20Secret%22%7D%7D)
-
-> Note: You may need to set environment variables in your MCP client.
-
 ## Advanced Usage
 
 ### Accessing raw Response data (e.g., headers)
@@ -233,17 +199,25 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new LinqAPIV3();
 
-const response = await client.messages
-  .create({ to: ['+14155559876'], message: {} })
+const response = await client.chats
+  .create({
+    from: '+12052535597',
+    message: {},
+    to: ['+12052532136'],
+  })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: message, response: raw } = await client.messages
-  .create({ to: ['+14155559876'], message: {} })
+const { data: chat, response: raw } = await client.chats
+  .create({
+    from: '+12052535597',
+    message: {},
+    to: ['+12052532136'],
+  })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(message);
+console.log(chat.chat);
 ```
 
 ### Logging
@@ -323,7 +297,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.messages.create({
+client.chats.create({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
@@ -421,6 +395,20 @@ const client = new LinqAPIV3({
 });
 ```
 
+## Frequently Asked Questions
+
+## Semantic versioning
+
+This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
+
+1. Changes that only affect static types, without breaking runtime behavior.
+2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
+3. Changes that we do not expect to impact the vast majority of users in practice.
+
+We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
+
+We are keen for your feedback; please open an [issue](https://www.github.com/linq-team/linq-node/issues) with questions, bugs, or suggestions.
+
 ## Requirements
 
 TypeScript >= 4.9 is supported.
@@ -440,24 +428,6 @@ Note that React Native is not supported at this time.
 
 If you are interested in other runtime environments, please open or upvote an issue on GitHub.
 
-## Semantic versioning
-
-This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
-
-1. Changes that only affect static types, without breaking runtime behavior.
-2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
-3. Changes that we do not expect to impact the vast majority of users in practice.
-
-We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
-
-## Issues
-
-Found a bug or have a feature request? Please [open an issue](https://github.com/linq-team/linq-node/issues) on GitHub. Searching existing issues first helps avoid duplicates.
-
 ## Contributing
 
-This library is generated with [Stainless](https://www.stainless.com/) from Linq's OpenAPI spec. See [the contributing documentation](./CONTRIBUTING.md) before opening a pull request.
-
-## License
-
-[Apache-2.0](./LICENSE) © [Linq](https://linqapp.com)
+See [the contributing documentation](./CONTRIBUTING.md).
