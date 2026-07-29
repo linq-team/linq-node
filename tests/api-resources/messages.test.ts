@@ -57,34 +57,6 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('listMessagesThread', async () => {
-    const responsePromise = client.messages.listMessagesThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('listMessagesThread: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.messages.listMessagesThread(
-        '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-        {
-          cursor: 'cursor',
-          limit: 1,
-          order: 'asc',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(LinqAPIV3.NotFoundError);
-  });
-
-  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.messages.retrieve('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
@@ -94,6 +66,28 @@ describe('resource messages', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
+      text: 'This is the edited message content',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: required and optional params', async () => {
+    const response = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
+      text: 'This is the edited message content',
+      part_index: 0,
+    });
   });
 
   // Mock server tests are disabled
@@ -134,10 +128,8 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: only required params', async () => {
-    const responsePromise = client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
-      text: 'This is the edited message content',
-    });
+  test.skip('listMessagesThread', async () => {
+    const responsePromise = client.messages.listMessagesThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -148,11 +140,19 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
-      text: 'This is the edited message content',
-      part_index: 0,
-    });
+  test.skip('listMessagesThread: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.messages.listMessagesThread(
+        '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
+        {
+          cursor: 'cursor',
+          limit: 1,
+          order: 'asc',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(LinqAPIV3.NotFoundError);
   });
 
   // Mock server tests are disabled

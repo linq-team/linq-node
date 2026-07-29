@@ -12,8 +12,8 @@ export {
   type ChatLeaveChatResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
-  type ChatListChatsParams,
   type ChatUpdateParams,
+  type ChatListChatsParams,
   type ChatSendVoicememoParams,
   type ChatsListChatsPagination,
 } from './chats';
@@ -22,8 +22,8 @@ export {
   Messages,
   type SentMessage,
   type MessageSendResponse,
-  type MessageSendParams,
   type MessageListParams,
+  type MessageSendParams,
 } from './messages';
 export {
   Participants,
