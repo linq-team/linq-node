@@ -32,8 +32,8 @@ export {
   type ChatLeaveChatResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
-  type ChatListChatsParams,
   type ChatUpdateParams,
+  type ChatListChatsParams,
   type ChatSendVoicememoParams,
   type ChatsListChatsPagination,
 } from './chats/chats';
@@ -41,8 +41,8 @@ export {
   ContactCard,
   type SetContactCard,
   type ContactCardRetrieveResponse,
-  type ContactCardRetrieveParams,
   type ContactCardCreateParams,
+  type ContactCardRetrieveParams,
   type ContactCardUpdateParams,
 } from './contact-card';
 export {
@@ -54,9 +54,9 @@ export {
   type MessageAddReactionResponse,
   type MessageUpdateAppCardResponse,
   type MessageCreateParams,
-  type MessageListMessagesThreadParams,
-  type MessageAddReactionParams,
   type MessageUpdateParams,
+  type MessageAddReactionParams,
+  type MessageListMessagesThreadParams,
   type MessageUpdateAppCardParams,
   type MessagesListMessagesPagination,
 } from './messages';
