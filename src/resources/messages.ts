@@ -100,6 +100,15 @@ export class Messages extends APIResource {
    * Recipients (`to`) are an order-independent set: a single handle is a direct
    * chat, multiple handles a group chat.
    *
+   * ## Excluding lines
+   *
+   * `exclude_from` keeps specific lines out of **this** send's line pick. It only
+   * affects picking a line for a new chat — an existing chat is always reused on its
+   * own line, preferring a chat on a non-excluded line when the recipients have more
+   * than one. An exclusion never abandons a live chat or moves it to a new number,
+   * so if the only chat these recipients have is on an excluded line, that chat is
+   * still used. `from` tells you the line that was actually used.
+   *
    * ## Differences from POST /v3/chats
    *
    * - The first message **may contain a link** (including for a newly created chat).
@@ -703,6 +712,23 @@ export interface MessageCreateParams {
    * sent.
    */
   continuation_message?: MessageCreateParams.ContinuationMessage;
+
+  /**
+   * Body param: Lines (E.164) not to pick for this send. Applies for this request
+   * only — nothing is remembered between calls.
+   *
+   * **Exclusion only affects picking a line for a new chat.** If `to` already has a
+   * chat, that chat is reused on its own line, and a chat on a non-excluded line is
+   * preferred when there is more than one. If the only chat these recipients have is
+   * on an excluded line, it is still reused — an exclusion never abandons a live
+   * chat or moves it to a new number. Check `from` in the response to see the line
+   * that was actually used.
+   *
+   * Numbers that are not your lines are ignored. Every entry must be E.164 — a value
+   * like `4155551234` is rejected rather than silently skipped. Excluding every one
+   * of your available lines returns 400 when a line has to be picked.
+   */
+  exclude_from?: Array<string>;
 
   /**
    * Header param: Optional idempotency key for the send. Reuse the same key to
