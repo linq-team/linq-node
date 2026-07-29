@@ -45,6 +45,7 @@ export {
   type ContactCardRetrieveParams,
   type ContactCardUpdateParams,
 } from './contact-card';
+export { Experiences, type ExperienceRetrieveResponse, type ExperienceListResponse } from './experiences';
 export {
   Messages,
   type Message,
@@ -61,12 +62,29 @@ export {
   type MessagesListMessagesPagination,
 } from './messages';
 export {
+  PaymentHandles,
+  type PaymentHandleConnection,
+  type PaymentHandleVerifyParams,
+} from './payment-handles';
+export {
+  PaymentProviders,
+  type PaymentProvider,
+  type PaymentProviderConnectResponse,
+  type PaymentProviderConnectParams,
+} from './payment-providers';
+export {
   PaymentRequests,
   type PaymentRequest,
   type PaymentRequestListResponse,
   type PaymentRequestCreateParams,
   type PaymentRequestListParams,
 } from './payment-requests';
+export {
+  Payments,
+  type Payment,
+  type PaymentCredentialsResponse,
+  type PaymentCreateParams,
+} from './payments';
 export {
   PhoneNumbers,
   type PhoneNumberUpdateResponse,

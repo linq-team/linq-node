@@ -160,6 +160,57 @@ Methods:
 - <code title="get /v3/payment_requests">client.paymentRequests.<a href="./src/resources/payment-requests.ts">list</a>({ ...params }) -> PaymentRequestListResponse</code>
 - <code title="post /v3/payment_requests/{paymentRequestId}/cancel">client.paymentRequests.<a href="./src/resources/payment-requests.ts">cancel</a>(paymentRequestID) -> PaymentRequest</code>
 
+# PaymentProviders
+
+Types:
+
+- <code><a href="./src/resources/payment-providers.ts">PaymentProvider</a></code>
+- <code><a href="./src/resources/payment-providers.ts">PaymentProviderConnectResponse</a></code>
+
+Methods:
+
+- <code title="get /v3/payments/providers/{provider}">client.paymentProviders.<a href="./src/resources/payment-providers.ts">retrieve</a>(provider) -> PaymentProvider</code>
+- <code title="post /v3/payments/providers/{provider}/connect">client.paymentProviders.<a href="./src/resources/payment-providers.ts">connect</a>(provider, { ...params }) -> PaymentProviderConnectResponse</code>
+
+# PaymentHandles
+
+Types:
+
+- <code><a href="./src/resources/payment-handles.ts">PaymentHandleConnection</a></code>
+
+Methods:
+
+- <code title="post /v3/payments/handles/{handle}/connect">client.paymentHandles.<a href="./src/resources/payment-handles.ts">connect</a>(handle) -> PaymentHandleConnection</code>
+- <code title="get /v3/payments/handles/{handle}/connection">client.paymentHandles.<a href="./src/resources/payment-handles.ts">connection</a>(handle) -> PaymentHandleConnection</code>
+- <code title="delete /v3/payments/handles/{handle}/connection">client.paymentHandles.<a href="./src/resources/payment-handles.ts">revoke</a>(handle) -> PaymentHandleConnection</code>
+- <code title="post /v3/payments/handles/{handle}/verify">client.paymentHandles.<a href="./src/resources/payment-handles.ts">verify</a>(handle, { ...params }) -> PaymentHandleConnection</code>
+
+# Payments
+
+Types:
+
+- <code><a href="./src/resources/payments.ts">Payment</a></code>
+- <code><a href="./src/resources/payments.ts">PaymentCredentialsResponse</a></code>
+
+Methods:
+
+- <code title="post /v3/payments">client.payments.<a href="./src/resources/payments.ts">create</a>({ ...params }) -> Payment</code>
+- <code title="get /v3/payments/{paymentId}">client.payments.<a href="./src/resources/payments.ts">retrieve</a>(paymentID) -> Payment</code>
+- <code title="post /v3/payments/{paymentId}/cancel">client.payments.<a href="./src/resources/payments.ts">cancel</a>(paymentID) -> Payment</code>
+- <code title="get /v3/payments/{paymentId}/credentials">client.payments.<a href="./src/resources/payments.ts">credentials</a>(paymentID) -> PaymentCredentialsResponse</code>
+
+# Experiences
+
+Types:
+
+- <code><a href="./src/resources/experiences.ts">ExperienceRetrieveResponse</a></code>
+- <code><a href="./src/resources/experiences.ts">ExperienceListResponse</a></code>
+
+Methods:
+
+- <code title="get /v3/experiences/{experience}">client.experiences.<a href="./src/resources/experiences.ts">retrieve</a>(experience) -> ExperienceRetrieveResponse</code>
+- <code title="get /v3/experiences">client.experiences.<a href="./src/resources/experiences.ts">list</a>() -> ExperienceListResponse</code>
+
 # WebhookEvents
 
 Types:

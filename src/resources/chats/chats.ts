@@ -383,6 +383,14 @@ export namespace Chat {
      * Current health bucket for the chat. See the
      * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
      * to react. `doc_url` deep-links to the relevant section.
+     *
+     * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+     * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+     * Matching is exact and case-sensitive against the whole trimmed message. It
+     * clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+     * replying on the chat — sustained two-way conversation is treated as a sign the
+     * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+     * your responsibility — Linq surfaces the status but does not block the send.
      */
     status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -469,6 +477,16 @@ export interface MediaPart {
  */
 export interface MessageContent {
   /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  action?: MessageContent.Action;
+
+  /**
    * iMessage effect to apply to this message (screen or bubble effect)
    */
   effect?: MessagesAPI.MessageEffect;
@@ -532,6 +550,36 @@ export interface MessageContent {
 }
 
 export namespace MessageContent {
+  /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  export interface Action {
+    /**
+     * Which of its actions, e.g. `attach_card`.
+     */
+    action: string;
+
+    /**
+     * The experience to invoke, e.g. `agentcard`.
+     */
+    experience: string;
+
+    /**
+     * Values for the fields this action exposes. Keys are exactly the field names
+     * listed for the action — no mapping, no nesting.
+     *
+     * Display copy only. Params can never change where a button goes or what a secure
+     * field loads; those are fixed by the experience and validated before it is
+     * registered.
+     */
+    params?: { [key: string]: unknown };
+  }
+
   /**
    * An iMessage app card, backed by a Messages app extension. iMessage only — an
    * `imessage_app` part must be the **only** part in the message and is never
@@ -795,6 +843,14 @@ export namespace ChatCreateResponse {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+       * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+       * Matching is exact and case-sensitive against the whole trimmed message. It
+       * clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+       * replying on the chat — sustained two-way conversation is treated as a sign the
+       * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+       * your responsibility — Linq surfaces the status but does not block the send.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 

@@ -50,6 +50,11 @@ describe('resource messages', () => {
   test.skip('send: required and optional params', async () => {
     const response = await client.chats.messages.send('550e8400-e29b-41d4-a716-446655440000', {
       message: {
+        action: {
+          action: 'attach_card',
+          experience: 'agentcard',
+          params: { foo: 'bar' },
+        },
         effect: { name: 'confetti', type: 'screen' },
         idempotency_key: 'msg-abc123xyz',
         parts: [
