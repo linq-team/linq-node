@@ -144,35 +144,6 @@ export class Messages extends APIResource {
   }
 
   /**
-   * Retrieve all messages in a conversation thread. Given any message ID in the
-   * thread, returns the originator message and all replies in chronological order.
-   *
-   * If the message is not part of a thread, returns just that single message.
-   *
-   * Supports pagination and configurable ordering.
-   *
-   * @example
-   * ```ts
-   * // Automatically fetches more pages as needed.
-   * for await (const message of client.messages.listMessagesThread(
-   *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   * )) {
-   *   // ...
-   * }
-   * ```
-   */
-  listMessagesThread(
-    messageID: string,
-    query: MessageListMessagesThreadParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<MessagesListMessagesPagination, Message> {
-    return this._client.getAPIList(path`/v3/messages/${messageID}/thread`, ListMessagesPagination<Message>, {
-      query,
-      ...options,
-    });
-  }
-
-  /**
    * Retrieve a specific message by its ID. This endpoint returns the full message
    * details including text, attachments, reactions, and metadata.
    *
@@ -188,8 +159,28 @@ export class Messages extends APIResource {
   }
 
   /**
+   * Edit the text content of a specific part of a previously sent message.
+   *
+   * **Note:** A message can be edited up to 5 times, and only within 15 minutes of
+   * when it was originally sent.
+   *
+   * @example
+   * ```ts
+   * const message = await client.messages.update(
+   *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
+   *   { text: 'This is the edited message content' },
+   * );
+   * ```
+   */
+  update(messageID: string, body: MessageUpdateParams, options?: RequestOptions): APIPromise<Message> {
+    return this._client.patch(path`/v3/messages/${messageID}`, { body, ...options });
+  }
+
+  /**
    * Deletes a message from the Linq API only. This does NOT unsend or remove the
-   * message from the actual chat — recipients will still see the message.
+   * message from the actual chat — recipients will still see the message. Re-sending
+   * with a deleted message's idempotency key returns 404 — a deleted message is
+   * never resent.
    *
    * @example
    * ```ts
@@ -236,21 +227,32 @@ export class Messages extends APIResource {
   }
 
   /**
-   * Edit the text content of a specific part of a previously sent message.
+   * Retrieve all messages in a conversation thread. Given any message ID in the
+   * thread, returns the originator message and all replies in chronological order.
    *
-   * **Note:** A message can be edited up to 5 times, and only within 15 minutes of
-   * when it was originally sent.
+   * If the message is not part of a thread, returns just that single message.
+   *
+   * Supports pagination and configurable ordering.
    *
    * @example
    * ```ts
-   * const message = await client.messages.update(
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.messages.listMessagesThread(
    *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   *   { text: 'This is the edited message content' },
-   * );
+   * )) {
+   *   // ...
+   * }
    * ```
    */
-  update(messageID: string, body: MessageUpdateParams, options?: RequestOptions): APIPromise<Message> {
-    return this._client.patch(path`/v3/messages/${messageID}`, { body, ...options });
+  listMessagesThread(
+    messageID: string,
+    query: MessageListMessagesThreadParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MessagesListMessagesPagination, Message> {
+    return this._client.getAPIList(path`/v3/messages/${messageID}/thread`, ListMessagesPagination<Message>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -675,6 +677,11 @@ export interface MessageCreateParams {
    * Body param: Message content container. Groups all message-related fields
    * together, separating the "what" (message content) from the "where" (routing
    * fields like from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `action`, which invokes an experience inside Linq's
+   * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+   * cannot coexist with text), so copy and a card are two sends, not one.
    */
   message: ChatsAPI.MessageContent;
 
@@ -723,11 +730,16 @@ export namespace MessageCreateParams {
   }
 }
 
-export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
+export interface MessageUpdateParams {
   /**
-   * Sort order for messages (asc = oldest first, desc = newest first)
+   * New text content for the message part
    */
-  order?: 'asc' | 'desc';
+  text: string;
+
+  /**
+   * Index of the message part to edit. Defaults to 0.
+   */
+  part_index?: number;
 }
 
 export interface MessageAddReactionParams {
@@ -756,16 +768,11 @@ export interface MessageAddReactionParams {
   part_index?: number;
 }
 
-export interface MessageUpdateParams {
+export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
   /**
-   * New text content for the message part
+   * Sort order for messages (asc = oldest first, desc = newest first)
    */
-  text: string;
-
-  /**
-   * Index of the message part to edit. Defaults to 0.
-   */
-  part_index?: number;
+  order?: 'asc' | 'desc';
 }
 
 export interface MessageUpdateAppCardParams {
@@ -883,9 +890,9 @@ export declare namespace Messages {
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
-    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageUpdateParams as MessageUpdateParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
   };
 }

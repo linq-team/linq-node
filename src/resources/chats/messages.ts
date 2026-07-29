@@ -76,6 +76,31 @@ import { path } from '../../internal/utils/path';
  */
 export class Messages extends APIResource {
   /**
+   * Retrieve messages from a specific chat with pagination support.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.chats.messages.list(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * )) {
+   *   // ...
+   * }
+   * ```
+   */
+  list(
+    chatID: string,
+    query: MessageListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MessagesListMessagesPagination, MessagesAPI.Message> {
+    return this._client.getAPIList(
+      path`/v3/chats/${chatID}/messages`,
+      ListMessagesPagination<MessagesAPI.Message>,
+      { query, ...options },
+    );
+  }
+
+  /**
    * Send a message to an existing chat. Use this endpoint when you already have a
    * chat ID and want to send additional messages to it.
    *
@@ -133,31 +158,6 @@ export class Messages extends APIResource {
    */
   send(chatID: string, body: MessageSendParams, options?: RequestOptions): APIPromise<MessageSendResponse> {
     return this._client.post(path`/v3/chats/${chatID}/messages`, { body, ...options });
-  }
-
-  /**
-   * Retrieve messages from a specific chat with pagination support.
-   *
-   * @example
-   * ```ts
-   * // Automatically fetches more pages as needed.
-   * for await (const message of client.chats.messages.list(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * )) {
-   *   // ...
-   * }
-   * ```
-   */
-  list(
-    chatID: string,
-    query: MessageListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<MessagesListMessagesPagination, MessagesAPI.Message> {
-    return this._client.getAPIList(
-      path`/v3/chats/${chatID}/messages`,
-      ListMessagesPagination<MessagesAPI.Message>,
-      { query, ...options },
-    );
   }
 }
 
@@ -384,23 +384,28 @@ export interface MessageSendResponse {
   message: SentMessage;
 }
 
+export interface MessageListParams extends ListMessagesPaginationParams {}
+
 export interface MessageSendParams {
   /**
    * Message content container. Groups all message-related fields together,
    * separating the "what" (message content) from the "where" (routing fields like
    * from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `action`, which invokes an experience inside Linq's
+   * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+   * cannot coexist with text), so copy and a card are two sends, not one.
    */
   message: ChatsAPI.MessageContent;
 }
-
-export interface MessageListParams extends ListMessagesPaginationParams {}
 
 export declare namespace Messages {
   export {
     type SentMessage as SentMessage,
     type MessageSendResponse as MessageSendResponse,
-    type MessageSendParams as MessageSendParams,
     type MessageListParams as MessageListParams,
+    type MessageSendParams as MessageSendParams,
   };
 }
 
