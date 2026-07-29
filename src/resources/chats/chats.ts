@@ -493,7 +493,9 @@ export interface MessageContent {
 
   /**
    * Optional idempotency key for this message. Use this to prevent duplicate sends
-   * of the same message.
+   * of the same message. Reusing a key whose message was deleted — or was an
+   * ephemeral message that has since expired — returns 404; the message is never
+   * resent.
    */
   idempotency_key?: string;
 

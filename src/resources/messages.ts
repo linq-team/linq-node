@@ -178,7 +178,9 @@ export class Messages extends APIResource {
 
   /**
    * Deletes a message from the Linq API only. This does NOT unsend or remove the
-   * message from the actual chat — recipients will still see the message.
+   * message from the actual chat — recipients will still see the message. Re-sending
+   * with a deleted message's idempotency key returns 404 — a deleted message is
+   * never resent.
    *
    * @example
    * ```ts
