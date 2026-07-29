@@ -84,6 +84,24 @@ export class Chats extends APIResource {
    * This rule applies only to `POST /v3/chats`. Follow-up messages on an existing
    * chat (`POST /v3/chats/{chatId}/messages`) are not subject to this restriction.
    *
+   * ## Reusing an Existing Chat
+   *
+   * Chats are keyed on the `from` line plus the exact set of `to` handles. Repeating
+   * this request with the same `from` and `to` returns the **existing** chat and
+   * sends the message into it instead of starting a second conversation.
+   *
+   * A group chat that has a `display_name` is excluded from that matching. To run
+   * several parallel groups over the same participants, name each one with
+   * `PUT /v3/chats/{chatId}` before creating the next: the following
+   * `POST /v3/chats` with the same `to` then returns a new, separate `chat_id`. Two
+   * other cases also produce a new chat instead of reusing one — the participant set
+   * changed (a participant was added or removed), or the `from` line left the group.
+   *
+   * Whenever the response is a new chat, the first-message rules above apply to that
+   * request: no link in the first message, and no `reply_to` or message effect. To
+   * send into a chat you already know, use `POST /v3/chats/{chatId}/messages` with
+   * its `chat_id`.
+   *
    * @example
    * ```ts
    * const chat = await client.chats.create({
@@ -102,6 +120,65 @@ export class Chats extends APIResource {
    */
   create(body: ChatCreateParams, options?: RequestOptions): APIPromise<ChatCreateResponse> {
     return this._client.post('/v3/chats', { body, ...options });
+  }
+
+  /**
+   * Retrieve a chat by its unique identifier.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.retrieve(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
+    return this._client.get(path`/v3/chats/${chatID}`, options);
+  }
+
+  /**
+   * Update chat properties such as display name and group chat icon.
+   *
+   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
+   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
+   * events to confirm the outcome.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.update(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   *   { display_name: 'Team Discussion' },
+   * );
+   * ```
+   */
+  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
+    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
+  }
+
+  /**
+   * Removes your phone number from a group chat. Once you leave, you will no longer
+   * receive messages from the group and all interaction endpoints (send message,
+   * typing, mark read, etc.) will return 409.
+   *
+   * A `participant.removed` webhook will fire once the leave has been processed.
+   *
+   * **Supported**
+   *
+   * - iMessage group chats with 4 or more active participants (including yourself)
+   *
+   * **Not supported**
+   *
+   * - DM (1-on-1) chats — use the chat directly to continue the conversation
+   *
+   * @example
+   * ```ts
+   * const response = await client.chats.leaveChat(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
+    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
   }
 
   /**
@@ -145,39 +222,6 @@ export class Chats extends APIResource {
   }
 
   /**
-   * Retrieve a chat by its unique identifier.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.retrieve(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
-    return this._client.get(path`/v3/chats/${chatID}`, options);
-  }
-
-  /**
-   * Update chat properties such as display name and group chat icon.
-   *
-   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
-   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
-   * events to confirm the outcome.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.update(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   *   { display_name: 'Team Discussion' },
-   * );
-   * ```
-   */
-  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
-    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
-  }
-
-  /**
    * Mark all messages in a chat as read.
    *
    * @example
@@ -189,53 +233,6 @@ export class Chats extends APIResource {
    */
   markAsRead(chatID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.post(path`/v3/chats/${chatID}/read`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
-  }
-
-  /**
-   * Removes your phone number from a group chat. Once you leave, you will no longer
-   * receive messages from the group and all interaction endpoints (send message,
-   * typing, mark read, etc.) will return 409.
-   *
-   * A `participant.removed` webhook will fire once the leave has been processed.
-   *
-   * **Supported**
-   *
-   * - iMessage group chats with 4 or more active participants (including yourself)
-   *
-   * **Not supported**
-   *
-   * - DM (1-on-1) chats — use the chat directly to continue the conversation
-   *
-   * @example
-   * ```ts
-   * const response = await client.chats.leaveChat(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
-    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
-  }
-
-  /**
-   * Share your contact information (Name and Photo Sharing) with a chat.
-   *
-   * **Note:** A contact card must be configured before sharing. You can set up your
-   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
-   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
-   *
-   * @example
-   * ```ts
-   * await client.chats.shareContactCard(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
-    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -271,6 +268,27 @@ export class Chats extends APIResource {
     options?: RequestOptions,
   ): APIPromise<ChatSendVoicememoResponse> {
     return this._client.post(path`/v3/chats/${chatID}/voicememo`, { body, ...options });
+  }
+
+  /**
+   * Share your contact information (Name and Photo Sharing) with a chat.
+   *
+   * **Note:** A contact card must be configured before sharing. You can set up your
+   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
+   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
+   *
+   * @example
+   * ```ts
+   * await client.chats.shareContactCard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -365,6 +383,14 @@ export namespace Chat {
      * Current health bucket for the chat. See the
      * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
      * to react. `doc_url` deep-links to the relevant section.
+     *
+     * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+     * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+     * Matching is exact and case-sensitive against the whole trimmed message. It
+     * clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+     * replying on the chat — sustained two-way conversation is treated as a sign the
+     * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+     * your responsibility — Linq surfaces the status but does not block the send.
      */
     status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -443,8 +469,34 @@ export interface MediaPart {
  * Message content container. Groups all message-related fields together,
  * separating the "what" (message content) from the "where" (routing fields like
  * from/to).
+ *
+ * A message carries EITHER `parts` — text and attachments, which compose into one
+ * bubble — or a single `action`, which invokes an experience inside Linq's
+ * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+ * cannot coexist with text), so copy and a card are two sends, not one.
  */
 export interface MessageContent {
+  /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  action?: MessageContent.Action;
+
+  /**
+   * iMessage effect to apply to this message (screen or bubble effect)
+   */
+  effect?: MessagesAPI.MessageEffect;
+
+  /**
+   * Optional idempotency key for this message. Use this to prevent duplicate sends
+   * of the same message.
+   */
+  idempotency_key?: string;
+
   /**
    * Array of message parts. Each part can be text, media, or link. Parts are
    * displayed in order. Text and media can be mixed freely, but a `link` part must
@@ -484,18 +536,7 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
-
-  /**
-   * iMessage effect to apply to this message (screen or bubble effect)
-   */
-  effect?: MessagesAPI.MessageEffect;
-
-  /**
-   * Optional idempotency key for this message. Use this to prevent duplicate sends
-   * of the same message.
-   */
-  idempotency_key?: string;
+  parts?: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
 
   /**
    * Messaging service type
@@ -509,6 +550,36 @@ export interface MessageContent {
 }
 
 export namespace MessageContent {
+  /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  export interface Action {
+    /**
+     * Which of its actions, e.g. `attach_card`.
+     */
+    action: string;
+
+    /**
+     * The experience to invoke, e.g. `agentcard`.
+     */
+    experience: string;
+
+    /**
+     * Values for the fields this action exposes. Keys are exactly the field names
+     * listed for the action — no mapping, no nesting.
+     *
+     * Display copy only. Params can never change where a button goes or what a secure
+     * field loads; those are fixed by the experience and validated before it is
+     * registered.
+     */
+    params?: { [key: string]: unknown };
+  }
+
   /**
    * An iMessage app card, backed by a Messages app extension. iMessage only — an
    * `imessage_app` part must be the **only** part in the message and is never
@@ -772,6 +843,14 @@ export namespace ChatCreateResponse {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+       * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+       * Matching is exact and case-sensitive against the whole trimmed message. It
+       * clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+       * replying on the chat — sustained two-way conversation is treated as a sign the
+       * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+       * your responsibility — Linq surfaces the status but does not block the send.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -914,6 +993,11 @@ export interface ChatCreateParams {
    * Message content container. Groups all message-related fields together,
    * separating the "what" (message content) from the "where" (routing fields like
    * from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `action`, which invokes an experience inside Linq's
+   * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+   * cannot coexist with text), so copy and a card are two sends, not one.
    */
   message: MessageContent;
 
@@ -922,6 +1006,18 @@ export interface ChatCreateParams {
    * For individual chats, provide one recipient. For group chats, provide multiple.
    */
   to: Array<string>;
+}
+
+export interface ChatUpdateParams {
+  /**
+   * New display name for the chat (group chats only)
+   */
+  display_name?: string;
+
+  /**
+   * URL of an image to set as the group chat icon (group chats only)
+   */
+  group_chat_icon?: string;
 }
 
 export interface ChatListChatsParams extends ListChatsPaginationParams {
@@ -940,18 +1036,6 @@ export interface ChatListChatsParams extends ListChatsPaginationParams {
    * URL-encoded by HTTP clients.
    */
   to?: string;
-}
-
-export interface ChatUpdateParams {
-  /**
-   * New display name for the chat (group chats only)
-   */
-  display_name?: string;
-
-  /**
-   * URL of an image to set as the group chat icon (group chats only)
-   */
-  group_chat_icon?: string;
 }
 
 export interface ChatSendVoicememoParams {
@@ -989,8 +1073,8 @@ export declare namespace Chats {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatListChatsParams as ChatListChatsParams,
     type ChatUpdateParams as ChatUpdateParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1008,8 +1092,8 @@ export declare namespace Chats {
     Messages as Messages,
     type SentMessage as SentMessage,
     type MessageSendResponse as MessageSendResponse,
-    type MessageSendParams as MessageSendParams,
     type MessageListParams as MessageListParams,
+    type MessageSendParams as MessageSendParams,
   };
 
   export {
