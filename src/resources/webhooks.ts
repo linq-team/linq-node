@@ -103,6 +103,17 @@ export interface MessageEventV2 {
   read_at?: string | null;
 
   /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   reply_to?: MessageEventV2.ReplyTo | null;
@@ -352,6 +363,17 @@ export interface MessagePayload {
    * When the message was read
    */
   read_at?: string | null;
+
+  /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
 
   /**
    * Reference to the message this is replying to
