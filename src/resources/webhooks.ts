@@ -965,6 +965,9 @@ export interface MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   data: MessageFailedWebhookEvent.Data;
 
@@ -1005,6 +1008,9 @@ export namespace MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   export interface Data {
     /**
