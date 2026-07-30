@@ -9,8 +9,8 @@ const client = new LinqAPIV3({
 
 describe('resource location', () => {
   // Mock server tests are disabled
-  test.skip('request', async () => {
-    const responsePromise = client.chats.location.request('975d0776-bd17-4273-8337-f346b4c661b0');
+  test.skip('retrieve', async () => {
+    const responsePromise = client.chats.location.retrieve('975d0776-bd17-4273-8337-f346b4c661b0');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,8 +21,8 @@ describe('resource location', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.chats.location.retrieve('975d0776-bd17-4273-8337-f346b4c661b0');
+  test.skip('request', async () => {
+    const responsePromise = client.chats.location.request('975d0776-bd17-4273-8337-f346b4c661b0');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
