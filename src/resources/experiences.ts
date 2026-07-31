@@ -61,7 +61,7 @@ export namespace ExperienceRetrieveResponse {
 
       required?: boolean;
 
-      type?: 'string' | 'cents' | 'int';
+      type?: 'string' | 'cents' | 'int' | 'url';
     }
   }
 }
@@ -104,7 +104,7 @@ export namespace ExperienceListResponse {
 
         required?: boolean;
 
-        type?: 'string' | 'cents' | 'int';
+        type?: 'string' | 'cents' | 'int' | 'url';
       }
     }
   }
