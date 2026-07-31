@@ -52,6 +52,7 @@ import {
   ContactCardUpdateParams,
   SetContactCard,
 } from './resources/contact-card';
+import { ExperienceListResponse, ExperienceRetrieveResponse, Experiences } from './resources/experiences';
 import {
   Message,
   MessageAddReactionParams,
@@ -68,12 +69,24 @@ import {
   ReplyTo,
 } from './resources/messages';
 import {
+  PaymentHandleConnection,
+  PaymentHandleVerifyParams,
+  PaymentHandles,
+} from './resources/payment-handles';
+import {
+  PaymentProvider,
+  PaymentProviderConnectParams,
+  PaymentProviderConnectResponse,
+  PaymentProviders,
+} from './resources/payment-providers';
+import {
   PaymentRequest,
   PaymentRequestCreateParams,
   PaymentRequestListParams,
   PaymentRequestListResponse,
   PaymentRequests,
 } from './resources/payment-requests';
+import { Payment, PaymentCreateParams, PaymentCredentialsResponse, Payments } from './resources/payments';
 import {
   PhoneNumberListResponse,
   PhoneNumberUpdateParams,
@@ -1192,7 +1205,7 @@ export class LinqAPIV3 {
    *
    * ## Connected accounts (Stripe Standard, direct charges)
    *
-   * Agent Pay runs on **Stripe Connect Standard accounts** using **direct
+   * Payments run on **Stripe Connect Standard accounts** using **direct
    * charges**: the charge is created on *your* connected account and **you are
    * the merchant of record**. That means the money, the payout schedule, the
    * customer relationship, and the compliance surface are all yours — Linq
@@ -1275,7 +1288,7 @@ export class LinqAPIV3 {
    * no-install checkout sheet. Everywhere else (Android, desktop, iPhones
    * without the App Clip yet) the same URL opens the web checkout, so the link
    * always works. The App Clip experience for your payment links is registered
-   * automatically by Linq and refreshed whenever you update your Agent Pay
+   * automatically by Linq and refreshed whenever you update your payments
    * branding; a newly registered experience can take up to ~24 hours to
    * activate on Apple's side, during which links open the web checkout.
    *
@@ -1288,6 +1301,34 @@ export class LinqAPIV3 {
    *
    */
   paymentRequests: API.PaymentRequests = new API.PaymentRequests(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentProviders: API.PaymentProviders = new API.PaymentProviders(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentHandles: API.PaymentHandles = new API.PaymentHandles(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  payments: API.Payments = new API.Payments(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  experiences: API.Experiences = new API.Experiences(this);
   /**
    * Webhook Subscriptions allow you to receive real-time notifications when events
    * occur on your account.
@@ -1574,6 +1615,10 @@ LinqAPIV3.Phonenumbers = Phonenumbers;
 LinqAPIV3.PhoneNumbers = PhoneNumbers;
 LinqAPIV3.AvailableNumber = AvailableNumber;
 LinqAPIV3.PaymentRequests = PaymentRequests;
+LinqAPIV3.PaymentProviders = PaymentProviders;
+LinqAPIV3.PaymentHandles = PaymentHandles;
+LinqAPIV3.Payments = Payments;
+LinqAPIV3.Experiences = Experiences;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Capability = Capability;
@@ -1608,8 +1653,8 @@ export declare namespace LinqAPIV3 {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatListChatsParams as ChatListChatsParams,
     type ChatUpdateParams as ChatUpdateParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1623,9 +1668,9 @@ export declare namespace LinqAPIV3 {
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
-    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageUpdateParams as MessageUpdateParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
   };
 
@@ -1658,6 +1703,32 @@ export declare namespace LinqAPIV3 {
     type PaymentRequestListResponse as PaymentRequestListResponse,
     type PaymentRequestCreateParams as PaymentRequestCreateParams,
     type PaymentRequestListParams as PaymentRequestListParams,
+  };
+
+  export {
+    PaymentProviders as PaymentProviders,
+    type PaymentProvider as PaymentProvider,
+    type PaymentProviderConnectResponse as PaymentProviderConnectResponse,
+    type PaymentProviderConnectParams as PaymentProviderConnectParams,
+  };
+
+  export {
+    PaymentHandles as PaymentHandles,
+    type PaymentHandleConnection as PaymentHandleConnection,
+    type PaymentHandleVerifyParams as PaymentHandleVerifyParams,
+  };
+
+  export {
+    Payments as Payments,
+    type Payment as Payment,
+    type PaymentCredentialsResponse as PaymentCredentialsResponse,
+    type PaymentCreateParams as PaymentCreateParams,
+  };
+
+  export {
+    Experiences as Experiences,
+    type ExperienceRetrieveResponse as ExperienceRetrieveResponse,
+    type ExperienceListResponse as ExperienceListResponse,
   };
 
   export {
@@ -1716,8 +1787,8 @@ export declare namespace LinqAPIV3 {
     ContactCard as ContactCard,
     type SetContactCard as SetContactCard,
     type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
-    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardCreateParams as ContactCardCreateParams,
+    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 

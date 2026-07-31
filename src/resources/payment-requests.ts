@@ -25,7 +25,7 @@ import { path } from '../internal/utils/path';
  *
  * ## Connected accounts (Stripe Standard, direct charges)
  *
- * Agent Pay runs on **Stripe Connect Standard accounts** using **direct
+ * Payments run on **Stripe Connect Standard accounts** using **direct
  * charges**: the charge is created on *your* connected account and **you are
  * the merchant of record**. That means the money, the payout schedule, the
  * customer relationship, and the compliance surface are all yours — Linq
@@ -108,7 +108,7 @@ import { path } from '../internal/utils/path';
  * no-install checkout sheet. Everywhere else (Android, desktop, iPhones
  * without the App Clip yet) the same URL opens the web checkout, so the link
  * always works. The App Clip experience for your payment links is registered
- * automatically by Linq and refreshed whenever you update your Agent Pay
+ * automatically by Linq and refreshed whenever you update your payments
  * branding; a newly registered experience can take up to ~24 hours to
  * activate on Apple's side, during which links open the web checkout.
  *
