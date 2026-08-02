@@ -103,6 +103,17 @@ export interface MessageEventV2 {
   read_at?: string | null;
 
   /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   reply_to?: MessageEventV2.ReplyTo | null;
@@ -173,6 +184,17 @@ export namespace MessageEventV2 {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+       * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+       * The keyword must be the whole trimmed message, never part of a longer one:
+       * `STOP` counts, `please stop` does not. Most keywords must match exactly,
+       * including case. `OPT OUT` is the exception — it matches in any casing, with or
+       * without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all count.
+       * It clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+       * replying on the chat — sustained two-way conversation is treated as a sign the
+       * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+       * your responsibility — Linq surfaces the status but does not block the send.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -344,6 +366,17 @@ export interface MessagePayload {
    * When the message was read
    */
   read_at?: string | null;
+
+  /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
 
   /**
    * Reference to the message this is replying to
@@ -935,6 +968,9 @@ export interface MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   data: MessageFailedWebhookEvent.Data;
 
@@ -975,6 +1011,9 @@ export namespace MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   export interface Data {
     /**
@@ -1157,6 +1196,17 @@ export namespace MessageEditedWebhookEvent {
          * Current health bucket for the chat. See the
          * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
          * to react. `doc_url` deep-links to the relevant section.
+         *
+         * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+         * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+         * The keyword must be the whole trimmed message, never part of a longer one:
+         * `STOP` counts, `please stop` does not. Most keywords must match exactly,
+         * including case. `OPT OUT` is the exception — it matches in any casing, with or
+         * without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all count.
+         * It clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+         * replying on the chat — sustained two-way conversation is treated as a sign the
+         * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+         * your responsibility — Linq surfaces the status but does not block the send.
          */
         status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -1579,6 +1629,17 @@ export namespace ChatCreatedWebhookEvent {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+       * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+       * The keyword must be the whole trimmed message, never part of a longer one:
+       * `STOP` counts, `please stop` does not. Most keywords must match exactly,
+       * including case. `OPT OUT` is the exception — it matches in any casing, with or
+       * without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all count.
+       * It clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+       * replying on the chat — sustained two-way conversation is treated as a sign the
+       * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+       * your responsibility — Linq surfaces the status but does not block the send.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 

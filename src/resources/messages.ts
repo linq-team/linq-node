@@ -100,6 +100,15 @@ export class Messages extends APIResource {
    * Recipients (`to`) are an order-independent set: a single handle is a direct
    * chat, multiple handles a group chat.
    *
+   * ## Excluding lines
+   *
+   * `exclude_from` keeps specific lines out of **this** send's line pick. It only
+   * affects picking a line for a new chat — an existing chat is always reused on its
+   * own line, preferring a chat on a non-excluded line when the recipients have more
+   * than one. An exclusion never abandons a live chat or moves it to a new number,
+   * so if the only chat these recipients have is on an excluded line, that chat is
+   * still used. `from` tells you the line that was actually used.
+   *
    * ## Differences from POST /v3/chats
    *
    * - The first message **may contain a link** (including for a newly created chat).
@@ -144,35 +153,6 @@ export class Messages extends APIResource {
   }
 
   /**
-   * Retrieve all messages in a conversation thread. Given any message ID in the
-   * thread, returns the originator message and all replies in chronological order.
-   *
-   * If the message is not part of a thread, returns just that single message.
-   *
-   * Supports pagination and configurable ordering.
-   *
-   * @example
-   * ```ts
-   * // Automatically fetches more pages as needed.
-   * for await (const message of client.messages.listMessagesThread(
-   *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   * )) {
-   *   // ...
-   * }
-   * ```
-   */
-  listMessagesThread(
-    messageID: string,
-    query: MessageListMessagesThreadParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<MessagesListMessagesPagination, Message> {
-    return this._client.getAPIList(path`/v3/messages/${messageID}/thread`, ListMessagesPagination<Message>, {
-      query,
-      ...options,
-    });
-  }
-
-  /**
    * Retrieve a specific message by its ID. This endpoint returns the full message
    * details including text, attachments, reactions, and metadata.
    *
@@ -188,8 +168,28 @@ export class Messages extends APIResource {
   }
 
   /**
+   * Edit the text content of a specific part of a previously sent message.
+   *
+   * **Note:** A message can be edited up to 5 times, and only within 15 minutes of
+   * when it was originally sent.
+   *
+   * @example
+   * ```ts
+   * const message = await client.messages.update(
+   *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
+   *   { text: 'This is the edited message content' },
+   * );
+   * ```
+   */
+  update(messageID: string, body: MessageUpdateParams, options?: RequestOptions): APIPromise<Message> {
+    return this._client.patch(path`/v3/messages/${messageID}`, { body, ...options });
+  }
+
+  /**
    * Deletes a message from the Linq API only. This does NOT unsend or remove the
-   * message from the actual chat — recipients will still see the message.
+   * message from the actual chat — recipients will still see the message. Re-sending
+   * with a deleted message's idempotency key returns 404 — a deleted message is
+   * never resent.
    *
    * @example
    * ```ts
@@ -236,21 +236,32 @@ export class Messages extends APIResource {
   }
 
   /**
-   * Edit the text content of a specific part of a previously sent message.
+   * Retrieve all messages in a conversation thread. Given any message ID in the
+   * thread, returns the originator message and all replies in chronological order.
    *
-   * **Note:** A message can be edited up to 5 times, and only within 15 minutes of
-   * when it was originally sent.
+   * If the message is not part of a thread, returns just that single message.
+   *
+   * Supports pagination and configurable ordering.
    *
    * @example
    * ```ts
-   * const message = await client.messages.update(
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.messages.listMessagesThread(
    *   '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-   *   { text: 'This is the edited message content' },
-   * );
+   * )) {
+   *   // ...
+   * }
    * ```
    */
-  update(messageID: string, body: MessageUpdateParams, options?: RequestOptions): APIPromise<Message> {
-    return this._client.patch(path`/v3/messages/${messageID}`, { body, ...options });
+  listMessagesThread(
+    messageID: string,
+    query: MessageListMessagesThreadParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MessagesListMessagesPagination, Message> {
+    return this._client.getAPIList(path`/v3/messages/${messageID}/thread`, ListMessagesPagination<Message>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -384,6 +395,16 @@ export interface Message {
    * When the message was read
    */
   read_at?: string | null;
+
+  /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier — the message is
+   * genuine but was ingested late, so it may not have appeared in earlier reads of
+   * this conversation.
+   */
+  reconciled_at?: string;
 
   /**
    * Indicates this message is a threaded reply to another message
@@ -675,6 +696,11 @@ export interface MessageCreateParams {
    * Body param: Message content container. Groups all message-related fields
    * together, separating the "what" (message content) from the "where" (routing
    * fields like from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `action`, which invokes an experience inside Linq's
+   * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
+   * cannot coexist with text), so copy and a card are two sends, not one.
    */
   message: ChatsAPI.MessageContent;
 
@@ -696,6 +722,23 @@ export interface MessageCreateParams {
    * sent.
    */
   continuation_message?: MessageCreateParams.ContinuationMessage;
+
+  /**
+   * Body param: Lines (E.164) not to pick for this send. Applies for this request
+   * only — nothing is remembered between calls.
+   *
+   * **Exclusion only affects picking a line for a new chat.** If `to` already has a
+   * chat, that chat is reused on its own line, and a chat on a non-excluded line is
+   * preferred when there is more than one. If the only chat these recipients have is
+   * on an excluded line, it is still reused — an exclusion never abandons a live
+   * chat or moves it to a new number. Check `from` in the response to see the line
+   * that was actually used.
+   *
+   * Numbers that are not your lines are ignored. Every entry must be E.164 — a value
+   * like `4155551234` is rejected rather than silently skipped. Excluding every one
+   * of your available lines returns 400 when a line has to be picked.
+   */
+  exclude_from?: Array<string>;
 
   /**
    * Header param: Optional idempotency key for the send. Reuse the same key to
@@ -723,11 +766,16 @@ export namespace MessageCreateParams {
   }
 }
 
-export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
+export interface MessageUpdateParams {
   /**
-   * Sort order for messages (asc = oldest first, desc = newest first)
+   * New text content for the message part
    */
-  order?: 'asc' | 'desc';
+  text: string;
+
+  /**
+   * Index of the message part to edit. Defaults to 0.
+   */
+  part_index?: number;
 }
 
 export interface MessageAddReactionParams {
@@ -756,16 +804,11 @@ export interface MessageAddReactionParams {
   part_index?: number;
 }
 
-export interface MessageUpdateParams {
+export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
   /**
-   * New text content for the message part
+   * Sort order for messages (asc = oldest first, desc = newest first)
    */
-  text: string;
-
-  /**
-   * Index of the message part to edit. Defaults to 0.
-   */
-  part_index?: number;
+  order?: 'asc' | 'desc';
 }
 
 export interface MessageUpdateAppCardParams {
@@ -883,9 +926,9 @@ export declare namespace Messages {
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
-    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageUpdateParams as MessageUpdateParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
   };
 }
