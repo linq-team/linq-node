@@ -107,6 +107,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats/{chatId}/location/request',
   },
   {
+    clientCallName: 'client.chats.polls.create',
+    fullyQualifiedName: 'chats.polls.create',
+    httpMethod: 'post',
+    httpPath: '/v3/chats/{chatId}/polls',
+  },
+  {
     clientCallName: 'client.messages.create',
     fullyQualifiedName: 'messages.create',
     httpMethod: 'post',
@@ -147,6 +153,24 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'messages.updateAppCard',
     httpMethod: 'post',
     httpPath: '/v3/messages/{messageId}/update',
+  },
+  {
+    clientCallName: 'client.messages.poll.retrieve',
+    fullyQualifiedName: 'messages.poll.retrieve',
+    httpMethod: 'get',
+    httpPath: '/v3/messages/{messageId}/poll',
+  },
+  {
+    clientCallName: 'client.messages.poll.addOptions',
+    fullyQualifiedName: 'messages.poll.addOptions',
+    httpMethod: 'post',
+    httpPath: '/v3/messages/{messageId}/poll/options',
+  },
+  {
+    clientCallName: 'client.messages.poll.vote',
+    fullyQualifiedName: 'messages.poll.vote',
+    httpMethod: 'post',
+    httpPath: '/v3/messages/{messageId}/poll/votes',
   },
   {
     clientCallName: 'client.attachments.create',

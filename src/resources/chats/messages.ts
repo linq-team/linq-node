@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as MessagesAPI from '../messages';
-import { MessagesListMessagesPagination } from '../messages';
 import * as Shared from '../shared';
 import * as ChatsAPI from './chats';
+import * as ResourcesMessagesAPI from '../messages/messages';
+import { MessagesListMessagesPagination } from '../messages/messages';
 import { APIPromise } from '../../core/api-promise';
 import {
   ListMessagesPagination,
@@ -92,10 +92,10 @@ export class Messages extends APIResource {
     chatID: string,
     query: MessageListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<MessagesListMessagesPagination, MessagesAPI.Message> {
+  ): PagePromise<MessagesListMessagesPagination, ResourcesMessagesAPI.Message> {
     return this._client.getAPIList(
       path`/v3/chats/${chatID}/messages`,
-      ListMessagesPagination<MessagesAPI.Message>,
+      ListMessagesPagination<ResourcesMessagesAPI.Message>,
       { query, ...options },
     );
   }
@@ -209,7 +209,7 @@ export interface SentMessage {
   /**
    * iMessage effect applied to a message (screen or bubble effect)
    */
-  effect?: MessagesAPI.MessageEffect | null;
+  effect?: ResourcesMessagesAPI.MessageEffect | null;
 
   /**
    * The sender of this message as a full handle object
@@ -224,7 +224,7 @@ export interface SentMessage {
   /**
    * Indicates this message is a threaded reply to another message
    */
-  reply_to?: MessagesAPI.ReplyTo | null;
+  reply_to?: ResourcesMessagesAPI.ReplyTo | null;
 
   /**
    * Messaging service type
@@ -398,6 +398,14 @@ export interface MessageSendParams {
    * cannot coexist with text), so copy and a card are two sends, not one.
    */
   message: ChatsAPI.MessageContent;
+
+  /**
+   * Send even though the recipient asked you to stop (`403`, error code `2024`).
+   * Applies to this request only: the opt-out stays in place, so the next send
+   * without this flag is rejected again. Every override is recorded against your API
+   * key.
+   */
+  override_optout?: boolean;
 }
 
 export declare namespace Messages {

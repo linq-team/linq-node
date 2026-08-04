@@ -54,21 +54,6 @@ import {
 } from './resources/contact-card';
 import { ExperienceListResponse, ExperienceRetrieveResponse, Experiences } from './resources/experiences';
 import {
-  Message,
-  MessageAddReactionParams,
-  MessageAddReactionResponse,
-  MessageCreateParams,
-  MessageCreateResponse,
-  MessageEffect,
-  MessageListMessagesThreadParams,
-  MessageUpdateAppCardParams,
-  MessageUpdateAppCardResponse,
-  MessageUpdateParams,
-  Messages,
-  MessagesListMessagesPagination,
-  ReplyTo,
-} from './resources/messages';
-import {
   PaymentHandleConnection,
   PaymentHandleVerifyParams,
   PaymentHandles,
@@ -148,6 +133,21 @@ import {
   MessageContent,
   TextPart,
 } from './resources/chats/chats';
+import {
+  Message,
+  MessageAddReactionParams,
+  MessageAddReactionResponse,
+  MessageCreateParams,
+  MessageCreateResponse,
+  MessageEffect,
+  MessageListMessagesThreadParams,
+  MessageUpdateAppCardParams,
+  MessageUpdateAppCardResponse,
+  MessageUpdateParams,
+  Messages,
+  MessagesListMessagesPagination,
+  ReplyTo,
+} from './resources/messages/messages';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';

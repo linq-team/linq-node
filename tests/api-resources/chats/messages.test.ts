@@ -61,6 +61,8 @@ describe('resource messages', () => {
           {
             type: 'text',
             value: 'Hello, world!',
+            mention: '+14155551234',
+            mention_range: [4, 9],
             text_decorations: [
               {
                 range: [0, 5],
@@ -78,6 +80,7 @@ describe('resource messages', () => {
         preferred_service: 'iMessage',
         reply_to: { message_id: '550e8400-e29b-41d4-a716-446655440000', part_index: 0 },
       },
+      override_optout: false,
     });
   });
 });
