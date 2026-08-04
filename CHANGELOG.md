@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.33.0](https://github.com/linq-team/linq-node/compare/v0.32.1...v0.33.0) (2026-08-04)
+
+
+### Features
+
+* add action field to message content for in-app experiences ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+* add agentcard payment provider api ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+* add exclude_from parameter to control line selection ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+* add reconciled_at field to message objects ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+* support url-type fields in message action parameters ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+
+
+### Bug Fixes
+
+* clarify contact card creation and update behavior ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+* clarify idempotency key behavior with deleted messages ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+* clarify message.failed webhook delivery behavior ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+* clarify opt-out keyword matching requirements for chat health ([3d72197](https://github.com/linq-team/linq-node/commit/3d72197fd2e95680341decbba72a40ecd17daa5c))
+
 ## [0.32.1](https://github.com/linq-team/linq-node/compare/v0.32.0...v0.32.1) (2026-07-27)
 
 
