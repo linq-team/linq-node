@@ -30,7 +30,8 @@ export class AvailableNumber extends APIResource {
    * Also returns `vcf_url`: a time-limited link to a vCard (`.vcf`) for the chosen
    * line, carrying its contact card (name/photo) with the chosen number as the
    * primary `TEL` and the partner's other available lines as backups. Share it with
-   * recipients so they can save the line as a contact.
+   * recipients so they can save the line as a contact. Lines you pass in
+   * `exclude_from` are left out of the vCard too.
    */
   retrieve(
     query: AvailableNumberRetrieveParams | null | undefined = {},
@@ -59,6 +60,18 @@ export interface AvailableNumberRetrieveResponse {
 }
 
 export interface AvailableNumberRetrieveParams {
+  /**
+   * Lines (E.164) to leave out of this selection. Applies to the returned
+   * `phone_number`, to the sticky choice when `to` is given, and to the vCard's
+   * backup numbers. Repeat the parameter for multiple lines; use `%2B` for the
+   * leading `+`.
+   *
+   * Numbers that are not your lines are ignored. Every entry must be E.164 — a value
+   * like `4155551234` is rejected rather than silently skipped. Excluding every one
+   * of your available lines returns 400.
+   */
+  exclude_from?: Array<string>;
+
   /**
    * Recipient handles (E.164 or email) the message is destined for. When provided,
    * an existing chat with these recipients makes the choice sticky. Repeat the
