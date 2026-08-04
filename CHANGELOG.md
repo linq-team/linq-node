@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.33.1](https://github.com/linq-team/linq-node/compare/v0.33.0...v0.33.1) (2026-08-04)
+
+
+### Bug Fixes
+
+* flatten poll subresources to avoid go compile errors ([bbc72a4](https://github.com/linq-team/linq-node/commit/bbc72a41cc22a04ce5af33c9378c03394a547382))
+
 ## [0.33.0](https://github.com/linq-team/linq-node/compare/v0.32.1...v0.33.0) (2026-08-04)
 
 
