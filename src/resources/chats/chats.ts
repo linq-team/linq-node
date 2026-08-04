@@ -123,6 +123,65 @@ export class Chats extends APIResource {
   }
 
   /**
+   * Retrieve a chat by its unique identifier.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.retrieve(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
+    return this._client.get(path`/v3/chats/${chatID}`, options);
+  }
+
+  /**
+   * Update chat properties such as display name and group chat icon.
+   *
+   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
+   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
+   * events to confirm the outcome.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.update(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   *   { display_name: 'Team Discussion' },
+   * );
+   * ```
+   */
+  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
+    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
+  }
+
+  /**
+   * Removes your phone number from a group chat. Once you leave, you will no longer
+   * receive messages from the group and all interaction endpoints (send message,
+   * typing, mark read, etc.) will return 409.
+   *
+   * A `participant.removed` webhook will fire once the leave has been processed.
+   *
+   * **Supported**
+   *
+   * - iMessage group chats with 4 or more active participants (including yourself)
+   *
+   * **Not supported**
+   *
+   * - DM (1-on-1) chats — use the chat directly to continue the conversation
+   *
+   * @example
+   * ```ts
+   * const response = await client.chats.leaveChat(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
+    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
+  }
+
+  /**
    * Retrieves a paginated list of chats for the authenticated partner.
    *
    * **Filtering:**
@@ -163,39 +222,6 @@ export class Chats extends APIResource {
   }
 
   /**
-   * Retrieve a chat by its unique identifier.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.retrieve(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
-    return this._client.get(path`/v3/chats/${chatID}`, options);
-  }
-
-  /**
-   * Update chat properties such as display name and group chat icon.
-   *
-   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
-   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
-   * events to confirm the outcome.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.update(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   *   { display_name: 'Team Discussion' },
-   * );
-   * ```
-   */
-  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
-    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
-  }
-
-  /**
    * Mark all messages in a chat as read.
    *
    * @example
@@ -207,53 +233,6 @@ export class Chats extends APIResource {
    */
   markAsRead(chatID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.post(path`/v3/chats/${chatID}/read`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
-  }
-
-  /**
-   * Removes your phone number from a group chat. Once you leave, you will no longer
-   * receive messages from the group and all interaction endpoints (send message,
-   * typing, mark read, etc.) will return 409.
-   *
-   * A `participant.removed` webhook will fire once the leave has been processed.
-   *
-   * **Supported**
-   *
-   * - iMessage group chats with 4 or more active participants (including yourself)
-   *
-   * **Not supported**
-   *
-   * - DM (1-on-1) chats — use the chat directly to continue the conversation
-   *
-   * @example
-   * ```ts
-   * const response = await client.chats.leaveChat(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
-    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
-  }
-
-  /**
-   * Share your contact information (Name and Photo Sharing) with a chat.
-   *
-   * **Note:** A contact card must be configured before sharing. You can set up your
-   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
-   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
-   *
-   * @example
-   * ```ts
-   * await client.chats.shareContactCard(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
-    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -289,6 +268,27 @@ export class Chats extends APIResource {
     options?: RequestOptions,
   ): APIPromise<ChatSendVoicememoResponse> {
     return this._client.post(path`/v3/chats/${chatID}/voicememo`, { body, ...options });
+  }
+
+  /**
+   * Share your contact information (Name and Photo Sharing) with a chat.
+   *
+   * **Note:** A contact card must be configured before sharing. You can set up your
+   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
+   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
+   *
+   * @example
+   * ```ts
+   * await client.chats.shareContactCard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -383,6 +383,17 @@ export namespace Chat {
      * Current health bucket for the chat. See the
      * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
      * to react. `doc_url` deep-links to the relevant section.
+     *
+     * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+     * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+     * The keyword must be the whole trimmed message, never part of a longer one:
+     * `STOP` counts, `please stop` does not. Most keywords must match exactly,
+     * including case. `OPT OUT` is the exception — it matches in any casing, with or
+     * without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all count.
+     * It clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+     * replying on the chat — sustained two-way conversation is treated as a sign the
+     * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+     * your responsibility — Linq surfaces the status but does not block the send.
      */
     status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -469,13 +480,25 @@ export interface MediaPart {
  */
 export interface MessageContent {
   /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  action?: MessageContent.Action;
+
+  /**
    * iMessage effect to apply to this message (screen or bubble effect)
    */
   effect?: MessagesAPI.MessageEffect;
 
   /**
    * Optional idempotency key for this message. Use this to prevent duplicate sends
-   * of the same message.
+   * of the same message. Reusing a key whose message was deleted — or was an
+   * ephemeral message that has since expired — returns 404; the message is never
+   * resent.
    */
   idempotency_key?: string;
 
@@ -532,6 +555,35 @@ export interface MessageContent {
 }
 
 export namespace MessageContent {
+  /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  export interface Action {
+    /**
+     * Which of its actions, e.g. `attach_card`.
+     */
+    action: string;
+
+    /**
+     * The experience to invoke, e.g. `agentcard`.
+     */
+    experience: string;
+
+    /**
+     * Values for the fields this action exposes. Keys are exactly the field names
+     * listed for the action — no mapping, no nesting.
+     *
+     * Display copy only, except a `url`-type field — that value sets the destination,
+     * and must be an absolute `https` URL.
+     */
+    params?: { [key: string]: unknown };
+  }
+
   /**
    * An iMessage app card, backed by a Messages app extension. iMessage only — an
    * `imessage_app` part must be the **only** part in the message and is never
@@ -795,6 +847,17 @@ export namespace ChatCreateResponse {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+       * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
+       * The keyword must be the whole trimmed message, never part of a longer one:
+       * `STOP` counts, `please stop` does not. Most keywords must match exactly,
+       * including case. `OPT OUT` is the exception — it matches in any casing, with or
+       * without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all count.
+       * It clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
+       * replying on the chat — sustained two-way conversation is treated as a sign the
+       * stop keyword was a false positive. Suppressing sends to opted-out recipients is
+       * your responsibility — Linq surfaces the status but does not block the send.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -952,6 +1015,18 @@ export interface ChatCreateParams {
   to: Array<string>;
 }
 
+export interface ChatUpdateParams {
+  /**
+   * New display name for the chat (group chats only)
+   */
+  display_name?: string;
+
+  /**
+   * URL of an image to set as the group chat icon (group chats only)
+   */
+  group_chat_icon?: string;
+}
+
 export interface ChatListChatsParams extends ListChatsPaginationParams {
   /**
    * Phone number to filter chats by. Returns chats made from this phone number. Must
@@ -968,18 +1043,6 @@ export interface ChatListChatsParams extends ListChatsPaginationParams {
    * URL-encoded by HTTP clients.
    */
   to?: string;
-}
-
-export interface ChatUpdateParams {
-  /**
-   * New display name for the chat (group chats only)
-   */
-  display_name?: string;
-
-  /**
-   * URL of an image to set as the group chat icon (group chats only)
-   */
-  group_chat_icon?: string;
 }
 
 export interface ChatSendVoicememoParams {
@@ -1017,8 +1080,8 @@ export declare namespace Chats {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatListChatsParams as ChatListChatsParams,
     type ChatUpdateParams as ChatUpdateParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1036,8 +1099,8 @@ export declare namespace Chats {
     Messages as Messages,
     type SentMessage as SentMessage,
     type MessageSendResponse as MessageSendResponse,
-    type MessageSendParams as MessageSendParams,
     type MessageListParams as MessageListParams,
+    type MessageSendParams as MessageSendParams,
   };
 
   export {
