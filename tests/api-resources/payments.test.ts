@@ -7,10 +7,14 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource contactCard', () => {
+describe('resource payments', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.contactCard.create({ first_name: 'Acme', phone_number: '+15551234567' });
+    const responsePromise = client.payments.create({
+      amount_cents: 2500,
+      currency: 'usd',
+      handle: '+14155550123',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,17 +26,19 @@ describe('resource contactCard', () => {
 
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
-    const response = await client.contactCard.create({
-      first_name: 'Acme',
-      phone_number: '+15551234567',
-      image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',
-      last_name: 'Support',
+    const response = await client.payments.create({
+      amount_cents: 2500,
+      currency: 'usd',
+      handle: '+14155550123',
+      description: 'Burger order',
+      merchant: { name: 'DoorDash', url: 'doordash.com' },
+      metadata: { foo: 'string' },
     });
   });
 
   // Mock server tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.contactCard.retrieve();
+    const responsePromise = client.payments.retrieve('paymentId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,16 +49,8 @@ describe('resource contactCard', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.contactCard.retrieve({ phone_number: '+15551234567' }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(LinqAPIV3.NotFoundError);
-  });
-
-  // Mock server tests are disabled
-  test.skip('update: only required params', async () => {
-    const responsePromise = client.contactCard.update({ phone_number: '+15551234567' });
+  test.skip('cancel', async () => {
+    const responsePromise = client.payments.cancel('paymentId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -63,12 +61,14 @@ describe('resource contactCard', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.contactCard.update({
-      phone_number: '+15551234567',
-      first_name: 'John',
-      image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',
-      last_name: 'Doe',
-    });
+  test.skip('credentials', async () => {
+    const responsePromise = client.payments.credentials('paymentId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 });
