@@ -60,7 +60,7 @@ export {
   type MessageListMessagesThreadParams,
   type MessageUpdateAppCardParams,
   type MessagesListMessagesPagination,
-} from './messages';
+} from './messages/messages';
 export {
   PaymentHandles,
   type PaymentHandleConnection,

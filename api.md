@@ -79,26 +79,45 @@ Methods:
 - <code title="get /v3/chats/{chatId}/location">client.chats.location.<a href="./src/resources/chats/location.ts">retrieve</a>(chatID) -> GetChatLocationResponse</code>
 - <code title="post /v3/chats/{chatId}/location/request">client.chats.location.<a href="./src/resources/chats/location.ts">request</a>(chatID) -> LocationRequestResponse</code>
 
+## Polls
+
+Types:
+
+- <code><a href="./src/resources/chats/polls.ts">Poll</a></code>
+- <code><a href="./src/resources/chats/polls.ts">PollEnvelope</a></code>
+
+Methods:
+
+- <code title="post /v3/chats/{chatId}/polls">client.chats.polls.<a href="./src/resources/chats/polls.ts">create</a>(chatID, { ...params }) -> PollEnvelope</code>
+
 # Messages
 
 Types:
 
-- <code><a href="./src/resources/messages.ts">Message</a></code>
-- <code><a href="./src/resources/messages.ts">MessageEffect</a></code>
-- <code><a href="./src/resources/messages.ts">ReplyTo</a></code>
-- <code><a href="./src/resources/messages.ts">MessageCreateResponse</a></code>
-- <code><a href="./src/resources/messages.ts">MessageAddReactionResponse</a></code>
-- <code><a href="./src/resources/messages.ts">MessageUpdateAppCardResponse</a></code>
+- <code><a href="./src/resources/messages/messages.ts">Message</a></code>
+- <code><a href="./src/resources/messages/messages.ts">MessageEffect</a></code>
+- <code><a href="./src/resources/messages/messages.ts">ReplyTo</a></code>
+- <code><a href="./src/resources/messages/messages.ts">MessageCreateResponse</a></code>
+- <code><a href="./src/resources/messages/messages.ts">MessageAddReactionResponse</a></code>
+- <code><a href="./src/resources/messages/messages.ts">MessageUpdateAppCardResponse</a></code>
 
 Methods:
 
-- <code title="post /v3/messages">client.messages.<a href="./src/resources/messages.ts">create</a>({ ...params }) -> MessageCreateResponse</code>
-- <code title="get /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">retrieve</a>(messageID) -> Message</code>
-- <code title="patch /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">update</a>(messageID, { ...params }) -> Message</code>
-- <code title="delete /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages.ts">delete</a>(messageID) -> void</code>
-- <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages.ts">addReaction</a>(messageID, { ...params }) -> MessageAddReactionResponse</code>
-- <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages.ts">listMessagesThread</a>(messageID, { ...params }) -> MessagesListMessagesPagination</code>
-- <code title="post /v3/messages/{messageId}/update">client.messages.<a href="./src/resources/messages.ts">updateAppCard</a>(messageID, { ...params }) -> MessageUpdateAppCardResponse</code>
+- <code title="post /v3/messages">client.messages.<a href="./src/resources/messages/messages.ts">create</a>({ ...params }) -> MessageCreateResponse</code>
+- <code title="get /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages/messages.ts">retrieve</a>(messageID) -> Message</code>
+- <code title="patch /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages/messages.ts">update</a>(messageID, { ...params }) -> Message</code>
+- <code title="delete /v3/messages/{messageId}">client.messages.<a href="./src/resources/messages/messages.ts">delete</a>(messageID) -> void</code>
+- <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages/messages.ts">addReaction</a>(messageID, { ...params }) -> MessageAddReactionResponse</code>
+- <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages/messages.ts">listMessagesThread</a>(messageID, { ...params }) -> MessagesListMessagesPagination</code>
+- <code title="post /v3/messages/{messageId}/update">client.messages.<a href="./src/resources/messages/messages.ts">updateAppCard</a>(messageID, { ...params }) -> MessageUpdateAppCardResponse</code>
+
+## Poll
+
+Methods:
+
+- <code title="get /v3/messages/{messageId}/poll">client.messages.poll.<a href="./src/resources/messages/poll.ts">retrieve</a>(messageID) -> PollEnvelope</code>
+- <code title="post /v3/messages/{messageId}/poll/options">client.messages.poll.<a href="./src/resources/messages/poll.ts">addOptions</a>(messageID, { ...params }) -> PollEnvelope</code>
+- <code title="post /v3/messages/{messageId}/poll/votes">client.messages.poll.<a href="./src/resources/messages/poll.ts">vote</a>(messageID, { ...params }) -> PollEnvelope</code>
 
 # Attachments
 

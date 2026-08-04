@@ -1,11 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as MessagesAPI from '../messages';
 import * as Shared from '../shared';
 import * as LocationAPI from './location';
 import { GetChatLocationResponse, Location, LocationRequestResponse } from './location';
-import * as ChatsMessagesAPI from './messages';
+import * as MessagesAPI from './messages';
 import { MessageListParams, MessageSendParams, MessageSendResponse, Messages, SentMessage } from './messages';
 import * as ParticipantsAPI from './participants';
 import {
@@ -15,8 +14,11 @@ import {
   ParticipantRemoveResponse,
   Participants,
 } from './participants';
+import * as PollsAPI from './polls';
+import { Poll, PollCreateParams, PollEnvelope, Polls } from './polls';
 import * as TypingAPI from './typing';
 import { Typing } from './typing';
+import * as ResourcesMessagesAPI from '../messages/messages';
 import { APIPromise } from '../../core/api-promise';
 import { ListChatsPagination, type ListChatsPaginationParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
@@ -26,8 +28,9 @@ import { path } from '../../internal/utils/path';
 export class Chats extends APIResource {
   participants: ParticipantsAPI.Participants = new ParticipantsAPI.Participants(this._client);
   typing: TypingAPI.Typing = new TypingAPI.Typing(this._client);
-  messages: ChatsMessagesAPI.Messages = new ChatsMessagesAPI.Messages(this._client);
+  messages: MessagesAPI.Messages = new MessagesAPI.Messages(this._client);
   location: LocationAPI.Location = new LocationAPI.Location(this._client);
+  polls: PollsAPI.Polls = new PollsAPI.Polls(this._client);
 
   /**
    * Create a new chat with specified participants and send an initial message. The
@@ -385,15 +388,19 @@ export namespace Chat {
      * to react. `doc_url` deep-links to the relevant section.
      *
      * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
-     * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
-     * The keyword must be the whole trimmed message, never part of a longer one:
-     * `STOP` counts, `please stop` does not. Most keywords must match exactly,
-     * including case. `OPT OUT` is the exception — it matches in any casing, with or
-     * without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all count.
-     * It clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
-     * replying on the chat — sustained two-way conversation is treated as a sign the
-     * stop keyword was a false positive. Suppressing sends to opted-out recipients is
-     * your responsibility — Linq surfaces the status but does not block the send.
+     * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
+     * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
+     * match exactly, including case. `OPT OUT` is the exception — it matches in any
+     * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
+     * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
+     * or if they keep replying on the chat — sustained two-way conversation is treated
+     * as a sign the stop keyword was a false positive.
+     *
+     * Linq enforces this: while a recipient is opted out, every send to them is
+     * rejected with `403` (error code `2024`) before the message is queued, across
+     * every chat and every line on your account. Nothing is delivered, including a
+     * final courtesy message — to send one, set `override_optout: true` on that single
+     * request.
      */
     status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -492,7 +499,7 @@ export interface MessageContent {
   /**
    * iMessage effect to apply to this message (screen or bubble effect)
    */
-  effect?: MessagesAPI.MessageEffect;
+  effect?: ResourcesMessagesAPI.MessageEffect;
 
   /**
    * Optional idempotency key for this message. Use this to prevent duplicate sends
@@ -551,7 +558,7 @@ export interface MessageContent {
   /**
    * Reply to another message to create a threaded conversation
    */
-  reply_to?: MessagesAPI.ReplyTo;
+  reply_to?: ResourcesMessagesAPI.ReplyTo;
 }
 
 export namespace MessageContent {
@@ -745,6 +752,26 @@ export interface TextPart {
   value: string;
 
   /**
+   * @mention a chat participant (iMessage group chats only). Set to their handle —
+   * E.164 phone number or Apple ID email. `value` is the display text; use the bare
+   * name (`"Juan"`, not `"@Juan"`). The mentioned participant is notified even if
+   * the chat is muted. Falls back to plain text over SMS/RCS.
+   *
+   * By default the entire `value` renders as the mention; use `mention_range` to
+   * highlight only part of it.
+   */
+  mention?: string;
+
+  /**
+   * Optional character range `[start, end)` in `value` that renders as the `mention`
+   * highlight (e.g. just the name in `"Hey Kevin, can you look at this?"`). Requires
+   * `mention`. Without it, the entire `value` is highlighted. `start` is inclusive,
+   * `end` is exclusive. _Characters are measured as UTF-16 code units. Most
+   * characters count as 1; some emoji count as 2._
+   */
+  mention_range?: Array<number>;
+
+  /**
    * Optional array of text decorations applied to character ranges in the `value`
    * field (iMessage only).
    *
@@ -815,7 +842,7 @@ export namespace ChatCreateResponse {
     /**
      * A message that was sent (used in CreateChat and SendMessage responses)
      */
-    message: ChatsMessagesAPI.SentMessage;
+    message: MessagesAPI.SentMessage;
 
     /**
      * Messaging service type
@@ -849,15 +876,19 @@ export namespace ChatCreateResponse {
        * to react. `doc_url` deep-links to the relevant section.
        *
        * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
-       * `CANCEL`, `END`, or `QUIT`, and you should send nothing further on this chat.
-       * The keyword must be the whole trimmed message, never part of a longer one:
-       * `STOP` counts, `please stop` does not. Most keywords must match exactly,
-       * including case. `OPT OUT` is the exception — it matches in any casing, with or
-       * without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all count.
-       * It clears if they later send `START`, `OPTIN`, or `UNSTOP`, or if they keep
-       * replying on the chat — sustained two-way conversation is treated as a sign the
-       * stop keyword was a false positive. Suppressing sends to opted-out recipients is
-       * your responsibility — Linq surfaces the status but does not block the send.
+       * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
+       * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
+       * match exactly, including case. `OPT OUT` is the exception — it matches in any
+       * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
+       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
+       * or if they keep replying on the chat — sustained two-way conversation is treated
+       * as a sign the stop keyword was a false positive.
+       *
+       * Linq enforces this: while a recipient is opted out, every send to them is
+       * rejected with `403` (error code `2024`) before the message is queued, across
+       * every chat and every line on your account. Nothing is delivered, including a
+       * final courtesy message — to send one, set `override_optout: true` on that single
+       * request.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -1013,6 +1044,14 @@ export interface ChatCreateParams {
    * For individual chats, provide one recipient. For group chats, provide multiple.
    */
   to: Array<string>;
+
+  /**
+   * Send even though the recipient asked you to stop (`403`, error code `2024`).
+   * Applies to this request only: the opt-out stays in place, so the next send
+   * without this flag is rejected again. Every override is recorded against your API
+   * key.
+   */
+  override_optout?: boolean;
 }
 
 export interface ChatUpdateParams {
@@ -1055,6 +1094,14 @@ export interface ChatSendVoicememoParams {
   attachment_id?: string;
 
   /**
+   * Send even though the recipient asked you to stop (`403`, error code `2024`).
+   * Applies to this request only: the opt-out stays in place, so the next send
+   * without this flag is rejected again. Every override is recorded against your API
+   * key.
+   */
+  override_optout?: boolean;
+
+  /**
    * URL of the voice memo audio file. Must be a publicly accessible HTTPS URL.
    *
    * Either `voice_memo_url` or `attachment_id` must be provided, but not both.
@@ -1066,6 +1113,7 @@ Chats.Participants = Participants;
 Chats.Typing = Typing;
 Chats.Messages = Messages;
 Chats.Location = Location;
+Chats.Polls = Polls;
 
 export declare namespace Chats {
   export {
@@ -1107,5 +1155,12 @@ export declare namespace Chats {
     Location as Location,
     type GetChatLocationResponse as GetChatLocationResponse,
     type LocationRequestResponse as LocationRequestResponse,
+  };
+
+  export {
+    Polls as Polls,
+    type Poll as Poll,
+    type PollEnvelope as PollEnvelope,
+    type PollCreateParams as PollCreateParams,
   };
 }

@@ -32,4 +32,5 @@ export {
   type ParticipantAddParams,
   type ParticipantRemoveParams,
 } from './participants';
+export { Polls, type Poll, type PollEnvelope, type PollCreateParams } from './polls';
 export { Typing } from './typing';
