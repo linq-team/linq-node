@@ -16,20 +16,6 @@ import { path } from '../internal/utils/path';
  */
 export class PhoneNumbers extends APIResource {
   /**
-   * Returns all phone numbers assigned to the authenticated partner. Use this
-   * endpoint to discover which phone numbers are available for use as the `from`
-   * field when creating a chat, listing chats, or sending a voice memo.
-   *
-   * @example
-   * ```ts
-   * const phoneNumbers = await client.phoneNumbers.list();
-   * ```
-   */
-  list(options?: RequestOptions): APIPromise<PhoneNumberListResponse> {
-    return this._client.get('/v3/phone_numbers', options);
-  }
-
-  /**
    * Updates the forwarding number for a phone number. The forwarding number is where
    * inbound calls will be forwarded to.
    *
@@ -49,6 +35,20 @@ export class PhoneNumbers extends APIResource {
     options?: RequestOptions,
   ): APIPromise<PhoneNumberUpdateResponse> {
     return this._client.put(path`/v3/phone_numbers/${phoneNumberID}`, { body, ...options });
+  }
+
+  /**
+   * Returns all phone numbers assigned to the authenticated partner. Use this
+   * endpoint to discover which phone numbers are available for use as the `from`
+   * field when creating a chat, listing chats, or sending a voice memo.
+   *
+   * @example
+   * ```ts
+   * const phoneNumbers = await client.phoneNumbers.list();
+   * ```
+   */
+  list(options?: RequestOptions): APIPromise<PhoneNumberListResponse> {
+    return this._client.get('/v3/phone_numbers', options);
   }
 }
 
