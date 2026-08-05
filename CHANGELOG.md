@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.34.0](https://github.com/linq-team/linq-node/compare/v0.33.1...v0.34.0) (2026-08-05)
+
+
+### Features
+
+* add blocked handles api for message filtering ([6f0dd0b](https://github.com/linq-team/linq-node/commit/6f0dd0ba6bc16a9e0e5ef531e70753b49a944aee))
+
 ## [0.33.1](https://github.com/linq-team/linq-node/compare/v0.33.0...v0.33.1) (2026-08-04)
 
 
