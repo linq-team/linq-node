@@ -190,9 +190,10 @@ export namespace MessageEventV2 {
        * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
        * match exactly, including case. `OPT OUT` is the exception — it matches in any
        * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
-       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
-       * or if they keep replying on the chat — sustained two-way conversation is treated
-       * as a sign the stop keyword was a false positive.
+       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
+       * these match in any casing — or if they keep replying on the chat, since
+       * sustained two-way conversation is treated as a sign the stop keyword was a false
+       * positive.
        *
        * Linq enforces this: while a recipient is opted out, every send to them is
        * rejected with `403` (error code `2024`) before the message is queued, across
@@ -1206,9 +1207,10 @@ export namespace MessageEditedWebhookEvent {
          * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
          * match exactly, including case. `OPT OUT` is the exception — it matches in any
          * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
-         * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
-         * or if they keep replying on the chat — sustained two-way conversation is treated
-         * as a sign the stop keyword was a false positive.
+         * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
+         * these match in any casing — or if they keep replying on the chat, since
+         * sustained two-way conversation is treated as a sign the stop keyword was a false
+         * positive.
          *
          * Linq enforces this: while a recipient is opted out, every send to them is
          * rejected with `403` (error code `2024`) before the message is queued, across
@@ -1643,9 +1645,10 @@ export namespace ChatCreatedWebhookEvent {
        * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
        * match exactly, including case. `OPT OUT` is the exception — it matches in any
        * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
-       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
-       * or if they keep replying on the chat — sustained two-way conversation is treated
-       * as a sign the stop keyword was a false positive.
+       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
+       * these match in any casing — or if they keep replying on the chat, since
+       * sustained two-way conversation is treated as a sign the stop keyword was a false
+       * positive.
        *
        * Linq enforces this: while a recipient is opted out, every send to them is
        * rejected with `403` (error code `2024`) before the message is queued, across
