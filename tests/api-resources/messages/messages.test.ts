@@ -11,7 +11,7 @@ describe('resource messages', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.messages.create({
-      message: { parts: [{ type: 'text', value: 'Hi! Thanks for reaching out — how can we help?' }] },
+      message: {},
       to: ['+14155559876'],
     });
     const rawResponse = await responsePromise.asResponse();
@@ -27,10 +27,19 @@ describe('resource messages', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.messages.create({
       message: {
+        action: {
+          action: 'attach_card',
+          experience: 'agentcard',
+          params: { foo: 'bar' },
+        },
+        effect: { name: 'confetti', type: 'screen' },
+        idempotency_key: 'msg-abc123xyz',
         parts: [
           {
             type: 'text',
             value: 'Hi! Thanks for reaching out — how can we help?',
+            mention: '+14155551234',
+            mention_range: [4, 9],
             text_decorations: [
               {
                 range: [0, 5],
@@ -45,43 +54,15 @@ describe('resource messages', () => {
             ],
           },
         ],
-        effect: { name: 'confetti', type: 'screen' },
-        idempotency_key: 'msg-abc123xyz',
         preferred_service: 'iMessage',
         reply_to: { message_id: '550e8400-e29b-41d4-a716-446655440000', part_index: 0 },
       },
       to: ['+14155559876'],
       continuation_message: { text: "Hi, it's Acme Support reaching you from a new number." },
+      exclude_from: ['+12052535597'],
+      override_optout: false,
       'Idempotency-Key': 'send-abc123xyz',
     });
-  });
-
-  // Mock server tests are disabled
-  test.skip('listMessagesThread', async () => {
-    const responsePromise = client.messages.listMessagesThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('listMessagesThread: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.messages.listMessagesThread(
-        '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
-        {
-          cursor: 'cursor',
-          limit: 1,
-          order: 'asc',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(LinqAPIV3.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -94,6 +75,28 @@ describe('resource messages', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
+      text: 'This is the edited message content',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: required and optional params', async () => {
+    const response = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
+      text: 'This is the edited message content',
+      part_index: 0,
+    });
   });
 
   // Mock server tests are disabled
@@ -134,10 +137,8 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: only required params', async () => {
-    const responsePromise = client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
-      text: 'This is the edited message content',
-    });
+  test.skip('listMessagesThread', async () => {
+    const responsePromise = client.messages.listMessagesThread('69a37c7d-af4f-4b5e-af42-e28e98ce873a');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -148,11 +149,19 @@ describe('resource messages', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.messages.update('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
-      text: 'This is the edited message content',
-      part_index: 0,
-    });
+  test.skip('listMessagesThread: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.messages.listMessagesThread(
+        '69a37c7d-af4f-4b5e-af42-e28e98ce873a',
+        {
+          cursor: 'cursor',
+          limit: 1,
+          order: 'asc',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(LinqAPIV3.NotFoundError);
   });
 
   // Mock server tests are disabled
