@@ -393,9 +393,9 @@ export namespace Chat {
      * match exactly, including case. `OPT OUT` is the exception — it matches in any
      * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
      * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
-     * these match in any casing — or if they keep replying on the chat, since
-     * sustained two-way conversation is treated as a sign the stop keyword was a false
-     * positive.
+     * these match in any casing — or if they keep replying — replies in any
+     * conversation with you count, the same way the block does — since sustained
+     * two-way conversation is treated as a sign the stop keyword was a false positive.
      *
      * Linq enforces this: while a recipient is opted out, every send to them is
      * rejected with `403` (error code `2024`) before the message is queued, across
@@ -882,9 +882,9 @@ export namespace ChatCreateResponse {
        * match exactly, including case. `OPT OUT` is the exception — it matches in any
        * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
        * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
-       * these match in any casing — or if they keep replying on the chat, since
-       * sustained two-way conversation is treated as a sign the stop keyword was a false
-       * positive.
+       * these match in any casing — or if they keep replying — replies in any
+       * conversation with you count, the same way the block does — since sustained
+       * two-way conversation is treated as a sign the stop keyword was a false positive.
        *
        * Linq enforces this: while a recipient is opted out, every send to them is
        * rejected with `403` (error code `2024`) before the message is queued, across
