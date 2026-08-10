@@ -38,6 +38,14 @@ import {
   AvailableNumberRetrieveResponse,
 } from './resources/available-number';
 import {
+  BlockedHandleBlockParams,
+  BlockedHandleBlockResponse,
+  BlockedHandleEntry,
+  BlockedHandleListResponse,
+  BlockedHandleUnblockParams,
+  BlockedHandles,
+} from './resources/blocked-handles';
+import {
   Capability,
   CapabilityCheckIMessageParams,
   CapabilityCheckRCSParams,
@@ -52,21 +60,18 @@ import {
   ContactCardUpdateParams,
   SetContactCard,
 } from './resources/contact-card';
+import { ExperienceListResponse, ExperienceRetrieveResponse, Experiences } from './resources/experiences';
 import {
-  Message,
-  MessageAddReactionParams,
-  MessageAddReactionResponse,
-  MessageCreateParams,
-  MessageCreateResponse,
-  MessageEffect,
-  MessageListMessagesThreadParams,
-  MessageUpdateAppCardParams,
-  MessageUpdateAppCardResponse,
-  MessageUpdateParams,
-  Messages,
-  MessagesListMessagesPagination,
-  ReplyTo,
-} from './resources/messages';
+  PaymentHandleConnection,
+  PaymentHandleVerifyParams,
+  PaymentHandles,
+} from './resources/payment-handles';
+import {
+  PaymentProvider,
+  PaymentProviderConnectParams,
+  PaymentProviderConnectResponse,
+  PaymentProviders,
+} from './resources/payment-providers';
 import {
   PaymentRequest,
   PaymentRequestCreateParams,
@@ -74,6 +79,7 @@ import {
   PaymentRequestListResponse,
   PaymentRequests,
 } from './resources/payment-requests';
+import { Payment, PaymentCreateParams, PaymentCredentialsResponse, Payments } from './resources/payments';
 import {
   PhoneNumberListResponse,
   PhoneNumberUpdateParams,
@@ -135,6 +141,21 @@ import {
   MessageContent,
   TextPart,
 } from './resources/chats/chats';
+import {
+  Message,
+  MessageAddReactionParams,
+  MessageAddReactionResponse,
+  MessageCreateParams,
+  MessageCreateResponse,
+  MessageEffect,
+  MessageListMessagesThreadParams,
+  MessageUpdateAppCardParams,
+  MessageUpdateAppCardResponse,
+  MessageUpdateParams,
+  Messages,
+  MessagesListMessagesPagination,
+  ReplyTo,
+} from './resources/messages/messages';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -1192,7 +1213,7 @@ export class LinqAPIV3 {
    *
    * ## Connected accounts (Stripe Standard, direct charges)
    *
-   * Agent Pay runs on **Stripe Connect Standard accounts** using **direct
+   * Payments run on **Stripe Connect Standard accounts** using **direct
    * charges**: the charge is created on *your* connected account and **you are
    * the merchant of record**. That means the money, the payout schedule, the
    * customer relationship, and the compliance surface are all yours — Linq
@@ -1275,7 +1296,7 @@ export class LinqAPIV3 {
    * no-install checkout sheet. Everywhere else (Android, desktop, iPhones
    * without the App Clip yet) the same URL opens the web checkout, so the link
    * always works. The App Clip experience for your payment links is registered
-   * automatically by Linq and refreshed whenever you update your Agent Pay
+   * automatically by Linq and refreshed whenever you update your payments
    * branding; a newly registered experience can take up to ~24 hours to
    * activate on Apple's side, during which links open the web checkout.
    *
@@ -1288,6 +1309,43 @@ export class LinqAPIV3 {
    *
    */
   paymentRequests: API.PaymentRequests = new API.PaymentRequests(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentProviders: API.PaymentProviders = new API.PaymentProviders(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentHandles: API.PaymentHandles = new API.PaymentHandles(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  payments: API.Payments = new API.Payments(this);
+  /**
+   * Block handles — phone numbers, email addresses, SMS short codes, or
+   * sender IDs. Inbound messages from a blocked handle are dropped before
+   * they reach your webhooks, and direct sends to a blocked handle are
+   * rejected with `403` (error code `2026`). Group sends that include
+   * unblocked members are not restricted.
+   *
+   */
+  blockedHandles: API.BlockedHandles = new API.BlockedHandles(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  experiences: API.Experiences = new API.Experiences(this);
   /**
    * Webhook Subscriptions allow you to receive real-time notifications when events
    * occur on your account.
@@ -1574,6 +1632,11 @@ LinqAPIV3.Phonenumbers = Phonenumbers;
 LinqAPIV3.PhoneNumbers = PhoneNumbers;
 LinqAPIV3.AvailableNumber = AvailableNumber;
 LinqAPIV3.PaymentRequests = PaymentRequests;
+LinqAPIV3.PaymentProviders = PaymentProviders;
+LinqAPIV3.PaymentHandles = PaymentHandles;
+LinqAPIV3.Payments = Payments;
+LinqAPIV3.BlockedHandles = BlockedHandles;
+LinqAPIV3.Experiences = Experiences;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Capability = Capability;
@@ -1608,8 +1671,8 @@ export declare namespace LinqAPIV3 {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatListChatsParams as ChatListChatsParams,
     type ChatUpdateParams as ChatUpdateParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1623,9 +1686,9 @@ export declare namespace LinqAPIV3 {
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
-    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageUpdateParams as MessageUpdateParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
   };
 
@@ -1658,6 +1721,41 @@ export declare namespace LinqAPIV3 {
     type PaymentRequestListResponse as PaymentRequestListResponse,
     type PaymentRequestCreateParams as PaymentRequestCreateParams,
     type PaymentRequestListParams as PaymentRequestListParams,
+  };
+
+  export {
+    PaymentProviders as PaymentProviders,
+    type PaymentProvider as PaymentProvider,
+    type PaymentProviderConnectResponse as PaymentProviderConnectResponse,
+    type PaymentProviderConnectParams as PaymentProviderConnectParams,
+  };
+
+  export {
+    PaymentHandles as PaymentHandles,
+    type PaymentHandleConnection as PaymentHandleConnection,
+    type PaymentHandleVerifyParams as PaymentHandleVerifyParams,
+  };
+
+  export {
+    Payments as Payments,
+    type Payment as Payment,
+    type PaymentCredentialsResponse as PaymentCredentialsResponse,
+    type PaymentCreateParams as PaymentCreateParams,
+  };
+
+  export {
+    BlockedHandles as BlockedHandles,
+    type BlockedHandleEntry as BlockedHandleEntry,
+    type BlockedHandleListResponse as BlockedHandleListResponse,
+    type BlockedHandleBlockResponse as BlockedHandleBlockResponse,
+    type BlockedHandleBlockParams as BlockedHandleBlockParams,
+    type BlockedHandleUnblockParams as BlockedHandleUnblockParams,
+  };
+
+  export {
+    Experiences as Experiences,
+    type ExperienceRetrieveResponse as ExperienceRetrieveResponse,
+    type ExperienceListResponse as ExperienceListResponse,
   };
 
   export {
@@ -1716,8 +1814,8 @@ export declare namespace LinqAPIV3 {
     ContactCard as ContactCard,
     type SetContactCard as SetContactCard,
     type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
-    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardCreateParams as ContactCardCreateParams,
+    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 
