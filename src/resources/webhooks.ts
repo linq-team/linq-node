@@ -1040,14 +1040,31 @@ export namespace MessageFailedWebhookEvent {
     chat_id?: string;
 
     /**
+     * Opaque diagnostic code identifying the specific failure class within `code`.
+     * Values are not enumerated and may change without notice — log it and include it
+     * in support requests, but do not branch on it.
+     */
+    detail_code?: number | null;
+
+    /**
      * Message identifier (UUID)
      */
     message_id?: string;
 
     /**
+     * Preferred messaging service type. Includes "auto" for default fallback behavior.
+     */
+    preferred_service?: 'iMessage' | 'SMS' | 'RCS' | 'auto' | null;
+
+    /**
      * Human-readable description of the failure
      */
     reason?: string;
+
+    /**
+     * Messaging service type
+     */
+    service?: Shared.ServiceType | null;
   }
 }
 
