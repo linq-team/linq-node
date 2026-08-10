@@ -218,6 +218,20 @@ Methods:
 - <code title="post /v3/payments/{paymentId}/cancel">client.payments.<a href="./src/resources/payments.ts">cancel</a>(paymentID) -> Payment</code>
 - <code title="get /v3/payments/{paymentId}/credentials">client.payments.<a href="./src/resources/payments.ts">credentials</a>(paymentID) -> PaymentCredentialsResponse</code>
 
+# BlockedHandles
+
+Types:
+
+- <code><a href="./src/resources/blocked-handles.ts">BlockedHandleEntry</a></code>
+- <code><a href="./src/resources/blocked-handles.ts">BlockedHandleListResponse</a></code>
+- <code><a href="./src/resources/blocked-handles.ts">BlockedHandleBlockResponse</a></code>
+
+Methods:
+
+- <code title="get /v3/blocked_handles">client.blockedHandles.<a href="./src/resources/blocked-handles.ts">list</a>() -> BlockedHandleListResponse</code>
+- <code title="post /v3/blocked_handles">client.blockedHandles.<a href="./src/resources/blocked-handles.ts">block</a>({ ...params }) -> BlockedHandleBlockResponse</code>
+- <code title="delete /v3/blocked_handles">client.blockedHandles.<a href="./src/resources/blocked-handles.ts">unblock</a>({ ...params }) -> void</code>
+
 # Experiences
 
 Types:

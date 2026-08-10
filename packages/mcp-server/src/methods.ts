@@ -299,6 +299,24 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/payments/{paymentId}/credentials',
   },
   {
+    clientCallName: 'client.blockedHandles.list',
+    fullyQualifiedName: 'blockedHandles.list',
+    httpMethod: 'get',
+    httpPath: '/v3/blocked_handles',
+  },
+  {
+    clientCallName: 'client.blockedHandles.block',
+    fullyQualifiedName: 'blockedHandles.block',
+    httpMethod: 'post',
+    httpPath: '/v3/blocked_handles',
+  },
+  {
+    clientCallName: 'client.blockedHandles.unblock',
+    fullyQualifiedName: 'blockedHandles.unblock',
+    httpMethod: 'delete',
+    httpPath: '/v3/blocked_handles',
+  },
+  {
     clientCallName: 'client.experiences.retrieve',
     fullyQualifiedName: 'experiences.retrieve',
     httpMethod: 'get',
