@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.35.1](https://github.com/linq-team/linq-node/compare/v0.35.0...v0.35.1) (2026-08-10)
+
+
+### Chores
+
+* reorder sdk code examples by language ([7fdd4a2](https://github.com/linq-team/linq-node/commit/7fdd4a2488c2d022bc744ba499bfe7441e44894c))
+
 ## [0.35.0](https://github.com/linq-team/linq-node/compare/v0.34.0...v0.35.0) (2026-08-10)
 
 
