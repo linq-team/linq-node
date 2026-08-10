@@ -103,6 +103,17 @@ export interface MessageEventV2 {
   read_at?: string | null;
 
   /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   reply_to?: MessageEventV2.ReplyTo | null;
@@ -173,6 +184,22 @@ export namespace MessageEventV2 {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+       * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
+       * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
+       * match exactly, including case. `OPT OUT` is the exception — it matches in any
+       * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
+       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
+       * these match in any casing — or if they keep replying — replies in any
+       * conversation with you count, the same way the block does — since sustained
+       * two-way conversation is treated as a sign the stop keyword was a false positive.
+       *
+       * Linq enforces this: while a recipient is opted out, every send to them is
+       * rejected with `403` (error code `2024`) before the message is queued, across
+       * every chat and every line on your account. Nothing is delivered, including a
+       * final courtesy message — to send one, set `override_optout: true` on that single
+       * request.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -344,6 +371,17 @@ export interface MessagePayload {
    * When the message was read
    */
   read_at?: string | null;
+
+  /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
 
   /**
    * Reference to the message this is replying to
@@ -935,6 +973,9 @@ export interface MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   data: MessageFailedWebhookEvent.Data;
 
@@ -975,10 +1016,16 @@ export namespace MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   export interface Data {
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     code: number;
 
@@ -1157,6 +1204,22 @@ export namespace MessageEditedWebhookEvent {
          * Current health bucket for the chat. See the
          * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
          * to react. `doc_url` deep-links to the relevant section.
+         *
+         * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+         * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
+         * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
+         * match exactly, including case. `OPT OUT` is the exception — it matches in any
+         * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
+         * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
+         * these match in any casing — or if they keep replying — replies in any
+         * conversation with you count, the same way the block does — since sustained
+         * two-way conversation is treated as a sign the stop keyword was a false positive.
+         *
+         * Linq enforces this: while a recipient is opted out, every send to them is
+         * rejected with `403` (error code `2024`) before the message is queued, across
+         * every chat and every line on your account. Nothing is delivered, including a
+         * final courtesy message — to send one, set `override_optout: true` on that single
+         * request.
          */
         status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -1579,6 +1642,22 @@ export namespace ChatCreatedWebhookEvent {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
+       * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
+       * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
+       * match exactly, including case. `OPT OUT` is the exception — it matches in any
+       * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
+       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP` —
+       * these match in any casing — or if they keep replying — replies in any
+       * conversation with you count, the same way the block does — since sustained
+       * two-way conversation is treated as a sign the stop keyword was a false positive.
+       *
+       * Linq enforces this: while a recipient is opted out, every send to them is
+       * rejected with `403` (error code `2024`) before the message is queued, across
+       * every chat and every line on your account. Nothing is delivered, including a
+       * final courtesy message — to send one, set `override_optout: true` on that single
+       * request.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -1822,7 +1901,10 @@ export namespace ChatGroupNameUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
@@ -1899,7 +1981,10 @@ export namespace ChatGroupIconUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
@@ -2072,6 +2157,15 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'message.edited'
     | 'reaction.added'
     | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
     | 'participant.added'
     | 'participant.removed'
     | 'chat.created'
