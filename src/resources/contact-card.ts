@@ -15,31 +15,15 @@ import { RequestOptions } from '../internal/request-options';
  */
 export class ContactCard extends APIResource {
   /**
-   * Returns the contact card for a specific phone number, or all contact cards for
-   * the authenticated partner if no `phone_number` is provided.
-   *
-   * @example
-   * ```ts
-   * const contactCard = await client.contactCard.retrieve();
-   * ```
-   */
-  retrieve(
-    query: ContactCardRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ContactCardRetrieveResponse> {
-    return this._client.get('/v3/contact_card', { query, ...options });
-  }
-
-  /**
    * Creates a contact card for a phone number. This endpoint is intended for
    * initial, one-time setup only.
    *
-   * The contact card is stored in an inactive state first. Once it's applied
-   * successfully, it is activated and `is_active` is returned as `true`. On failure,
-   * `is_active` is `false`.
+   * If setup does not complete, the response is `500` (`2022`) — call this endpoint
+   * again.
    *
-   * **Note:** To update an existing contact card after setup, use
-   * `PATCH /v3/contact_card` instead.
+   * **Note:** once a card is active, this endpoint returns `409` (`2014`) so an
+   * existing card is never overwritten by accident. Use `PATCH /v3/contact_card` to
+   * change it.
    *
    * @example
    * ```ts
@@ -57,13 +41,30 @@ export class ContactCard extends APIResource {
   }
 
   /**
-   * Partially updates an existing active contact card for a phone number.
+   * Returns the contact card for a specific phone number, or all contact cards for
+   * the authenticated partner if no `phone_number` is provided.
    *
-   * Fetches the current active contact card and merges the provided fields. Only
-   * fields present in the request body are updated; omitted fields retain their
-   * existing values.
+   * @example
+   * ```ts
+   * const contactCard = await client.contactCard.retrieve();
+   * ```
+   */
+  retrieve(
+    query: ContactCardRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ContactCardRetrieveResponse> {
+    return this._client.get('/v3/contact_card', { query, ...options });
+  }
+
+  /**
+   * Partially updates the contact card for a phone number.
    *
-   * Requires an active contact card to exist for the phone number.
+   * Fetches the current contact card and merges the provided fields. Only fields
+   * present in the request body are updated; omitted fields retain their existing
+   * values.
+   *
+   * If the update does not complete, the response is `500` (`2022`) — call this
+   * endpoint again.
    *
    * @example
    * ```ts
@@ -127,14 +128,6 @@ export namespace ContactCardRetrieveResponse {
   }
 }
 
-export interface ContactCardRetrieveParams {
-  /**
-   * E.164 phone number to filter by. If omitted, all my cards for the partner are
-   * returned.
-   */
-  phone_number?: string;
-}
-
 export interface ContactCardCreateParams {
   /**
    * First name for the contact card. Required.
@@ -155,6 +148,14 @@ export interface ContactCardCreateParams {
    * Last name for the contact card. Optional.
    */
   last_name?: string;
+}
+
+export interface ContactCardRetrieveParams {
+  /**
+   * E.164 phone number to filter by. If omitted, all my cards for the partner are
+   * returned.
+   */
+  phone_number?: string;
 }
 
 export interface ContactCardUpdateParams {
@@ -183,8 +184,8 @@ export declare namespace ContactCard {
   export {
     type SetContactCard as SetContactCard,
     type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
-    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardCreateParams as ContactCardCreateParams,
+    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 }

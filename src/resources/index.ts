@@ -14,6 +14,14 @@ export {
   type AvailableNumberRetrieveParams,
 } from './available-number';
 export {
+  BlockedHandles,
+  type BlockedHandleEntry,
+  type BlockedHandleListResponse,
+  type BlockedHandleBlockResponse,
+  type BlockedHandleBlockParams,
+  type BlockedHandleUnblockParams,
+} from './blocked-handles';
+export {
   Capability,
   type HandleCheck,
   type HandleCheckResponse,
@@ -32,8 +40,8 @@ export {
   type ChatLeaveChatResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
-  type ChatListChatsParams,
   type ChatUpdateParams,
+  type ChatListChatsParams,
   type ChatSendVoicememoParams,
   type ChatsListChatsPagination,
 } from './chats/chats';
@@ -41,10 +49,11 @@ export {
   ContactCard,
   type SetContactCard,
   type ContactCardRetrieveResponse,
-  type ContactCardRetrieveParams,
   type ContactCardCreateParams,
+  type ContactCardRetrieveParams,
   type ContactCardUpdateParams,
 } from './contact-card';
+export { Experiences, type ExperienceRetrieveResponse, type ExperienceListResponse } from './experiences';
 export {
   Messages,
   type Message,
@@ -54,12 +63,23 @@ export {
   type MessageAddReactionResponse,
   type MessageUpdateAppCardResponse,
   type MessageCreateParams,
-  type MessageListMessagesThreadParams,
-  type MessageAddReactionParams,
   type MessageUpdateParams,
+  type MessageAddReactionParams,
+  type MessageListMessagesThreadParams,
   type MessageUpdateAppCardParams,
   type MessagesListMessagesPagination,
-} from './messages';
+} from './messages/messages';
+export {
+  PaymentHandles,
+  type PaymentHandleConnection,
+  type PaymentHandleVerifyParams,
+} from './payment-handles';
+export {
+  PaymentProviders,
+  type PaymentProvider,
+  type PaymentProviderConnectResponse,
+  type PaymentProviderConnectParams,
+} from './payment-providers';
 export {
   PaymentRequests,
   type PaymentRequest,
@@ -67,6 +87,12 @@ export {
   type PaymentRequestCreateParams,
   type PaymentRequestListParams,
 } from './payment-requests';
+export {
+  Payments,
+  type Payment,
+  type PaymentCredentialsResponse,
+  type PaymentCreateParams,
+} from './payments';
 export {
   PhoneNumbers,
   type PhoneNumberUpdateResponse,

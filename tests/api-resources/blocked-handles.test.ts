@@ -7,10 +7,10 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource contactCard', () => {
+describe('resource blockedHandles', () => {
   // Mock server tests are disabled
-  test.skip('create: only required params', async () => {
-    const responsePromise = client.contactCard.create({ first_name: 'Acme', phone_number: '+15551234567' });
+  test.skip('list', async () => {
+    const responsePromise = client.blockedHandles.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,18 +21,8 @@ describe('resource contactCard', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('create: required and optional params', async () => {
-    const response = await client.contactCard.create({
-      first_name: 'Acme',
-      phone_number: '+15551234567',
-      image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',
-      last_name: 'Support',
-    });
-  });
-
-  // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.contactCard.retrieve();
+  test.skip('block: only required params', async () => {
+    const responsePromise = client.blockedHandles.block({ handle: '+12025551234' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,16 +33,13 @@ describe('resource contactCard', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.contactCard.retrieve({ phone_number: '+15551234567' }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(LinqAPIV3.NotFoundError);
+  test.skip('block: required and optional params', async () => {
+    const response = await client.blockedHandles.block({ handle: '+12025551234', reason: 'spam' });
   });
 
   // Mock server tests are disabled
-  test.skip('update: only required params', async () => {
-    const responsePromise = client.contactCard.update({ phone_number: '+15551234567' });
+  test.skip('unblock: only required params', async () => {
+    const responsePromise = client.blockedHandles.unblock({ handle: '+12025551234' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -63,12 +50,7 @@ describe('resource contactCard', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.contactCard.update({
-      phone_number: '+15551234567',
-      first_name: 'John',
-      image_url: 'https://cdn.linqapp.com/contact-card/example.jpg',
-      last_name: 'Doe',
-    });
+  test.skip('unblock: required and optional params', async () => {
+    const response = await client.blockedHandles.unblock({ handle: '+12025551234' });
   });
 });
