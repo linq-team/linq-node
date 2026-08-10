@@ -14,6 +14,14 @@ export {
   type AvailableNumberRetrieveParams,
 } from './available-number';
 export {
+  BlockedHandles,
+  type BlockedHandleEntry,
+  type BlockedHandleListResponse,
+  type BlockedHandleBlockResponse,
+  type BlockedHandleBlockParams,
+  type BlockedHandleUnblockParams,
+} from './blocked-handles';
+export {
   Capability,
   type HandleCheck,
   type HandleCheckResponse,

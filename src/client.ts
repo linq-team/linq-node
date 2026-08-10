@@ -38,6 +38,14 @@ import {
   AvailableNumberRetrieveResponse,
 } from './resources/available-number';
 import {
+  BlockedHandleBlockParams,
+  BlockedHandleBlockResponse,
+  BlockedHandleEntry,
+  BlockedHandleListResponse,
+  BlockedHandleUnblockParams,
+  BlockedHandles,
+} from './resources/blocked-handles';
+import {
   Capability,
   CapabilityCheckIMessageParams,
   CapabilityCheckRCSParams,
@@ -1323,6 +1331,15 @@ export class LinqAPIV3 {
    */
   payments: API.Payments = new API.Payments(this);
   /**
+   * Block handles — phone numbers, email addresses, SMS short codes, or
+   * sender IDs. Inbound messages from a blocked handle are dropped before
+   * they reach your webhooks, and direct sends to a blocked handle are
+   * rejected with `403` (error code `2026`). Group sends that include
+   * unblocked members are not restricted.
+   *
+   */
+  blockedHandles: API.BlockedHandles = new API.BlockedHandles(this);
+  /**
    * Let an agent pay on a customer's behalf with a single-use virtual card.
    * Connect a customer once, then create a payment — a virtual card is minted
    * scoped to that purchase and the card details are handed back for checkout.
@@ -1618,6 +1635,7 @@ LinqAPIV3.PaymentRequests = PaymentRequests;
 LinqAPIV3.PaymentProviders = PaymentProviders;
 LinqAPIV3.PaymentHandles = PaymentHandles;
 LinqAPIV3.Payments = Payments;
+LinqAPIV3.BlockedHandles = BlockedHandles;
 LinqAPIV3.Experiences = Experiences;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
@@ -1723,6 +1741,15 @@ export declare namespace LinqAPIV3 {
     type Payment as Payment,
     type PaymentCredentialsResponse as PaymentCredentialsResponse,
     type PaymentCreateParams as PaymentCreateParams,
+  };
+
+  export {
+    BlockedHandles as BlockedHandles,
+    type BlockedHandleEntry as BlockedHandleEntry,
+    type BlockedHandleListResponse as BlockedHandleListResponse,
+    type BlockedHandleBlockResponse as BlockedHandleBlockResponse,
+    type BlockedHandleBlockParams as BlockedHandleBlockParams,
+    type BlockedHandleUnblockParams as BlockedHandleUnblockParams,
   };
 
   export {

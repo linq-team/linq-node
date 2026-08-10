@@ -847,6 +847,16 @@ export interface MessageUpdateAppCardParams {
   layout: MessageUpdateAppCardParams.Layout;
 
   /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  action?: MessageUpdateAppCardParams.Action;
+
+  /**
    * Text shown on surfaces that cannot render the card (notifications, lock screen).
    * Defaults to the caption when omitted.
    */
@@ -867,6 +877,8 @@ export interface MessageUpdateAppCardParams {
 
   /**
    * URL the recipient's app opens when they tap the updated card.
+   *
+   * Mutually exclusive with `action` and `raw_payload_data`.
    */
   url?: string;
 }
@@ -929,6 +941,35 @@ export namespace MessageUpdateAppCardParams {
      * Label shown below `trailing_caption`, on the right.
      */
     trailing_subcaption?: string;
+  }
+
+  /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  export interface Action {
+    /**
+     * Which of its actions, e.g. `attach_card`.
+     */
+    action: string;
+
+    /**
+     * The experience to invoke, e.g. `agentcard`.
+     */
+    experience: string;
+
+    /**
+     * Values for the fields this action exposes. Keys are exactly the field names
+     * listed for the action — no mapping, no nesting.
+     *
+     * Display copy only, except a `url`-type field — that value sets the destination,
+     * and must be an absolute `https` URL.
+     */
+    params?: { [key: string]: unknown };
   }
 }
 

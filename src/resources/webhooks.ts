@@ -185,14 +185,14 @@ export namespace MessageEventV2 {
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
        *
-       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
-       * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
-       * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
-       * match exactly, including case. `OPT OUT` is the exception — it matches in any
-       * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
-       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
-       * or if they keep replying on the chat — sustained two-way conversation is treated
-       * as a sign the stop keyword was a false positive.
+       * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+       * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+       * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+       * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+       * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+       * count. It clears as soon as they reply again: any later message from them that
+       * is not itself an opt-out keyword opts them back in immediately — a reply in any
+       * conversation with you counts, the same way the block does.
        *
        * Linq enforces this: while a recipient is opted out, every send to them is
        * rejected with `403` (error code `2024`) before the message is queued, across
@@ -1021,7 +1021,10 @@ export namespace MessageFailedWebhookEvent {
    */
   export interface Data {
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     code: number;
 
@@ -1036,14 +1039,31 @@ export namespace MessageFailedWebhookEvent {
     chat_id?: string;
 
     /**
+     * Opaque diagnostic code identifying the specific failure class within `code`.
+     * Values are not enumerated and may change without notice — log it and include it
+     * in support requests, but do not branch on it.
+     */
+    detail_code?: number | null;
+
+    /**
      * Message identifier (UUID)
      */
     message_id?: string;
 
     /**
+     * Preferred messaging service type. Includes "auto" for default fallback behavior.
+     */
+    preferred_service?: 'iMessage' | 'SMS' | 'RCS' | 'auto' | null;
+
+    /**
      * Human-readable description of the failure
      */
     reason?: string;
+
+    /**
+     * Messaging service type
+     */
+    service?: Shared.ServiceType | null;
   }
 }
 
@@ -1201,14 +1221,14 @@ export namespace MessageEditedWebhookEvent {
          * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
          * to react. `doc_url` deep-links to the relevant section.
          *
-         * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
-         * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
-         * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
-         * match exactly, including case. `OPT OUT` is the exception — it matches in any
-         * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
-         * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
-         * or if they keep replying on the chat — sustained two-way conversation is treated
-         * as a sign the stop keyword was a false positive.
+         * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+         * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+         * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+         * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+         * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+         * count. It clears as soon as they reply again: any later message from them that
+         * is not itself an opt-out keyword opts them back in immediately — a reply in any
+         * conversation with you counts, the same way the block does.
          *
          * Linq enforces this: while a recipient is opted out, every send to them is
          * rejected with `403` (error code `2024`) before the message is queued, across
@@ -1638,14 +1658,14 @@ export namespace ChatCreatedWebhookEvent {
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
        *
-       * `OPTED_OUT` is terminal — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`,
-       * `CANCEL`, `END`, or `QUIT`. The keyword must be the whole trimmed message, never
-       * part of a longer one: `STOP` counts, `please stop` does not. Most keywords must
-       * match exactly, including case. `OPT OUT` is the exception — it matches in any
-       * casing, with or without the space or a hyphen, so `opt out`, `Opt-Out` and
-       * `optout` all count. It clears if they later send `START`, `OPTIN`, or `UNSTOP`,
-       * or if they keep replying on the chat — sustained two-way conversation is treated
-       * as a sign the stop keyword was a false positive.
+       * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+       * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+       * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+       * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+       * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+       * count. It clears as soon as they reply again: any later message from them that
+       * is not itself an opt-out keyword opts them back in immediately — a reply in any
+       * conversation with you counts, the same way the block does.
        *
        * Linq enforces this: while a recipient is opted out, every send to them is
        * rejected with `403` (error code `2024`) before the message is queued, across
@@ -1895,7 +1915,10 @@ export namespace ChatGroupNameUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
@@ -1972,7 +1995,10 @@ export namespace ChatGroupIconUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
