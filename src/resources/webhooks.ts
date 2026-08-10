@@ -1022,7 +1022,10 @@ export namespace MessageFailedWebhookEvent {
    */
   export interface Data {
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     code: number;
 
@@ -1898,7 +1901,10 @@ export namespace ChatGroupNameUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
@@ -1975,7 +1981,10 @@ export namespace ChatGroupIconUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or 4008; the group
+     * update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
