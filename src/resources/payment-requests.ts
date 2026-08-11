@@ -124,8 +124,8 @@ import { path } from '../internal/utils/path';
  * POST /v3/chats/{chatId}/messages
  * {
  *   "message": {
- *     "agentkit": {
- *       "experience": "agentpay",
+ *     "experience": {
+ *       "name": "agentpay",
  *       "action": "request_payment",
  *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
  *     }

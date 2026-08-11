@@ -1312,8 +1312,8 @@ export class LinqAPIV3 {
    * POST /v3/chats/{chatId}/messages
    * {
    *   "message": {
-   *     "agentkit": {
-   *       "experience": "agentpay",
+   *     "experience": {
+   *       "name": "agentpay",
    *       "action": "request_payment",
    *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
    *     }
@@ -1382,8 +1382,8 @@ export class LinqAPIV3 {
    * POST /v3/chats/{chatId}/messages
    * {
    *   "message": {
-   *     "agentkit": {
-   *       "experience": "agentpay",
+   *     "experience": {
+   *       "name": "agentpay",
    *       "action": "request_payment",
    *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
    *     }
@@ -1391,11 +1391,11 @@ export class LinqAPIV3 {
    * }
    * ```
    *
-   * The key is `agentkit` — the app the card renders in. Nested under it is
-   * the experience hosted by that app, the action you're invoking on it, and
-   * that action's params. A card **is** the whole message on Apple's side, so
-   * a message carries either `agentkit` or `parts`, never both, and an action
-   * goes to exactly one recipient.
+   * The key is `experience` — what you're invoking. Nested under it is its
+   * `name`, the action you're invoking on it, and that action's params. A card
+   * **is** the whole message on Apple's side, so a message carries either
+   * `experience` or `parts`, never both, and an action goes to exactly one
+   * recipient.
    *
    * ## What you can invoke
    *

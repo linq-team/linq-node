@@ -393,7 +393,7 @@ export interface MessageSendParams {
    * from/to).
    *
    * A message carries EITHER `parts` — text and attachments, which compose into one
-   * bubble — or a single `agentkit` invocation, which renders an experience inside
+   * bubble — or a single `experience` invocation, which renders an experience inside
    * Linq's iMessage app. Never both: an app card is the whole message (Apple's
    * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
    * one.

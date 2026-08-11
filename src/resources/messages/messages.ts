@@ -706,7 +706,7 @@ export interface MessageCreateParams {
    * fields like from/to).
    *
    * A message carries EITHER `parts` — text and attachments, which compose into one
-   * bubble — or a single `agentkit` invocation, which renders an experience inside
+   * bubble — or a single `experience` invocation, which renders an experience inside
    * Linq's iMessage app. Never both: an app card is the whole message (Apple's
    * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
    * one.
@@ -855,7 +855,7 @@ export interface MessageUpdateAppCardParams {
    * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
    * fields each accepts.
    */
-  agentkit?: MessageUpdateAppCardParams.Agentkit;
+  experience?: MessageUpdateAppCardParams.Experience;
 
   /**
    * Text shown on surfaces that cannot render the card (notifications, lock screen).
@@ -879,7 +879,7 @@ export interface MessageUpdateAppCardParams {
   /**
    * URL the recipient's app opens when they tap the updated card.
    *
-   * Mutually exclusive with `agentkit` and `raw_payload_data`.
+   * Mutually exclusive with `experience` and `raw_payload_data`.
    */
   url?: string;
 }
@@ -952,7 +952,7 @@ export namespace MessageUpdateAppCardParams {
    * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
    * fields each accepts.
    */
-  export interface Agentkit {
+  export interface Experience {
     /**
      * Which of its actions, e.g. `attach_card`.
      */
@@ -961,7 +961,7 @@ export namespace MessageUpdateAppCardParams {
     /**
      * The experience to invoke, e.g. `agentcard` or `agentpay`.
      */
-    experience: string;
+    name: string;
 
     /**
      * Values for the fields this action exposes. Keys are exactly the field names
