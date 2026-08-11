@@ -481,9 +481,10 @@ export interface MediaPart {
  * from/to).
  *
  * A message carries EITHER `parts` — text and attachments, which compose into one
- * bubble — or a single `action`, which invokes an experience inside Linq's
- * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
- * cannot coexist with text), so copy and a card are two sends, not one.
+ * bubble — or a single `agentkit` invocation, which renders an experience inside
+ * Linq's iMessage app. Never both: an app card is the whole message (Apple's
+ * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
+ * one.
  */
 export interface MessageContent {
   /**
@@ -494,7 +495,7 @@ export interface MessageContent {
    * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
    * fields each accepts.
    */
-  action?: MessageContent.Action;
+  agentkit?: MessageContent.Agentkit;
 
   /**
    * iMessage effect to apply to this message (screen or bubble effect)
@@ -570,14 +571,14 @@ export namespace MessageContent {
    * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
    * fields each accepts.
    */
-  export interface Action {
+  export interface Agentkit {
     /**
      * Which of its actions, e.g. `attach_card`.
      */
     action: string;
 
     /**
-     * The experience to invoke, e.g. `agentcard`.
+     * The experience to invoke, e.g. `agentcard` or `agentpay`.
      */
     experience: string;
 
@@ -587,6 +588,10 @@ export namespace MessageContent {
      *
      * Display copy only, except a `url`-type field — that value sets the destination,
      * and must be an absolute `https` URL.
+     *
+     * Some fields are read rather than sent: `agentpay`'s `request_payment` takes only
+     * a `checkout_url` and resolves the amount and reason from that payment request
+     * itself, so the card cannot state a figure the checkout will not charge.
      */
     params?: { [key: string]: unknown };
   }
@@ -1033,9 +1038,10 @@ export interface ChatCreateParams {
    * from/to).
    *
    * A message carries EITHER `parts` — text and attachments, which compose into one
-   * bubble — or a single `action`, which invokes an experience inside Linq's
-   * iMessage app. Never both: an app card is the whole message (Apple's `MSMessage`
-   * cannot coexist with text), so copy and a card are two sends, not one.
+   * bubble — or a single `agentkit` invocation, which renders an experience inside
+   * Linq's iMessage app. Never both: an app card is the whole message (Apple's
+   * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
+   * one.
    */
   message: MessageContent;
 

@@ -27,7 +27,7 @@ describe('resource messages', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.messages.create({
       message: {
-        action: {
+        agentkit: {
           action: 'attach_card',
           experience: 'agentcard',
           params: { foo: 'bar' },
@@ -190,7 +190,7 @@ describe('resource messages', () => {
         trailing_caption: '2 min',
         trailing_subcaption: 'expires',
       },
-      action: {
+      agentkit: {
         action: 'attach_card',
         experience: 'agentcard',
         params: { foo: 'bar' },

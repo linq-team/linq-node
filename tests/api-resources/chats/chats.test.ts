@@ -29,7 +29,7 @@ describe('resource chats', () => {
     const response = await client.chats.create({
       from: '+12052535597',
       message: {
-        action: {
+        agentkit: {
           action: 'attach_card',
           experience: 'agentcard',
           params: { foo: 'bar' },

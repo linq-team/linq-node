@@ -112,6 +112,40 @@ import { path } from '../internal/utils/path';
  * branding; a newly registered experience can take up to ~24 hours to
  * activate on Apple's side, during which links open the web checkout.
  *
+ * ## Sending it as a card instead
+ *
+ * A `link` part is one way to deliver a request. The other is the
+ * **`agentpay` experience**, which sends the same request as a native card
+ * in Linq's iMessage app — the amount and reason are drawn in the bubble,
+ * and it turns itself into "Paid" in place once the payment succeeds,
+ * without a second message.
+ *
+ * ```json
+ * POST /v3/chats/{chatId}/messages
+ * {
+ *   "message": {
+ *     "agentkit": {
+ *       "experience": "agentpay",
+ *       "action": "request_payment",
+ *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * `checkout_url` is the only required field — pass back exactly what
+ * `POST /v3/payment_requests` returned. **The amount and reason are read
+ * from that request, never from you**, so the card can never claim a
+ * different figure than the checkout will charge. Optional `title` and
+ * `note` override the copy only. The link must be one of your own payment
+ * requests; another partner's is rejected.
+ *
+ * The trade-off against a `link` part: a card is an app card, so it is
+ * iMessage-only, and recipients without the app see a static version of it.
+ * A link works everywhere and is what opens the Apple Pay App Clip. Send
+ * whichever suits the conversation — both settle the same payment request
+ * and fire the same webhooks.
+ *
  * ## Webhooks
  *
  * Subscribe to payment lifecycle events to reconcile server-side rather than
