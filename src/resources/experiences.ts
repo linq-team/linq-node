@@ -58,6 +58,13 @@ import { path } from '../internal/utils/path';
 export class Experiences extends APIResource {
   /**
    * Get one experience
+   *
+   * @example
+   * ```ts
+   * const experience = await client.experiences.retrieve(
+   *   'agentpay',
+   * );
+   * ```
    */
   retrieve(experience: string, options?: RequestOptions): APIPromise<ExperienceRetrieveResponse> {
     return this._client.get(path`/v3/experiences/${experience}`, options);
@@ -67,6 +74,11 @@ export class Experiences extends APIResource {
    * The experiences enabled for your account, with the actions you may invoke on
    * each and the fields each action accepts. This is the authoritative list — an
    * action missing here cannot be sent.
+   *
+   * @example
+   * ```ts
+   * const experiences = await client.experiences.list();
+   * ```
    */
   list(options?: RequestOptions): APIPromise<ExperienceListResponse> {
     return this._client.get('/v3/experiences', options);

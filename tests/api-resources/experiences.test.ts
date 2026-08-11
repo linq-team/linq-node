@@ -10,7 +10,7 @@ const client = new LinqAPIV3({
 describe('resource experiences', () => {
   // Mock server tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.experiences.retrieve('experience');
+    const responsePromise = client.experiences.retrieve('agentpay');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

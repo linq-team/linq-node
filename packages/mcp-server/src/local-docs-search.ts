@@ -1954,22 +1954,22 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     response:
       '{ actions?: { fields?: object; name?: string; summary?: string; }[]; display_name?: string; experience?: string; }',
     markdown:
-      "## retrieve\n\n`client.experiences.retrieve(experience: string): { actions?: object[]; display_name?: string; experience?: string; }`\n\n**get** `/v3/experiences/{experience}`\n\nGet one experience\n\n### Parameters\n\n- `experience: string`\n\n### Returns\n\n- `{ actions?: { fields?: object; name?: string; summary?: string; }[]; display_name?: string; experience?: string; }`\n  What an experience offers you. Deliberately a projection: where its\ntemplates live and how they are built is not yours to depend on, so it\nis not here.\n\n\n  - `actions?: { fields?: object; name?: string; summary?: string; }[]`\n  - `display_name?: string`\n  - `experience?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst experience = await client.experiences.retrieve('experience');\n\nconsole.log(experience);\n```",
+      "## retrieve\n\n`client.experiences.retrieve(experience: string): { actions?: object[]; display_name?: string; experience?: string; }`\n\n**get** `/v3/experiences/{experience}`\n\nGet one experience\n\n### Parameters\n\n- `experience: string`\n\n### Returns\n\n- `{ actions?: { fields?: object; name?: string; summary?: string; }[]; display_name?: string; experience?: string; }`\n  What an experience offers you. Deliberately a projection: where its\ntemplates live and how they are built is not yours to depend on, so it\nis not here.\n\n\n  - `actions?: { fields?: object; name?: string; summary?: string; }[]`\n  - `display_name?: string`\n  - `experience?: string`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst experience = await client.experiences.retrieve('agentpay');\n\nconsole.log(experience);\n```",
     perLanguage: {
       go: {
         method: 'client.Experiences.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\texperience, err := client.Experiences.Get(context.TODO(), "experience")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", experience.Actions)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\texperience, err := client.Experiences.Get(context.TODO(), "agentpay")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", experience.Actions)\n}\n',
       },
       python: {
         method: 'experiences.retrieve',
         example:
-          'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nexperience = client.experiences.retrieve(\n    "experience",\n)\nprint(experience.actions)',
+          'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nexperience = client.experiences.retrieve(\n    "agentpay",\n)\nprint(experience.actions)',
       },
       typescript: {
         method: 'client.experiences.retrieve',
         example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst experience = await client.experiences.retrieve('experience');\n\nconsole.log(experience.actions);",
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst experience = await client.experiences.retrieve('agentpay');\n\nconsole.log(experience.actions);",
       },
       http: {
         example:
