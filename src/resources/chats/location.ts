@@ -46,34 +46,6 @@ import { path } from '../../internal/utils/path';
  */
 export class Location extends APIResource {
   /**
-   * Request a contact in a chat to share their location. They receive an iMessage
-   * prompt and must accept before any location is available; once they do, read
-   * their location coordinates with `GET /v3/chats/{chatId}/location`.
-   *
-   * The request is delivered asynchronously. The endpoint returns immediately with
-   * `{ "success": true, "message": "Location request sent" }` and does not return
-   * coordinates.
-   *
-   * Location requests only work in **1:1 iMessage chats** (Apple limitation):
-   *
-   * - Group chats (any service) return `409` with code `2016`
-   *   (`GroupChatNotSupported`).
-   * - 1:1 SMS and RCS chats return `409` with code `2017`
-   *   (`ChatServiceNotSupported`).
-   *
-   * @example
-   * ```ts
-   * const locationRequestResponse =
-   *   await client.chats.location.request(
-   *     '975d0776-bd17-4273-8337-f346b4c661b0',
-   *   );
-   * ```
-   */
-  request(chatID: string, options?: RequestOptions): APIPromise<LocationRequestResponse> {
-    return this._client.post(path`/v3/chats/${chatID}/location/request`, options);
-  }
-
-  /**
    * Retrieve the current location for contacts sharing with you in a chat.
    *
    * The response is wrapped in the standard `{ "success": true, "data": ... }`
@@ -106,6 +78,34 @@ export class Location extends APIResource {
       ...options,
       headers: buildHeaders([{ Accept: 'application/geo+json' }, options?.headers]),
     });
+  }
+
+  /**
+   * Request a contact in a chat to share their location. They receive an iMessage
+   * prompt and must accept before any location is available; once they do, read
+   * their location coordinates with `GET /v3/chats/{chatId}/location`.
+   *
+   * The request is delivered asynchronously. The endpoint returns immediately with
+   * `{ "success": true, "message": "Location request sent" }` and does not return
+   * coordinates.
+   *
+   * Location requests only work in **1:1 iMessage chats** (Apple limitation):
+   *
+   * - Group chats (any service) return `409` with code `2016`
+   *   (`GroupChatNotSupported`).
+   * - 1:1 SMS and RCS chats return `409` with code `2017`
+   *   (`ChatServiceNotSupported`).
+   *
+   * @example
+   * ```ts
+   * const locationRequestResponse =
+   *   await client.chats.location.request(
+   *     '975d0776-bd17-4273-8337-f346b4c661b0',
+   *   );
+   * ```
+   */
+  request(chatID: string, options?: RequestOptions): APIPromise<LocationRequestResponse> {
+    return this._client.post(path`/v3/chats/${chatID}/location/request`, options);
   }
 }
 

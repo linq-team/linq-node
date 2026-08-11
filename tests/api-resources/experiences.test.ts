@@ -7,12 +7,10 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource phoneNumbers', () => {
+describe('resource experiences', () => {
   // Mock server tests are disabled
-  test.skip('update: only required params', async () => {
-    const responsePromise = client.phoneNumbers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      forwarding_number: '+12025559999',
-    });
+  test.skip('retrieve', async () => {
+    const responsePromise = client.experiences.retrieve('agentpay');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,15 +21,8 @@ describe('resource phoneNumbers', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.phoneNumbers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      forwarding_number: '+12025559999',
-    });
-  });
-
-  // Mock server tests are disabled
   test.skip('list', async () => {
-    const responsePromise = client.phoneNumbers.list();
+    const responsePromise = client.experiences.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
