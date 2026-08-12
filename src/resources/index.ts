@@ -95,13 +95,17 @@ export {
 } from './payments';
 export {
   PhoneNumbers,
+  type ReputationActionItem,
   type ReputationAudit,
+  type ReputationAuditStarted,
   type ReputationDriver,
+  type ReputationDriverKey,
   type ReputationEvidence,
+  type ReputationOptOutChat,
   type ReputationReport,
+  type ReputationUnhealthyChat,
   type PhoneNumberUpdateResponse,
   type PhoneNumberListResponse,
-  type PhoneNumberStartReputationAuditResponse,
   type PhoneNumberUpdateParams,
   type PhoneNumberGetReputationAuditParams,
 } from './phone-numbers';
