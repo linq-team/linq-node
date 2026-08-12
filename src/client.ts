@@ -83,14 +83,18 @@ import { Payment, PaymentCreateParams, PaymentCredentialsResponse, Payments } fr
 import {
   PhoneNumberGetReputationAuditParams,
   PhoneNumberListResponse,
-  PhoneNumberStartReputationAuditResponse,
   PhoneNumberUpdateParams,
   PhoneNumberUpdateResponse,
   PhoneNumbers,
+  ReputationActionItem,
   ReputationAudit,
+  ReputationAuditStarted,
   ReputationDriver,
+  ReputationDriverKey,
   ReputationEvidence,
+  ReputationOptOutChat,
   ReputationReport,
+  ReputationUnhealthyChat,
 } from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
 import { WebhookEventListResponse, WebhookEventType, WebhookEvents } from './resources/webhook-events';
@@ -1791,13 +1795,17 @@ export declare namespace LinqAPIV3 {
 
   export {
     PhoneNumbers as PhoneNumbers,
+    type ReputationActionItem as ReputationActionItem,
     type ReputationAudit as ReputationAudit,
+    type ReputationAuditStarted as ReputationAuditStarted,
     type ReputationDriver as ReputationDriver,
+    type ReputationDriverKey as ReputationDriverKey,
     type ReputationEvidence as ReputationEvidence,
+    type ReputationOptOutChat as ReputationOptOutChat,
     type ReputationReport as ReputationReport,
+    type ReputationUnhealthyChat as ReputationUnhealthyChat,
     type PhoneNumberUpdateResponse as PhoneNumberUpdateResponse,
     type PhoneNumberListResponse as PhoneNumberListResponse,
-    type PhoneNumberStartReputationAuditResponse as PhoneNumberStartReputationAuditResponse,
     type PhoneNumberUpdateParams as PhoneNumberUpdateParams,
     type PhoneNumberGetReputationAuditParams as PhoneNumberGetReputationAuditParams,
   };

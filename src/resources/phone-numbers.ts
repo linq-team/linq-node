@@ -83,18 +83,28 @@ export class PhoneNumbers extends APIResource {
    *
    * @example
    * ```ts
-   * const response =
+   * const reputationAuditStarted =
    *   await client.phoneNumbers.startReputationAudit(
    *     'phoneNumber',
    *   );
    * ```
    */
-  startReputationAudit(
-    phoneNumber: string,
-    options?: RequestOptions,
-  ): APIPromise<PhoneNumberStartReputationAuditResponse> {
+  startReputationAudit(phoneNumber: string, options?: RequestOptions): APIPromise<ReputationAuditStarted> {
     return this._client.post(path`/v3/phone_numbers/${phoneNumber}/reputation_audit`, options);
   }
+}
+
+export interface ReputationActionItem {
+  detail?: string;
+
+  expected_impact?: 'high' | 'medium' | 'low';
+
+  /**
+   * 1 = do first
+   */
+  priority?: number;
+
+  title?: string;
 }
 
 export interface ReputationAudit {
@@ -126,6 +136,20 @@ export interface ReputationAudit {
   report?: ReputationReport;
 }
 
+export interface ReputationAuditStarted {
+  /**
+   * Identifier for this audit. Poll
+   * `GET /v3/phone_numbers/{phoneNumber}/reputation_audit/{auditId}` until `status`
+   * is `complete` or `error`.
+   */
+  audit_id: string;
+
+  /**
+   * A newly started audit is `pending`.
+   */
+  status: 'pending' | 'complete' | 'error';
+}
+
 export interface ReputationDriver {
   /**
    * Stable driver-category identifier — what is dragging the line, or one of its
@@ -154,14 +178,7 @@ export interface ReputationDriver {
    *   one recover before sending more.
    * - `other` — Fallback for a signal without dedicated partner copy.
    */
-  key?:
-    | 'low_engagement'
-    | 'overall_conversation_health'
-    | 'volume_spike'
-    | 'new_conversation_rate'
-    | 'opt_out_handling'
-    | 'flagged'
-    | 'other';
+  key?: ReputationDriverKey;
 
   /**
    * A specific observed figure when available; otherwise a short qualitative note.
@@ -175,6 +192,42 @@ export interface ReputationDriver {
 }
 
 /**
+ * Stable driver-category identifier — what is dragging the line, or one of its
+ * conversations, down.
+ *
+ * - `low_engagement` — The conversation is one-sided: several messages sent, few
+ *   or no replies back. Pause or rework outreach where recipients are not
+ *   replying, and lead with messages that invite a response. Conversation-level:
+ *   it appears on `evidence.unhealthy_chats[].driver_keys`, never in `drivers`.
+ * - `overall_conversation_health` — A large share of the line's active
+ *   conversations are trending unhealthy. Fix those conversations first — review
+ *   their content and timing, and whether recipients are engaging.
+ * - `volume_spike` — The line's daily sending volume jumped far above its own
+ *   normal level. Ramp gradually instead of spiking, spread large sends across
+ *   days, and prioritize people who have already engaged.
+ * - `new_conversation_rate` — The line is starting too many brand-new
+ *   conversations in a single day. Spread new conversations out over time instead
+ *   of starting many at once.
+ * - `opt_out_handling` — Recipients asked this line to stop. Honor every stop
+ *   request immediately: send nothing further to that recipient unless they opt
+ *   back in. Every send to them is rejected with `403` (error code `2024`),
+ *   including a final courtesy message — to send one telling them they can reply
+ *   to resume, set `override_optout: true` on that single request.
+ * - `flagged` — The line is currently restricted and its messages may not be
+ *   reaching recipients. Move active traffic to a healthy line now, and let this
+ *   one recover before sending more.
+ * - `other` — Fallback for a signal without dedicated partner copy.
+ */
+export type ReputationDriverKey =
+  | 'low_engagement'
+  | 'overall_conversation_health'
+  | 'volume_spike'
+  | 'new_conversation_rate'
+  | 'opt_out_handling'
+  | 'flagged'
+  | 'other';
+
+/**
  * The specific conversations behind the drivers, so partners can verify every
  * claim against their own send logs. Each `chat_id` can be fetched via
  * `GET /v3/chats/{chatId}` — its current health appears there.
@@ -184,55 +237,28 @@ export interface ReputationEvidence {
    * Worst first — most messages sent after the stop request; honor these
    * immediately.
    */
-  opt_out_chats?: Array<ReputationEvidence.OptOutChat>;
+  opt_out_chats?: Array<ReputationOptOutChat>;
 
   /**
    * Up to 15, worst first.
    */
-  unhealthy_chats?: Array<ReputationEvidence.UnhealthyChat>;
+  unhealthy_chats?: Array<ReputationUnhealthyChat>;
 }
 
-export namespace ReputationEvidence {
-  export interface OptOutChat {
-    chat_id?: string;
+export interface ReputationOptOutChat {
+  chat_id?: string;
 
-    /**
-     * Outbound messages sent after the recipient asked to stop.
-     */
-    messages_after_stop?: number;
-  }
-
-  export interface UnhealthyChat {
-    chat_id?: string;
-
-    /**
-     * What is dragging this conversation down, in the same vocabulary as the report's
-     * drivers. Each key's meaning and the fix for it are documented on
-     * `ReputationDriverKey`.
-     */
-    driver_keys?: Array<
-      | 'low_engagement'
-      | 'overall_conversation_health'
-      | 'volume_spike'
-      | 'new_conversation_rate'
-      | 'opt_out_handling'
-      | 'flagged'
-      | 'other'
-    >;
-
-    /**
-     * The conversation's current health — the same value `GET /v3/chats/{chatId}`
-     * reports for it.
-     */
-    status?: 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
-  }
+  /**
+   * Outbound messages sent after the recipient asked to stop.
+   */
+  messages_after_stop?: number;
 }
 
 export interface ReputationReport {
   /**
    * Ordered by `priority`; 1 = do first.
    */
-  action_items?: Array<ReputationReport.ActionItem>;
+  action_items?: Array<ReputationActionItem>;
 
   /**
    * Ranked, highest impact first.
@@ -278,19 +304,21 @@ export interface ReputationReport {
   summary_markdown?: string;
 }
 
-export namespace ReputationReport {
-  export interface ActionItem {
-    detail?: string;
+export interface ReputationUnhealthyChat {
+  chat_id?: string;
 
-    expected_impact?: 'high' | 'medium' | 'low';
+  /**
+   * What is dragging this conversation down, in the same vocabulary as the report's
+   * drivers. Each key's meaning and the fix for it are documented on
+   * `ReputationDriverKey`.
+   */
+  driver_keys?: Array<ReputationDriverKey>;
 
-    /**
-     * 1 = do first
-     */
-    priority?: number;
-
-    title?: string;
-  }
+  /**
+   * The conversation's current health — the same value `GET /v3/chats/{chatId}`
+   * reports for it.
+   */
+  status?: 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 }
 
 export interface PhoneNumberUpdateResponse {
@@ -386,20 +414,6 @@ export namespace PhoneNumberListResponse {
   }
 }
 
-export interface PhoneNumberStartReputationAuditResponse {
-  /**
-   * Identifier for this audit. Poll
-   * `GET /v3/phone_numbers/{phoneNumber}/reputation_audit/{auditId}` until `status`
-   * is `complete` or `error`.
-   */
-  audit_id: string;
-
-  /**
-   * A newly started audit is `pending`.
-   */
-  status: 'pending' | 'complete' | 'error';
-}
-
 export interface PhoneNumberUpdateParams {
   /**
    * The forwarding number in E.164 format. Set to null or empty string to clear.
@@ -408,18 +422,25 @@ export interface PhoneNumberUpdateParams {
 }
 
 export interface PhoneNumberGetReputationAuditParams {
+  /**
+   * The line in E.164 format.
+   */
   phoneNumber: string;
 }
 
 export declare namespace PhoneNumbers {
   export {
+    type ReputationActionItem as ReputationActionItem,
     type ReputationAudit as ReputationAudit,
+    type ReputationAuditStarted as ReputationAuditStarted,
     type ReputationDriver as ReputationDriver,
+    type ReputationDriverKey as ReputationDriverKey,
     type ReputationEvidence as ReputationEvidence,
+    type ReputationOptOutChat as ReputationOptOutChat,
     type ReputationReport as ReputationReport,
+    type ReputationUnhealthyChat as ReputationUnhealthyChat,
     type PhoneNumberUpdateResponse as PhoneNumberUpdateResponse,
     type PhoneNumberListResponse as PhoneNumberListResponse,
-    type PhoneNumberStartReputationAuditResponse as PhoneNumberStartReputationAuditResponse,
     type PhoneNumberUpdateParams as PhoneNumberUpdateParams,
     type PhoneNumberGetReputationAuditParams as PhoneNumberGetReputationAuditParams,
   };
