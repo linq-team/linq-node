@@ -209,6 +209,18 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/phone_numbers',
   },
   {
+    clientCallName: 'client.phoneNumbers.getReputationAudit',
+    fullyQualifiedName: 'phoneNumbers.getReputationAudit',
+    httpMethod: 'get',
+    httpPath: '/v3/phone_numbers/{phoneNumber}/reputation_audit/{auditId}',
+  },
+  {
+    clientCallName: 'client.phoneNumbers.startReputationAudit',
+    fullyQualifiedName: 'phoneNumbers.startReputationAudit',
+    httpMethod: 'post',
+    httpPath: '/v3/phone_numbers/{phoneNumber}/reputation_audit',
+  },
+  {
     clientCallName: 'client.availableNumber.retrieve',
     fullyQualifiedName: 'availableNumber.retrieve',
     httpMethod: 'get',

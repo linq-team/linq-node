@@ -95,9 +95,15 @@ export {
 } from './payments';
 export {
   PhoneNumbers,
+  type ReputationAudit,
+  type ReputationDriver,
+  type ReputationEvidence,
+  type ReputationReport,
   type PhoneNumberUpdateResponse,
   type PhoneNumberListResponse,
+  type PhoneNumberStartReputationAuditResponse,
   type PhoneNumberUpdateParams,
+  type PhoneNumberGetReputationAuditParams,
 } from './phone-numbers';
 export { Phonenumbers, type PhonenumberListResponse } from './phonenumbers';
 export { WebhookEvents, type WebhookEventType, type WebhookEventListResponse } from './webhook-events';

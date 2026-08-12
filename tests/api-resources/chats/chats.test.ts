@@ -29,12 +29,12 @@ describe('resource chats', () => {
     const response = await client.chats.create({
       from: '+12052535597',
       message: {
-        action: {
+        effect: { name: 'confetti', type: 'screen' },
+        experience: {
           action: 'attach_card',
-          experience: 'agentcard',
+          name: 'agentcard',
           params: { foo: 'bar' },
         },
-        effect: { name: 'confetti', type: 'screen' },
         idempotency_key: 'msg-abc123xyz',
         parts: [
           {

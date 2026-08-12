@@ -27,12 +27,12 @@ describe('resource messages', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.messages.create({
       message: {
-        action: {
+        effect: { name: 'confetti', type: 'screen' },
+        experience: {
           action: 'attach_card',
-          experience: 'agentcard',
+          name: 'agentcard',
           params: { foo: 'bar' },
         },
-        effect: { name: 'confetti', type: 'screen' },
         idempotency_key: 'msg-abc123xyz',
         parts: [
           {
@@ -190,9 +190,9 @@ describe('resource messages', () => {
         trailing_caption: '2 min',
         trailing_subcaption: 'expires',
       },
-      action: {
+      experience: {
         action: 'attach_card',
-        experience: 'agentcard',
+        name: 'agentcard',
         params: { foo: 'bar' },
       },
       fallback_text: 'Score update',
