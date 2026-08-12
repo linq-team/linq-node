@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.36.0](https://github.com/linq-team/linq-node/compare/v0.35.1...v0.36.0) (2026-08-12)
+
+
+### Features
+
+* add experiences api for native imessage cards ([5659895](https://github.com/linq-team/linq-node/commit/5659895f4c79f83f1e3fda3c094a5127301b9312))
+* add line reputation audit endpoints and report types ([5659895](https://github.com/linq-team/linq-node/commit/5659895f4c79f83f1e3fda3c094a5127301b9312))
+* rename agentkit to experience in card api ([5659895](https://github.com/linq-team/linq-node/commit/5659895f4c79f83f1e3fda3c094a5127301b9312))
+
+
+### Bug Fixes
+
+* add example responses and parameter descriptions to experiences endpoints ([5659895](https://github.com/linq-team/linq-node/commit/5659895f4c79f83f1e3fda3c094a5127301b9312))
+* clarify api endpoints in documentation examples ([5659895](https://github.com/linq-team/linq-node/commit/5659895f4c79f83f1e3fda3c094a5127301b9312))
+
 ## [0.35.1](https://github.com/linq-team/linq-node/compare/v0.35.0...v0.35.1) (2026-08-10)
 
 
