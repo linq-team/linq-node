@@ -147,13 +147,20 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/phone-numbers.ts">ReputationAudit</a></code>
+- <code><a href="./src/resources/phone-numbers.ts">ReputationDriver</a></code>
+- <code><a href="./src/resources/phone-numbers.ts">ReputationEvidence</a></code>
+- <code><a href="./src/resources/phone-numbers.ts">ReputationReport</a></code>
 - <code><a href="./src/resources/phone-numbers.ts">PhoneNumberUpdateResponse</a></code>
 - <code><a href="./src/resources/phone-numbers.ts">PhoneNumberListResponse</a></code>
+- <code><a href="./src/resources/phone-numbers.ts">PhoneNumberStartReputationAuditResponse</a></code>
 
 Methods:
 
 - <code title="put /v3/phone_numbers/{phoneNumberId}">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">update</a>(phoneNumberID, { ...params }) -> PhoneNumberUpdateResponse</code>
 - <code title="get /v3/phone_numbers">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">list</a>() -> PhoneNumberListResponse</code>
+- <code title="get /v3/phone_numbers/{phoneNumber}/reputation_audit/{auditId}">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">getReputationAudit</a>(auditID, { ...params }) -> ReputationAudit</code>
+- <code title="post /v3/phone_numbers/{phoneNumber}/reputation_audit">client.phoneNumbers.<a href="./src/resources/phone-numbers.ts">startReputationAudit</a>(phoneNumber) -> PhoneNumberStartReputationAuditResponse</code>
 
 # AvailableNumber
 

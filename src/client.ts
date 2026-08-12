@@ -81,10 +81,16 @@ import {
 } from './resources/payment-requests';
 import { Payment, PaymentCreateParams, PaymentCredentialsResponse, Payments } from './resources/payments';
 import {
+  PhoneNumberGetReputationAuditParams,
   PhoneNumberListResponse,
+  PhoneNumberStartReputationAuditResponse,
   PhoneNumberUpdateParams,
   PhoneNumberUpdateResponse,
   PhoneNumbers,
+  ReputationAudit,
+  ReputationDriver,
+  ReputationEvidence,
+  ReputationReport,
 } from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
 import { WebhookEventListResponse, WebhookEventType, WebhookEvents } from './resources/webhook-events';
@@ -1785,9 +1791,15 @@ export declare namespace LinqAPIV3 {
 
   export {
     PhoneNumbers as PhoneNumbers,
+    type ReputationAudit as ReputationAudit,
+    type ReputationDriver as ReputationDriver,
+    type ReputationEvidence as ReputationEvidence,
+    type ReputationReport as ReputationReport,
     type PhoneNumberUpdateResponse as PhoneNumberUpdateResponse,
     type PhoneNumberListResponse as PhoneNumberListResponse,
+    type PhoneNumberStartReputationAuditResponse as PhoneNumberStartReputationAuditResponse,
     type PhoneNumberUpdateParams as PhoneNumberUpdateParams,
+    type PhoneNumberGetReputationAuditParams as PhoneNumberGetReputationAuditParams,
   };
 
   export {

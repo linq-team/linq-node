@@ -40,4 +40,33 @@ describe('resource phoneNumbers', () => {
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
   });
+
+  // Mock server tests are disabled
+  test.skip('getReputationAudit: only required params', async () => {
+    const responsePromise = client.phoneNumbers.getReputationAudit('auditId', { phoneNumber: 'phoneNumber' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('getReputationAudit: required and optional params', async () => {
+    const response = await client.phoneNumbers.getReputationAudit('auditId', { phoneNumber: 'phoneNumber' });
+  });
+
+  // Mock server tests are disabled
+  test.skip('startReputationAudit', async () => {
+    const responsePromise = client.phoneNumbers.startReputationAudit('phoneNumber');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
 });
