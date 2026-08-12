@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.36.1](https://github.com/linq-team/linq-node/compare/v0.36.0...v0.36.1) (2026-08-12)
+
+
+### Chores
+
+* reorder language examples in api documentation ([63795ce](https://github.com/linq-team/linq-node/commit/63795cec7854e31512a481b2ef4a32c7b9bfb90d))
+
+
+### Documentation
+
+* add parameter descriptions for phone number audit endpoints ([63795ce](https://github.com/linq-team/linq-node/commit/63795cec7854e31512a481b2ef4a32c7b9bfb90d))
+
 ## [0.36.0](https://github.com/linq-team/linq-node/compare/v0.35.1...v0.36.0) (2026-08-12)
 
 
