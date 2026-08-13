@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.37.1](https://github.com/linq-team/linq-node/compare/v0.37.0...v0.37.1) (2026-08-13)
+
+
+### Bug Fixes
+
+* clarify address format requirements for messaging checks ([bda9bb0](https://github.com/linq-team/linq-node/commit/bda9bb0c0ffa6d3022dcf63f1c74566b3b26c325))
+
 ## [0.37.0](https://github.com/linq-team/linq-node/compare/v0.36.1...v0.37.0) (2026-08-13)
 
 
