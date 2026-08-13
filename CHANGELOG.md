@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.37.0](https://github.com/linq-team/linq-node/compare/v0.36.1...v0.37.0) (2026-08-13)
+
+
+### Features
+
+* add detailed 503 errors and response fields for capability checks ([eda6a4a](https://github.com/linq-team/linq-node/commit/eda6a4a70b0c488e0f9f802084e98c3f728e384f))
+
 ## [0.36.1](https://github.com/linq-team/linq-node/compare/v0.36.0...v0.36.1) (2026-08-12)
 
 
