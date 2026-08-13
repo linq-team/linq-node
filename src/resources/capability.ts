@@ -30,6 +30,13 @@ export class Capability extends APIResource {
   /**
    * Check whether a recipient address (phone number) supports RCS messaging.
    *
+   * A `200` means the check ran and the answer is about the **recipient**. A `503`
+   * means the check could not produce an answer because of a fault on the **sender**
+   * line — `4004` (RCS not turned on for the line), `4009` (line has no RCS
+   * account), or `4010` (the check could not run). Treat all three as "unknown",
+   * never as "the recipient does not support RCS", and do not cache them as a
+   * negative result.
+   *
    * @example
    * ```ts
    * const handleCheckResponse =
@@ -66,6 +73,23 @@ export interface HandleCheckResponse {
    * Whether the recipient supports the checked messaging service
    */
   available: boolean;
+
+  /**
+   * Why `available` is `false`. Only present on a negative result.
+   *
+   * `not_supported` is the only value returned with a `200`, and it means the check
+   * completed and the recipient is genuinely not reachable over this service. On
+   * `check_rcs`, sender-side faults do not return `200` — they return `503` with a
+   * specific error code. `check_imessage` does not use this mapping.
+   */
+  reason?: 'not_supported';
+
+  /**
+   * The service that would actually carry a message to this address right now, which
+   * is not always the service you checked — a recipient without RCS resolves to
+   * `SMS`. Absent when the check could not determine one.
+   */
+  selected_service?: string;
 }
 
 export interface CapabilityCheckIMessageParams {
