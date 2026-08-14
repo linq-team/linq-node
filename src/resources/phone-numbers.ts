@@ -13,6 +13,15 @@ import { path } from '../internal/utils/path';
  *
  * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
  * in the `from` field.
+ *
+ * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+ * While it is in that state, requests that would produce new activity on it — sending a
+ * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+ * (error code `2027`) before anything is created. Reads keep working, so your existing
+ * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+ * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+ * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+ * specific number to blame with a `403`).
  */
 export class PhoneNumbers extends APIResource {
   /**
