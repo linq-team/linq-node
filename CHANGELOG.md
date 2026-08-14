@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.38.1](https://github.com/linq-team/linq-node/compare/v0.38.0...v0.38.1) (2026-08-14)
+
+
+### Bug Fixes
+
+* clarify chat health status guidance and opt-out behavior ([9a1f3ee](https://github.com/linq-team/linq-node/commit/9a1f3ee15143d3b2743ff1a25f3aa0774da74a47))
+
 ## [0.38.0](https://github.com/linq-team/linq-node/compare/v0.37.1...v0.38.0) (2026-08-14)
 
 
