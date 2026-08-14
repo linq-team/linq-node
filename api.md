@@ -90,6 +90,13 @@ Methods:
 
 - <code title="post /v3/chats/{chatId}/polls">client.chats.polls.<a href="./src/resources/chats/polls.ts">create</a>(chatID, { ...params }) -> PollEnvelope</code>
 
+## Background
+
+Methods:
+
+- <code title="delete /v3/chats/{chatId}/background">client.chats.background.<a href="./src/resources/chats/background.ts">remove</a>(chatID) -> void</code>
+- <code title="post /v3/chats/{chatId}/background">client.chats.background.<a href="./src/resources/chats/background.ts">set</a>(chatID, { ...params }) -> void</code>
+
 # Messages
 
 Types:
@@ -312,6 +319,15 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">MessageEditedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ReactionAddedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ReactionRemovedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollReceivedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollSentWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollDeliveredWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollReadWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollFailedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollVoteAddedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollVoteRemovedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PollReactionAddedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ParticipantAddedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ParticipantRemovedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ChatCreatedWebhookEvent</a></code>
@@ -321,6 +337,7 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">ChatGroupIconUpdateFailedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStartedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStoppedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ChatBackgroundUpdatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">UnwrapWebhookEvent</a></code>
 

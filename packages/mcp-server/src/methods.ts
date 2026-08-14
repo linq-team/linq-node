@@ -113,6 +113,18 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats/{chatId}/polls',
   },
   {
+    clientCallName: 'client.chats.background.remove',
+    fullyQualifiedName: 'chats.background.remove',
+    httpMethod: 'delete',
+    httpPath: '/v3/chats/{chatId}/background',
+  },
+  {
+    clientCallName: 'client.chats.background.set',
+    fullyQualifiedName: 'chats.background.set',
+    httpMethod: 'post',
+    httpPath: '/v3/chats/{chatId}/background',
+  },
+  {
     clientCallName: 'client.messages.create',
     fullyQualifiedName: 'messages.create',
     httpMethod: 'post',

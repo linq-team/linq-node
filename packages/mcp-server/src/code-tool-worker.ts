@@ -125,6 +125,8 @@ const fuse = new Fuse(
     'client.chats.location.request',
     'client.chats.location.retrieve',
     'client.chats.polls.create',
+    'client.chats.background.remove',
+    'client.chats.background.set',
     'client.messages.addReaction',
     'client.messages.create',
     'client.messages.delete',
