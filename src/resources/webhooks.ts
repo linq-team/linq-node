@@ -140,9 +140,10 @@ export namespace MessageEventV2 {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -167,9 +168,10 @@ export namespace MessageEventV2 {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -193,6 +195,11 @@ export namespace MessageEventV2 {
        * count. It clears as soon as they reply again: any later message from them that
        * is not itself an opt-out keyword opts them back in immediately — a reply in any
        * conversation with you counts, the same way the block does.
+       *
+       * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+       * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+       * as well — gate on the `403`, not on the status. Group threads are never marked
+       * and are never blocked.
        *
        * Linq enforces this: while a recipient is opted out, every send to them is
        * rejected with `403` (error code `2024`) before the message is queued, across
@@ -1176,9 +1183,10 @@ export namespace MessageEditedWebhookEvent {
        * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
        * flagging.
        *
-       * Switch on `status` to gate sends or surface line health in your UI — the enum is
-       * the long-term contract. Each status carries a `doc_url` that deep-links to the
-       * relevant section of the Chat Health guide.
+       * Switch on `status` to surface chat and line health in your UI — the enum is the
+       * long-term contract. Each status carries a `doc_url` that deep-links to the
+       * relevant section of the Chat Health guide. To gate a send, act on the response
+       * rather than the status: a `403` is the authoritative answer.
        *
        * See the [Chat Health guide](/guides/chats/chat-health) for what each status
        * means and how to react.
@@ -1203,9 +1211,10 @@ export namespace MessageEditedWebhookEvent {
        * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
        * flagging.
        *
-       * Switch on `status` to gate sends or surface line health in your UI — the enum is
-       * the long-term contract. Each status carries a `doc_url` that deep-links to the
-       * relevant section of the Chat Health guide.
+       * Switch on `status` to surface chat and line health in your UI — the enum is the
+       * long-term contract. Each status carries a `doc_url` that deep-links to the
+       * relevant section of the Chat Health guide. To gate a send, act on the response
+       * rather than the status: a `403` is the authoritative answer.
        *
        * See the [Chat Health guide](/guides/chats/chat-health) for what each status
        * means and how to react.
@@ -1229,6 +1238,11 @@ export namespace MessageEditedWebhookEvent {
          * count. It clears as soon as they reply again: any later message from them that
          * is not itself an opt-out keyword opts them back in immediately — a reply in any
          * conversation with you counts, the same way the block does.
+         *
+         * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+         * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+         * as well — gate on the `403`, not on the status. Group threads are never marked
+         * and are never blocked.
          *
          * Linq enforces this: while a recipient is opted out, every send to them is
          * rejected with `403` (error code `2024`) before the message is queued, across
@@ -1608,9 +1622,10 @@ export namespace ChatCreatedWebhookEvent {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -1640,9 +1655,10 @@ export namespace ChatCreatedWebhookEvent {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -1666,6 +1682,11 @@ export namespace ChatCreatedWebhookEvent {
        * count. It clears as soon as they reply again: any later message from them that
        * is not itself an opt-out keyword opts them back in immediately — a reply in any
        * conversation with you counts, the same way the block does.
+       *
+       * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+       * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+       * as well — gate on the `403`, not on the status. Group threads are never marked
+       * and are never blocked.
        *
        * Linq enforces this: while a recipient is opted out, every send to them is
        * rejected with `403` (error code `2024`) before the message is queued, across
