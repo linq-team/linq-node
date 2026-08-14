@@ -103,6 +103,17 @@ export interface MessageEventV2 {
   read_at?: string | null;
 
   /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   reply_to?: MessageEventV2.ReplyTo | null;
@@ -129,9 +140,10 @@ export namespace MessageEventV2 {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -156,9 +168,10 @@ export namespace MessageEventV2 {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -173,6 +186,26 @@ export namespace MessageEventV2 {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+       * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+       * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+       * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+       * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+       * count. It clears as soon as they reply again: any later message from them that
+       * is not itself an opt-out keyword opts them back in immediately — a reply in any
+       * conversation with you counts, the same way the block does.
+       *
+       * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+       * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+       * as well — gate on the `403`, not on the status. Group threads are never marked
+       * and are never blocked.
+       *
+       * Linq enforces this: while a recipient is opted out, every send to them is
+       * rejected with `403` (error code `2024`) before the message is queued, across
+       * every chat and every line on your account. Nothing is delivered, including a
+       * final courtesy message — to send one, set `override_optout: true` on that single
+       * request.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -344,6 +377,17 @@ export interface MessagePayload {
    * When the message was read
    */
   read_at?: string | null;
+
+  /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
 
   /**
    * Reference to the message this is replying to
@@ -935,6 +979,9 @@ export interface MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   data: MessageFailedWebhookEvent.Data;
 
@@ -975,10 +1022,16 @@ export namespace MessageFailedWebhookEvent {
    * Error details for message.failed webhook events. See
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
+   *
+   * In rare cases the message can still be delivered after this event fires — a
+   * `message.delivered` webhook for the same message ID may follow.
    */
   export interface Data {
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed and poll.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or
+     * 4008; the group update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     code: number;
 
@@ -993,14 +1046,31 @@ export namespace MessageFailedWebhookEvent {
     chat_id?: string;
 
     /**
+     * Opaque diagnostic code identifying the specific failure class within `code`.
+     * Values are not enumerated and may change without notice — log it and include it
+     * in support requests, but do not branch on it.
+     */
+    detail_code?: number | null;
+
+    /**
      * Message identifier (UUID)
      */
     message_id?: string;
 
     /**
+     * Preferred messaging service type. Includes "auto" for default fallback behavior.
+     */
+    preferred_service?: 'iMessage' | 'SMS' | 'RCS' | 'auto' | null;
+
+    /**
      * Human-readable description of the failure
      */
     reason?: string;
+
+    /**
+     * Messaging service type
+     */
+    service?: Shared.ServiceType | null;
   }
 }
 
@@ -1113,9 +1183,10 @@ export namespace MessageEditedWebhookEvent {
        * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
        * flagging.
        *
-       * Switch on `status` to gate sends or surface line health in your UI — the enum is
-       * the long-term contract. Each status carries a `doc_url` that deep-links to the
-       * relevant section of the Chat Health guide.
+       * Switch on `status` to surface chat and line health in your UI — the enum is the
+       * long-term contract. Each status carries a `doc_url` that deep-links to the
+       * relevant section of the Chat Health guide. To gate a send, act on the response
+       * rather than the status: a `403` is the authoritative answer.
        *
        * See the [Chat Health guide](/guides/chats/chat-health) for what each status
        * means and how to react.
@@ -1140,9 +1211,10 @@ export namespace MessageEditedWebhookEvent {
        * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
        * flagging.
        *
-       * Switch on `status` to gate sends or surface line health in your UI — the enum is
-       * the long-term contract. Each status carries a `doc_url` that deep-links to the
-       * relevant section of the Chat Health guide.
+       * Switch on `status` to surface chat and line health in your UI — the enum is the
+       * long-term contract. Each status carries a `doc_url` that deep-links to the
+       * relevant section of the Chat Health guide. To gate a send, act on the response
+       * rather than the status: a `403` is the authoritative answer.
        *
        * See the [Chat Health guide](/guides/chats/chat-health) for what each status
        * means and how to react.
@@ -1157,6 +1229,26 @@ export namespace MessageEditedWebhookEvent {
          * Current health bucket for the chat. See the
          * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
          * to react. `doc_url` deep-links to the relevant section.
+         *
+         * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+         * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+         * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+         * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+         * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+         * count. It clears as soon as they reply again: any later message from them that
+         * is not itself an opt-out keyword opts them back in immediately — a reply in any
+         * conversation with you counts, the same way the block does.
+         *
+         * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+         * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+         * as well — gate on the `403`, not on the status. Group threads are never marked
+         * and are never blocked.
+         *
+         * Linq enforces this: while a recipient is opted out, every send to them is
+         * rejected with `403` (error code `2024`) before the message is queued, across
+         * every chat and every line on your account. Nothing is delivered, including a
+         * final courtesy message — to send one, set `override_optout: true` on that single
+         * request.
          */
         status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -1251,6 +1343,1038 @@ export interface ReactionRemovedWebhookEvent {
 
   /**
    * Payload for reaction.removed webhook events
+   */
+  data: ReactionEventBase;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+/**
+ * Complete webhook payload for poll.received events
+ */
+export interface PollReceivedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.received — a poll created by someone else and delivered to your
+   * line. Carries the full poll snapshot (options, no voters yet) at receipt time.
+   */
+  data: PollReceivedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollReceivedWebhookEvent {
+  /**
+   * Payload for poll.received — a poll created by someone else and delivered to your
+   * line. Carries the full poll snapshot (options, no voters yet) at receipt time.
+   */
+  export interface Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    created_at: string;
+
+    direction: 'inbound' | 'outbound';
+
+    message_id: string;
+
+    poll: Data.Poll;
+
+    received_at: string;
+
+    service: string;
+
+    updated_at: string;
+
+    /**
+     * The line that created the poll (is_me=false for an inbound poll).
+     */
+    sender_handle?: Shared.ChatHandle | null;
+  }
+
+  export namespace Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+
+    export interface Poll {
+      options: Array<Poll.Option>;
+
+      /**
+       * Distinct participants across the whole poll.
+       */
+      total_voters: number;
+    }
+
+    export namespace Poll {
+      export interface Option {
+        can_be_edited: boolean;
+
+        /**
+         * The participant who added this option (poll creator for the initial options;
+         * whoever added later ones). Null when unknown.
+         */
+        creator_handle: Shared.ChatHandle;
+
+        option_id: string;
+
+        text: string;
+
+        voters: Array<Option.Voter>;
+      }
+
+      export namespace Option {
+        export interface Voter {
+          handle: string;
+
+          voted_at: string;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.sent events
+ */
+export interface PollSentWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.sent, poll.delivered, and poll.read webhook events. Timestamps
+   * indicate state (null = not yet happened): sent → sent_at; delivered →
+   * +delivered_at; read → +read_at.
+   */
+  data: PollSentWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollSentWebhookEvent {
+  /**
+   * Payload for poll.sent, poll.delivered, and poll.read webhook events. Timestamps
+   * indicate state (null = not yet happened): sent → sent_at; delivered →
+   * +delivered_at; read → +read_at.
+   */
+  export interface Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    created_at: string;
+
+    direction: 'inbound' | 'outbound';
+
+    message_id: string;
+
+    poll: Data.Poll;
+
+    service: string;
+
+    updated_at: string;
+
+    delivered_at?: string | null;
+
+    read_at?: string | null;
+
+    /**
+     * The handle that sent the poll.
+     */
+    sender_handle?: Shared.ChatHandle | null;
+
+    sent_at?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+
+    export interface Poll {
+      options: Array<Poll.Option>;
+
+      /**
+       * Distinct participants across the whole poll.
+       */
+      total_voters: number;
+    }
+
+    export namespace Poll {
+      export interface Option {
+        can_be_edited: boolean;
+
+        /**
+         * The participant who added this option (poll creator for the initial options;
+         * whoever added later ones). Null when unknown.
+         */
+        creator_handle: Shared.ChatHandle;
+
+        option_id: string;
+
+        text: string;
+
+        voters: Array<Option.Voter>;
+      }
+
+      export namespace Option {
+        export interface Voter {
+          handle: string;
+
+          voted_at: string;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.delivered events
+ */
+export interface PollDeliveredWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.sent, poll.delivered, and poll.read webhook events. Timestamps
+   * indicate state (null = not yet happened): sent → sent_at; delivered →
+   * +delivered_at; read → +read_at.
+   */
+  data: PollDeliveredWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollDeliveredWebhookEvent {
+  /**
+   * Payload for poll.sent, poll.delivered, and poll.read webhook events. Timestamps
+   * indicate state (null = not yet happened): sent → sent_at; delivered →
+   * +delivered_at; read → +read_at.
+   */
+  export interface Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    created_at: string;
+
+    direction: 'inbound' | 'outbound';
+
+    message_id: string;
+
+    poll: Data.Poll;
+
+    service: string;
+
+    updated_at: string;
+
+    delivered_at?: string | null;
+
+    read_at?: string | null;
+
+    /**
+     * The handle that sent the poll.
+     */
+    sender_handle?: Shared.ChatHandle | null;
+
+    sent_at?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+
+    export interface Poll {
+      options: Array<Poll.Option>;
+
+      /**
+       * Distinct participants across the whole poll.
+       */
+      total_voters: number;
+    }
+
+    export namespace Poll {
+      export interface Option {
+        can_be_edited: boolean;
+
+        /**
+         * The participant who added this option (poll creator for the initial options;
+         * whoever added later ones). Null when unknown.
+         */
+        creator_handle: Shared.ChatHandle;
+
+        option_id: string;
+
+        text: string;
+
+        voters: Array<Option.Voter>;
+      }
+
+      export namespace Option {
+        export interface Voter {
+          handle: string;
+
+          voted_at: string;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.read events
+ */
+export interface PollReadWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.sent, poll.delivered, and poll.read webhook events. Timestamps
+   * indicate state (null = not yet happened): sent → sent_at; delivered →
+   * +delivered_at; read → +read_at.
+   */
+  data: PollReadWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollReadWebhookEvent {
+  /**
+   * Payload for poll.sent, poll.delivered, and poll.read webhook events. Timestamps
+   * indicate state (null = not yet happened): sent → sent_at; delivered →
+   * +delivered_at; read → +read_at.
+   */
+  export interface Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    created_at: string;
+
+    direction: 'inbound' | 'outbound';
+
+    message_id: string;
+
+    poll: Data.Poll;
+
+    service: string;
+
+    updated_at: string;
+
+    delivered_at?: string | null;
+
+    read_at?: string | null;
+
+    /**
+     * The handle that sent the poll.
+     */
+    sender_handle?: Shared.ChatHandle | null;
+
+    sent_at?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+
+    export interface Poll {
+      options: Array<Poll.Option>;
+
+      /**
+       * Distinct participants across the whole poll.
+       */
+      total_voters: number;
+    }
+
+    export namespace Poll {
+      export interface Option {
+        can_be_edited: boolean;
+
+        /**
+         * The participant who added this option (poll creator for the initial options;
+         * whoever added later ones). Null when unknown.
+         */
+        creator_handle: Shared.ChatHandle;
+
+        option_id: string;
+
+        text: string;
+
+        voters: Array<Option.Voter>;
+      }
+
+      export namespace Option {
+        export interface Voter {
+          handle: string;
+
+          voted_at: string;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.updated events
+ */
+export interface PollUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.updated (option(s) added — add-only).
+   */
+  data: PollUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollUpdatedWebhookEvent {
+  /**
+   * Payload for poll.updated (option(s) added — add-only).
+   */
+  export interface Data {
+    added_options: Array<Data.AddedOption>;
+
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    direction: 'inbound' | 'outbound';
+
+    message_id: string;
+
+    /**
+     * The line that added the option(s) — always present.
+     */
+    sender_handle: Shared.ChatHandle;
+
+    service: string;
+  }
+
+  export namespace Data {
+    export interface AddedOption {
+      can_be_edited: boolean;
+
+      /**
+       * The participant who added this option (poll creator for the initial options;
+       * whoever added later ones). Null when unknown.
+       */
+      creator_handle: Shared.ChatHandle;
+
+      option_id: string;
+
+      text: string;
+
+      voters: Array<AddedOption.Voter>;
+    }
+
+    export namespace AddedOption {
+      export interface Voter {
+        handle: string;
+
+        voted_at: string;
+      }
+    }
+
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.failed events
+ */
+export interface PollFailedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.failed — an outbound poll (or poll action) that failed to send.
+   * Carries the poll snapshot at failure time plus the error and when it failed.
+   */
+  data: PollFailedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollFailedWebhookEvent {
+  /**
+   * Payload for poll.failed — an outbound poll (or poll action) that failed to send.
+   * Carries the poll snapshot at failure time plus the error and when it failed.
+   */
+  export interface Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    direction: 'inbound' | 'outbound';
+
+    error: Data.Error;
+
+    failed_at: string;
+
+    message_id: string;
+
+    poll: Data.Poll;
+
+    service: string;
+
+    /**
+     * Null on failure (the send never landed).
+     */
+    sender_handle?: Shared.ChatHandle | null;
+  }
+
+  export namespace Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+
+    export interface Error {
+      /**
+       * Error codes in webhook failure events. The possible set varies by event:
+       * message.failed and poll.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or
+       * 4008; the group update failure events (chat.group_name_update_failed,
+       * chat.group_icon_update_failed) carry 3007 or 4001.
+       */
+      code: number;
+
+      message: string;
+    }
+
+    export interface Poll {
+      options: Array<Poll.Option>;
+
+      /**
+       * Distinct participants across the whole poll.
+       */
+      total_voters: number;
+    }
+
+    export namespace Poll {
+      export interface Option {
+        can_be_edited: boolean;
+
+        /**
+         * The participant who added this option (poll creator for the initial options;
+         * whoever added later ones). Null when unknown.
+         */
+        creator_handle: Shared.ChatHandle;
+
+        option_id: string;
+
+        text: string;
+
+        voters: Array<Option.Voter>;
+      }
+
+      export namespace Option {
+        export interface Voter {
+          handle: string;
+
+          voted_at: string;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.vote.added events
+ */
+export interface PollVoteAddedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.vote.added and poll.vote.removed (one option toggled).
+   */
+  data: PollVoteAddedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollVoteAddedWebhookEvent {
+  /**
+   * Payload for poll.vote.added and poll.vote.removed (one option toggled).
+   */
+  export interface Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    direction: 'inbound' | 'outbound';
+
+    message_id: string;
+
+    option_id: string;
+
+    /**
+     * The voter — always present.
+     */
+    sender_handle: Shared.ChatHandle;
+
+    service: string;
+  }
+
+  export namespace Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.vote.removed events
+ */
+export interface PollVoteRemovedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.vote.added and poll.vote.removed (one option toggled).
+   */
+  data: PollVoteRemovedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PollVoteRemovedWebhookEvent {
+  /**
+   * Payload for poll.vote.added and poll.vote.removed (one option toggled).
+   */
+  export interface Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    chat: Data.Chat;
+
+    direction: 'inbound' | 'outbound';
+
+    message_id: string;
+
+    option_id: string;
+
+    /**
+     * The voter — always present.
+     */
+    sender_handle: Shared.ChatHandle;
+
+    service: string;
+  }
+
+  export namespace Data {
+    /**
+     * Chat info for poll webhook events.
+     */
+    export interface Chat {
+      id: string;
+
+      is_group?: boolean | null;
+
+      owner_handle?: Shared.ChatHandle | null;
+    }
+  }
+}
+
+/**
+ * Complete webhook payload for poll.reaction.added events
+ */
+export interface PollReactionAddedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for poll.reaction.added — a reaction on a poll message. Same shape as
+   * reaction.added; `message_id` is the poll-definition message's ID. Poll reactions
+   * are stickers, which iMessage cannot remove, so there is no removal counterpart.
    */
   data: ReactionEventBase;
 
@@ -1530,9 +2654,10 @@ export namespace ChatCreatedWebhookEvent {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -1562,9 +2687,10 @@ export namespace ChatCreatedWebhookEvent {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -1579,6 +2705,26 @@ export namespace ChatCreatedWebhookEvent {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+       * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+       * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+       * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+       * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+       * count. It clears as soon as they reply again: any later message from them that
+       * is not itself an opt-out keyword opts them back in immediately — a reply in any
+       * conversation with you counts, the same way the block does.
+       *
+       * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+       * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+       * as well — gate on the `403`, not on the status. Group threads are never marked
+       * and are never blocked.
+       *
+       * Linq enforces this: while a recipient is opted out, every send to them is
+       * rejected with `403` (error code `2024`) before the message is queued, across
+       * every chat and every line on your account. Nothing is delivered, including a
+       * final courtesy message — to send one, set `override_optout: true` on that single
+       * request.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -1822,7 +2968,10 @@ export namespace ChatGroupNameUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed and poll.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or
+     * 4008; the group update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
@@ -1899,7 +3048,10 @@ export namespace ChatGroupIconUpdateFailedWebhookEvent {
     chat_id: string;
 
     /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
+     * Error codes in webhook failure events. The possible set varies by event:
+     * message.failed and poll.failed can carry 3007, 4001, 4002, 4005, 4006, 4007, or
+     * 4008; the group update failure events (chat.group_name_update_failed,
+     * chat.group_icon_update_failed) carry 3007 or 4001.
      */
     error_code: number;
 
@@ -2037,6 +3189,132 @@ export namespace ChatTypingIndicatorStoppedWebhookEvent {
 }
 
 /**
+ * Complete webhook payload for chat.background_updated events
+ */
+export interface ChatBackgroundUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for chat.background_updated webhook events.
+   */
+  data: ChatBackgroundUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ChatBackgroundUpdatedWebhookEvent {
+  /**
+   * Payload for chat.background_updated webhook events.
+   */
+  export interface Data {
+    /**
+     * Chat information
+     */
+    chat: Data.Chat;
+
+    /**
+     * Who changed it. `is_me` is true when your own number set it.
+     */
+    actor_handle?: Shared.ChatHandle | null;
+
+    /**
+     * A chat transcript background. Fields are populated per `type`.
+     */
+    background?: Data.Background | null;
+  }
+
+  export namespace Data {
+    /**
+     * Chat information
+     */
+    export interface Chat {
+      /**
+       * Chat identifier
+       */
+      id: string;
+
+      /**
+       * Whether this is a group chat
+       */
+      is_group?: boolean | null;
+
+      /**
+       * Your phone number's handle. Always has is_me=true.
+       */
+      owner_handle?: Shared.ChatHandle | null;
+    }
+
+    /**
+     * A chat transcript background. Fields are populated per `type`.
+     */
+    export interface Background {
+      /**
+       * The background family.
+       */
+      type: 'color' | 'dynamic' | 'photo';
+
+      /**
+       * Photo: the image URL.
+       */
+      image_url?: string | null;
+
+      /**
+       * Color: the two gradient stops as hex, top then bottom.
+       */
+      shades?: Array<string> | null;
+
+      /**
+       * Dynamic: the animated style.
+       */
+      style?: 'sky' | 'water' | 'aurora' | 'glitter' | null;
+
+      /**
+       * Color: `custom` (the stored two colors) or a named swatch. Dynamic: the variant
+       * within the `style` (e.g. `sunrise`).
+       */
+      variant?: string | null;
+    }
+  }
+}
+
+/**
  * Complete webhook payload for phone_number.status_updated events
  */
 export interface PhoneNumberStatusUpdatedWebhookEvent {
@@ -2072,6 +3350,15 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'message.edited'
     | 'reaction.added'
     | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
     | 'participant.added'
     | 'participant.removed'
     | 'chat.created'
@@ -2167,6 +3454,15 @@ export type UnwrapWebhookEvent =
   | MessageEditedWebhookEvent
   | ReactionAddedWebhookEvent
   | ReactionRemovedWebhookEvent
+  | PollReceivedWebhookEvent
+  | PollSentWebhookEvent
+  | PollDeliveredWebhookEvent
+  | PollReadWebhookEvent
+  | PollUpdatedWebhookEvent
+  | PollFailedWebhookEvent
+  | PollVoteAddedWebhookEvent
+  | PollVoteRemovedWebhookEvent
+  | PollReactionAddedWebhookEvent
   | ParticipantAddedWebhookEvent
   | ParticipantRemovedWebhookEvent
   | ChatCreatedWebhookEvent
@@ -2176,6 +3472,7 @@ export type UnwrapWebhookEvent =
   | ChatGroupIconUpdateFailedWebhookEvent
   | ChatTypingIndicatorStartedWebhookEvent
   | ChatTypingIndicatorStoppedWebhookEvent
+  | ChatBackgroundUpdatedWebhookEvent
   | PhoneNumberStatusUpdatedWebhookEvent;
 
 export declare namespace Webhooks {
@@ -2194,6 +3491,15 @@ export declare namespace Webhooks {
     type MessageEditedWebhookEvent as MessageEditedWebhookEvent,
     type ReactionAddedWebhookEvent as ReactionAddedWebhookEvent,
     type ReactionRemovedWebhookEvent as ReactionRemovedWebhookEvent,
+    type PollReceivedWebhookEvent as PollReceivedWebhookEvent,
+    type PollSentWebhookEvent as PollSentWebhookEvent,
+    type PollDeliveredWebhookEvent as PollDeliveredWebhookEvent,
+    type PollReadWebhookEvent as PollReadWebhookEvent,
+    type PollUpdatedWebhookEvent as PollUpdatedWebhookEvent,
+    type PollFailedWebhookEvent as PollFailedWebhookEvent,
+    type PollVoteAddedWebhookEvent as PollVoteAddedWebhookEvent,
+    type PollVoteRemovedWebhookEvent as PollVoteRemovedWebhookEvent,
+    type PollReactionAddedWebhookEvent as PollReactionAddedWebhookEvent,
     type ParticipantAddedWebhookEvent as ParticipantAddedWebhookEvent,
     type ParticipantRemovedWebhookEvent as ParticipantRemovedWebhookEvent,
     type ChatCreatedWebhookEvent as ChatCreatedWebhookEvent,
@@ -2203,6 +3509,7 @@ export declare namespace Webhooks {
     type ChatGroupIconUpdateFailedWebhookEvent as ChatGroupIconUpdateFailedWebhookEvent,
     type ChatTypingIndicatorStartedWebhookEvent as ChatTypingIndicatorStartedWebhookEvent,
     type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
+    type ChatBackgroundUpdatedWebhookEvent as ChatBackgroundUpdatedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
