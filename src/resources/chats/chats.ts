@@ -2,6 +2,8 @@
 
 import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
+import * as BackgroundAPI from './background';
+import { Background, BackgroundSetParams } from './background';
 import * as LocationAPI from './location';
 import { GetChatLocationResponse, Location, LocationRequestResponse } from './location';
 import * as MessagesAPI from './messages';
@@ -31,6 +33,7 @@ export class Chats extends APIResource {
   messages: MessagesAPI.Messages = new MessagesAPI.Messages(this._client);
   location: LocationAPI.Location = new LocationAPI.Location(this._client);
   polls: PollsAPI.Polls = new PollsAPI.Polls(this._client);
+  background: BackgroundAPI.Background = new BackgroundAPI.Background(this._client);
 
   /**
    * Create a new chat with specified participants and send an initial message. The
@@ -1134,6 +1137,7 @@ Chats.Typing = Typing;
 Chats.Messages = Messages;
 Chats.Location = Location;
 Chats.Polls = Polls;
+Chats.Background = Background;
 
 export declare namespace Chats {
   export {
@@ -1183,4 +1187,6 @@ export declare namespace Chats {
     type PollEnvelope as PollEnvelope,
     type PollCreateParams as PollCreateParams,
   };
+
+  export { Background as Background, type BackgroundSetParams as BackgroundSetParams };
 }
