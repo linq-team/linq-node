@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.39.0](https://github.com/linq-team/linq-node/compare/v0.38.1...v0.39.0) (2026-08-14)
+
+
+### Features
+
+* add chat background and poll features ([562dc8d](https://github.com/linq-team/linq-node/commit/562dc8dd954530102a3e40f3e10d2c86d8656e8d))
+
 ## [0.38.1](https://github.com/linq-team/linq-node/compare/v0.38.0...v0.38.1) (2026-08-14)
 
 
