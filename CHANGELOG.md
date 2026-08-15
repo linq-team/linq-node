@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.39.2](https://github.com/linq-team/linq-node/compare/v0.39.1...v0.39.2) (2026-08-15)
+
+
+### Bug Fixes
+
+* **mcp-server:** drop the unused jq-web dependency ([#127](https://github.com/linq-team/linq-node/issues/127)) ([3231420](https://github.com/linq-team/linq-node/commit/32314209e71aa89268c8566c1944849b69eb1ef4))
+
 ## [0.39.1](https://github.com/linq-team/linq-node/compare/v0.39.0...v0.39.1) (2026-08-15)
 
 
