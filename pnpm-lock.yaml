@@ -114,8 +114,8 @@ importers:
         specifier: ^4.12.4
         version: 4.12.5
       jq-web:
-        specifier: https://cdn.linqapp.com/vendor/jq-web/v0.8.8/jq-web.tar.gz
-        version: https://cdn.linqapp.com/vendor/jq-web/v0.8.8/jq-web.tar.gz
+        specifier: https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz
+        version: https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz
       minisearch:
         specifier: ^7.2.0
         version: 7.2.0
@@ -3161,11 +3161,11 @@ packages:
       }
     engines: { node: '>=10' }
 
-  jq-web@https://cdn.linqapp.com/vendor/jq-web/v0.8.8/jq-web.tar.gz:
+  jq-web@https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz:
     resolution:
       {
         integrity: sha512-6nmDSHGJm8Cclf2oSuO9xQ7vt5x5bDiuTKX2rkyW1K7Uo2SHeI4ZvpgMITKy+8p3bbEnKovTPGoHhApa6v/PbA==,
-        tarball: https://cdn.linqapp.com/vendor/jq-web/v0.8.8/jq-web.tar.gz,
+        tarball: https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz,
       }
     version: 0.8.8
 
@@ -7020,7 +7020,7 @@ snapshots:
 
   joycon@3.1.1: {}
 
-  jq-web@https://cdn.linqapp.com/vendor/jq-web/v0.8.8/jq-web.tar.gz: {}
+  jq-web@https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz: {}
 
   js-tokens@4.0.0: {}
 
