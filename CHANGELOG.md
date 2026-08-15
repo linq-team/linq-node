@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.39.1](https://github.com/linq-team/linq-node/compare/v0.39.0...v0.39.1) (2026-08-15)
+
+
+### Bug Fixes
+
+* **mcp-server:** serve jq-web from cdn.linqapp.com instead of stainless-api ([#124](https://github.com/linq-team/linq-node/issues/124)) ([705a775](https://github.com/linq-team/linq-node/commit/705a775b7c13671215c57f8227d119cf5f917c33))
+
 ## [0.39.0](https://github.com/linq-team/linq-node/compare/v0.38.1...v0.39.0) (2026-08-14)
 
 
