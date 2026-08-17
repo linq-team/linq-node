@@ -169,11 +169,13 @@ export interface ReputationDriver {
    *   replying, and lead with messages that invite a response. Conversation-level:
    *   it appears on `evidence.unhealthy_chats[].driver_keys`, never in `drivers`.
    * - `overall_conversation_health` — A large share of the line's active
-   *   conversations are trending unhealthy. Fix those conversations first — review
-   *   their content and timing, and whether recipients are engaging.
+   *   conversations are trending unhealthy. Fix the unhealthy conversations first —
+   *   review their content and timing, and whether recipients are engaging.
    * - `volume_spike` — The line's daily sending volume jumped far above its own
-   *   normal level. Ramp gradually instead of spiking, spread large sends across
-   *   days, and prioritize people who have already engaged.
+   *   normal level while few recipients were replying, or exceeded the recommended
+   *   daily volume for a single line. Ramp volume gradually instead of spiking,
+   *   prioritize people who have already engaged with you, and spread sustained high
+   *   volume across additional lines.
    * - `new_conversation_rate` — The line is starting too many brand-new
    *   conversations in a single day. Spread new conversations out over time instead
    *   of starting many at once.
@@ -209,11 +211,13 @@ export interface ReputationDriver {
  *   replying, and lead with messages that invite a response. Conversation-level:
  *   it appears on `evidence.unhealthy_chats[].driver_keys`, never in `drivers`.
  * - `overall_conversation_health` — A large share of the line's active
- *   conversations are trending unhealthy. Fix those conversations first — review
- *   their content and timing, and whether recipients are engaging.
+ *   conversations are trending unhealthy. Fix the unhealthy conversations first —
+ *   review their content and timing, and whether recipients are engaging.
  * - `volume_spike` — The line's daily sending volume jumped far above its own
- *   normal level. Ramp gradually instead of spiking, spread large sends across
- *   days, and prioritize people who have already engaged.
+ *   normal level while few recipients were replying, or exceeded the recommended
+ *   daily volume for a single line. Ramp volume gradually instead of spiking,
+ *   prioritize people who have already engaged with you, and spread sustained high
+ *   volume across additional lines.
  * - `new_conversation_rate` — The line is starting too many brand-new
  *   conversations in a single day. Spread new conversations out over time instead
  *   of starting many at once.
