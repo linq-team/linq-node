@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.39.4](https://github.com/linq-team/linq-node/compare/v0.39.3...v0.39.4) (2026-08-17)
+
+
+### Bug Fixes
+
+* clarify health check guidance for conversations and volume ([9ba5ebf](https://github.com/linq-team/linq-node/commit/9ba5ebf91f74ecc628fdb4984195e248dd8ea73d))
+
 ## [0.39.3](https://github.com/linq-team/linq-node/compare/v0.39.2...v0.39.3) (2026-08-17)
 
 
