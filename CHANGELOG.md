@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.40.0](https://github.com/linq-team/linq-node/compare/v0.39.4...v0.40.0) (2026-08-17)
+
+
+### Features
+
+* add 409 conflict responses for mention and chat availability errors ([24b8dca](https://github.com/linq-team/linq-node/commit/24b8dcacc9272932e9a160392e5964b70df372ac))
+
 ## [0.39.4](https://github.com/linq-team/linq-node/compare/v0.39.3...v0.39.4) (2026-08-17)
 
 
