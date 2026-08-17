@@ -1980,6 +1980,10 @@ export namespace PollUpdatedWebhookEvent {
    * Payload for poll.updated (option(s) added — add-only).
    */
   export interface Data {
+    /**
+     * Only the options this update added — never the ones the poll already had. Fetch
+     * the poll to read its full option set.
+     */
     added_options: Array<Data.AddedOption>;
 
     /**
