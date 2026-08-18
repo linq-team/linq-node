@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.41.1](https://github.com/linq-team/linq-node/compare/v0.41.0...v0.41.1) (2026-08-18)
+
+
+### Bug Fixes
+
+* clarify poll option creator and update sender semantics ([ea195c4](https://github.com/linq-team/linq-node/commit/ea195c4341ef160d8d092e30353e1b0c588ea9aa))
+
 ## [0.41.0](https://github.com/linq-team/linq-node/compare/v0.40.0...v0.41.0) (2026-08-18)
 
 
