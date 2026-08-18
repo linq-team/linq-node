@@ -311,39 +311,6 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">SchemasMediaPartResponse</a></code>
 - <code><a href="./src/resources/webhooks.ts">SchemasMessageEffect</a></code>
 - <code><a href="./src/resources/webhooks.ts">SchemasTextPartResponse</a></code>
-- <code><a href="./src/resources/webhooks.ts">MessageSentWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">MessageReceivedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">MessageReadWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">MessageDeliveredWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">MessageFailedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">MessageEditedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ReactionAddedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ReactionRemovedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollReceivedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollSentWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollDeliveredWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollReadWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollUpdatedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollFailedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollVoteAddedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollVoteRemovedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PollReactionAddedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ParticipantAddedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ParticipantRemovedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatCreatedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatGroupNameUpdatedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatGroupIconUpdatedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatGroupNameUpdateFailedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatGroupIconUpdateFailedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStartedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStoppedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">ChatBackgroundUpdatedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedWebhookEvent</a></code>
-- <code><a href="./src/resources/webhooks.ts">UnwrapWebhookEvent</a></code>
-
-Methods:
-
-- <code>client.webhooks.<a href="./src/resources/webhooks.ts">unwrap</a>(body) -> void</code>
 
 # ContactCard
 
