@@ -48,7 +48,7 @@ export class Background extends APIResource {
    * Provide one of: a **color** (a named preset or a custom 2-stop gradient), a
    * **dynamic** animated style, or a **photo** (by URL). The request is accepted
    * asynchronously; the terminal result arrives via the `chat.background_updated`
-   * webhook.
+   * webhook on success, or `chat.background_update_failed` on failure.
    *
    * **Group chats are supported.** Requests for RCS or SMS chats are accepted
    * (`202`) but no background is applied and no `chat.background_updated` webhook
@@ -78,7 +78,11 @@ export interface BackgroundSetParams {
   type: 'color' | 'dynamic' | 'photo';
 
   /**
-   * Photo: the image URL to embed in the background.
+   * Photo: the image URL to embed in the background. Must be an absolute `https` URL
+   * pointing at an image (`.jpg`, `.png`, `.heic`, `.webp`), and the image is
+   * fetched and re-hosted on our CDN before the request is accepted — the same way
+   * `group_chat_icon` works. A URL we cannot fetch, or one that isn't an image, is
+   * rejected with a `400` (`5007`/`5006`) rather than failing later on the device.
    */
   image_url?: string;
 

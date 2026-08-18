@@ -666,7 +666,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     httpMethod: 'post',
     summary: 'Set chat background',
     description:
-      'Set the transcript background for a chat.\n\nProvide one of: a **color** (a named preset or a custom 2-stop gradient),\na **dynamic** animated style, or a **photo** (by URL). The request is accepted\nasynchronously; the terminal result arrives via the `chat.background_updated`\nwebhook.\n\n**Group chats are supported.** Requests for RCS or SMS chats are accepted (`202`)\nbut no background is applied and no `chat.background_updated` webhook fires.\n',
+      'Set the transcript background for a chat.\n\nProvide one of: a **color** (a named preset or a custom 2-stop gradient),\na **dynamic** animated style, or a **photo** (by URL). The request is accepted\nasynchronously; the terminal result arrives via the `chat.background_updated`\nwebhook on success, or `chat.background_update_failed` on failure.\n\n**Group chats are supported.** Requests for RCS or SMS chats are accepted (`202`)\nbut no background is applied and no `chat.background_updated` webhook fires.\n',
     stainlessPath: '(resource) chats.background > (method) set',
     qualified: 'client.chats.background.set',
     params: [
@@ -678,7 +678,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'variant?: string;',
     ],
     markdown:
-      "## set\n\n`client.chats.background.set(chatId: string, type: 'color' | 'dynamic' | 'photo', image_url?: string, shades?: string[], style?: 'sky' | 'water' | 'aurora' | 'glitter', variant?: string): void`\n\n**post** `/v3/chats/{chatId}/background`\n\nSet the transcript background for a chat.\n\nProvide one of: a **color** (a named preset or a custom 2-stop gradient),\na **dynamic** animated style, or a **photo** (by URL). The request is accepted\nasynchronously; the terminal result arrives via the `chat.background_updated`\nwebhook.\n\n**Group chats are supported.** Requests for RCS or SMS chats are accepted (`202`)\nbut no background is applied and no `chat.background_updated` webhook fires.\n\n\n### Parameters\n\n- `chatId: string`\n\n- `type: 'color' | 'dynamic' | 'photo'`\n  The background family.\n\n- `image_url?: string`\n  Photo: the image URL to embed in the background.\n\n- `shades?: string[]`\n  Color with `variant: custom`: the two gradient stops as hex, top then bottom.\nIgnored for named color variants (they carry their own two colors).\n\n\n- `style?: 'sky' | 'water' | 'aurora' | 'glitter'`\n  Dynamic: the animated style.\n\n- `variant?: string`\n  Color: a named swatch — `mango`, `ice`, `plum`, `deep_sea`, `green_apple`,\n`cherry`, `bubblegum`, `tangerine`, `magenta`, `lime`, `silver`, `carbon`,\n`stone` — or `custom` (supply `shades`). Dynamic: the variant within the\n`style` (e.g. `sunrise`).\n\nAn unrecognized value still returns `202`, but no background is applied and no\n`chat.background_updated` webhook fires. Send one of the values above.\n\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.chats.background.set('550e8400-e29b-41d4-a716-446655440000', { type: 'color' })\n```",
+      "## set\n\n`client.chats.background.set(chatId: string, type: 'color' | 'dynamic' | 'photo', image_url?: string, shades?: string[], style?: 'sky' | 'water' | 'aurora' | 'glitter', variant?: string): void`\n\n**post** `/v3/chats/{chatId}/background`\n\nSet the transcript background for a chat.\n\nProvide one of: a **color** (a named preset or a custom 2-stop gradient),\na **dynamic** animated style, or a **photo** (by URL). The request is accepted\nasynchronously; the terminal result arrives via the `chat.background_updated`\nwebhook on success, or `chat.background_update_failed` on failure.\n\n**Group chats are supported.** Requests for RCS or SMS chats are accepted (`202`)\nbut no background is applied and no `chat.background_updated` webhook fires.\n\n\n### Parameters\n\n- `chatId: string`\n\n- `type: 'color' | 'dynamic' | 'photo'`\n  The background family.\n\n- `image_url?: string`\n  Photo: the image URL to embed in the background. Must be an absolute `https`\nURL pointing at an image (`.jpg`, `.png`, `.heic`, `.webp`), and the image is\nfetched and re-hosted on our CDN before the request is accepted — the same way\n`group_chat_icon` works. A URL we cannot fetch, or one that isn't an image, is\nrejected with a `400` (`5007`/`5006`) rather than failing later on the device.\n\n\n- `shades?: string[]`\n  Color with `variant: custom`: the two gradient stops as hex, top then bottom.\nIgnored for named color variants (they carry their own two colors).\n\n\n- `style?: 'sky' | 'water' | 'aurora' | 'glitter'`\n  Dynamic: the animated style.\n\n- `variant?: string`\n  Color: a named swatch — `mango`, `ice`, `plum`, `deep_sea`, `green_apple`,\n`cherry`, `bubblegum`, `tangerine`, `magenta`, `lime`, `silver`, `carbon`,\n`stone` — or `custom` (supply `shades`). Dynamic: the variant within the\n`style` (e.g. `sunrise`).\n\nAn unrecognized value still returns `202`, but no background is applied and no\n`chat.background_updated` webhook fires. Send one of the values above.\n\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nawait client.chats.background.set('550e8400-e29b-41d4-a716-446655440000', { type: 'color' })\n```",
     perLanguage: {
       go: {
         method: 'client.Chats.Background.Set',
@@ -2404,32 +2404,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       http: {
         example:
           'curl https://api.linqapp.com/api/partner/v3/capability/check_rcs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY" \\\n    -d \'{\n          "address": "+15551234567",\n          "from": "+15559876543"\n        }\'',
-      },
-    },
-  },
-  {
-    name: 'unwrap',
-    endpoint: '',
-    httpMethod: '',
-    summary: '',
-    description: '',
-    stainlessPath: '(resource) webhooks > (method) unwrap',
-    qualified: 'client.webhooks.unwrap',
-    perLanguage: {
-      go: {
-        method: 'client.Webhooks.Unwrap',
-        example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\terr := client.Webhooks.Unwrap(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
-      },
-      python: {
-        method: 'webhooks.unwrap',
-        example:
-          'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nclient.webhooks.unwrap()',
-      },
-      typescript: {
-        method: 'client.webhooks.unwrap',
-        example:
-          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhooks.unwrap();",
       },
     },
   },

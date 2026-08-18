@@ -173,7 +173,6 @@ const fuse = new Fuse(
     'client.webhookSubscriptions.update',
     'client.capability.checkIMessage',
     'client.capability.checkRCS',
-    'client.webhooks.unwrap',
     'client.contactCard.create',
     'client.contactCard.retrieve',
     'client.contactCard.update',
