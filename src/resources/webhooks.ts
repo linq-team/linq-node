@@ -2,23 +2,8 @@
 
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
-import * as WebhookEventsAPI from './webhook-events';
-import { Webhook } from 'standardwebhooks';
 
-export class Webhooks extends APIResource {
-  unwrap(
-    body: string,
-    { headers, key }: { headers: Record<string, string>; key?: string },
-  ): UnwrapWebhookEvent {
-    if (headers !== undefined) {
-      const keyStr: string | null = key === undefined ? this._client.webhookSecret : key;
-      if (keyStr === null) throw new Error('Webhook key must not be null in order to unwrap');
-      const wh = new Webhook(keyStr);
-      wh.verify(body, headers);
-    }
-    return JSON.parse(body) as UnwrapWebhookEvent;
-  }
-}
+export class Webhooks extends APIResource {}
 
 /**
  * Unified payload for message webhooks when using `webhook_version: "2026-02-03"`.
@@ -65,6 +50,7 @@ export interface MessageEventV2 {
     | SchemasMediaPartResponse
     | MessageEventV2.SchemasLinkPartResponse
     | MessageEventV2.SchemasIMessageAppPartResponse
+    | MessageEventV2.SchemasAppClipPartResponse
   >;
 
   /**
@@ -103,6 +89,17 @@ export interface MessageEventV2 {
   read_at?: string | null;
 
   /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   reply_to?: MessageEventV2.ReplyTo | null;
@@ -129,9 +126,10 @@ export namespace MessageEventV2 {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -156,9 +154,10 @@ export namespace MessageEventV2 {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
      * See the [Chat Health guide](/guides/chats/chat-health) for what each status
      * means and how to react.
@@ -173,6 +172,26 @@ export namespace MessageEventV2 {
        * Current health bucket for the chat. See the
        * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
        * to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+       * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+       * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+       * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+       * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+       * count. It clears as soon as they reply again: any later message from them that
+       * is not itself an opt-out keyword opts them back in immediately — a reply in any
+       * conversation with you counts, the same way the block does.
+       *
+       * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+       * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+       * as well — gate on the `403`, not on the status. Group threads are never marked
+       * and are never blocked.
+       *
+       * Linq enforces this: while a recipient is opted out, every send to them is
+       * rejected with `403` (error code `2024`) before the message is queued, across
+       * every chat and every line on your account. Nothing is delivered, including a
+       * final courtesy message — to send one, set `override_optout: true` on that single
+       * request.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -281,6 +300,36 @@ export namespace MessageEventV2 {
   }
 
   /**
+   * An Apple Pay App Clip payment card part
+   */
+  export interface SchemasAppClipPartResponse {
+    /**
+     * Indicates this is an App Clip payment card part
+     */
+    type: 'app_clip';
+
+    /**
+     * The checkout link the card opens
+     */
+    value: string;
+
+    /**
+     * The card's summary line, composed by Linq from the checkout session
+     */
+    description?: string;
+
+    /**
+     * The card's preview image
+     */
+    image_url?: string;
+
+    /**
+     * The card's headline, composed by Linq from the checkout session
+     */
+    title?: string;
+  }
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   export interface ReplyTo {
@@ -338,12 +387,24 @@ export interface MessagePayload {
     | SchemasMediaPartResponse
     | MessagePayload.SchemasLinkPartResponse
     | MessagePayload.SchemasIMessageAppPartResponse
+    | MessagePayload.SchemasAppClipPartResponse
   >;
 
   /**
    * When the message was read
    */
   read_at?: string | null;
+
+  /**
+   * Present only when this message was recovered by reconciliation rather than
+   * delivered live, and set to the time of that recovery. The field is omitted
+   * entirely for normally-delivered messages, which is the overwhelming majority.
+   * When present, expect `sent_at` to be substantially earlier than delivery of this
+   * event: the message is genuine but is arriving late and out of real-time order,
+   * so treat it as history rather than as a live inbound (for example, suppress
+   * auto-replies).
+   */
+  reconciled_at?: string;
 
   /**
    * Reference to the message this is replying to
@@ -457,6 +518,36 @@ export namespace MessagePayload {
        */
       trailing_subcaption?: string | null;
     }
+  }
+
+  /**
+   * An Apple Pay App Clip payment card part
+   */
+  export interface SchemasAppClipPartResponse {
+    /**
+     * Indicates this is an App Clip payment card part
+     */
+    type: 'app_clip';
+
+    /**
+     * The checkout link the card opens
+     */
+    value: string;
+
+    /**
+     * The card's summary line, composed by Linq from the checkout session
+     */
+    description?: string;
+
+    /**
+     * The card's preview image
+     */
+    image_url?: string;
+
+    /**
+     * The card's headline, composed by Linq from the checkout session
+     */
+    title?: string;
   }
 
   /**
@@ -641,1543 +732,6 @@ export interface SchemasTextPartResponse {
   text_decorations?: Array<Shared.TextDecoration> | null;
 }
 
-/**
- * Complete webhook payload for message.sent events (2026-02-03 format)
- */
-export interface MessageSentWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Unified payload for message webhooks when using `webhook_version: "2026-02-03"`.
-   *
-   * This schema is used for message.sent, message.received, message.delivered, and
-   * message.read events when the subscription URL includes `?version=2026-02-03`.
-   *
-   * Key differences from V1 (2025-01-01):
-   *
-   * - `direction`: "inbound" or "outbound" instead of `is_from_me` boolean
-   * - `sender_handle`: Full handle object for the sender
-   * - `chat`: Nested object with `id`, `is_group`, and `owner_handle`
-   * - Message fields (`id`, `parts`, `effect`, etc.) are at the top level, not
-   *   nested in `message`
-   *
-   * Timestamps indicate the message state:
-   *
-   * - `message.sent`: sent_at set, delivered_at=null, read_at=null
-   * - `message.received`: sent_at set, delivered_at=null, read_at=null
-   * - `message.delivered`: sent_at set, delivered_at set, read_at=null
-   * - `message.read`: sent_at set, delivered_at set, read_at set
-   */
-  data: MessageEventV2;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-/**
- * Complete webhook payload for message.received events (2026-02-03 format)
- */
-export interface MessageReceivedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Unified payload for message webhooks when using `webhook_version: "2026-02-03"`.
-   *
-   * This schema is used for message.sent, message.received, message.delivered, and
-   * message.read events when the subscription URL includes `?version=2026-02-03`.
-   *
-   * Key differences from V1 (2025-01-01):
-   *
-   * - `direction`: "inbound" or "outbound" instead of `is_from_me` boolean
-   * - `sender_handle`: Full handle object for the sender
-   * - `chat`: Nested object with `id`, `is_group`, and `owner_handle`
-   * - Message fields (`id`, `parts`, `effect`, etc.) are at the top level, not
-   *   nested in `message`
-   *
-   * Timestamps indicate the message state:
-   *
-   * - `message.sent`: sent_at set, delivered_at=null, read_at=null
-   * - `message.received`: sent_at set, delivered_at=null, read_at=null
-   * - `message.delivered`: sent_at set, delivered_at set, read_at=null
-   * - `message.read`: sent_at set, delivered_at set, read_at set
-   */
-  data: MessageEventV2;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-/**
- * Complete webhook payload for message.read events (2026-02-03 format)
- */
-export interface MessageReadWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Unified payload for message webhooks when using `webhook_version: "2026-02-03"`.
-   *
-   * This schema is used for message.sent, message.received, message.delivered, and
-   * message.read events when the subscription URL includes `?version=2026-02-03`.
-   *
-   * Key differences from V1 (2025-01-01):
-   *
-   * - `direction`: "inbound" or "outbound" instead of `is_from_me` boolean
-   * - `sender_handle`: Full handle object for the sender
-   * - `chat`: Nested object with `id`, `is_group`, and `owner_handle`
-   * - Message fields (`id`, `parts`, `effect`, etc.) are at the top level, not
-   *   nested in `message`
-   *
-   * Timestamps indicate the message state:
-   *
-   * - `message.sent`: sent_at set, delivered_at=null, read_at=null
-   * - `message.received`: sent_at set, delivered_at=null, read_at=null
-   * - `message.delivered`: sent_at set, delivered_at set, read_at=null
-   * - `message.read`: sent_at set, delivered_at set, read_at set
-   */
-  data: MessageEventV2;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-/**
- * Complete webhook payload for message.delivered events (2026-02-03 format)
- */
-export interface MessageDeliveredWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Unified payload for message webhooks when using `webhook_version: "2026-02-03"`.
-   *
-   * This schema is used for message.sent, message.received, message.delivered, and
-   * message.read events when the subscription URL includes `?version=2026-02-03`.
-   *
-   * Key differences from V1 (2025-01-01):
-   *
-   * - `direction`: "inbound" or "outbound" instead of `is_from_me` boolean
-   * - `sender_handle`: Full handle object for the sender
-   * - `chat`: Nested object with `id`, `is_group`, and `owner_handle`
-   * - Message fields (`id`, `parts`, `effect`, etc.) are at the top level, not
-   *   nested in `message`
-   *
-   * Timestamps indicate the message state:
-   *
-   * - `message.sent`: sent_at set, delivered_at=null, read_at=null
-   * - `message.received`: sent_at set, delivered_at=null, read_at=null
-   * - `message.delivered`: sent_at set, delivered_at set, read_at=null
-   * - `message.read`: sent_at set, delivered_at set, read_at set
-   */
-  data: MessageEventV2;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-/**
- * Complete webhook payload for message.failed events
- */
-export interface MessageFailedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Error details for message.failed webhook events. See
-   * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
-   * code reference.
-   */
-  data: MessageFailedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace MessageFailedWebhookEvent {
-  /**
-   * Error details for message.failed webhook events. See
-   * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
-   * code reference.
-   */
-  export interface Data {
-    /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
-     */
-    code: number;
-
-    /**
-     * When the failure was detected
-     */
-    failed_at: string;
-
-    /**
-     * Chat identifier (UUID)
-     */
-    chat_id?: string;
-
-    /**
-     * Message identifier (UUID)
-     */
-    message_id?: string;
-
-    /**
-     * Human-readable description of the failure
-     */
-    reason?: string;
-  }
-}
-
-/**
- * Complete webhook payload for message.edited events (2026-02-03 format only)
- */
-export interface MessageEditedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for `message.edited` events (2026-02-03 format).
-   *
-   * Describes which part of a message was edited and when. Only text parts can be
-   * edited. Only available for subscriptions using `webhook_version: "2026-02-03"`.
-   */
-  data: MessageEditedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace MessageEditedWebhookEvent {
-  /**
-   * Payload for `message.edited` events (2026-02-03 format).
-   *
-   * Describes which part of a message was edited and when. Only text parts can be
-   * edited. Only available for subscriptions using `webhook_version: "2026-02-03"`.
-   */
-  export interface Data {
-    /**
-     * Message identifier
-     */
-    id: string;
-
-    /**
-     * Chat context
-     */
-    chat: Data.Chat;
-
-    /**
-     * "outbound" if you sent the original message, "inbound" if you received it
-     */
-    direction: 'outbound' | 'inbound';
-
-    /**
-     * When the edit occurred
-     */
-    edited_at: string;
-
-    /**
-     * The edited part
-     */
-    part: Data.Part;
-
-    /**
-     * The handle that sent (and edited) this message
-     */
-    sender_handle: Shared.ChatHandle;
-  }
-
-  export namespace Data {
-    /**
-     * Chat context
-     */
-    export interface Chat {
-      /**
-       * Chat identifier
-       */
-      id: string;
-
-      /**
-       * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
-       * and may shift based on engagement and delivery signals on the conversation. Many
-       * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
-       * flagging.
-       *
-       * Switch on `status` to gate sends or surface line health in your UI — the enum is
-       * the long-term contract. Each status carries a `doc_url` that deep-links to the
-       * relevant section of the Chat Health guide.
-       *
-       * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-       * means and how to react.
-       */
-      health_status: Chat.HealthStatus;
-
-      /**
-       * Whether this is a group chat
-       */
-      is_group: boolean;
-
-      /**
-       * The handle that owns this chat (your phone number)
-       */
-      owner_handle: Shared.ChatHandle;
-    }
-
-    export namespace Chat {
-      /**
-       * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
-       * and may shift based on engagement and delivery signals on the conversation. Many
-       * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
-       * flagging.
-       *
-       * Switch on `status` to gate sends or surface line health in your UI — the enum is
-       * the long-term contract. Each status carries a `doc_url` that deep-links to the
-       * relevant section of the Chat Health guide.
-       *
-       * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-       * means and how to react.
-       */
-      export interface HealthStatus {
-        /**
-         * Deep-link to the relevant section of the Chat Health guide for this status.
-         */
-        doc_url: string;
-
-        /**
-         * Current health bucket for the chat. See the
-         * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
-         * to react. `doc_url` deep-links to the relevant section.
-         */
-        status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
-
-        /**
-         * When this status last changed.
-         */
-        updated_at: string;
-      }
-    }
-
-    /**
-     * The edited part
-     */
-    export interface Part {
-      /**
-       * Zero-based index of the edited part within the message
-       */
-      index: number;
-
-      /**
-       * New text content of the part
-       */
-      text: string;
-    }
-  }
-}
-
-/**
- * Complete webhook payload for reaction.added events
- */
-export interface ReactionAddedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for reaction.added webhook events
-   */
-  data: ReactionEventBase;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-/**
- * Complete webhook payload for reaction.removed events
- */
-export interface ReactionRemovedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for reaction.removed webhook events
-   */
-  data: ReactionEventBase;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-/**
- * Complete webhook payload for participant.added events
- */
-export interface ParticipantAddedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for participant.added webhook events
-   */
-  data: ParticipantAddedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ParticipantAddedWebhookEvent {
-  /**
-   * Payload for participant.added webhook events
-   */
-  export interface Data {
-    /**
-     * @deprecated DEPRECATED: Use participant instead. Handle (phone number or email
-     * address) of the added participant.
-     */
-    handle: string;
-
-    /**
-     * When the participant was added
-     */
-    added_at?: string;
-
-    /**
-     * Chat identifier (UUID) of the group chat
-     */
-    chat_id?: string;
-
-    /**
-     * The added participant as a full handle object
-     */
-    participant?: Shared.ChatHandle;
-  }
-}
-
-/**
- * Complete webhook payload for participant.removed events
- */
-export interface ParticipantRemovedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for participant.removed webhook events
-   */
-  data: ParticipantRemovedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ParticipantRemovedWebhookEvent {
-  /**
-   * Payload for participant.removed webhook events
-   */
-  export interface Data {
-    /**
-     * @deprecated DEPRECATED: Use participant instead. Handle (phone number or email
-     * address) of the removed participant.
-     */
-    handle: string;
-
-    /**
-     * Chat identifier (UUID) of the group chat
-     */
-    chat_id?: string;
-
-    /**
-     * The removed participant as a full handle object
-     */
-    participant?: Shared.ChatHandle;
-
-    /**
-     * When the participant was removed
-     */
-    removed_at?: string;
-  }
-}
-
-/**
- * Complete webhook payload for chat.created events
- */
-export interface ChatCreatedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for chat.created webhook events. Matches GET /v3/chats/{chatId}
-   * response.
-   */
-  data: ChatCreatedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ChatCreatedWebhookEvent {
-  /**
-   * Payload for chat.created webhook events. Matches GET /v3/chats/{chatId}
-   * response.
-   */
-  export interface Data {
-    /**
-     * Unique identifier for the chat
-     */
-    id: string;
-
-    /**
-     * When the chat was created
-     */
-    created_at: string;
-
-    /**
-     * Display name for the chat. Defaults to a comma-separated list of recipient
-     * handles. Can be updated for group chats.
-     */
-    display_name: string | null;
-
-    /**
-     * List of chat participants with full handle details. Always contains at least two
-     * handles (your phone number and the other participant).
-     */
-    handles: Array<Shared.ChatHandle>;
-
-    /**
-     * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
-     * and may shift based on engagement and delivery signals on the conversation. Many
-     * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
-     * flagging.
-     *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
-     *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
-     */
-    health_status: Data.HealthStatus;
-
-    /**
-     * Whether this is a group chat
-     */
-    is_group: boolean;
-
-    /**
-     * When the chat was last updated
-     */
-    updated_at: string;
-
-    /**
-     * Messaging service type
-     */
-    service?: Shared.ServiceType | null;
-  }
-
-  export namespace Data {
-    /**
-     * **[BETA]** Current health for a chat. Always present — chats start at `HEALTHY`
-     * and may shift based on engagement and delivery signals on the conversation. Many
-     * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
-     * flagging.
-     *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
-     *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
-     */
-    export interface HealthStatus {
-      /**
-       * Deep-link to the relevant section of the Chat Health guide for this status.
-       */
-      doc_url: string;
-
-      /**
-       * Current health bucket for the chat. See the
-       * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
-       * to react. `doc_url` deep-links to the relevant section.
-       */
-      status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
-
-      /**
-       * When this status last changed.
-       */
-      updated_at: string;
-    }
-  }
-}
-
-/**
- * Complete webhook payload for chat.group_name_updated events
- */
-export interface ChatGroupNameUpdatedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for chat.group_name_updated webhook events
-   */
-  data: ChatGroupNameUpdatedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ChatGroupNameUpdatedWebhookEvent {
-  /**
-   * Payload for chat.group_name_updated webhook events
-   */
-  export interface Data {
-    /**
-     * Chat identifier (UUID) of the group chat
-     */
-    chat_id: string;
-
-    /**
-     * When the update occurred
-     */
-    updated_at: string;
-
-    /**
-     * The handle who made the change.
-     */
-    changed_by_handle?: Shared.ChatHandle | null;
-
-    /**
-     * New group name (null if the name was removed)
-     */
-    new_value?: string | null;
-
-    /**
-     * Previous group name (null if no previous name)
-     */
-    old_value?: string | null;
-  }
-}
-
-/**
- * Complete webhook payload for chat.group_icon_updated events
- */
-export interface ChatGroupIconUpdatedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for chat.group_icon_updated webhook events
-   */
-  data: ChatGroupIconUpdatedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ChatGroupIconUpdatedWebhookEvent {
-  /**
-   * Payload for chat.group_icon_updated webhook events
-   */
-  export interface Data {
-    /**
-     * Chat identifier (UUID) of the group chat
-     */
-    chat_id: string;
-
-    /**
-     * When the update occurred
-     */
-    updated_at: string;
-
-    /**
-     * The handle who made the change.
-     */
-    changed_by_handle?: Shared.ChatHandle | null;
-
-    /**
-     * New icon URL (null if the icon was removed)
-     */
-    new_value?: string | null;
-
-    /**
-     * Previous icon URL (null if no previous icon)
-     */
-    old_value?: string | null;
-  }
-}
-
-/**
- * Complete webhook payload for chat.group_name_update_failed events
- */
-export interface ChatGroupNameUpdateFailedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Error details for chat.group_name_update_failed webhook events. See
-   * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
-   * code reference.
-   */
-  data: ChatGroupNameUpdateFailedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ChatGroupNameUpdateFailedWebhookEvent {
-  /**
-   * Error details for chat.group_name_update_failed webhook events. See
-   * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
-   * code reference.
-   */
-  export interface Data {
-    /**
-     * Chat identifier (UUID) of the group chat
-     */
-    chat_id: string;
-
-    /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
-     */
-    error_code: number;
-
-    /**
-     * When the failure was detected
-     */
-    failed_at: string;
-  }
-}
-
-/**
- * Complete webhook payload for chat.group_icon_update_failed events
- */
-export interface ChatGroupIconUpdateFailedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Error details for chat.group_icon_update_failed webhook events. See
-   * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
-   * code reference.
-   */
-  data: ChatGroupIconUpdateFailedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ChatGroupIconUpdateFailedWebhookEvent {
-  /**
-   * Error details for chat.group_icon_update_failed webhook events. See
-   * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
-   * code reference.
-   */
-  export interface Data {
-    /**
-     * Chat identifier (UUID) of the group chat
-     */
-    chat_id: string;
-
-    /**
-     * Error codes in webhook failure events (3007, 4001, 4005).
-     */
-    error_code: number;
-
-    /**
-     * When the failure was detected
-     */
-    failed_at: string;
-  }
-}
-
-/**
- * Complete webhook payload for chat.typing_indicator.started events
- */
-export interface ChatTypingIndicatorStartedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for chat.typing_indicator.started webhook events
-   */
-  data: ChatTypingIndicatorStartedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ChatTypingIndicatorStartedWebhookEvent {
-  /**
-   * Payload for chat.typing_indicator.started webhook events
-   */
-  export interface Data {
-    /**
-     * Chat identifier
-     */
-    chat_id: string;
-  }
-}
-
-/**
- * Complete webhook payload for chat.typing_indicator.stopped events
- */
-export interface ChatTypingIndicatorStoppedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for chat.typing_indicator.stopped webhook events
-   */
-  data: ChatTypingIndicatorStoppedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * Valid webhook event types that can be subscribed to.
-   *
-   * **Note:** `message.edited` is only delivered to subscriptions using
-   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
-   * subscription will not produce any deliveries.
-   */
-  event_type: WebhookEventsAPI.WebhookEventType;
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace ChatTypingIndicatorStoppedWebhookEvent {
-  /**
-   * Payload for chat.typing_indicator.stopped webhook events
-   */
-  export interface Data {
-    /**
-     * Chat identifier
-     */
-    chat_id: string;
-  }
-}
-
-/**
- * Complete webhook payload for phone_number.status_updated events
- */
-export interface PhoneNumberStatusUpdatedWebhookEvent {
-  /**
-   * API version for the webhook payload format
-   */
-  api_version: string;
-
-  /**
-   * When the event was created
-   */
-  created_at: string;
-
-  /**
-   * Payload for phone_number.status_updated webhook events
-   */
-  data: PhoneNumberStatusUpdatedWebhookEvent.Data;
-
-  /**
-   * Unique identifier for this event (for deduplication)
-   */
-  event_id: string;
-
-  /**
-   * The type of event
-   */
-  event_type:
-    | 'message.sent'
-    | 'message.received'
-    | 'message.read'
-    | 'message.delivered'
-    | 'message.failed'
-    | 'message.edited'
-    | 'reaction.added'
-    | 'reaction.removed'
-    | 'participant.added'
-    | 'participant.removed'
-    | 'chat.created'
-    | 'chat.group_name_updated'
-    | 'chat.group_icon_updated'
-    | 'chat.group_name_update_failed'
-    | 'chat.group_icon_update_failed'
-    | 'chat.background_updated'
-    | 'chat.typing_indicator.started'
-    | 'chat.typing_indicator.stopped'
-    | 'phone_number.status_updated'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
-    | 'location.sharing.started'
-    | 'location.sharing.stopped'
-    | 'payment.succeeded'
-    | 'payment.canceled'
-    | 'payment.expired'
-    | 'payment.declined'
-    | 'payment.authorized'
-    | 'connection.created'
-    | 'connection.revoked';
-
-  /**
-   * Partner identifier. Present on all webhooks for cross-referencing.
-   */
-  partner_id: string;
-
-  /**
-   * Trace ID for debugging and correlation across systems.
-   */
-  trace_id: string;
-
-  /**
-   * Date-based webhook payload version. Determined by the `?version=` query
-   * parameter in your webhook subscription URL. If no version parameter is
-   * specified, defaults based on subscription creation date.
-   */
-  webhook_version: string;
-}
-
-export namespace PhoneNumberStatusUpdatedWebhookEvent {
-  /**
-   * Payload for phone_number.status_updated webhook events
-   */
-  export interface Data {
-    /**
-     * When the status change occurred
-     */
-    changed_at: string;
-
-    /**
-     * The new line reputation
-     */
-    new_reputation: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
-
-    /**
-     * The new service status
-     */
-    new_status: 'ACTIVE' | 'FLAGGED';
-
-    /**
-     * Phone number in E.164 format
-     */
-    phone_number: string;
-
-    /**
-     * The previous line reputation
-     */
-    previous_reputation: 'HEALTHY' | 'AT_RISK' | 'CRITICAL';
-
-    /**
-     * The previous service status
-     */
-    previous_status: 'ACTIVE' | 'FLAGGED';
-  }
-}
-
-/**
- * Complete webhook payload for message.sent events (2026-02-03 format)
- */
-export type UnwrapWebhookEvent =
-  | MessageSentWebhookEvent
-  | MessageReceivedWebhookEvent
-  | MessageReadWebhookEvent
-  | MessageDeliveredWebhookEvent
-  | MessageFailedWebhookEvent
-  | MessageEditedWebhookEvent
-  | ReactionAddedWebhookEvent
-  | ReactionRemovedWebhookEvent
-  | ParticipantAddedWebhookEvent
-  | ParticipantRemovedWebhookEvent
-  | ChatCreatedWebhookEvent
-  | ChatGroupNameUpdatedWebhookEvent
-  | ChatGroupIconUpdatedWebhookEvent
-  | ChatGroupNameUpdateFailedWebhookEvent
-  | ChatGroupIconUpdateFailedWebhookEvent
-  | ChatTypingIndicatorStartedWebhookEvent
-  | ChatTypingIndicatorStoppedWebhookEvent
-  | PhoneNumberStatusUpdatedWebhookEvent;
-
 export declare namespace Webhooks {
   export {
     type MessageEventV2 as MessageEventV2,
@@ -2186,24 +740,5 @@ export declare namespace Webhooks {
     type SchemasMediaPartResponse as SchemasMediaPartResponse,
     type SchemasMessageEffect as SchemasMessageEffect,
     type SchemasTextPartResponse as SchemasTextPartResponse,
-    type MessageSentWebhookEvent as MessageSentWebhookEvent,
-    type MessageReceivedWebhookEvent as MessageReceivedWebhookEvent,
-    type MessageReadWebhookEvent as MessageReadWebhookEvent,
-    type MessageDeliveredWebhookEvent as MessageDeliveredWebhookEvent,
-    type MessageFailedWebhookEvent as MessageFailedWebhookEvent,
-    type MessageEditedWebhookEvent as MessageEditedWebhookEvent,
-    type ReactionAddedWebhookEvent as ReactionAddedWebhookEvent,
-    type ReactionRemovedWebhookEvent as ReactionRemovedWebhookEvent,
-    type ParticipantAddedWebhookEvent as ParticipantAddedWebhookEvent,
-    type ParticipantRemovedWebhookEvent as ParticipantRemovedWebhookEvent,
-    type ChatCreatedWebhookEvent as ChatCreatedWebhookEvent,
-    type ChatGroupNameUpdatedWebhookEvent as ChatGroupNameUpdatedWebhookEvent,
-    type ChatGroupIconUpdatedWebhookEvent as ChatGroupIconUpdatedWebhookEvent,
-    type ChatGroupNameUpdateFailedWebhookEvent as ChatGroupNameUpdateFailedWebhookEvent,
-    type ChatGroupIconUpdateFailedWebhookEvent as ChatGroupIconUpdateFailedWebhookEvent,
-    type ChatTypingIndicatorStartedWebhookEvent as ChatTypingIndicatorStartedWebhookEvent,
-    type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
-    type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
-    type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
 }
