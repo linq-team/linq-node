@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.1](https://github.com/linq-team/linq-node/compare/v0.42.0...v0.42.1) (2026-08-19)
+
+
+### Bug Fixes
+
+* update card preview image url examples ([481dad1](https://github.com/linq-team/linq-node/commit/481dad1577a06ba8cf6574216ee0a5d624e81d13))
+
 ## [0.42.0](https://github.com/linq-team/linq-node/compare/v0.41.1...v0.42.0) (2026-08-19)
 
 
