@@ -194,6 +194,7 @@ export interface SentMessage {
     | Shared.MediaPartResponse
     | Shared.LinkPartResponse
     | SentMessage.IMessageAppPartResponse
+    | SentMessage.AppClipPartResponse
   >;
 
   /**
@@ -366,6 +367,41 @@ export namespace SentMessage {
        */
       trailing_subcaption?: string;
     }
+  }
+
+  /**
+   * An Apple Pay App Clip payment card part
+   */
+  export interface AppClipPartResponse {
+    /**
+     * Reactions on this message part
+     */
+    reactions: Array<Shared.Reaction> | null;
+
+    /**
+     * Indicates this is an App Clip payment card part
+     */
+    type: 'app_clip';
+
+    /**
+     * The checkout link the card opens
+     */
+    value: string;
+
+    /**
+     * The card's summary line, composed by Linq from the checkout session
+     */
+    description?: string;
+
+    /**
+     * The card's preview image
+     */
+    image_url?: string;
+
+    /**
+     * The card's headline, composed by Linq from the checkout session
+     */
+    title?: string;
   }
 }
 

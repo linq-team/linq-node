@@ -50,6 +50,7 @@ export interface MessageEventV2 {
     | SchemasMediaPartResponse
     | MessageEventV2.SchemasLinkPartResponse
     | MessageEventV2.SchemasIMessageAppPartResponse
+    | MessageEventV2.SchemasAppClipPartResponse
   >;
 
   /**
@@ -299,6 +300,36 @@ export namespace MessageEventV2 {
   }
 
   /**
+   * An Apple Pay App Clip payment card part
+   */
+  export interface SchemasAppClipPartResponse {
+    /**
+     * Indicates this is an App Clip payment card part
+     */
+    type: 'app_clip';
+
+    /**
+     * The checkout link the card opens
+     */
+    value: string;
+
+    /**
+     * The card's summary line, composed by Linq from the checkout session
+     */
+    description?: string;
+
+    /**
+     * The card's preview image
+     */
+    image_url?: string;
+
+    /**
+     * The card's headline, composed by Linq from the checkout session
+     */
+    title?: string;
+  }
+
+  /**
    * Reference to the message this is replying to (for threaded replies)
    */
   export interface ReplyTo {
@@ -356,6 +387,7 @@ export interface MessagePayload {
     | SchemasMediaPartResponse
     | MessagePayload.SchemasLinkPartResponse
     | MessagePayload.SchemasIMessageAppPartResponse
+    | MessagePayload.SchemasAppClipPartResponse
   >;
 
   /**
@@ -486,6 +518,36 @@ export namespace MessagePayload {
        */
       trailing_subcaption?: string | null;
     }
+  }
+
+  /**
+   * An Apple Pay App Clip payment card part
+   */
+  export interface SchemasAppClipPartResponse {
+    /**
+     * Indicates this is an App Clip payment card part
+     */
+    type: 'app_clip';
+
+    /**
+     * The checkout link the card opens
+     */
+    value: string;
+
+    /**
+     * The card's summary line, composed by Linq from the checkout session
+     */
+    description?: string;
+
+    /**
+     * The card's preview image
+     */
+    image_url?: string;
+
+    /**
+     * The card's headline, composed by Linq from the checkout session
+     */
+    title?: string;
   }
 
   /**
