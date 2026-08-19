@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.0](https://github.com/linq-team/linq-node/compare/v0.41.1...v0.42.0) (2026-08-19)
+
+
+### Features
+
+* add apple pay app clip payment card support ([bbb42a3](https://github.com/linq-team/linq-node/commit/bbb42a34a34e35b14b3ea53da4c2a8762ce4af56))
+
 ## [0.41.1](https://github.com/linq-team/linq-node/compare/v0.41.0...v0.41.1) (2026-08-18)
 
 
