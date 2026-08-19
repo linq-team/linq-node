@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.2](https://github.com/linq-team/linq-node/compare/v0.42.1...v0.42.2) (2026-08-19)
+
+
+### Bug Fixes
+
+* clarify 409 errors for mention targets no longer in chat ([8a84dfd](https://github.com/linq-team/linq-node/commit/8a84dfd6fffe2c8826ca8ca9d431a915bb8887d7))
+
 ## [0.42.1](https://github.com/linq-team/linq-node/compare/v0.42.0...v0.42.1) (2026-08-19)
 
 
