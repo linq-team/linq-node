@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.44.3](https://github.com/linq-team/linq-node/compare/v0.44.2...v0.44.3) (2026-08-20)
+
+
+### Documentation
+
+* clarify transcript background field requirements and examples ([c400402](https://github.com/linq-team/linq-node/commit/c400402cb24e171562a927af18d75a04d6373443))
+
 ## [0.44.2](https://github.com/linq-team/linq-node/compare/v0.44.1...v0.44.2) (2026-08-20)
 
 
