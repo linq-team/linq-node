@@ -28,7 +28,7 @@ export const newMcpServer = async ({
   new McpServer(
     {
       name: 'linqapp_sdk_api',
-      version: '0.29.0',
+      version: '0.44.2',
     },
     {
       instructions: await getInstructions({ stainlessApiKey, customInstructionsPath }),
