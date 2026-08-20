@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.43.0](https://github.com/linq-team/linq-node/compare/v0.42.2...v0.43.0) (2026-08-20)
+
+
+### Features
+
+* clarify text decoration and mention behavior across recipient types ([cb101ac](https://github.com/linq-team/linq-node/commit/cb101ac10fc22b38dc53250f1c1ffc2b7dbb0fcc))
+
 ## [0.42.2](https://github.com/linq-team/linq-node/compare/v0.42.1...v0.42.2) (2026-08-19)
 
 
