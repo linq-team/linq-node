@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as MessagesAPI from '../messages';
-import { MessagesListMessagesPagination } from '../messages';
 import * as Shared from '../shared';
 import * as ChatsAPI from './chats';
+import * as ResourcesMessagesAPI from '../messages/messages';
+import { MessagesListMessagesPagination } from '../messages/messages';
 import { APIPromise } from '../../core/api-promise';
 import {
   ListMessagesPagination,
@@ -76,6 +76,31 @@ import { path } from '../../internal/utils/path';
  */
 export class Messages extends APIResource {
   /**
+   * Retrieve messages from a specific chat with pagination support.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.chats.messages.list(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * )) {
+   *   // ...
+   * }
+   * ```
+   */
+  list(
+    chatID: string,
+    query: MessageListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MessagesListMessagesPagination, ResourcesMessagesAPI.Message> {
+    return this._client.getAPIList(
+      path`/v3/chats/${chatID}/messages`,
+      ListMessagesPagination<ResourcesMessagesAPI.Message>,
+      { query, ...options },
+    );
+  }
+
+  /**
    * Send a message to an existing chat. Use this endpoint when you already have a
    * chat ID and want to send additional messages to it.
    *
@@ -116,8 +141,10 @@ export class Messages extends APIResource {
    * ```
    *
    * **Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges
-   * must not overlap with other animations or styles. Text decorations only render
-   * for iMessage recipients. For SMS/RCS, text decorations are not applied.
+   * must not overlap with other animations or styles. Decorations render per
+   * recipient, not per message: in a group with both iMessage and SMS/RCS
+   * participants, iMessage recipients see the decorations and SMS/RCS recipients
+   * receive the same message as plain text.
    *
    * @example
    * ```ts
@@ -133,31 +160,6 @@ export class Messages extends APIResource {
    */
   send(chatID: string, body: MessageSendParams, options?: RequestOptions): APIPromise<MessageSendResponse> {
     return this._client.post(path`/v3/chats/${chatID}/messages`, { body, ...options });
-  }
-
-  /**
-   * Retrieve messages from a specific chat with pagination support.
-   *
-   * @example
-   * ```ts
-   * // Automatically fetches more pages as needed.
-   * for await (const message of client.chats.messages.list(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * )) {
-   *   // ...
-   * }
-   * ```
-   */
-  list(
-    chatID: string,
-    query: MessageListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<MessagesListMessagesPagination, MessagesAPI.Message> {
-    return this._client.getAPIList(
-      path`/v3/chats/${chatID}/messages`,
-      ListMessagesPagination<MessagesAPI.Message>,
-      { query, ...options },
-    );
   }
 }
 
@@ -194,6 +196,7 @@ export interface SentMessage {
     | Shared.MediaPartResponse
     | Shared.LinkPartResponse
     | SentMessage.IMessageAppPartResponse
+    | SentMessage.AppClipPartResponse
   >;
 
   /**
@@ -209,7 +212,7 @@ export interface SentMessage {
   /**
    * iMessage effect applied to a message (screen or bubble effect)
    */
-  effect?: MessagesAPI.MessageEffect | null;
+  effect?: ResourcesMessagesAPI.MessageEffect | null;
 
   /**
    * The sender of this message as a full handle object
@@ -224,7 +227,7 @@ export interface SentMessage {
   /**
    * Indicates this message is a threaded reply to another message
    */
-  reply_to?: MessagesAPI.ReplyTo | null;
+  reply_to?: ResourcesMessagesAPI.ReplyTo | null;
 
   /**
    * Messaging service type
@@ -367,6 +370,41 @@ export namespace SentMessage {
       trailing_subcaption?: string;
     }
   }
+
+  /**
+   * An Apple Pay App Clip payment card part
+   */
+  export interface AppClipPartResponse {
+    /**
+     * Reactions on this message part
+     */
+    reactions: Array<Shared.Reaction> | null;
+
+    /**
+     * Indicates this is an App Clip payment card part
+     */
+    type: 'app_clip';
+
+    /**
+     * The checkout link the card opens
+     */
+    value: string;
+
+    /**
+     * The card's summary line, composed by Linq from the checkout session
+     */
+    description?: string;
+
+    /**
+     * The card's preview image
+     */
+    image_url?: string;
+
+    /**
+     * The card's headline, composed by Linq from the checkout session
+     */
+    title?: string;
+  }
 }
 
 /**
@@ -384,23 +422,37 @@ export interface MessageSendResponse {
   message: SentMessage;
 }
 
+export interface MessageListParams extends ListMessagesPaginationParams {}
+
 export interface MessageSendParams {
   /**
    * Message content container. Groups all message-related fields together,
    * separating the "what" (message content) from the "where" (routing fields like
    * from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `experience` invocation, which renders an experience inside
+   * Linq's iMessage app. Never both: an app card is the whole message (Apple's
+   * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
+   * one.
    */
   message: ChatsAPI.MessageContent;
-}
 
-export interface MessageListParams extends ListMessagesPaginationParams {}
+  /**
+   * Send even though the recipient asked you to stop (`403`, error code `2024`).
+   * Applies to this request only: the opt-out stays in place, so the next send
+   * without this flag is rejected again. Every override is recorded against your API
+   * key.
+   */
+  override_optout?: boolean;
+}
 
 export declare namespace Messages {
   export {
     type SentMessage as SentMessage,
     type MessageSendResponse as MessageSendResponse,
-    type MessageSendParams as MessageSendParams,
     type MessageListParams as MessageListParams,
+    type MessageSendParams as MessageSendParams,
   };
 }
 
