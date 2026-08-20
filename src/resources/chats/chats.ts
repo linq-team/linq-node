@@ -76,8 +76,10 @@ export class Chats extends APIResource {
    * ```
    *
    * **Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges
-   * must not overlap with other animations or styles. Text decorations only render
-   * for iMessage recipients. For SMS/RCS, text decorations are not applied.
+   * must not overlap with other animations or styles. Decorations render per
+   * recipient, not per message: in a group with both iMessage and SMS/RCS
+   * participants, iMessage recipients see the decorations and SMS/RCS recipients
+   * receive the same message as plain text.
    *
    * ## First-Message Link Restriction
    *
@@ -807,13 +809,19 @@ export interface TextPart {
   value: string;
 
   /**
-   * @mention a chat participant (iMessage group chats only). Set to their handle —
-   * E.164 phone number or Apple ID email. `value` is the display text; use the bare
-   * name (`"Juan"`, not `"@Juan"`). The mentioned participant is notified even if
-   * the chat is muted. Falls back to plain text over SMS/RCS.
+   * @mention a chat participant. Group chats only — sending a mention to a direct
+   * chat is rejected with `409` / `2023`. The chat's service is not a constraint: a
+   * mention is accepted in any group, including one with SMS/RCS participants.
    *
-   * By default the entire `value` renders as the mention; use `mention_range` to
-   * highlight only part of it.
+   * Set to their handle — E.164 phone number or Apple ID email. `value` is the
+   * display text; use the bare name (`"Juan"`, not `"@Juan"`). By default the entire
+   * `value` renders as the mention; use `mention_range` to highlight only part of
+   * it.
+   *
+   * Rendering is per recipient, not per message. iMessage recipients see the mention
+   * highlighted and are notified even if they have muted the chat. SMS and RCS
+   * recipients receive the same message as plain text — no highlight, and no mute
+   * override. One send, two experiences.
    */
   mention?: string;
 
@@ -823,6 +831,9 @@ export interface TextPart {
    * `mention`. Without it, the entire `value` is highlighted. `start` is inclusive,
    * `end` is exclusive. _Characters are measured as UTF-16 code units. Most
    * characters count as 1; some emoji count as 2._
+   *
+   * Applies to iMessage recipients only, matching `mention` — SMS and RCS recipients
+   * receive the text with no highlight.
    */
   mention_range?: Array<number>;
 
@@ -842,8 +853,9 @@ export interface TextPart {
    * _Characters are measured as UTF-16 code units. Most characters count as 1; some
    * emoji count as 2._
    *
-   * **Note:** Text decorations only render for iMessage recipients. For SMS/RCS,
-   * text decorations are not applied.
+   * **Note:** decorations render per recipient, not per message. In a group
+   * containing both iMessage and SMS/RCS participants, iMessage recipients see the
+   * decorations and SMS/RCS recipients receive the same message as plain text.
    */
   text_decorations?: Array<Shared.TextDecoration>;
 }
