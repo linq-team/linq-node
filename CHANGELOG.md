@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.44.0](https://github.com/linq-team/linq-node/compare/v0.43.0...v0.44.0) (2026-08-20)
+
+
+### Features
+
+* add mention and mention_range fields to message text parts ([f81d75e](https://github.com/linq-team/linq-node/commit/f81d75e0094559b93ea9b858e11fb831d4e0f55e))
+
 ## [0.43.0](https://github.com/linq-team/linq-node/compare/v0.42.2...v0.43.0) (2026-08-20)
 
 
