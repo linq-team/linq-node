@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.44.2](https://github.com/linq-team/linq-node/compare/v0.44.1...v0.44.2) (2026-08-20)
+
+
+### Bug Fixes
+
+* clarify background color variant requirements and valid styles ([756db06](https://github.com/linq-team/linq-node/commit/756db063c8295b1b890ee8898fb63cfc88674189))
+
 ## [0.44.1](https://github.com/linq-team/linq-node/compare/v0.44.0...v0.44.1) (2026-08-20)
 
 
