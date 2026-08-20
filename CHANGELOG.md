@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.44.1](https://github.com/linq-team/linq-node/compare/v0.44.0...v0.44.1) (2026-08-20)
+
+
+### Documentation
+
+* clarify experiences endpoint as authoritative api reference ([c8226ac](https://github.com/linq-team/linq-node/commit/c8226ac84a5c84825dcd1ed492a6b545c5b572a6))
+
 ## [0.44.0](https://github.com/linq-team/linq-node/compare/v0.43.0...v0.44.0) (2026-08-20)
 
 
