@@ -39,9 +39,9 @@ import { path } from '../internal/utils/path';
  * | `agentcard` | `approve_card` | A passkey approval for a virtual card. |
  * | `link` | `open` | A card that opens a URL you supply. |
  *
- * `GET /v3/experiences` is the authoritative list for your account, with
- * every action and the fields each accepts — an action missing there cannot
- * be sent. Fields are display copy unless documented otherwise.
+ * `GET /v3/experiences` is the list to build against, with every action and
+ * the fields each accepts — anything not described there is unsupported.
+ * Fields are display copy unless documented otherwise.
  *
  * ## Params are checked before the card is sent
  *
@@ -73,8 +73,9 @@ export class Experiences extends APIResource {
 
   /**
    * The experiences enabled for your account, with the actions you may invoke on
-   * each and the fields each action accepts. This is the authoritative list — an
-   * action missing here cannot be sent.
+   * each and the fields each action accepts. Treat it as the list to build against:
+   * anything not described here is unsupported and may change or stop working
+   * without notice.
    *
    * @example
    * ```ts
