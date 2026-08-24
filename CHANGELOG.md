@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.45.0](https://github.com/linq-team/linq-node/compare/v0.44.3...v0.45.0) (2026-08-24)
+
+
+### Features
+
+* add location sharing webhook metadata and request validation ([bcadf8c](https://github.com/linq-team/linq-node/commit/bcadf8cf5297c7489e86ab95a421576842b179c1))
+
 ## [0.44.3](https://github.com/linq-team/linq-node/compare/v0.44.2...v0.44.3) (2026-08-20)
 
 
