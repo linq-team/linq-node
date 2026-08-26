@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.47.1](https://github.com/linq-team/linq-node/compare/v0.47.0...v0.47.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* add 503 response documentation to send message endpoint ([7d7b181](https://github.com/linq-team/linq-node/commit/7d7b1814dd6f3a78fdb2fd5c10a195d445494ef9))
+
 ## [0.47.0](https://github.com/linq-team/linq-node/compare/v0.46.0...v0.47.0) (2026-08-26)
 
 
