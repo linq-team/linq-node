@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.47.0](https://github.com/linq-team/linq-node/compare/v0.46.0...v0.47.0) (2026-08-26)
+
+
+### Features
+
+* add chat.background_update_failed webhook event ([0484ccd](https://github.com/linq-team/linq-node/commit/0484ccd4ecd42638dcc660bd3b1ab081a27f7021))
+
 ## [0.46.0](https://github.com/linq-team/linq-node/compare/v0.45.0...v0.46.0) (2026-08-25)
 
 
