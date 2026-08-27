@@ -54,6 +54,8 @@ export {
   type ContactCardUpdateParams,
 } from './contact-card';
 export { Experiences, type ExperienceRetrieveResponse, type ExperienceListResponse } from './experiences';
+export { LinkConnections, type LinkConnectionStatus } from './link-connections';
+export { LinkPayments, type LinkPayment } from './link-payments';
 export {
   Messages,
   type Message,
