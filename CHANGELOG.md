@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.48.0](https://github.com/linq-team/linq-node/compare/v0.47.1...v0.48.0) (2026-08-27)
+
+
+### Features
+
+* add Link wallet payment support ([b617054](https://github.com/linq-team/linq-node/commit/b6170543ed30628198d2fda0f6ae970f7c0b9ab5))
+
 ## [0.47.1](https://github.com/linq-team/linq-node/compare/v0.47.0...v0.47.1) (2026-08-26)
 
 
