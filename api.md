@@ -236,6 +236,18 @@ Methods:
 - <code title="post /v3/payments/{paymentId}/cancel">client.payments.<a href="./src/resources/payments.ts">cancel</a>(paymentID) -> Payment</code>
 - <code title="get /v3/payments/{paymentId}/credentials">client.payments.<a href="./src/resources/payments.ts">credentials</a>(paymentID) -> PaymentCredentialsResponse</code>
 
+# LinkConnections
+
+Types:
+
+- <code><a href="./src/resources/link-connections.ts">LinkConnectionStatus</a></code>
+
+# LinkPayments
+
+Types:
+
+- <code><a href="./src/resources/link-payments.ts">LinkPayment</a></code>
+
 # BlockedHandles
 
 Types:

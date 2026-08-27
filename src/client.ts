@@ -61,6 +61,8 @@ import {
   SetContactCard,
 } from './resources/contact-card';
 import { ExperienceListResponse, ExperienceRetrieveResponse, Experiences } from './resources/experiences';
+import { LinkConnectionStatus, LinkConnections } from './resources/link-connections';
+import { LinkPayment, LinkPayments } from './resources/link-payments';
 import {
   PaymentHandleConnection,
   PaymentHandleVerifyParams,
@@ -1413,6 +1415,8 @@ export class LinqAPIV3 {
    *
    */
   payments: API.Payments = new API.Payments(this);
+  linkConnections: API.LinkConnections = new API.LinkConnections(this);
+  linkPayments: API.LinkPayments = new API.LinkPayments(this);
   /**
    * Block handles — phone numbers, email addresses, SMS short codes, or
    * sender IDs. Inbound messages from a blocked handle are dropped before
@@ -1764,6 +1768,8 @@ LinqAPIV3.PaymentRequests = PaymentRequests;
 LinqAPIV3.PaymentProviders = PaymentProviders;
 LinqAPIV3.PaymentHandles = PaymentHandles;
 LinqAPIV3.Payments = Payments;
+LinqAPIV3.LinkConnections = LinkConnections;
+LinqAPIV3.LinkPayments = LinkPayments;
 LinqAPIV3.BlockedHandles = BlockedHandles;
 LinqAPIV3.Experiences = Experiences;
 LinqAPIV3.WebhookEvents = WebhookEvents;
@@ -1881,6 +1887,10 @@ export declare namespace LinqAPIV3 {
     type PaymentCredentialsResponse as PaymentCredentialsResponse,
     type PaymentCreateParams as PaymentCreateParams,
   };
+
+  export { LinkConnections as LinkConnections, type LinkConnectionStatus as LinkConnectionStatus };
+
+  export { LinkPayments as LinkPayments, type LinkPayment as LinkPayment };
 
   export {
     BlockedHandles as BlockedHandles,
