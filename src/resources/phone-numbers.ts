@@ -85,10 +85,15 @@ export class PhoneNumbers extends APIResource {
    * Starts an asynchronous reputation audit for a line and returns an `audit_id`.
    * Poll the GET endpoint for the result.
    *
-   * Rate limited per line: only one audit may run at a time (a second request
-   * returns `409` while the first is still in progress), and a new audit can't be
-   * started for the same line until a cooldown elapses (`429`, with `Retry-After`
-   * carrying the wait).
+   * Rate limited per line: only one audit may run at a time. Starting one while
+   * another is still running returns `202` with the running audit's `audit_id`
+   * rather than an error, so a retried start picks that audit back up instead of
+   * losing it — poll the id you were given.
+   *
+   * Once an audit finishes, a new one can't be started for the same line until a
+   * cooldown elapses (`429`, with `Retry-After` carrying the wait). Keep the
+   * `audit_id` from the original `202`: it stays readable on the GET endpoint for 24
+   * hours, and the cooldown response does not repeat it.
    *
    * @example
    * ```ts
