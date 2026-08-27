@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.49.0](https://github.com/linq-team/linq-node/compare/v0.48.0...v0.49.0) (2026-08-27)
+
+
+### Features
+
+* add image_url field to app clip card configuration ([4b6eed2](https://github.com/linq-team/linq-node/commit/4b6eed2f459cb5759c48f202cbfacb3d7fce4358))
+
 ## [0.48.0](https://github.com/linq-team/linq-node/compare/v0.47.1...v0.48.0) (2026-08-27)
 
 
