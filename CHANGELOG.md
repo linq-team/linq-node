@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.49.1](https://github.com/linq-team/linq-node/compare/v0.49.0...v0.49.1) (2026-08-27)
+
+
+### Bug Fixes
+
+* clarify reputation audit rate limiting and response behavior ([60794c4](https://github.com/linq-team/linq-node/commit/60794c4bbbc5b93319539581cf1685a98b8e0f72))
+
 ## [0.49.0](https://github.com/linq-team/linq-node/compare/v0.48.0...v0.49.0) (2026-08-27)
 
 
