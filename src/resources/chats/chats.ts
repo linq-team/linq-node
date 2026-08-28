@@ -809,7 +809,7 @@ export interface TextPart {
   value: string;
 
   /**
-   * @mention a chat participant. Group chats only — sending a mention to a direct
+   * Mention a chat participant. Group chats only — sending a mention to a direct
    * chat is rejected with `409` / `2023`. The chat's service is not a constraint: a
    * mention is accepted in any group, including one with SMS/RCS participants.
    *
