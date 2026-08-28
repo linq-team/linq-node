@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.50.1](https://github.com/linq-team/linq-node/compare/v0.50.0...v0.50.1) (2026-08-28)
+
+
+### Bug Fixes
+
+* simplify mention fields in text parts, remove mentions array ([198ffaa](https://github.com/linq-team/linq-node/commit/198ffaab87b415ccaa62e02dd201887bf8ab5801))
+
 ## [0.50.0](https://github.com/linq-team/linq-node/compare/v0.49.1...v0.50.0) (2026-08-28)
 
 
