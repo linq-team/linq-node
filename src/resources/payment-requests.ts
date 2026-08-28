@@ -68,6 +68,45 @@ import { path } from '../internal/utils/path';
  * the Customer and Subscription, so correlating in either direction is
  * trivial. There are no renewal webhooks from Linq by design.
  *
+ * ### Discounts
+ *
+ * Pass a `discount` with a **coupon** or **promotion code** from your
+ * connected Stripe account to apply it to the subscription. Create either in
+ * your Stripe Dashboard under Product catalog → Coupons; Linq only forwards
+ * the id.
+ *
+ * ```json
+ * {
+ *   "mode": "subscription",
+ *   "price_id": "price_1QAbCdEfGhIjKlMn",
+ *   "discount": {
+ *     "coupon": "7fKCMvBh",
+ *     "label": "50% OFF FIRST MONTH"
+ *   }
+ * }
+ * ```
+ *
+ * Stripe applies the coupon and prices the first invoice; the `amount` we
+ * return is that invoice's amount due, so a `$50.00/month` price with a
+ * 50%-off-first-month coupon comes back as `2500` and the recipient is
+ * charged **$25.00** at checkout. A coupon that covers the whole first
+ * invoice returns `amount: 0`; checkout shows $0.00 and collects the card for
+ * the renewal rather than charging now. Renewals bill at the full price
+ * automatically — how long a discount lasts is the coupon's `duration`,
+ * enforced by Stripe on your account, and Linq never re-prices anything.
+ *
+ * Use `promotion_code` instead of `coupon` to apply a promotion code by id
+ * (`promo_...`, not the customer-facing code string); pass one or the other,
+ * never both.
+ *
+ * `label` is the customer-facing promotion name displayed at checkout instead
+ * of the coupon or promotion code ID. The label is displayed exactly as
+ * provided, so include important terms such as "FIRST MONTH" or
+ * "FIRST 3 MONTHS" when applicable. These terms are not displayed elsewhere
+ * on the checkout screen.
+ *
+ * If omitted, Stripe uses the coupon's name as the promotion label.
+ *
  * ### Free trials
  *
  * Add `trial_period_days` (or a fixed `trial_end` timestamp) to start the
@@ -249,9 +288,10 @@ export interface PaymentRequest {
   id: string;
 
   /**
-   * Amount in the currency's minor units. In `subscription` mode this is the
-   * recurring amount (price × quantity) the recipient pays per interval, starting at
-   * checkout.
+   * What the recipient is charged at checkout, in the currency's minor units. In
+   * `subscription` mode this is the first invoice's amount due — all items after any
+   * discounts are applied — so a discount that covers the whole invoice returns `0`
+   * and checkout shows $0.00.
    */
   amount: number;
 
@@ -279,6 +319,11 @@ export interface PaymentRequest {
   status: 'requested' | 'succeeded' | 'canceled' | 'expired';
 
   description?: string;
+
+  /**
+   * Subscription mode — the discount applied, as Stripe applied it.
+   */
+  discount?: PaymentRequest.Discount;
 
   /**
    * When an unpaid request auto-expires.
@@ -341,6 +386,26 @@ export interface PaymentRequest {
 }
 
 export namespace PaymentRequest {
+  /**
+   * Subscription mode — the discount applied, as Stripe applied it.
+   */
+  export interface Discount {
+    /**
+     * The ID of the coupon applied.
+     */
+    coupon?: string;
+
+    /**
+     * The customer-facing discount description shown at checkout.
+     */
+    label?: string;
+
+    /**
+     * The ID of the promotion code applied, if you passed one.
+     */
+    promotion_code?: string;
+  }
+
   /**
    * Natural-rail join keys, present when `rail: natural`.
    */
@@ -423,6 +488,12 @@ export interface PaymentRequestCreateParams {
   description?: string;
 
   /**
+   * Body param: Subscription mode only. The coupon or promotion code to apply to
+   * this subscription payment. Currently, only accept one coupon or one promo code.
+   */
+  discount?: PaymentRequestCreateParams.Discount;
+
+  /**
    * Body param: Required for `rail: natural`. The line the request is sent from, in
    * E.164 format. Must be a phone number your organization owns.
    */
@@ -493,6 +564,29 @@ export interface PaymentRequestCreateParams {
    * different request parameters returns 409.
    */
   'Idempotency-Key'?: string;
+}
+
+export namespace PaymentRequestCreateParams {
+  /**
+   * Subscription mode only. The coupon or promotion code to apply to this
+   * subscription payment. Currently, only accept one coupon or one promo code.
+   */
+  export interface Discount {
+    /**
+     * The ID of the coupon to apply to this subscription.
+     */
+    coupon?: string;
+
+    /**
+     * Name of the coupon/promo code displayed to customers.
+     */
+    label?: string;
+
+    /**
+     * The ID of a promotion code to apply to this subscription.
+     */
+    promotion_code?: string;
+  }
 }
 
 export interface PaymentRequestListParams {
