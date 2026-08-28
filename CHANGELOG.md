@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.50.0](https://github.com/linq-team/linq-node/compare/v0.49.1...v0.50.0) (2026-08-28)
+
+
+### Features
+
+* support multiple mentions per message part ([5754238](https://github.com/linq-team/linq-node/commit/575423865e3ecf821cf52a4c8e9e798482b28dc6))
+
 ## [0.49.1](https://github.com/linq-team/linq-node/compare/v0.49.0...v0.49.1) (2026-08-27)
 
 
