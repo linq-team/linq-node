@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.51.0](https://github.com/linq-team/linq-node/compare/v0.50.1...v0.51.0) (2026-08-28)
+
+
+### Features
+
+* add discount support with coupons and promotion codes ([2ff080a](https://github.com/linq-team/linq-node/commit/2ff080a05698486bea68ec4ad83f7771896563c2))
+
 ## [0.50.1](https://github.com/linq-team/linq-node/compare/v0.50.0...v0.50.1) (2026-08-28)
 
 
