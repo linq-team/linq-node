@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.51.1](https://github.com/linq-team/linq-node/compare/v0.51.0...v0.51.1) (2026-08-31)
+
+
+### Documentation
+
+* clarify backstop behavior for ephemeral message storage ([861736a](https://github.com/linq-team/linq-node/commit/861736a85e21f3b944a2845b0ae5c351d701c5af))
+
 ## [0.51.0](https://github.com/linq-team/linq-node/compare/v0.50.1...v0.51.0) (2026-08-28)
 
 
