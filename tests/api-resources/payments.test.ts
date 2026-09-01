@@ -7,11 +7,13 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource phoneNumbers', () => {
+describe('resource payments', () => {
   // Mock server tests are disabled
-  test.skip('update: only required params', async () => {
-    const responsePromise = client.phoneNumbers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      forwarding_number: '+12025559999',
+  test.skip('create: only required params', async () => {
+    const responsePromise = client.payments.create({
+      amount_cents: 2500,
+      currency: 'usd',
+      handle: '+14155550123',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -23,15 +25,20 @@ describe('resource phoneNumbers', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.phoneNumbers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      forwarding_number: '+12025559999',
+  test.skip('create: required and optional params', async () => {
+    const response = await client.payments.create({
+      amount_cents: 2500,
+      currency: 'usd',
+      handle: '+14155550123',
+      description: 'Burger order',
+      merchant: { name: 'DoorDash', url: 'doordash.com' },
+      metadata: { foo: 'string' },
     });
   });
 
   // Mock server tests are disabled
-  test.skip('list', async () => {
-    const responsePromise = client.phoneNumbers.list();
+  test.skip('retrieve', async () => {
+    const responsePromise = client.payments.retrieve('paymentId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -42,8 +49,8 @@ describe('resource phoneNumbers', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('getReputationAudit: only required params', async () => {
-    const responsePromise = client.phoneNumbers.getReputationAudit('auditId', { phoneNumber: 'phoneNumber' });
+  test.skip('cancel', async () => {
+    const responsePromise = client.payments.cancel('paymentId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -54,13 +61,8 @@ describe('resource phoneNumbers', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('getReputationAudit: required and optional params', async () => {
-    const response = await client.phoneNumbers.getReputationAudit('auditId', { phoneNumber: 'phoneNumber' });
-  });
-
-  // Mock server tests are disabled
-  test.skip('startReputationAudit', async () => {
-    const responsePromise = client.phoneNumbers.startReputationAudit('phoneNumber');
+  test.skip('credentials', async () => {
+    const responsePromise = client.payments.credentials('paymentId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
