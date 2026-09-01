@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.55.0](https://github.com/linq-team/linq-node/compare/v0.54.0...v0.55.0) (2026-09-01)
+
+
+### Features
+
+* add metadata and merchant fields to payment handle response ([768c8d3](https://github.com/linq-team/linq-node/commit/768c8d31e6a6851569cb5e19ee4dfa4182ae9607))
+
 ## [0.54.0](https://github.com/linq-team/linq-node/compare/v0.53.1...v0.54.0) (2026-09-01)
 
 
