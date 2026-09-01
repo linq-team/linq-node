@@ -118,6 +118,7 @@ import {
   ChatGroupNameUpdatedWebhookEvent,
   ChatTypingIndicatorStartedWebhookEvent,
   ChatTypingIndicatorStoppedWebhookEvent,
+  ContactCardReceivedWebhookEvent,
   MessageDeliveredWebhookEvent,
   MessageEditedWebhookEvent,
   MessageEventV2,
@@ -2006,6 +2007,7 @@ export declare namespace LinqAPIV3 {
     type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
     type ChatBackgroundUpdatedWebhookEvent as ChatBackgroundUpdatedWebhookEvent,
     type ChatBackgroundUpdateFailedWebhookEvent as ChatBackgroundUpdateFailedWebhookEvent,
+    type ContactCardReceivedWebhookEvent as ContactCardReceivedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };

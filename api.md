@@ -351,6 +351,7 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">ChatTypingIndicatorStoppedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ChatBackgroundUpdatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ChatBackgroundUpdateFailedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ContactCardReceivedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">UnwrapWebhookEvent</a></code>
 
