@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.53.1](https://github.com/linq-team/linq-node/compare/v0.53.0...v0.53.1) (2026-09-01)
+
+
+### Bug Fixes
+
+* update documentation links to include imessage channel path ([6a87104](https://github.com/linq-team/linq-node/commit/6a871047b72ee1d43d07da1c28fbae8c6a7950ba))
+
 ## [0.53.0](https://github.com/linq-team/linq-node/compare/v0.52.0...v0.53.0) (2026-09-01)
 
 
