@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.53.0](https://github.com/linq-team/linq-node/compare/v0.52.0...v0.53.0) (2026-09-01)
+
+
+### Features
+
+* add optional caption field to app clip card button ([d7a4b56](https://github.com/linq-team/linq-node/commit/d7a4b56f76c1eac72a0ea6c2b40c5f914f0eee51))
+
 ## [0.52.0](https://github.com/linq-team/linq-node/compare/v0.51.1...v0.52.0) (2026-09-01)
 
 
