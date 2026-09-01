@@ -77,12 +77,16 @@ export interface Payment {
   amount_cents?: number;
 
   /**
-   * Present when the customer must approve with a passkey.
+   * Present on `awaiting_user_action` once a card is on file and the charge needs
+   * the customer's passkey. Re-send the create request with the same
+   * `Idempotency-Key` to collect the payment after they approve.
    */
   approval_url?: string;
 
   /**
-   * Present when the customer must attach a card.
+   * Present on `awaiting_user_action` when the customer has no card on file yet. A
+   * hosted page — open it for them; it stays valid for about 48 hours. Not returned
+   * on `needs_connection`: connect the handle first.
    */
   attach_url?: string;
 
@@ -91,6 +95,16 @@ export interface Payment {
   description?: string;
 
   handle?: string;
+
+  /**
+   * The merchant the card is minted against, echoed from the request.
+   */
+  merchant?: Payment.Merchant;
+
+  /**
+   * Your own key/values, echoed back from the request.
+   */
+  metadata?: { [key: string]: string };
 
   status?:
     | 'needs_connection'
@@ -102,6 +116,17 @@ export interface Payment {
     | 'declined'
     | 'canceled'
     | 'expired';
+}
+
+export namespace Payment {
+  /**
+   * The merchant the card is minted against, echoed from the request.
+   */
+  export interface Merchant {
+    name?: string;
+
+    url?: string;
+  }
 }
 
 export interface PaymentCredentialsResponse {
