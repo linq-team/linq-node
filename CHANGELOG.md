@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.55.1](https://github.com/linq-team/linq-node/compare/v0.55.0...v0.55.1) (2026-09-01)
+
+
+### Bug Fixes
+
+* clarify ephemeral message and attachment retention windows ([9eee1d8](https://github.com/linq-team/linq-node/commit/9eee1d83b81a141c5971fff2872cb442047b6eb2))
+
 ## [0.55.0](https://github.com/linq-team/linq-node/compare/v0.54.0...v0.55.0) (2026-09-01)
 
 
