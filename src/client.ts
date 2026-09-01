@@ -963,35 +963,39 @@ export class LinqAPIV3 {
    *
    * ## Ephemeral Messages (Privacy Tier)
    *
-   * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is automatically given a fixed **24-hour retention window** — after that window the platform permanently deletes the message from Linq storage. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+   * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is given a **retention window configured for your account** — after that window the platform permanently deletes the message from Linq storage. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+   *
+   * The window can be set anywhere from **60 minutes to 24 hours**, and defaults to **24 hours**. Ask your Linq support contact to configure a shorter window; it cannot be changed through the API.
    *
    * You can request it at two scopes:
    *
    * | Scope | Effect |
    * |---|---|
-   * | **Partner-wide** | Every outbound and inbound message on every phone number under your account is retained for 24 hours, then deleted. |
+   * | **Partner-wide** | Every outbound and inbound message on every phone number under your account is retained for your configured window, then deleted. |
    * | **Per phone number** | Only the specified phone numbers have their messages auto-deleted. The rest follow the standard message-retention policy. |
    *
    * **Behavioral differences vs the standard default:**
    *
    * | Aspect | Standard | Ephemeral |
    * |---|---|---|
-   * | Retention | Retained per the standard message-retention policy | **Hard backstop: 24 hours** from when the message is created |
+   * | Retention | Retained per the standard message-retention policy | **Hard backstop: your configured window** (60 minutes – 24 hours, default 24 hours) from when the message is created |
    * | After expiry | Message stays retrievable | Message is permanently deleted — `GET /v3/messages/{messageId}` returns `404` and it no longer appears in `GET /v3/chats/{chatId}/messages` |
    * | Content on expiry | N/A | Text, formatting, and attachment references are scrubbed; the message is gone, not blanked out |
+   * | Attachments | Retained | Media sent on the **ephemeral attachments tier** is removed on its own storage backstop — within roughly 24–48 hours of upload — independently of the message window, so it can outlast a window shorter than a day. Attachments on the persistent tier (including pre-uploads via `POST /v3/attachments`) are kept until you `DELETE` them |
    * | Cross-partner isolation | Enforced | Enforced |
    *
-   * **How the 24-hour window works:**
+   * **How the retention window works:**
    *
-   * - The window is fixed at **24 hours from message creation** (`created_at`) and cannot be configured per message.
-   * - It mirrors the ephemeral *attachments* 1-day backstop, so a message and any media it carries expire together.
+   * - The window runs from **message creation** (`created_at`). It is configured for your account (60 minutes – 24 hours, default 24 hours) and cannot be set per message.
+   * - Attachment media follows its own storage backstop rather than the message window — see the Attachments row above.
    * - Expiry is delivery-independent — the clock starts when the message is created, not when it is delivered or read.
+   * - **Deletion happens shortly *after* the window, not exactly at it.** A background sweep runs every ~5 minutes, so a message typically stops being retrievable within about 5 minutes of its expiry, and longer while a backlog is being worked through. Treat the window as the guaranteed *minimum* retention, never as an exact deletion time or an upper bound.
    *
    * **What you observe:**
    *
-   * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time. If you need it, compute `created_at + 24h` yourself.
+   * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time, and they do not report your configured window either — so if you are on a window shorter than 24 hours you cannot derive a message's expiry from the API today. Track the window you agreed with your Linq support contact and compute `created_at + window` yourself.
    * - **No deletion webhook is sent.** There is no `message.deleted` event — a message simply stops being retrievable once its window passes.
-   * - **The backstop governs Linq storage.** API retrievability (the `404` behavior above) and CDN media expire at the 24-hour mark. Removal of the corresponding entries from the sending device happens asynchronously and can complete after the backstop.
+   * - **The backstop governs Linq storage.** API retrievability (the `404` behavior above) ends at your configured window. Ephemeral-tier media objects are removed on their own storage backstop — within roughly 24–48 hours of upload — which is independent of the message window and can outlast a window shorter than a day. Removal of the corresponding entries from the sending device happens asynchronously and can complete after the backstop.
    * - **Delivery is unaffected.** Ephemeral messages send, deliver, and fire the usual `message.sent` / `message.received` and status webhooks exactly like standard messages. Only retention changes.
    *
    * **When to choose ephemeral:**
@@ -1000,7 +1004,7 @@ export class LinqAPIV3 {
    * - The conversation is high-sensitivity (PHI, financial, identity verification) and you do not want it sitting in storage long-term.
    * - Your application is the system of record — you capture what you need from the delivery webhook in real time and do not rely on reading message history back from Linq later.
    *
-   * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message after 24 hours, persist anything you need to keep from the webhook payload at the time it is delivered.
+   * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message once its window passes, persist anything you need to keep from the webhook payload at the time it is delivered.
    *
    */
   messages: API.Messages = new API.Messages(this);
@@ -1030,12 +1034,27 @@ export class LinqAPIV3 {
    * - **Reduce message send latency** — the file is already stored, so sending is faster
    *
    * **How it works:**
-   * 1. `POST /v3/attachments` with file metadata → returns a presigned `upload_url` (valid for **15 minutes**) and a permanent `attachment_id`
+   * 1. `POST /v3/attachments` with file metadata → returns a presigned `upload_url` (valid for **15 minutes**) and a reusable `attachment_id`
    * 2. PUT the raw file bytes to the `upload_url` with the `required_headers` (no JSON or multipart — just the binary content)
-   * 3. Reference the `attachment_id` in your media part when sending messages (no expiration)
+   * 3. Reference the `attachment_id` in your media part when sending messages (stays valid unless deleted — see [Attachment Lifetime](#attachment-lifetime))
    *
    * **Key difference:** When you provide an external `url`, we download and process the file on every send.
    * When you use a pre-uploaded `attachment_id`, the file is already stored — so repeated sends skip the download step entirely.
+   *
+   * ## Attachment Lifetime
+   *
+   * An `attachment_id` and its CDN URL stay valid until the file is deleted. Three things delete it:
+   *
+   * | Trigger | Applies to |
+   * |---|---|
+   * | `DELETE /v3/attachments/{attachmentId}` | Any attachment you own |
+   * | Ephemeral **attachments** tier (24–48h storage backstop) | Attachments on ephemeral-tier partners or phone numbers |
+   * | Ephemeral **messages** tier | Does **not** remove attachment bytes on its own: ephemeral-tier objects are removed by the 24–48h storage backstop above, and persistent-tier attachments are kept until you `DELETE` them explicitly. |
+   *
+   * Deletion is not reversible, and there is no `attachment.deleted` webhook. On either
+   * ephemeral tier, download anything you need to keep when you receive it rather than
+   * re-fetching later, and do not assume a pre-uploaded `attachment_id` can be reused
+   * indefinitely.
    *
    * ## Domain Allowlisting
    *
@@ -1087,7 +1106,7 @@ export class LinqAPIV3 {
    *
    * | Tier | URL pattern | TTL |
    * |---|---|---|
-   * | Persistent (default) | `https://cdn.linqapp.com/attachments/partners/{partner_id}/{attachment_id}/{filename}` | Long-lived |
+   * | Persistent (default) | `https://cdn.linqapp.com/attachments/partners/{partner_id}/{attachment_id}/{filename}` | Long-lived — the URL itself does not expire, but see [Attachment Lifetime](#attachment-lifetime) |
    * | Ephemeral | Pre-signed URL pointing at the ephemeral prefix on `cdn.linqapp.com` | 15 minutes per signed URL — re-fetch via the API for a fresh URL |
    *
    * Inbound media you receive over webhooks uses the same layout your outbound sends produce, so the URL you store and the URL you build look identical — no special casing in your client.
@@ -1106,7 +1125,7 @@ export class LinqAPIV3 {
    * | Aspect | Persistent | Ephemeral |
    * |---|---|---|
    * | Download URL form | Long-lived CDN URL | Pre-signed URL with short TTL |
-   * | Retention floor | Indefinite (until you call `DELETE`) | **Hard backstop: 1 day** — even without an explicit `DELETE`, the platform removes the underlying bytes after 24 hours |
+   * | Retention floor | Until you call `DELETE` | **Hard backstop: 24–48h** — even without an explicit `DELETE`, the platform removes the underlying bytes within roughly 24–48 hours of upload |
    * | URL re-fetch | Not required | Fetch via `GET /v3/attachments/{attachmentId}` for a fresh signed URL after TTL expiry |
    * | Cross-partner isolation | Enforced | Enforced |
    *
@@ -1166,9 +1185,9 @@ export class LinqAPIV3 {
    *
    * | Data | Persistent tier | Ephemeral tier |
    * |---|---|---|
-   * | Attachment bytes | Retained until you `DELETE` | **Auto-removed after 1 day**, also removable via `DELETE` |
+   * | Attachment bytes | Retained until you `DELETE` | **Auto-removed within roughly 24–48 hours** of upload, independently of any message window. Also removable via `DELETE` |
    * | Attachment metadata (id, filename, mime type, size) | Retained until you `DELETE` | Removed alongside the bytes |
-   * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy — unless the line also has **ephemeral messages** enabled (see the Messages page), in which case the message and its parts are deleted 24 hours after creation |
+   * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy — unless the line also has **ephemeral messages** enabled (see the Messages page), in which case the message and its parts are deleted after that account's configured retention window (60 minutes – 24 hours, default 24 hours) from creation |
    * | Audit log of deletions | Retained per platform retention policy | Retained per platform retention policy |
    *
    * **In transit:** TLS 1.2+ everywhere. **At rest:** AES-256 (server-side encryption).
@@ -1180,7 +1199,7 @@ export class LinqAPIV3 {
    * - Allowlist exactly one outbound domain: `cdn.linqapp.com`.
    * - Decide whether you need ephemeral attachments (high-sensitivity content) — request enablement through your Linq support contact.
    * - Implement `DELETE /v3/attachments/{attachmentId}` calls in your deletion workflow.
-   * - Persist any attachments your application needs long-term — Linq is the authoritative source until you delete, but the ephemeral tier auto-purges after 1 day.
+   * - Persist any attachments your application needs long-term — Linq is the authoritative source until you delete, but the ephemeral tier auto-purges within roughly 24–48 hours of upload.
    * - For audit: every deletion is logged on Linq's side. Surface a confirmation in your application UI based on the `204` response.
    * - For end-user "right to delete" requests: enumerate attachment ids and `DELETE` each. The platform does not provide a partner-wide wipe endpoint — deletion is per-attachment by design.
    *
