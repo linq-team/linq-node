@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.54.0](https://github.com/linq-team/linq-node/compare/v0.53.1...v0.54.0) (2026-09-01)
+
+
+### Features
+
+* add contact card received webhook event ([e7fab84](https://github.com/linq-team/linq-node/commit/e7fab842b5a132e3aaf0525ba7cb1de8f4668095))
+
 ## [0.53.1](https://github.com/linq-team/linq-node/compare/v0.53.0...v0.53.1) (2026-09-01)
 
 
