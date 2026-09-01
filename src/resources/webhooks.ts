@@ -3540,6 +3540,107 @@ export namespace ChatBackgroundUpdateFailedWebhookEvent {
 }
 
 /**
+ * Complete webhook payload for contact_card.received events
+ */
+export interface ContactCardReceivedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for contact_card.received webhook events.
+   *
+   * A contact belongs to a line, not to an individual chat. You receive one event
+   * per person who shares their contact, regardless of how many chats they have in
+   * common with your line.
+   *
+   * The event fires again whenever the shared contact's name or media changes.
+   */
+  data: ContactCardReceivedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * Valid webhook event types that can be subscribed to.
+   *
+   * **Note:** `message.edited` is only delivered to subscriptions using
+   * `webhook_version: "2026-02-03"`. Subscribing to this event on a v2025
+   * subscription will not produce any deliveries.
+   */
+  event_type: WebhookEventsAPI.WebhookEventType;
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ContactCardReceivedWebhookEvent {
+  /**
+   * Payload for contact_card.received webhook events.
+   *
+   * A contact belongs to a line, not to an individual chat. You receive one event
+   * per person who shares their contact, regardless of how many chats they have in
+   * common with your line.
+   *
+   * The event fires again whenever the shared contact's name or media changes.
+   */
+  export interface Data {
+    /**
+     * First name from the shared contact card
+     */
+    first_name: string;
+
+    /**
+     * Last name from the shared contact card (may be empty)
+     */
+    last_name: string;
+
+    /**
+     * Which of your lines they shared it with.
+     */
+    owner_handle: string;
+
+    /**
+     * The person who shared their card — a phone number or email address.
+     */
+    sender_handle: string;
+
+    /**
+     * URL of the contact's media, served from `cdn.linqapp.com`. `null` when the
+     * contact shared no media, and also when media was shared but could not be
+     * retrieved — this field does not distinguish the two.
+     *
+     * Download the media and store it yourself. The URL may be signed and expire, in
+     * as little as 45 minutes, and altering its query string invalidates it
+     * immediately.
+     */
+    media_url?: string | null;
+  }
+}
+
+/**
  * Complete webhook payload for phone_number.status_updated events
  */
 export interface PhoneNumberStatusUpdatedWebhookEvent {
@@ -3701,6 +3802,7 @@ export type UnwrapWebhookEvent =
   | ChatTypingIndicatorStoppedWebhookEvent
   | ChatBackgroundUpdatedWebhookEvent
   | ChatBackgroundUpdateFailedWebhookEvent
+  | ContactCardReceivedWebhookEvent
   | PhoneNumberStatusUpdatedWebhookEvent;
 
 export declare namespace Webhooks {
@@ -3739,6 +3841,7 @@ export declare namespace Webhooks {
     type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
     type ChatBackgroundUpdatedWebhookEvent as ChatBackgroundUpdatedWebhookEvent,
     type ChatBackgroundUpdateFailedWebhookEvent as ChatBackgroundUpdateFailedWebhookEvent,
+    type ContactCardReceivedWebhookEvent as ContactCardReceivedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };

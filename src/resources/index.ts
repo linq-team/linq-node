@@ -157,6 +157,7 @@ export {
   type ChatTypingIndicatorStoppedWebhookEvent,
   type ChatBackgroundUpdatedWebhookEvent,
   type ChatBackgroundUpdateFailedWebhookEvent,
+  type ContactCardReceivedWebhookEvent,
   type PhoneNumberStatusUpdatedWebhookEvent,
   type UnwrapWebhookEvent,
 } from './webhooks';
