@@ -792,6 +792,13 @@ export namespace MessageContent {
      * `POST /v3/payment_requests`. Any other URL is rejected.
      */
     value: string;
+
+    /**
+     * Optional caption for the card's **Open** button row. Omit it and the card uses
+     * the App Clip's own default (`Tap open`). Set it to override that with your own
+     * short call to action.
+     */
+    caption?: string;
   }
 }
 
