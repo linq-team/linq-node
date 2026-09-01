@@ -383,8 +383,9 @@ export namespace PhoneNumberListResponse {
      * Unlike chat health, line reputation does not include `opted_out` — opt-out
      * applies to individual recipients, not the whole line.
      *
-     * See the [Phone Reputation guide](/guides/phone-numbers/phone-reputation) for
-     * what each status means and how to react.
+     * See the
+     * [Phone Reputation guide](/channel/imessage/guides/phone-numbers/phone-reputation)
+     * for what each status means and how to react.
      */
     reputation: PhoneNumber.Reputation;
 
@@ -404,8 +405,9 @@ export namespace PhoneNumberListResponse {
      * Unlike chat health, line reputation does not include `opted_out` — opt-out
      * applies to individual recipients, not the whole line.
      *
-     * See the [Phone Reputation guide](/guides/phone-numbers/phone-reputation) for
-     * what each status means and how to react.
+     * See the
+     * [Phone Reputation guide](/channel/imessage/guides/phone-numbers/phone-reputation)
+     * for what each status means and how to react.
      */
     export interface Reputation {
       /**

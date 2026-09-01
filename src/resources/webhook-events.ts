@@ -202,7 +202,7 @@ export interface WebhookEventListResponse {
   /**
    * URL to the webhook events documentation
    */
-  doc_url: 'https://docs.linqapp.com/guides/webhooks/events';
+  doc_url: 'https://docs.linqapp.com/channel/imessage/guides/webhooks/events';
 
   /**
    * List of all available webhook event types
