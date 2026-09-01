@@ -32,12 +32,27 @@ import { path } from '../internal/utils/path';
  * - **Reduce message send latency** — the file is already stored, so sending is faster
  *
  * **How it works:**
- * 1. `POST /v3/attachments` with file metadata → returns a presigned `upload_url` (valid for **15 minutes**) and a permanent `attachment_id`
+ * 1. `POST /v3/attachments` with file metadata → returns a presigned `upload_url` (valid for **15 minutes**) and a reusable `attachment_id`
  * 2. PUT the raw file bytes to the `upload_url` with the `required_headers` (no JSON or multipart — just the binary content)
- * 3. Reference the `attachment_id` in your media part when sending messages (no expiration)
+ * 3. Reference the `attachment_id` in your media part when sending messages (stays valid unless deleted — see [Attachment Lifetime](#attachment-lifetime))
  *
  * **Key difference:** When you provide an external `url`, we download and process the file on every send.
  * When you use a pre-uploaded `attachment_id`, the file is already stored — so repeated sends skip the download step entirely.
+ *
+ * ## Attachment Lifetime
+ *
+ * An `attachment_id` and its CDN URL stay valid until the file is deleted. Three things delete it:
+ *
+ * | Trigger | Applies to |
+ * |---|---|
+ * | `DELETE /v3/attachments/{attachmentId}` | Any attachment you own |
+ * | Ephemeral **attachments** tier (24–48h storage backstop) | Attachments on ephemeral-tier partners or phone numbers |
+ * | Ephemeral **messages** tier | Does **not** remove attachment bytes on its own: ephemeral-tier objects are removed by the 24–48h storage backstop above, and persistent-tier attachments are kept until you `DELETE` them explicitly. |
+ *
+ * Deletion is not reversible, and there is no `attachment.deleted` webhook. On either
+ * ephemeral tier, download anything you need to keep when you receive it rather than
+ * re-fetching later, and do not assume a pre-uploaded `attachment_id` can be reused
+ * indefinitely.
  *
  * ## Domain Allowlisting
  *
@@ -89,7 +104,7 @@ import { path } from '../internal/utils/path';
  *
  * | Tier | URL pattern | TTL |
  * |---|---|---|
- * | Persistent (default) | `https://cdn.linqapp.com/attachments/partners/{partner_id}/{attachment_id}/{filename}` | Long-lived |
+ * | Persistent (default) | `https://cdn.linqapp.com/attachments/partners/{partner_id}/{attachment_id}/{filename}` | Long-lived — the URL itself does not expire, but see [Attachment Lifetime](#attachment-lifetime) |
  * | Ephemeral | Pre-signed URL pointing at the ephemeral prefix on `cdn.linqapp.com` | 15 minutes per signed URL — re-fetch via the API for a fresh URL |
  *
  * Inbound media you receive over webhooks uses the same layout your outbound sends produce, so the URL you store and the URL you build look identical — no special casing in your client.
@@ -108,7 +123,7 @@ import { path } from '../internal/utils/path';
  * | Aspect | Persistent | Ephemeral |
  * |---|---|---|
  * | Download URL form | Long-lived CDN URL | Pre-signed URL with short TTL |
- * | Retention floor | Indefinite (until you call `DELETE`) | **Hard backstop: 1 day** — even without an explicit `DELETE`, the platform removes the underlying bytes after 24 hours |
+ * | Retention floor | Until you call `DELETE` | **Hard backstop: 24–48h** — even without an explicit `DELETE`, the platform removes the underlying bytes within roughly 24–48 hours of upload |
  * | URL re-fetch | Not required | Fetch via `GET /v3/attachments/{attachmentId}` for a fresh signed URL after TTL expiry |
  * | Cross-partner isolation | Enforced | Enforced |
  *
@@ -168,9 +183,9 @@ import { path } from '../internal/utils/path';
  *
  * | Data | Persistent tier | Ephemeral tier |
  * |---|---|---|
- * | Attachment bytes | Retained until you `DELETE` | **Auto-removed after 1 day**, also removable via `DELETE` |
+ * | Attachment bytes | Retained until you `DELETE` | **Auto-removed within roughly 24–48 hours** of upload, independently of any message window. Also removable via `DELETE` |
  * | Attachment metadata (id, filename, mime type, size) | Retained until you `DELETE` | Removed alongside the bytes |
- * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy — unless the line also has **ephemeral messages** enabled (see the Messages page), in which case the message and its parts are deleted 24 hours after creation |
+ * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy — unless the line also has **ephemeral messages** enabled (see the Messages page), in which case the message and its parts are deleted after that account's configured retention window (60 minutes – 24 hours, default 24 hours) from creation |
  * | Audit log of deletions | Retained per platform retention policy | Retained per platform retention policy |
  *
  * **In transit:** TLS 1.2+ everywhere. **At rest:** AES-256 (server-side encryption).
@@ -182,7 +197,7 @@ import { path } from '../internal/utils/path';
  * - Allowlist exactly one outbound domain: `cdn.linqapp.com`.
  * - Decide whether you need ephemeral attachments (high-sensitivity content) — request enablement through your Linq support contact.
  * - Implement `DELETE /v3/attachments/{attachmentId}` calls in your deletion workflow.
- * - Persist any attachments your application needs long-term — Linq is the authoritative source until you delete, but the ephemeral tier auto-purges after 1 day.
+ * - Persist any attachments your application needs long-term — Linq is the authoritative source until you delete, but the ephemeral tier auto-purges within roughly 24–48 hours of upload.
  * - For audit: every deletion is logged on Linq's side. Surface a confirmation in your application UI based on the `204` response.
  * - For end-user "right to delete" requests: enumerate attachment ids and `DELETE` each. The platform does not provide a partner-wide wipe endpoint — deletion is per-attachment by design.
  */
@@ -192,15 +207,17 @@ export class Attachments extends APIResource {
    * your message's media part — no pre-upload required. Use this endpoint only when
    * you want to upload a file ahead of time for reuse or latency optimization.
    *
-   * Returns a presigned upload URL and a permanent `attachment_id` you can reference
-   * in future messages.
+   * Returns a presigned upload URL and a reusable `attachment_id` you can reference
+   * in future messages. Attachments stored on the **ephemeral attachments tier**
+   * (and their URLs) are removed within roughly 24–48 hours of upload, independently
+   * of any message retention window. Attachments on the persistent tier are kept
+   * until you `DELETE` them, regardless of message expiry.
    *
    * ## Step 1: Request an upload URL
    *
-   * Call this endpoint with file metadata:
+   * Call `POST /v3/attachments` with file metadata:
    *
    * ```json
-   * POST /v3/attachments
    * {
    *   "filename": "photo.jpg",
    *   "content_type": "image/jpeg",
@@ -208,7 +225,7 @@ export class Attachments extends APIResource {
    * }
    * ```
    *
-   * The response includes an `upload_url` (valid for 15 minutes) and a permanent
+   * The response includes an `upload_url` (valid for 15 minutes) and a reusable
    * `attachment_id`.
    *
    * ## Step 2: Upload the file
@@ -231,11 +248,12 @@ export class Attachments extends APIResource {
    *
    * ## Step 3: Send a message with the attachment
    *
-   * Reference the `attachment_id` in a media part. The ID never expires — use it in
-   * as many messages as you want.
+   * Reference the `attachment_id` in a media part with `POST /v3/chats`. The ID
+   * stays valid for as many messages as you want — unless the attachment is stored
+   * on the ephemeral attachments tier, in which case it is removed within roughly
+   * 24–48 hours of upload.
    *
    * ```json
-   * POST /v3/chats
    * {
    *   "from": "+15559876543",
    *   "to": ["+15551234567"],
@@ -411,8 +429,10 @@ export interface AttachmentCreateResponse {
   attachment_id: string;
 
   /**
-   * Permanent CDN URL for the file. Does not expire. Use the `attachment_id` to
-   * reference this file in media parts when sending messages.
+   * Stable CDN URL for the file. Use the `attachment_id` to reference this file in
+   * media parts when sending messages. Files on the ephemeral attachments tier — and
+   * this URL — are removed within roughly 24–48 hours of upload, independently of
+   * any message retention window.
    */
   download_url: string;
 
@@ -435,7 +455,8 @@ export interface AttachmentCreateResponse {
   /**
    * Presigned URL for uploading the file. PUT the raw binary file content to this
    * URL with the `required_headers`. Do not JSON-encode or multipart-wrap the body.
-   * Expires after 15 minutes.
+   * Expires after 15 minutes. Treat the URL as opaque — the hostname depends on
+   * partner configuration and is the same across sandbox and production.
    */
   upload_url: string;
 }
