@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.52.0](https://github.com/linq-team/linq-node/compare/v0.51.1...v0.52.0) (2026-09-01)
+
+
+### Features
+
+* add mentions array to text parts, deprecate singular mention fields ([9dfff15](https://github.com/linq-team/linq-node/commit/9dfff150237bbef3641621e8bbe1f9072cf5554e))
+
 ## [0.51.1](https://github.com/linq-team/linq-node/compare/v0.51.0...v0.51.1) (2026-08-31)
 
 
