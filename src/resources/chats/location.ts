@@ -11,7 +11,7 @@ import { path } from '../../internal/utils/path';
  * and subscribe to webhooks when someone starts or stops sharing.
  *
  * **Coordinates** are returned in [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946) format:
- * `[longitude, latitude]` or `[longitude, latitude, altitude]` if altitude is available.
+ * `[longitude, latitude]`.
  *
  * ### Reading location is poll-based
  *
@@ -46,34 +46,6 @@ import { path } from '../../internal/utils/path';
  */
 export class Location extends APIResource {
   /**
-   * Request a contact in a chat to share their location. They receive an iMessage
-   * prompt and must accept before any location is available; once they do, read
-   * their location coordinates with `GET /v3/chats/{chatId}/location`.
-   *
-   * The request is delivered asynchronously. The endpoint returns immediately with
-   * `{ "success": true, "message": "Location request sent" }` and does not return
-   * coordinates.
-   *
-   * Location requests only work in **1:1 iMessage chats** (Apple limitation):
-   *
-   * - Group chats (any service) return `409` with code `2016`
-   *   (`GroupChatNotSupported`).
-   * - 1:1 SMS and RCS chats return `409` with code `2017`
-   *   (`ChatServiceNotSupported`).
-   *
-   * @example
-   * ```ts
-   * const locationRequestResponse =
-   *   await client.chats.location.request(
-   *     '975d0776-bd17-4273-8337-f346b4c661b0',
-   *   );
-   * ```
-   */
-  request(chatID: string, options?: RequestOptions): APIPromise<LocationRequestResponse> {
-    return this._client.post(path`/v3/chats/${chatID}/location/request`, options);
-  }
-
-  /**
    * Retrieve the current location for contacts sharing with you in a chat.
    *
    * The response is wrapped in the standard `{ "success": true, "data": ... }`
@@ -84,6 +56,9 @@ export class Location extends APIResource {
    * Works for both 1:1 and group chats. In group chats, `data.features` contains a
    * separate feature for each participant who is sharing. Each feature's
    * `properties.handle` identifies the user.
+   *
+   * A participant appears as soon as their first position arrives, typically within
+   * a second or two of sharing starting.
    *
    * Returns an empty `data.features` array if no one is sharing or no location data
    * is available yet. If sharing started but this stays empty, see the **Location
@@ -106,6 +81,40 @@ export class Location extends APIResource {
       ...options,
       headers: buildHeaders([{ Accept: 'application/geo+json' }, options?.headers]),
     });
+  }
+
+  /**
+   * Request a contact in a chat to share their location. They receive an iMessage
+   * prompt and must accept before any location is available; once they do, read
+   * their location coordinates with `GET /v3/chats/{chatId}/location`.
+   *
+   * The request is delivered asynchronously. The endpoint returns immediately with
+   * `{ "success": true, "message": "Location request sent" }` and does not return
+   * coordinates.
+   *
+   * Rejected with `409` if the recipient is already sharing — read their location
+   * with `GET /v3/chats/{chatId}/location` instead of re-requesting.
+   *
+   * Rate limited per chat, since each request prompts the recipient's device.
+   * Exceeding it returns `429` with a `Retry-After` header.
+   *
+   * Location requests only work in **1:1 iMessage chats** (Apple limitation):
+   *
+   * - Group chats (any service) return `409` with code `2016`
+   *   (`GroupChatNotSupported`).
+   * - 1:1 SMS and RCS chats return `409` with code `2017`
+   *   (`ChatServiceNotSupported`).
+   *
+   * @example
+   * ```ts
+   * const locationRequestResponse =
+   *   await client.chats.location.request(
+   *     '975d0776-bd17-4273-8337-f346b4c661b0',
+   *   );
+   * ```
+   */
+  request(chatID: string, options?: RequestOptions): APIPromise<LocationRequestResponse> {
+    return this._client.post(path`/v3/chats/${chatID}/location/request`, options);
   }
 }
 
@@ -134,7 +143,7 @@ export namespace GetChatLocationResponse {
     export namespace Feature {
       export interface Geometry {
         /**
-         * [longitude, latitude] or [longitude, latitude, altitude]
+         * [longitude, latitude]
          */
         coordinates: Array<number>;
 
