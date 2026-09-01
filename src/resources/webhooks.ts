@@ -146,8 +146,8 @@ export namespace MessageEventV2 {
      * relevant section of the Chat Health guide. To gate a send, act on the response
      * rather than the status: a `403` is the authoritative answer.
      *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
+     * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+     * each status means and how to react.
      */
     health_status: Chat.HealthStatus;
 
@@ -174,8 +174,8 @@ export namespace MessageEventV2 {
      * relevant section of the Chat Health guide. To gate a send, act on the response
      * rather than the status: a `403` is the authoritative answer.
      *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
+     * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+     * each status means and how to react.
      */
     export interface HealthStatus {
       /**
@@ -185,8 +185,8 @@ export namespace MessageEventV2 {
 
       /**
        * Current health bucket for the chat. See the
-       * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
-       * to react. `doc_url` deep-links to the relevant section.
+       * [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what each
+       * value means and how to react. `doc_url` deep-links to the relevant section.
        *
        * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
        * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
@@ -1308,8 +1308,8 @@ export namespace MessageEditedWebhookEvent {
        * relevant section of the Chat Health guide. To gate a send, act on the response
        * rather than the status: a `403` is the authoritative answer.
        *
-       * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-       * means and how to react.
+       * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+       * each status means and how to react.
        */
       health_status: Chat.HealthStatus;
 
@@ -1336,8 +1336,8 @@ export namespace MessageEditedWebhookEvent {
        * relevant section of the Chat Health guide. To gate a send, act on the response
        * rather than the status: a `403` is the authoritative answer.
        *
-       * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-       * means and how to react.
+       * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+       * each status means and how to react.
        */
       export interface HealthStatus {
         /**
@@ -1347,8 +1347,8 @@ export namespace MessageEditedWebhookEvent {
 
         /**
          * Current health bucket for the chat. See the
-         * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
-         * to react. `doc_url` deep-links to the relevant section.
+         * [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what each
+         * value means and how to react. `doc_url` deep-links to the relevant section.
          *
          * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
          * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
@@ -2798,8 +2798,8 @@ export namespace ChatCreatedWebhookEvent {
      * relevant section of the Chat Health guide. To gate a send, act on the response
      * rather than the status: a `403` is the authoritative answer.
      *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
+     * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+     * each status means and how to react.
      */
     health_status: Data.HealthStatus;
 
@@ -2831,8 +2831,8 @@ export namespace ChatCreatedWebhookEvent {
      * relevant section of the Chat Health guide. To gate a send, act on the response
      * rather than the status: a `403` is the authoritative answer.
      *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
+     * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+     * each status means and how to react.
      */
     export interface HealthStatus {
       /**
@@ -2842,8 +2842,8 @@ export namespace ChatCreatedWebhookEvent {
 
       /**
        * Current health bucket for the chat. See the
-       * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
-       * to react. `doc_url` deep-links to the relevant section.
+       * [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what each
+       * value means and how to react. `doc_url` deep-links to the relevant section.
        *
        * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
        * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
