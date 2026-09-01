@@ -38,6 +38,14 @@ import {
   AvailableNumberRetrieveResponse,
 } from './resources/available-number';
 import {
+  BlockedHandleBlockParams,
+  BlockedHandleBlockResponse,
+  BlockedHandleEntry,
+  BlockedHandleListResponse,
+  BlockedHandleUnblockParams,
+  BlockedHandles,
+} from './resources/blocked-handles';
+import {
   Capability,
   CapabilityCheckIMessageParams,
   CapabilityCheckRCSParams,
@@ -52,21 +60,20 @@ import {
   ContactCardUpdateParams,
   SetContactCard,
 } from './resources/contact-card';
+import { ExperienceListResponse, ExperienceRetrieveResponse, Experiences } from './resources/experiences';
+import { LinkConnectionStatus, LinkConnections } from './resources/link-connections';
+import { LinkPayment, LinkPayments } from './resources/link-payments';
 import {
-  Message,
-  MessageAddReactionParams,
-  MessageAddReactionResponse,
-  MessageCreateParams,
-  MessageCreateResponse,
-  MessageEffect,
-  MessageListMessagesThreadParams,
-  MessageUpdateAppCardParams,
-  MessageUpdateAppCardResponse,
-  MessageUpdateParams,
-  Messages,
-  MessagesListMessagesPagination,
-  ReplyTo,
-} from './resources/messages';
+  PaymentHandleConnection,
+  PaymentHandleVerifyParams,
+  PaymentHandles,
+} from './resources/payment-handles';
+import {
+  PaymentProvider,
+  PaymentProviderConnectParams,
+  PaymentProviderConnectResponse,
+  PaymentProviders,
+} from './resources/payment-providers';
 import {
   PaymentRequest,
   PaymentRequestCreateParams,
@@ -74,11 +81,22 @@ import {
   PaymentRequestListResponse,
   PaymentRequests,
 } from './resources/payment-requests';
+import { Payment, PaymentCreateParams, PaymentCredentialsResponse, Payments } from './resources/payments';
 import {
+  PhoneNumberGetReputationAuditParams,
   PhoneNumberListResponse,
   PhoneNumberUpdateParams,
   PhoneNumberUpdateResponse,
   PhoneNumbers,
+  ReputationActionItem,
+  ReputationAudit,
+  ReputationAuditStarted,
+  ReputationDriver,
+  ReputationDriverKey,
+  ReputationEvidence,
+  ReputationOptOutChat,
+  ReputationReport,
+  ReputationUnhealthyChat,
 } from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
 import { WebhookEventListResponse, WebhookEventType, WebhookEvents } from './resources/webhook-events';
@@ -91,6 +109,8 @@ import {
   WebhookSubscriptions,
 } from './resources/webhook-subscriptions';
 import {
+  ChatBackgroundUpdateFailedWebhookEvent,
+  ChatBackgroundUpdatedWebhookEvent,
   ChatCreatedWebhookEvent,
   ChatGroupIconUpdateFailedWebhookEvent,
   ChatGroupIconUpdatedWebhookEvent,
@@ -109,6 +129,15 @@ import {
   ParticipantAddedWebhookEvent,
   ParticipantRemovedWebhookEvent,
   PhoneNumberStatusUpdatedWebhookEvent,
+  PollDeliveredWebhookEvent,
+  PollFailedWebhookEvent,
+  PollReactionAddedWebhookEvent,
+  PollReadWebhookEvent,
+  PollReceivedWebhookEvent,
+  PollSentWebhookEvent,
+  PollUpdatedWebhookEvent,
+  PollVoteAddedWebhookEvent,
+  PollVoteRemovedWebhookEvent,
   ReactionAddedWebhookEvent,
   ReactionEventBase,
   ReactionRemovedWebhookEvent,
@@ -135,6 +164,21 @@ import {
   MessageContent,
   TextPart,
 } from './resources/chats/chats';
+import {
+  Message,
+  MessageAddReactionParams,
+  MessageAddReactionResponse,
+  MessageCreateParams,
+  MessageCreateResponse,
+  MessageEffect,
+  MessageListMessagesThreadParams,
+  MessageUpdateAppCardParams,
+  MessageUpdateAppCardResponse,
+  MessageUpdateParams,
+  Messages,
+  MessagesListMessagesPagination,
+  ReplyTo,
+} from './resources/messages/messages';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -946,6 +990,7 @@ export class LinqAPIV3 {
    *
    * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time. If you need it, compute `created_at + 24h` yourself.
    * - **No deletion webhook is sent.** There is no `message.deleted` event — a message simply stops being retrievable once its window passes.
+   * - **The backstop governs Linq storage.** API retrievability (the `404` behavior above) and CDN media expire at the 24-hour mark. Removal of the corresponding entries from the sending device happens asynchronously and can complete after the backstop.
    * - **Delivery is unaffected.** Ephemeral messages send, deliver, and fire the usual `message.sent` / `message.received` and status webhooks exactly like standard messages. Only retention changes.
    *
    * **When to choose ephemeral:**
@@ -1149,6 +1194,15 @@ export class LinqAPIV3 {
    * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
    * in the `from` field.
    *
+   * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+   * While it is in that state, requests that would produce new activity on it — sending a
+   * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+   * (error code `2027`) before anything is created. Reads keep working, so your existing
+   * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+   * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+   * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+   * specific number to blame with a `403`).
+   *
    */
   phonenumbers: API.Phonenumbers = new API.Phonenumbers(this);
   /**
@@ -1160,6 +1214,15 @@ export class LinqAPIV3 {
    * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
    * in the `from` field.
    *
+   * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+   * While it is in that state, requests that would produce new activity on it — sending a
+   * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+   * (error code `2027`) before anything is created. Reads keep working, so your existing
+   * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+   * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+   * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+   * specific number to blame with a `403`).
+   *
    */
   phoneNumbers: API.PhoneNumbers = new API.PhoneNumbers(this);
   /**
@@ -1170,6 +1233,15 @@ export class LinqAPIV3 {
    *
    * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
    * in the `from` field.
+   *
+   * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+   * While it is in that state, requests that would produce new activity on it — sending a
+   * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+   * (error code `2027`) before anything is created. Reads keep working, so your existing
+   * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+   * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+   * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+   * specific number to blame with a `403`).
    *
    */
   availableNumber: API.AvailableNumber = new API.AvailableNumber(this);
@@ -1192,7 +1264,7 @@ export class LinqAPIV3 {
    *
    * ## Connected accounts (Stripe Standard, direct charges)
    *
-   * Agent Pay runs on **Stripe Connect Standard accounts** using **direct
+   * Payments run on **Stripe Connect Standard accounts** using **direct
    * charges**: the charge is created on *your* connected account and **you are
    * the merchant of record**. That means the money, the payout schedule, the
    * customer relationship, and the compliance surface are all yours — Linq
@@ -1235,6 +1307,45 @@ export class LinqAPIV3 {
    * the Customer and Subscription, so correlating in either direction is
    * trivial. There are no renewal webhooks from Linq by design.
    *
+   * ### Discounts
+   *
+   * Pass a `discount` with a **coupon** or **promotion code** from your
+   * connected Stripe account to apply it to the subscription. Create either in
+   * your Stripe Dashboard under Product catalog → Coupons; Linq only forwards
+   * the id.
+   *
+   * ```json
+   * {
+   *   "mode": "subscription",
+   *   "price_id": "price_1QAbCdEfGhIjKlMn",
+   *   "discount": {
+   *     "coupon": "7fKCMvBh",
+   *     "label": "50% OFF FIRST MONTH"
+   *   }
+   * }
+   * ```
+   *
+   * Stripe applies the coupon and prices the first invoice; the `amount` we
+   * return is that invoice's amount due, so a `$50.00/month` price with a
+   * 50%-off-first-month coupon comes back as `2500` and the recipient is
+   * charged **$25.00** at checkout. A coupon that covers the whole first
+   * invoice returns `amount: 0`; checkout shows $0.00 and collects the card for
+   * the renewal rather than charging now. Renewals bill at the full price
+   * automatically — how long a discount lasts is the coupon's `duration`,
+   * enforced by Stripe on your account, and Linq never re-prices anything.
+   *
+   * Use `promotion_code` instead of `coupon` to apply a promotion code by id
+   * (`promo_...`, not the customer-facing code string); pass one or the other,
+   * never both.
+   *
+   * `label` is the customer-facing promotion name displayed at checkout instead
+   * of the coupon or promotion code ID. The label is displayed exactly as
+   * provided, so include important terms such as "FIRST MONTH" or
+   * "FIRST 3 MONTHS" when applicable. These terms are not displayed elsewhere
+   * on the checkout screen.
+   *
+   * If omitted, Stripe uses the coupon's name as the promotion label.
+   *
    * ### Free trials
    *
    * Add `trial_period_days` (or a fixed `trial_end` timestamp) to start the
@@ -1269,25 +1380,145 @@ export class LinqAPIV3 {
    * `POST /v3/chats/{chatId}/messages` — it renders as a rich card with your
    * branding (title, amount, image) instead of a bare URL, which converts far
    * better. A `link` part must be the only part in the message. See
-   * [Rich Link Previews](/guides/messaging/sending-messages).
+   * [Rich Link Previews](/channel/imessage/guides/messaging/sending-messages).
    *
    * On a supported iPhone the link opens an **Apple Pay App Clip** — a native,
    * no-install checkout sheet. Everywhere else (Android, desktop, iPhones
    * without the App Clip yet) the same URL opens the web checkout, so the link
    * always works. The App Clip experience for your payment links is registered
-   * automatically by Linq and refreshed whenever you update your Agent Pay
+   * automatically by Linq and refreshed whenever you update your payments
    * branding; a newly registered experience can take up to ~24 hours to
    * activate on Apple's side, during which links open the web checkout.
+   *
+   * ## Sending it as a card instead
+   *
+   * A `link` part is one way to deliver a request. The other is the
+   * **`agentpay` experience**, which sends the same request as a native card
+   * in Linq's iMessage app — the amount and reason are drawn in the bubble,
+   * and it turns itself into "Paid" in place once the payment succeeds,
+   * without a second message.
+   *
+   * Send it to `POST /v3/chats/{chatId}/messages`:
+   *
+   * ```json
+   * {
+   *   "message": {
+   *     "experience": {
+   *       "name": "agentpay",
+   *       "action": "request_payment",
+   *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
+   *     }
+   *   }
+   * }
+   * ```
+   *
+   * `checkout_url` is the only required field — pass back exactly what
+   * `POST /v3/payment_requests` returned. **The amount and reason are read
+   * from that request, never from you**, so the card can never claim a
+   * different figure than the checkout will charge. Optional `title` and
+   * `note` override the copy only. The link must be one of your own payment
+   * requests; another partner's is rejected.
+   *
+   * The trade-off against a `link` part: a card is an app card, so it is
+   * iMessage-only, and recipients without the app see a static version of it.
+   * A link works everywhere and is what opens the Apple Pay App Clip. Send
+   * whichever suits the conversation — both settle the same payment request
+   * and fire the same webhooks.
    *
    * ## Webhooks
    *
    * Subscribe to payment lifecycle events to reconcile server-side rather than
    * polling: `payment.succeeded`, `payment.canceled`, and `payment.expired`.
    * Each event carries the payment request id, amount, currency, and your
-   * `metadata`. See [Webhooks](/guides/webhooks).
+   * `metadata`. See [Webhooks](/channel/imessage/guides/webhooks).
    *
    */
   paymentRequests: API.PaymentRequests = new API.PaymentRequests(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentProviders: API.PaymentProviders = new API.PaymentProviders(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentHandles: API.PaymentHandles = new API.PaymentHandles(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  payments: API.Payments = new API.Payments(this);
+  linkConnections: API.LinkConnections = new API.LinkConnections(this);
+  linkPayments: API.LinkPayments = new API.LinkPayments(this);
+  /**
+   * Block handles — phone numbers, email addresses, SMS short codes, or
+   * sender IDs. Inbound messages from a blocked handle are dropped before
+   * they reach your webhooks, and direct sends to a blocked handle are
+   * rejected with `403` (error code `2026`). Group sends that include
+   * unblocked members are not restricted.
+   *
+   */
+  blockedHandles: API.BlockedHandles = new API.BlockedHandles(this);
+  /**
+   * An **experience** renders inside Linq's iMessage app as a native card,
+   * instead of as text or a link. You invoke one by name; Linq resolves the
+   * recipient, mints any session it needs, composes the card and sends it.
+   *
+   * Send it to `POST /v3/chats/{chatId}/messages`:
+   *
+   * ```json
+   * {
+   *   "message": {
+   *     "experience": {
+   *       "name": "agentpay",
+   *       "action": "request_payment",
+   *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
+   *     }
+   *   }
+   * }
+   * ```
+   *
+   * The key is `experience` — what you're invoking. Nested under it is its
+   * `name`, the action you're invoking on it, and that action's params. A card
+   * **is** the whole message on Apple's side, so a message carries either
+   * `experience` or `parts`, never both, and an action goes to exactly one
+   * recipient.
+   *
+   * ## What you can invoke
+   *
+   * | Experience | Action | What the customer sees |
+   * |---|---|---|
+   * | `agentpay` | `request_payment` | A payment request they can pay in the app. Turns itself into "Paid" in place once it settles. |
+   * | `agentcard` | `attach_card` | A prompt to add a card to their wallet. |
+   * | `agentcard` | `approve_card` | A passkey approval for a virtual card. |
+   * | `link` | `open` | A card that opens a URL you supply. |
+   *
+   * `GET /v3/experiences` is the list to build against, with every action and
+   * the fields each accepts — anything not described there is unsupported.
+   * Fields are display copy unless documented otherwise.
+   *
+   * ## Params are checked before the card is sent
+   *
+   * Unknown fields are **rejected rather than ignored**, so copy that would
+   * never have rendered fails for you now instead of arriving wrong on
+   * somebody's phone. Some fields are read rather than sent: `agentpay`'s
+   * `request_payment` takes only a `checkout_url` and resolves the amount and
+   * reason from that payment request, so a card can never claim a figure the
+   * checkout will not charge.
+   *
+   * Cards are **iMessage-only**. Recipients without the app see a static
+   * version built from the same copy; SMS and RCS recipients cannot receive
+   * one at all (error codes 2018 and 4005).
+   *
+   */
+  experiences: API.Experiences = new API.Experiences(this);
   /**
    * Webhook Subscriptions allow you to receive real-time notifications when events
    * occur on your account.
@@ -1574,6 +1805,13 @@ LinqAPIV3.Phonenumbers = Phonenumbers;
 LinqAPIV3.PhoneNumbers = PhoneNumbers;
 LinqAPIV3.AvailableNumber = AvailableNumber;
 LinqAPIV3.PaymentRequests = PaymentRequests;
+LinqAPIV3.PaymentProviders = PaymentProviders;
+LinqAPIV3.PaymentHandles = PaymentHandles;
+LinqAPIV3.Payments = Payments;
+LinqAPIV3.LinkConnections = LinkConnections;
+LinqAPIV3.LinkPayments = LinkPayments;
+LinqAPIV3.BlockedHandles = BlockedHandles;
+LinqAPIV3.Experiences = Experiences;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Capability = Capability;
@@ -1608,8 +1846,8 @@ export declare namespace LinqAPIV3 {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatListChatsParams as ChatListChatsParams,
     type ChatUpdateParams as ChatUpdateParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1623,9 +1861,9 @@ export declare namespace LinqAPIV3 {
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
-    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageUpdateParams as MessageUpdateParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
   };
 
@@ -1641,9 +1879,19 @@ export declare namespace LinqAPIV3 {
 
   export {
     PhoneNumbers as PhoneNumbers,
+    type ReputationActionItem as ReputationActionItem,
+    type ReputationAudit as ReputationAudit,
+    type ReputationAuditStarted as ReputationAuditStarted,
+    type ReputationDriver as ReputationDriver,
+    type ReputationDriverKey as ReputationDriverKey,
+    type ReputationEvidence as ReputationEvidence,
+    type ReputationOptOutChat as ReputationOptOutChat,
+    type ReputationReport as ReputationReport,
+    type ReputationUnhealthyChat as ReputationUnhealthyChat,
     type PhoneNumberUpdateResponse as PhoneNumberUpdateResponse,
     type PhoneNumberListResponse as PhoneNumberListResponse,
     type PhoneNumberUpdateParams as PhoneNumberUpdateParams,
+    type PhoneNumberGetReputationAuditParams as PhoneNumberGetReputationAuditParams,
   };
 
   export {
@@ -1658,6 +1906,45 @@ export declare namespace LinqAPIV3 {
     type PaymentRequestListResponse as PaymentRequestListResponse,
     type PaymentRequestCreateParams as PaymentRequestCreateParams,
     type PaymentRequestListParams as PaymentRequestListParams,
+  };
+
+  export {
+    PaymentProviders as PaymentProviders,
+    type PaymentProvider as PaymentProvider,
+    type PaymentProviderConnectResponse as PaymentProviderConnectResponse,
+    type PaymentProviderConnectParams as PaymentProviderConnectParams,
+  };
+
+  export {
+    PaymentHandles as PaymentHandles,
+    type PaymentHandleConnection as PaymentHandleConnection,
+    type PaymentHandleVerifyParams as PaymentHandleVerifyParams,
+  };
+
+  export {
+    Payments as Payments,
+    type Payment as Payment,
+    type PaymentCredentialsResponse as PaymentCredentialsResponse,
+    type PaymentCreateParams as PaymentCreateParams,
+  };
+
+  export { LinkConnections as LinkConnections, type LinkConnectionStatus as LinkConnectionStatus };
+
+  export { LinkPayments as LinkPayments, type LinkPayment as LinkPayment };
+
+  export {
+    BlockedHandles as BlockedHandles,
+    type BlockedHandleEntry as BlockedHandleEntry,
+    type BlockedHandleListResponse as BlockedHandleListResponse,
+    type BlockedHandleBlockResponse as BlockedHandleBlockResponse,
+    type BlockedHandleBlockParams as BlockedHandleBlockParams,
+    type BlockedHandleUnblockParams as BlockedHandleUnblockParams,
+  };
+
+  export {
+    Experiences as Experiences,
+    type ExperienceRetrieveResponse as ExperienceRetrieveResponse,
+    type ExperienceListResponse as ExperienceListResponse,
   };
 
   export {
@@ -1699,6 +1986,15 @@ export declare namespace LinqAPIV3 {
     type MessageEditedWebhookEvent as MessageEditedWebhookEvent,
     type ReactionAddedWebhookEvent as ReactionAddedWebhookEvent,
     type ReactionRemovedWebhookEvent as ReactionRemovedWebhookEvent,
+    type PollReceivedWebhookEvent as PollReceivedWebhookEvent,
+    type PollSentWebhookEvent as PollSentWebhookEvent,
+    type PollDeliveredWebhookEvent as PollDeliveredWebhookEvent,
+    type PollReadWebhookEvent as PollReadWebhookEvent,
+    type PollUpdatedWebhookEvent as PollUpdatedWebhookEvent,
+    type PollFailedWebhookEvent as PollFailedWebhookEvent,
+    type PollVoteAddedWebhookEvent as PollVoteAddedWebhookEvent,
+    type PollVoteRemovedWebhookEvent as PollVoteRemovedWebhookEvent,
+    type PollReactionAddedWebhookEvent as PollReactionAddedWebhookEvent,
     type ParticipantAddedWebhookEvent as ParticipantAddedWebhookEvent,
     type ParticipantRemovedWebhookEvent as ParticipantRemovedWebhookEvent,
     type ChatCreatedWebhookEvent as ChatCreatedWebhookEvent,
@@ -1708,6 +2004,8 @@ export declare namespace LinqAPIV3 {
     type ChatGroupIconUpdateFailedWebhookEvent as ChatGroupIconUpdateFailedWebhookEvent,
     type ChatTypingIndicatorStartedWebhookEvent as ChatTypingIndicatorStartedWebhookEvent,
     type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
+    type ChatBackgroundUpdatedWebhookEvent as ChatBackgroundUpdatedWebhookEvent,
+    type ChatBackgroundUpdateFailedWebhookEvent as ChatBackgroundUpdateFailedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
@@ -1716,8 +2014,8 @@ export declare namespace LinqAPIV3 {
     ContactCard as ContactCard,
     type SetContactCard as SetContactCard,
     type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
-    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardCreateParams as ContactCardCreateParams,
+    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 
