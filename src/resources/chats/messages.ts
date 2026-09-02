@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as MessagesAPI from '../messages';
-import { MessagesListMessagesPagination } from '../messages';
 import * as Shared from '../shared';
 import * as ChatsAPI from './chats';
+import * as ResourcesMessagesAPI from '../messages/messages';
+import { MessagesListMessagesPagination } from '../messages/messages';
 import { APIPromise } from '../../core/api-promise';
 import {
   ListMessagesPagination,
@@ -36,34 +36,39 @@ import { path } from '../../internal/utils/path';
  *
  * ## Ephemeral Messages (Privacy Tier)
  *
- * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is automatically given a fixed **24-hour retention window** — after that window the platform permanently deletes the message from Linq storage. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+ * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is given a **retention window configured for your account**. After that window, the message's text, formatting, and attachment references are no longer retrievable through the API — see the Attachments row below for how the attachment media itself is handled. Metadata about the message is retained: message identifiers, timestamps, phone numbers, and delivery state. Metadata retention is not bounded by this window. Bounded operational copies, such as backups and delivery queues, expire on their own separate schedules. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+ *
+ * The window can be set anywhere from **60 minutes to 24 hours**, and defaults to **24 hours**. Ask your Linq support contact to configure a shorter window; it cannot be changed through the API.
  *
  * You can request it at two scopes:
  *
  * | Scope | Effect |
  * |---|---|
- * | **Partner-wide** | Every outbound and inbound message on every phone number under your account is retained for 24 hours, then deleted. |
- * | **Per phone number** | Only the specified phone numbers have their messages auto-deleted. The rest follow the standard message-retention policy. |
+ * | **Partner-wide** | Every outbound and inbound message on every phone number under your account has its content removed from the API surface after your configured window. Metadata is retained. |
+ * | **Per phone number** | Only the specified phone numbers have message content removed from the API surface this way. The rest follow the standard message-retention policy. |
  *
  * **Behavioral differences vs the standard default:**
  *
  * | Aspect | Standard | Ephemeral |
  * |---|---|---|
- * | Retention | Retained per the standard message-retention policy | **Hard backstop: 24 hours** from when the message is created |
- * | After expiry | Message stays retrievable | Message is permanently deleted — `GET /v3/messages/{messageId}` returns `404` and it no longer appears in `GET /v3/chats/{chatId}/messages` |
- * | Content on expiry | N/A | Text, formatting, and attachment references are scrubbed; the message is gone, not blanked out |
+ * | Retention | Retained per the standard message-retention policy | **Hard backstop: your configured window** (60 minutes – 24 hours, default 24 hours) from when the message is created |
+ * | After expiry | Message stays retrievable | Message content is no longer retrievable — `GET /v3/messages/{messageId}` returns `404` and it no longer appears in `GET /v3/chats/{chatId}/messages` |
+ * | Content on expiry | N/A | Text, formatting, and attachment references are removed from the API surface, not blanked out in place. Metadata (identifiers, timestamps, phone numbers, delivery state) is retained; its retention is not bounded by this window |
+ * | Attachments | Retained | Media sent on the **ephemeral attachments tier** is removed on its own storage backstop — within roughly 24–48 hours of upload — independently of the message window, so it can outlast a window shorter than a day. Attachments on the persistent tier (including pre-uploads via `POST /v3/attachments`) are kept until you `DELETE` them |
  * | Cross-partner isolation | Enforced | Enforced |
  *
- * **How the 24-hour window works:**
+ * **How the retention window works:**
  *
- * - The window is fixed at **24 hours from message creation** (`created_at`) and cannot be configured per message.
- * - It mirrors the ephemeral *attachments* 1-day backstop, so a message and any media it carries expire together.
+ * - The window runs from **message creation** (`created_at`). It is configured for your account (60 minutes – 24 hours, default 24 hours) and cannot be set per message.
+ * - Attachment media follows its own storage backstop rather than the message window — see the Attachments row above.
  * - Expiry is delivery-independent — the clock starts when the message is created, not when it is delivered or read.
+ * - **Deletion happens shortly *after* the window, not exactly at it.** A background sweep runs every ~5 minutes, so a message typically stops being retrievable within about 5 minutes of its expiry, and longer while a backlog is being worked through. Treat the window as the guaranteed *minimum* retention, never as an exact deletion time or an upper bound.
  *
  * **What you observe:**
  *
- * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time. If you need it, compute `created_at + 24h` yourself.
+ * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time, and they do not report your configured window either — so if you are on a window shorter than 24 hours you cannot derive a message's expiry from the API today. Track the window you agreed with your Linq support contact and compute `created_at + window` yourself.
  * - **No deletion webhook is sent.** There is no `message.deleted` event — a message simply stops being retrievable once its window passes.
+ * - **The attachment backstop is separate from the message window.** API retrievability (the `404` behavior above) ends at your configured window. Ephemeral-tier media objects are removed on their own storage backstop — within roughly 24–48 hours of upload — which is independent of the message window and can outlast a window shorter than a day. Removal of the corresponding entries from the sending device happens asynchronously and can complete after the backstop.
  * - **Delivery is unaffected.** Ephemeral messages send, deliver, and fire the usual `message.sent` / `message.received` and status webhooks exactly like standard messages. Only retention changes.
  *
  * **When to choose ephemeral:**
@@ -72,9 +77,34 @@ import { path } from '../../internal/utils/path';
  * - The conversation is high-sensitivity (PHI, financial, identity verification) and you do not want it sitting in storage long-term.
  * - Your application is the system of record — you capture what you need from the delivery webhook in real time and do not rely on reading message history back from Linq later.
  *
- * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message after 24 hours, persist anything you need to keep from the webhook payload at the time it is delivered.
+ * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message once its window passes, persist anything you need to keep from the webhook payload at the time it is delivered.
  */
 export class Messages extends APIResource {
+  /**
+   * Retrieve messages from a specific chat with pagination support.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const message of client.chats.messages.list(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * )) {
+   *   // ...
+   * }
+   * ```
+   */
+  list(
+    chatID: string,
+    query: MessageListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MessagesListMessagesPagination, ResourcesMessagesAPI.Message> {
+    return this._client.getAPIList(
+      path`/v3/chats/${chatID}/messages`,
+      ListMessagesPagination<ResourcesMessagesAPI.Message>,
+      { query, ...options },
+    );
+  }
+
   /**
    * Send a message to an existing chat. Use this endpoint when you already have a
    * chat ID and want to send additional messages to it.
@@ -116,8 +146,10 @@ export class Messages extends APIResource {
    * ```
    *
    * **Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges
-   * must not overlap with other animations or styles. Text decorations only render
-   * for iMessage recipients. For SMS/RCS, text decorations are not applied.
+   * must not overlap with other animations or styles. Decorations render per
+   * recipient, not per message: in a group with both iMessage and SMS/RCS
+   * participants, iMessage recipients see the decorations and SMS/RCS recipients
+   * receive the same message as plain text.
    *
    * @example
    * ```ts
@@ -133,31 +165,6 @@ export class Messages extends APIResource {
    */
   send(chatID: string, body: MessageSendParams, options?: RequestOptions): APIPromise<MessageSendResponse> {
     return this._client.post(path`/v3/chats/${chatID}/messages`, { body, ...options });
-  }
-
-  /**
-   * Retrieve messages from a specific chat with pagination support.
-   *
-   * @example
-   * ```ts
-   * // Automatically fetches more pages as needed.
-   * for await (const message of client.chats.messages.list(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * )) {
-   *   // ...
-   * }
-   * ```
-   */
-  list(
-    chatID: string,
-    query: MessageListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<MessagesListMessagesPagination, MessagesAPI.Message> {
-    return this._client.getAPIList(
-      path`/v3/chats/${chatID}/messages`,
-      ListMessagesPagination<MessagesAPI.Message>,
-      { query, ...options },
-    );
   }
 }
 
@@ -194,6 +201,7 @@ export interface SentMessage {
     | Shared.MediaPartResponse
     | Shared.LinkPartResponse
     | SentMessage.IMessageAppPartResponse
+    | SentMessage.AppClipPartResponse
   >;
 
   /**
@@ -209,7 +217,7 @@ export interface SentMessage {
   /**
    * iMessage effect applied to a message (screen or bubble effect)
    */
-  effect?: MessagesAPI.MessageEffect | null;
+  effect?: ResourcesMessagesAPI.MessageEffect | null;
 
   /**
    * The sender of this message as a full handle object
@@ -224,7 +232,7 @@ export interface SentMessage {
   /**
    * Indicates this message is a threaded reply to another message
    */
-  reply_to?: MessagesAPI.ReplyTo | null;
+  reply_to?: ResourcesMessagesAPI.ReplyTo | null;
 
   /**
    * Messaging service type
@@ -367,6 +375,41 @@ export namespace SentMessage {
       trailing_subcaption?: string;
     }
   }
+
+  /**
+   * An Apple Pay App Clip payment card part
+   */
+  export interface AppClipPartResponse {
+    /**
+     * Reactions on this message part
+     */
+    reactions: Array<Shared.Reaction> | null;
+
+    /**
+     * Indicates this is an App Clip payment card part
+     */
+    type: 'app_clip';
+
+    /**
+     * The checkout link the card opens
+     */
+    value: string;
+
+    /**
+     * The card's summary line, composed by Linq from the checkout session
+     */
+    description?: string;
+
+    /**
+     * The card's preview image
+     */
+    image_url?: string;
+
+    /**
+     * The card's headline, composed by Linq from the checkout session
+     */
+    title?: string;
+  }
 }
 
 /**
@@ -384,23 +427,37 @@ export interface MessageSendResponse {
   message: SentMessage;
 }
 
+export interface MessageListParams extends ListMessagesPaginationParams {}
+
 export interface MessageSendParams {
   /**
    * Message content container. Groups all message-related fields together,
    * separating the "what" (message content) from the "where" (routing fields like
    * from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `experience` invocation, which renders an experience inside
+   * Linq's iMessage app. Never both: an app card is the whole message (Apple's
+   * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
+   * one.
    */
   message: ChatsAPI.MessageContent;
-}
 
-export interface MessageListParams extends ListMessagesPaginationParams {}
+  /**
+   * Send even though the recipient asked you to stop (`403`, error code `2024`).
+   * Applies to this request only: the opt-out stays in place, so the next send
+   * without this flag is rejected again. Every override is recorded against your API
+   * key.
+   */
+  override_optout?: boolean;
+}
 
 export declare namespace Messages {
   export {
     type SentMessage as SentMessage,
     type MessageSendResponse as MessageSendResponse,
-    type MessageSendParams as MessageSendParams,
     type MessageListParams as MessageListParams,
+    type MessageSendParams as MessageSendParams,
   };
 }
 
