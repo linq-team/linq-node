@@ -118,7 +118,11 @@ import {
   ChatGroupNameUpdatedWebhookEvent,
   ChatTypingIndicatorStartedWebhookEvent,
   ChatTypingIndicatorStoppedWebhookEvent,
+  ConnectionCreatedWebhookEvent,
+  ConnectionRevokedWebhookEvent,
   ContactCardReceivedWebhookEvent,
+  LocationSharingStartedWebhookEvent,
+  LocationSharingStoppedWebhookEvent,
   MessageDeliveredWebhookEvent,
   MessageEditedWebhookEvent,
   MessageEventV2,
@@ -129,6 +133,11 @@ import {
   MessageSentWebhookEvent,
   ParticipantAddedWebhookEvent,
   ParticipantRemovedWebhookEvent,
+  PaymentAuthorizedWebhookEvent,
+  PaymentCanceledWebhookEvent,
+  PaymentDeclinedWebhookEvent,
+  PaymentExpiredWebhookEvent,
+  PaymentSucceededWebhookEvent,
   PhoneNumberStatusUpdatedWebhookEvent,
   PollDeliveredWebhookEvent,
   PollFailedWebhookEvent,
@@ -1799,12 +1808,12 @@ export class LinqAPIV3 {
    *
    */
   webhookSubscriptions: API.WebhookSubscriptions = new API.WebhookSubscriptions(this);
+  webhooks: API.Webhooks = new API.Webhooks(this);
   /**
    * Check whether a recipient address supports iMessage or RCS before sending a message.
    *
    */
   capability: API.Capability = new API.Capability(this);
-  webhooks: API.Webhooks = new API.Webhooks(this);
   /**
    * Contact Card lets you set and share your contact information (name and profile photo) with chat participants via iMessage Name and Photo Sharing.
    *
@@ -1834,8 +1843,8 @@ LinqAPIV3.BlockedHandles = BlockedHandles;
 LinqAPIV3.Experiences = Experiences;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
-LinqAPIV3.Capability = Capability;
 LinqAPIV3.Webhooks = Webhooks;
+LinqAPIV3.Capability = Capability;
 LinqAPIV3.ContactCard = ContactCard;
 
 export declare namespace LinqAPIV3 {
@@ -1983,14 +1992,6 @@ export declare namespace LinqAPIV3 {
   };
 
   export {
-    Capability as Capability,
-    type HandleCheck as HandleCheck,
-    type HandleCheckResponse as HandleCheckResponse,
-    type CapabilityCheckIMessageParams as CapabilityCheckIMessageParams,
-    type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
-  };
-
-  export {
     Webhooks as Webhooks,
     type MessageEventV2 as MessageEventV2,
     type MessagePayload as MessagePayload,
@@ -2028,7 +2029,24 @@ export declare namespace LinqAPIV3 {
     type ChatBackgroundUpdateFailedWebhookEvent as ChatBackgroundUpdateFailedWebhookEvent,
     type ContactCardReceivedWebhookEvent as ContactCardReceivedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
+    type ConnectionCreatedWebhookEvent as ConnectionCreatedWebhookEvent,
+    type ConnectionRevokedWebhookEvent as ConnectionRevokedWebhookEvent,
+    type LocationSharingStartedWebhookEvent as LocationSharingStartedWebhookEvent,
+    type LocationSharingStoppedWebhookEvent as LocationSharingStoppedWebhookEvent,
+    type PaymentAuthorizedWebhookEvent as PaymentAuthorizedWebhookEvent,
+    type PaymentCanceledWebhookEvent as PaymentCanceledWebhookEvent,
+    type PaymentDeclinedWebhookEvent as PaymentDeclinedWebhookEvent,
+    type PaymentExpiredWebhookEvent as PaymentExpiredWebhookEvent,
+    type PaymentSucceededWebhookEvent as PaymentSucceededWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
+  };
+
+  export {
+    Capability as Capability,
+    type HandleCheck as HandleCheck,
+    type HandleCheckResponse as HandleCheckResponse,
+    type CapabilityCheckIMessageParams as CapabilityCheckIMessageParams,
+    type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };
 
   export {

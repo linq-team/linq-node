@@ -3770,6 +3770,1914 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
   }
 }
 
+export interface ConnectionCreatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  data: ConnectionCreatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ConnectionCreatedWebhookEvent {
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  export interface Data {
+    /**
+     * The payment request id.
+     */
+    id: string;
+
+    /**
+     * What was charged at checkout, in the currency's minor units. In `subscription`
+     * mode this is the first invoice's total — all items after any discounts are
+     * applied.
+     */
+    amount: number;
+
+    /**
+     * URL the recipient opens to pay
+     * (`https://zero.linqapp.com/pay/{slug}?session=...`).
+     */
+    checkout_url: string;
+
+    created_at: string;
+
+    currency: string;
+
+    object: string;
+
+    status: 'succeeded' | 'failed' | 'canceled' | 'expired';
+
+    description?: string;
+
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    discount?: Data.Discount;
+
+    /**
+     * Subscription mode — how often the subscription renews.
+     */
+    interval?: 'day' | 'week' | 'month' | 'year';
+
+    /**
+     * Subscription mode — intervals per renewal.
+     */
+    interval_count?: number;
+
+    metadata?: { [key: string]: string };
+
+    /**
+     * Whether the request collected a one-time charge or started a subscription.
+     */
+    mode?: 'payment' | 'subscription';
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    natural?: Data.Natural;
+
+    /**
+     * Subscription mode — the recurring price subscribed to.
+     */
+    price_id?: string;
+
+    /**
+     * Subscription mode — units of the price subscribed to.
+     */
+    quantity?: number;
+
+    /**
+     * The rail this request settled on.
+     */
+    rail?: 'stripe' | 'natural';
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    stripe?: Data.Stripe;
+
+    /**
+     * Subscription mode — when the free trial ends and the first charge happens. On a
+     * trial request, `payment.succeeded` means the payment method was collected ($0
+     * moved).
+     */
+    trial_end?: string;
+
+    updated_at?: string;
+  }
+
+  export namespace Data {
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    export interface Discount {
+      coupon?: string;
+
+      /**
+       * Name of the coupon/promo code displayed to customers.
+       */
+      label?: string;
+
+      promotion_code?: string;
+    }
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    export interface Natural {
+      /**
+       * The Natural payment request (`prq_...`).
+       */
+      payment_request_id?: string;
+
+      /**
+       * The settled transaction (`txn_...`).
+       */
+      transaction_id?: string;
+    }
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    export interface Stripe {
+      /**
+       * The Customer the request is attached to (`cus_...`). Always set in subscription
+       * mode; set in payment mode only when the request was created with a
+       * `customer_id`.
+       */
+      customer_id?: string;
+
+      /**
+       * The PaymentIntent collected at checkout (`pi_...`).
+       */
+      payment_intent_id?: string;
+
+      /**
+       * Subscription mode — the Subscription (`sub_...`).
+       */
+      subscription_id?: string;
+    }
+  }
+}
+
+export interface ConnectionRevokedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  data: ConnectionRevokedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ConnectionRevokedWebhookEvent {
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  export interface Data {
+    /**
+     * The payment request id.
+     */
+    id: string;
+
+    /**
+     * What was charged at checkout, in the currency's minor units. In `subscription`
+     * mode this is the first invoice's total — all items after any discounts are
+     * applied.
+     */
+    amount: number;
+
+    /**
+     * URL the recipient opens to pay
+     * (`https://zero.linqapp.com/pay/{slug}?session=...`).
+     */
+    checkout_url: string;
+
+    created_at: string;
+
+    currency: string;
+
+    object: string;
+
+    status: 'succeeded' | 'failed' | 'canceled' | 'expired';
+
+    description?: string;
+
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    discount?: Data.Discount;
+
+    /**
+     * Subscription mode — how often the subscription renews.
+     */
+    interval?: 'day' | 'week' | 'month' | 'year';
+
+    /**
+     * Subscription mode — intervals per renewal.
+     */
+    interval_count?: number;
+
+    metadata?: { [key: string]: string };
+
+    /**
+     * Whether the request collected a one-time charge or started a subscription.
+     */
+    mode?: 'payment' | 'subscription';
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    natural?: Data.Natural;
+
+    /**
+     * Subscription mode — the recurring price subscribed to.
+     */
+    price_id?: string;
+
+    /**
+     * Subscription mode — units of the price subscribed to.
+     */
+    quantity?: number;
+
+    /**
+     * The rail this request settled on.
+     */
+    rail?: 'stripe' | 'natural';
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    stripe?: Data.Stripe;
+
+    /**
+     * Subscription mode — when the free trial ends and the first charge happens. On a
+     * trial request, `payment.succeeded` means the payment method was collected ($0
+     * moved).
+     */
+    trial_end?: string;
+
+    updated_at?: string;
+  }
+
+  export namespace Data {
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    export interface Discount {
+      coupon?: string;
+
+      /**
+       * Name of the coupon/promo code displayed to customers.
+       */
+      label?: string;
+
+      promotion_code?: string;
+    }
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    export interface Natural {
+      /**
+       * The Natural payment request (`prq_...`).
+       */
+      payment_request_id?: string;
+
+      /**
+       * The settled transaction (`txn_...`).
+       */
+      transaction_id?: string;
+    }
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    export interface Stripe {
+      /**
+       * The Customer the request is attached to (`cus_...`). Always set in subscription
+       * mode; set in payment mode only when the request was created with a
+       * `customer_id`.
+       */
+      customer_id?: string;
+
+      /**
+       * The PaymentIntent collected at checkout (`pi_...`).
+       */
+      payment_intent_id?: string;
+
+      /**
+       * Subscription mode — the Subscription (`sub_...`).
+       */
+      subscription_id?: string;
+    }
+  }
+}
+
+export interface LocationSharingStartedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: LocationSharingStartedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'location.sharing.started'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace LocationSharingStartedWebhookEvent {
+  export interface Data {
+    /**
+     * When location sharing started. Always present: falls back to when the share was
+     * first observed if the device reported no start time.
+     */
+    began_at: string | null;
+
+    /**
+     * The chat this share was first sent to. Location sharing is per-contact rather
+     * than per-chat, so the location may also be visible in other chats with the same
+     * handle; this identifies where the share originated and does not change if the
+     * contact later shares into another chat. Null when the originating chat could not
+     * be determined.
+     */
+    chat_id: string | null;
+
+    /**
+     * When location sharing will expire. Null when sharing indefinitely.
+     */
+    ends_at: string | null;
+
+    /**
+     * Phone number of the person sharing their location
+     */
+    shared_by: string;
+
+    /**
+     * Your phone number receiving the location
+     */
+    shared_with: string;
+  }
+}
+
+export interface LocationSharingStoppedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: LocationSharingStoppedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'location.sharing.stopped'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace LocationSharingStoppedWebhookEvent {
+  export interface Data {
+    /**
+     * When the sharing session started, matching began_at on its started event. Always
+     * present.
+     */
+    began_at: string | null;
+
+    /**
+     * The chat the ended share was first sent to, matching the chat_id on its started
+     * event. Sharing always stops for the contact as a whole, never for a single chat,
+     * so this is the session's origin rather than the chat it stopped in. Null when
+     * the originating chat could not be determined.
+     */
+    chat_id: string | null;
+
+    /**
+     * When the sharing session was observed to stop.
+     */
+    ended_at: string;
+
+    /**
+     * Phone number of the person who stopped sharing
+     */
+    shared_by: string;
+
+    /**
+     * Your phone number that was receiving the location
+     */
+    shared_with: string;
+  }
+}
+
+export interface PaymentAuthorizedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  data: PaymentAuthorizedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PaymentAuthorizedWebhookEvent {
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  export interface Data {
+    /**
+     * The payment request id.
+     */
+    id: string;
+
+    /**
+     * What was charged at checkout, in the currency's minor units. In `subscription`
+     * mode this is the first invoice's total — all items after any discounts are
+     * applied.
+     */
+    amount: number;
+
+    /**
+     * URL the recipient opens to pay
+     * (`https://zero.linqapp.com/pay/{slug}?session=...`).
+     */
+    checkout_url: string;
+
+    created_at: string;
+
+    currency: string;
+
+    object: string;
+
+    status: 'succeeded' | 'failed' | 'canceled' | 'expired';
+
+    description?: string;
+
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    discount?: Data.Discount;
+
+    /**
+     * Subscription mode — how often the subscription renews.
+     */
+    interval?: 'day' | 'week' | 'month' | 'year';
+
+    /**
+     * Subscription mode — intervals per renewal.
+     */
+    interval_count?: number;
+
+    metadata?: { [key: string]: string };
+
+    /**
+     * Whether the request collected a one-time charge or started a subscription.
+     */
+    mode?: 'payment' | 'subscription';
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    natural?: Data.Natural;
+
+    /**
+     * Subscription mode — the recurring price subscribed to.
+     */
+    price_id?: string;
+
+    /**
+     * Subscription mode — units of the price subscribed to.
+     */
+    quantity?: number;
+
+    /**
+     * The rail this request settled on.
+     */
+    rail?: 'stripe' | 'natural';
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    stripe?: Data.Stripe;
+
+    /**
+     * Subscription mode — when the free trial ends and the first charge happens. On a
+     * trial request, `payment.succeeded` means the payment method was collected ($0
+     * moved).
+     */
+    trial_end?: string;
+
+    updated_at?: string;
+  }
+
+  export namespace Data {
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    export interface Discount {
+      coupon?: string;
+
+      /**
+       * Name of the coupon/promo code displayed to customers.
+       */
+      label?: string;
+
+      promotion_code?: string;
+    }
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    export interface Natural {
+      /**
+       * The Natural payment request (`prq_...`).
+       */
+      payment_request_id?: string;
+
+      /**
+       * The settled transaction (`txn_...`).
+       */
+      transaction_id?: string;
+    }
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    export interface Stripe {
+      /**
+       * The Customer the request is attached to (`cus_...`). Always set in subscription
+       * mode; set in payment mode only when the request was created with a
+       * `customer_id`.
+       */
+      customer_id?: string;
+
+      /**
+       * The PaymentIntent collected at checkout (`pi_...`).
+       */
+      payment_intent_id?: string;
+
+      /**
+       * Subscription mode — the Subscription (`sub_...`).
+       */
+      subscription_id?: string;
+    }
+  }
+}
+
+export interface PaymentCanceledWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  data: PaymentCanceledWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PaymentCanceledWebhookEvent {
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  export interface Data {
+    /**
+     * The payment request id.
+     */
+    id: string;
+
+    /**
+     * What was charged at checkout, in the currency's minor units. In `subscription`
+     * mode this is the first invoice's total — all items after any discounts are
+     * applied.
+     */
+    amount: number;
+
+    /**
+     * URL the recipient opens to pay
+     * (`https://zero.linqapp.com/pay/{slug}?session=...`).
+     */
+    checkout_url: string;
+
+    created_at: string;
+
+    currency: string;
+
+    object: string;
+
+    status: 'succeeded' | 'failed' | 'canceled' | 'expired';
+
+    description?: string;
+
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    discount?: Data.Discount;
+
+    /**
+     * Subscription mode — how often the subscription renews.
+     */
+    interval?: 'day' | 'week' | 'month' | 'year';
+
+    /**
+     * Subscription mode — intervals per renewal.
+     */
+    interval_count?: number;
+
+    metadata?: { [key: string]: string };
+
+    /**
+     * Whether the request collected a one-time charge or started a subscription.
+     */
+    mode?: 'payment' | 'subscription';
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    natural?: Data.Natural;
+
+    /**
+     * Subscription mode — the recurring price subscribed to.
+     */
+    price_id?: string;
+
+    /**
+     * Subscription mode — units of the price subscribed to.
+     */
+    quantity?: number;
+
+    /**
+     * The rail this request settled on.
+     */
+    rail?: 'stripe' | 'natural';
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    stripe?: Data.Stripe;
+
+    /**
+     * Subscription mode — when the free trial ends and the first charge happens. On a
+     * trial request, `payment.succeeded` means the payment method was collected ($0
+     * moved).
+     */
+    trial_end?: string;
+
+    updated_at?: string;
+  }
+
+  export namespace Data {
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    export interface Discount {
+      coupon?: string;
+
+      /**
+       * Name of the coupon/promo code displayed to customers.
+       */
+      label?: string;
+
+      promotion_code?: string;
+    }
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    export interface Natural {
+      /**
+       * The Natural payment request (`prq_...`).
+       */
+      payment_request_id?: string;
+
+      /**
+       * The settled transaction (`txn_...`).
+       */
+      transaction_id?: string;
+    }
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    export interface Stripe {
+      /**
+       * The Customer the request is attached to (`cus_...`). Always set in subscription
+       * mode; set in payment mode only when the request was created with a
+       * `customer_id`.
+       */
+      customer_id?: string;
+
+      /**
+       * The PaymentIntent collected at checkout (`pi_...`).
+       */
+      payment_intent_id?: string;
+
+      /**
+       * Subscription mode — the Subscription (`sub_...`).
+       */
+      subscription_id?: string;
+    }
+  }
+}
+
+export interface PaymentDeclinedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  data: PaymentDeclinedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PaymentDeclinedWebhookEvent {
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  export interface Data {
+    /**
+     * The payment request id.
+     */
+    id: string;
+
+    /**
+     * What was charged at checkout, in the currency's minor units. In `subscription`
+     * mode this is the first invoice's total — all items after any discounts are
+     * applied.
+     */
+    amount: number;
+
+    /**
+     * URL the recipient opens to pay
+     * (`https://zero.linqapp.com/pay/{slug}?session=...`).
+     */
+    checkout_url: string;
+
+    created_at: string;
+
+    currency: string;
+
+    object: string;
+
+    status: 'succeeded' | 'failed' | 'canceled' | 'expired';
+
+    description?: string;
+
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    discount?: Data.Discount;
+
+    /**
+     * Subscription mode — how often the subscription renews.
+     */
+    interval?: 'day' | 'week' | 'month' | 'year';
+
+    /**
+     * Subscription mode — intervals per renewal.
+     */
+    interval_count?: number;
+
+    metadata?: { [key: string]: string };
+
+    /**
+     * Whether the request collected a one-time charge or started a subscription.
+     */
+    mode?: 'payment' | 'subscription';
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    natural?: Data.Natural;
+
+    /**
+     * Subscription mode — the recurring price subscribed to.
+     */
+    price_id?: string;
+
+    /**
+     * Subscription mode — units of the price subscribed to.
+     */
+    quantity?: number;
+
+    /**
+     * The rail this request settled on.
+     */
+    rail?: 'stripe' | 'natural';
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    stripe?: Data.Stripe;
+
+    /**
+     * Subscription mode — when the free trial ends and the first charge happens. On a
+     * trial request, `payment.succeeded` means the payment method was collected ($0
+     * moved).
+     */
+    trial_end?: string;
+
+    updated_at?: string;
+  }
+
+  export namespace Data {
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    export interface Discount {
+      coupon?: string;
+
+      /**
+       * Name of the coupon/promo code displayed to customers.
+       */
+      label?: string;
+
+      promotion_code?: string;
+    }
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    export interface Natural {
+      /**
+       * The Natural payment request (`prq_...`).
+       */
+      payment_request_id?: string;
+
+      /**
+       * The settled transaction (`txn_...`).
+       */
+      transaction_id?: string;
+    }
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    export interface Stripe {
+      /**
+       * The Customer the request is attached to (`cus_...`). Always set in subscription
+       * mode; set in payment mode only when the request was created with a
+       * `customer_id`.
+       */
+      customer_id?: string;
+
+      /**
+       * The PaymentIntent collected at checkout (`pi_...`).
+       */
+      payment_intent_id?: string;
+
+      /**
+       * Subscription mode — the Subscription (`sub_...`).
+       */
+      subscription_id?: string;
+    }
+  }
+}
+
+export interface PaymentExpiredWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  data: PaymentExpiredWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PaymentExpiredWebhookEvent {
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  export interface Data {
+    /**
+     * The payment request id.
+     */
+    id: string;
+
+    /**
+     * What was charged at checkout, in the currency's minor units. In `subscription`
+     * mode this is the first invoice's total — all items after any discounts are
+     * applied.
+     */
+    amount: number;
+
+    /**
+     * URL the recipient opens to pay
+     * (`https://zero.linqapp.com/pay/{slug}?session=...`).
+     */
+    checkout_url: string;
+
+    created_at: string;
+
+    currency: string;
+
+    object: string;
+
+    status: 'succeeded' | 'failed' | 'canceled' | 'expired';
+
+    description?: string;
+
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    discount?: Data.Discount;
+
+    /**
+     * Subscription mode — how often the subscription renews.
+     */
+    interval?: 'day' | 'week' | 'month' | 'year';
+
+    /**
+     * Subscription mode — intervals per renewal.
+     */
+    interval_count?: number;
+
+    metadata?: { [key: string]: string };
+
+    /**
+     * Whether the request collected a one-time charge or started a subscription.
+     */
+    mode?: 'payment' | 'subscription';
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    natural?: Data.Natural;
+
+    /**
+     * Subscription mode — the recurring price subscribed to.
+     */
+    price_id?: string;
+
+    /**
+     * Subscription mode — units of the price subscribed to.
+     */
+    quantity?: number;
+
+    /**
+     * The rail this request settled on.
+     */
+    rail?: 'stripe' | 'natural';
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    stripe?: Data.Stripe;
+
+    /**
+     * Subscription mode — when the free trial ends and the first charge happens. On a
+     * trial request, `payment.succeeded` means the payment method was collected ($0
+     * moved).
+     */
+    trial_end?: string;
+
+    updated_at?: string;
+  }
+
+  export namespace Data {
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    export interface Discount {
+      coupon?: string;
+
+      /**
+       * Name of the coupon/promo code displayed to customers.
+       */
+      label?: string;
+
+      promotion_code?: string;
+    }
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    export interface Natural {
+      /**
+       * The Natural payment request (`prq_...`).
+       */
+      payment_request_id?: string;
+
+      /**
+       * The settled transaction (`txn_...`).
+       */
+      transaction_id?: string;
+    }
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    export interface Stripe {
+      /**
+       * The Customer the request is attached to (`cus_...`). Always set in subscription
+       * mode; set in payment mode only when the request was created with a
+       * `customer_id`.
+       */
+      customer_id?: string;
+
+      /**
+       * The PaymentIntent collected at checkout (`pi_...`).
+       */
+      payment_intent_id?: string;
+
+      /**
+       * Subscription mode — the Subscription (`sub_...`).
+       */
+      subscription_id?: string;
+    }
+  }
+}
+
+export interface PaymentSucceededWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  data: PaymentSucceededWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PaymentSucceededWebhookEvent {
+  /**
+   * The payment request, as returned by
+   * `GET /v3/payment_requests/{paymentRequestId}`.
+   */
+  export interface Data {
+    /**
+     * The payment request id.
+     */
+    id: string;
+
+    /**
+     * What was charged at checkout, in the currency's minor units. In `subscription`
+     * mode this is the first invoice's total — all items after any discounts are
+     * applied.
+     */
+    amount: number;
+
+    /**
+     * URL the recipient opens to pay
+     * (`https://zero.linqapp.com/pay/{slug}?session=...`).
+     */
+    checkout_url: string;
+
+    created_at: string;
+
+    currency: string;
+
+    object: string;
+
+    status: 'succeeded' | 'failed' | 'canceled' | 'expired';
+
+    description?: string;
+
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    discount?: Data.Discount;
+
+    /**
+     * Subscription mode — how often the subscription renews.
+     */
+    interval?: 'day' | 'week' | 'month' | 'year';
+
+    /**
+     * Subscription mode — intervals per renewal.
+     */
+    interval_count?: number;
+
+    metadata?: { [key: string]: string };
+
+    /**
+     * Whether the request collected a one-time charge or started a subscription.
+     */
+    mode?: 'payment' | 'subscription';
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    natural?: Data.Natural;
+
+    /**
+     * Subscription mode — the recurring price subscribed to.
+     */
+    price_id?: string;
+
+    /**
+     * Subscription mode — units of the price subscribed to.
+     */
+    quantity?: number;
+
+    /**
+     * The rail this request settled on.
+     */
+    rail?: 'stripe' | 'natural';
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    stripe?: Data.Stripe;
+
+    /**
+     * Subscription mode — when the free trial ends and the first charge happens. On a
+     * trial request, `payment.succeeded` means the payment method was collected ($0
+     * moved).
+     */
+    trial_end?: string;
+
+    updated_at?: string;
+  }
+
+  export namespace Data {
+    /**
+     * Subscription mode — the discount Stripe applied, read back from the coupon.
+     * Absent when none was applied.
+     */
+    export interface Discount {
+      coupon?: string;
+
+      /**
+       * Name of the coupon/promo code displayed to customers.
+       */
+      label?: string;
+
+      promotion_code?: string;
+    }
+
+    /**
+     * Natural-rail join keys, present when `rail: natural`.
+     */
+    export interface Natural {
+      /**
+       * The Natural payment request (`prq_...`).
+       */
+      payment_request_id?: string;
+
+      /**
+       * The settled transaction (`txn_...`).
+       */
+      transaction_id?: string;
+    }
+
+    /**
+     * Ids of the Stripe objects on your connected account — join keys into your own
+     * Stripe Dashboard/API. Manage a subscription's post-checkout lifecycle with
+     * `subscription_id`.
+     */
+    export interface Stripe {
+      /**
+       * The Customer the request is attached to (`cus_...`). Always set in subscription
+       * mode; set in payment mode only when the request was created with a
+       * `customer_id`.
+       */
+      customer_id?: string;
+
+      /**
+       * The PaymentIntent collected at checkout (`pi_...`).
+       */
+      payment_intent_id?: string;
+
+      /**
+       * Subscription mode — the Subscription (`sub_...`).
+       */
+      subscription_id?: string;
+    }
+  }
+}
+
 /**
  * Complete webhook payload for message.sent events (2026-02-03 format)
  */
@@ -3803,7 +5711,16 @@ export type UnwrapWebhookEvent =
   | ChatBackgroundUpdatedWebhookEvent
   | ChatBackgroundUpdateFailedWebhookEvent
   | ContactCardReceivedWebhookEvent
-  | PhoneNumberStatusUpdatedWebhookEvent;
+  | PhoneNumberStatusUpdatedWebhookEvent
+  | ConnectionCreatedWebhookEvent
+  | ConnectionRevokedWebhookEvent
+  | LocationSharingStartedWebhookEvent
+  | LocationSharingStoppedWebhookEvent
+  | PaymentAuthorizedWebhookEvent
+  | PaymentCanceledWebhookEvent
+  | PaymentDeclinedWebhookEvent
+  | PaymentExpiredWebhookEvent
+  | PaymentSucceededWebhookEvent;
 
 export declare namespace Webhooks {
   export {
@@ -3843,6 +5760,15 @@ export declare namespace Webhooks {
     type ChatBackgroundUpdateFailedWebhookEvent as ChatBackgroundUpdateFailedWebhookEvent,
     type ContactCardReceivedWebhookEvent as ContactCardReceivedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
+    type ConnectionCreatedWebhookEvent as ConnectionCreatedWebhookEvent,
+    type ConnectionRevokedWebhookEvent as ConnectionRevokedWebhookEvent,
+    type LocationSharingStartedWebhookEvent as LocationSharingStartedWebhookEvent,
+    type LocationSharingStoppedWebhookEvent as LocationSharingStoppedWebhookEvent,
+    type PaymentAuthorizedWebhookEvent as PaymentAuthorizedWebhookEvent,
+    type PaymentCanceledWebhookEvent as PaymentCanceledWebhookEvent,
+    type PaymentDeclinedWebhookEvent as PaymentDeclinedWebhookEvent,
+    type PaymentExpiredWebhookEvent as PaymentExpiredWebhookEvent,
+    type PaymentSucceededWebhookEvent as PaymentSucceededWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
 }
