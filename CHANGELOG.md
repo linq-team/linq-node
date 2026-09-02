@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.56.0](https://github.com/linq-team/linq-node/compare/v0.55.2...v0.56.0) (2026-09-02)
+
+
+### Features
+
+* add webhook events for connections, location sharing, and payments ([79c18b5](https://github.com/linq-team/linq-node/commit/79c18b5f74f88ef7b21b405772e2d410b50b0ee6))
+
 ## [0.55.2](https://github.com/linq-team/linq-node/compare/v0.55.1...v0.55.2) (2026-09-02)
 
 
