@@ -388,6 +388,7 @@ export const sdkMethods: SdkMethod[] = [
     httpMethod: 'delete',
     httpPath: '/v3/webhook-subscriptions/{subscriptionId}',
   },
+  { clientCallName: 'client.webhooks.unwrap', fullyQualifiedName: 'webhooks.unwrap' },
   {
     clientCallName: 'client.capability.checkIMessage',
     fullyQualifiedName: 'capability.checkIMessage',
@@ -400,7 +401,6 @@ export const sdkMethods: SdkMethod[] = [
     httpMethod: 'post',
     httpPath: '/v3/capability/check_rcs',
   },
-  { clientCallName: 'client.webhooks.unwrap', fullyQualifiedName: 'webhooks.unwrap' },
   {
     clientCallName: 'client.contactCard.create',
     fullyQualifiedName: 'contactCard.create',

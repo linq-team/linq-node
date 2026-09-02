@@ -301,18 +301,6 @@ Methods:
 - <code title="get /v3/webhook-subscriptions">client.webhookSubscriptions.<a href="./src/resources/webhook-subscriptions.ts">list</a>() -> WebhookSubscriptionListResponse</code>
 - <code title="delete /v3/webhook-subscriptions/{subscriptionId}">client.webhookSubscriptions.<a href="./src/resources/webhook-subscriptions.ts">delete</a>(subscriptionID) -> void</code>
 
-# Capability
-
-Types:
-
-- <code><a href="./src/resources/capability.ts">HandleCheck</a></code>
-- <code><a href="./src/resources/capability.ts">HandleCheckResponse</a></code>
-
-Methods:
-
-- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkIMessage</a>({ ...params }) -> HandleCheckResponse</code>
-- <code title="post /v3/capability/check_rcs">client.capability.<a href="./src/resources/capability.ts">checkRCS</a>({ ...params }) -> HandleCheckResponse</code>
-
 # Webhooks
 
 Types:
@@ -353,11 +341,32 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">ChatBackgroundUpdateFailedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ContactCardReceivedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ConnectionCreatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ConnectionRevokedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">LocationSharingStartedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">LocationSharingStoppedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PaymentAuthorizedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PaymentCanceledWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PaymentDeclinedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PaymentExpiredWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PaymentSucceededWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">UnwrapWebhookEvent</a></code>
 
 Methods:
 
 - <code>client.webhooks.<a href="./src/resources/webhooks.ts">unwrap</a>(body) -> void</code>
+
+# Capability
+
+Types:
+
+- <code><a href="./src/resources/capability.ts">HandleCheck</a></code>
+- <code><a href="./src/resources/capability.ts">HandleCheckResponse</a></code>
+
+Methods:
+
+- <code title="post /v3/capability/check_imessage">client.capability.<a href="./src/resources/capability.ts">checkIMessage</a>({ ...params }) -> HandleCheckResponse</code>
+- <code title="post /v3/capability/check_rcs">client.capability.<a href="./src/resources/capability.ts">checkRCS</a>({ ...params }) -> HandleCheckResponse</code>
 
 # ContactCard
 
