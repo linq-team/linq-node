@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.55.2](https://github.com/linq-team/linq-node/compare/v0.55.1...v0.55.2) (2026-09-02)
+
+
+### Bug Fixes
+
+* clarify ephemeral message retention behavior and metadata handling ([e52e5dd](https://github.com/linq-team/linq-node/commit/e52e5dd8aa4ad7e8b47bd36171b6501b8b89633f))
+
 ## [0.55.1](https://github.com/linq-team/linq-node/compare/v0.55.0...v0.55.1) (2026-09-01)
 
 
