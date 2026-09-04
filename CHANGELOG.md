@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.57.0](https://github.com/linq-team/linq-node/compare/v0.56.0...v0.57.0) (2026-09-04)
+
+
+### Features
+
+* expand app_clip part to support any registered app clip ([f17fa8a](https://github.com/linq-team/linq-node/commit/f17fa8a9d2c9203b1bb039b9876b0abd32dee740))
+
 ## [0.56.0](https://github.com/linq-team/linq-node/compare/v0.55.2...v0.56.0) (2026-09-02)
 
 
