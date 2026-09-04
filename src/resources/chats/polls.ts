@@ -26,6 +26,14 @@ import { path } from '../../internal/utils/path';
  * - A `link` part cannot be combined with other parts in the same message.
  * - Maximum URL length: 2,048 characters.
  *
+ * ## App Clips
+ *
+ * An `app_clip` part sends a **registered App Clip** — not only Linq's Apple Pay
+ * checkout, but any partner's own App Clip. Like a `link` part it must be the
+ * **only** part in the message, and it is **iMessage only** — it never downgrades
+ * to SMS or RCS. The payment-checkout use of this part is covered in the
+ * **Payments** section.
+ *
  * ## Ephemeral Messages (Privacy Tier)
  *
  * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is given a **retention window configured for your account**. After that window, the message's text, formatting, and attachment references are no longer retrievable through the API — see the Attachments row below for how the attachment media itself is handled. Metadata about the message is retained: message identifiers, timestamps, phone numbers, and delivery state. Metadata retention is not bounded by this window. Bounded operational copies, such as backups and delivery queues, expire on their own separate schedules. There is no per-message flag; ephemerality is applied automatically based on your configuration.
