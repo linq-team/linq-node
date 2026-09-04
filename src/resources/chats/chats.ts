@@ -768,12 +768,8 @@ export namespace MessageContent {
   }
 
   /**
-   * Sends a Linq checkout link as an Apple Pay App Clip card — the payment preview
-   * with the **Open** button, rather than a plain link preview.
-   *
-   * Everything on the card — merchant name, amount, description, image — is composed
-   * by Linq from the checkout session itself, the same content the checkout page
-   * already shows. You supply only the link.
+   * Sends a **registered App Clip** — not only Linq's Apple Pay checkout, but any
+   * partner's own App Clip. `caption` is optional.
    *
    * An `app_clip` part must be the **only** part in the message.
    *
@@ -783,13 +779,14 @@ export namespace MessageContent {
    */
   export interface AppClipPart {
     /**
-     * Indicates this is an App Clip payment card
+     * Indicates this is an App Clip card
      */
     type: 'app_clip';
 
     /**
-     * A Linq checkout link, e.g. one returned as `checkout_url` from
-     * `POST /v3/payment_requests`. Any other URL is rejected.
+     * An https link whose page is a registered App Clip — Linq's checkout link (e.g.
+     * the `checkout_url` from `POST /v3/payment_requests`) or a partner's own App Clip
+     * URL. A URL that doesn't resolve to a sendable App Clip page is rejected.
      */
     value: string;
 
