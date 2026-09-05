@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.58.0](https://github.com/linq-team/linq-node/compare/v0.57.0...v0.58.0) (2026-09-05)
+
+
+### Features
+
+* add sticker reactions and placement adjustment ([5f243d4](https://github.com/linq-team/linq-node/commit/5f243d4c3bdf1157085780030342f97e149ef60d))
+
 ## [0.57.0](https://github.com/linq-team/linq-node/compare/v0.56.0...v0.57.0) (2026-09-04)
 
 
