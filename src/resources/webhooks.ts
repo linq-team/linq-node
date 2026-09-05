@@ -123,6 +123,13 @@ export interface MessageEventV2 {
    * When the message was sent. Null if not yet sent.
    */
   sent_at?: string | null;
+
+  /**
+   * True when this message was sent on a zero-day-retention line. `parts` is always
+   * empty in that case — Linq never persists this message's content, so there is
+   * nothing to include here, not even a count or type of what was sent.
+   */
+  zero_retention?: boolean;
 }
 
 export namespace MessageEventV2 {
@@ -435,6 +442,13 @@ export interface MessagePayload {
    * When the message record was last updated
    */
   updated_at?: string;
+
+  /**
+   * True when this message was sent on a zero-day-retention line. `parts` is always
+   * empty in that case — Linq never persists this message's content, so there is
+   * nothing to include here, not even a count or type of what was sent.
+   */
+  zero_retention?: boolean;
 }
 
 export namespace MessagePayload {
