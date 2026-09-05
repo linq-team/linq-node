@@ -185,6 +185,8 @@ import {
   MessageUpdateAppCardParams,
   MessageUpdateAppCardResponse,
   MessageUpdateParams,
+  MessageUpdateStickerPlacementParams,
+  MessageUpdateStickerPlacementResponse,
   Messages,
   MessagesListMessagesPagination,
   ReplyTo,
@@ -1896,12 +1898,14 @@ export declare namespace LinqAPIV3 {
     type MessageCreateResponse as MessageCreateResponse,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
+    type MessageUpdateStickerPlacementResponse as MessageUpdateStickerPlacementResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
     type MessageUpdateParams as MessageUpdateParams,
     type MessageAddReactionParams as MessageAddReactionParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
+    type MessageUpdateStickerPlacementParams as MessageUpdateStickerPlacementParams,
   };
 
   export {

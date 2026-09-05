@@ -167,6 +167,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/messages/{messageId}/update',
   },
   {
+    clientCallName: 'client.messages.updateStickerPlacement',
+    fullyQualifiedName: 'messages.updateStickerPlacement',
+    httpMethod: 'patch',
+    httpPath: '/v3/messages/{messageId}/reactions/{reactionId}',
+  },
+  {
     clientCallName: 'client.messages.poll.retrieve',
     fullyQualifiedName: 'messages.poll.retrieve',
     httpMethod: 'get',
