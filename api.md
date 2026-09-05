@@ -107,6 +107,7 @@ Types:
 - <code><a href="./src/resources/messages/messages.ts">MessageCreateResponse</a></code>
 - <code><a href="./src/resources/messages/messages.ts">MessageAddReactionResponse</a></code>
 - <code><a href="./src/resources/messages/messages.ts">MessageUpdateAppCardResponse</a></code>
+- <code><a href="./src/resources/messages/messages.ts">MessageUpdateStickerPlacementResponse</a></code>
 
 Methods:
 
@@ -117,6 +118,7 @@ Methods:
 - <code title="post /v3/messages/{messageId}/reactions">client.messages.<a href="./src/resources/messages/messages.ts">addReaction</a>(messageID, { ...params }) -> MessageAddReactionResponse</code>
 - <code title="get /v3/messages/{messageId}/thread">client.messages.<a href="./src/resources/messages/messages.ts">listMessagesThread</a>(messageID, { ...params }) -> MessagesListMessagesPagination</code>
 - <code title="post /v3/messages/{messageId}/update">client.messages.<a href="./src/resources/messages/messages.ts">updateAppCard</a>(messageID, { ...params }) -> MessageUpdateAppCardResponse</code>
+- <code title="patch /v3/messages/{messageId}/reactions/{reactionId}">client.messages.<a href="./src/resources/messages/messages.ts">updateStickerPlacement</a>(reactionID, { ...params }) -> MessageUpdateStickerPlacementResponse</code>
 
 ## Poll
 

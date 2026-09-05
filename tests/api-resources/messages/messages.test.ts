@@ -131,8 +131,16 @@ describe('resource messages', () => {
     const response = await client.messages.addReaction('69a37c7d-af4f-4b5e-af42-e28e98ce873a', {
       operation: 'add',
       type: 'love',
+      attachment_id: '550e8400-e29b-41d4-a716-446655440000',
       custom_emoji: 'custom_emoji',
       part_index: 1,
+      placement: {
+        rotation: 15,
+        scale: 1.25,
+        x: -0.25,
+        y: 0.4,
+      },
+      url: 'https://cdn.linqapp.com/attachments/example/sticker.png',
     });
   });
 
@@ -198,6 +206,34 @@ describe('resource messages', () => {
       fallback_text: 'Score update',
       interactive: true,
       url: 'https://app.example.com/card?game=7f3a&move=2',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('updateStickerPlacement: only required params', async () => {
+    const responsePromise = client.messages.updateStickerPlacement('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      messageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      placement: {},
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('updateStickerPlacement: required and optional params', async () => {
+    const response = await client.messages.updateStickerPlacement('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      messageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      placement: {
+        rotation: 15,
+        scale: 0.75,
+        x: 0.6,
+        y: 0.5,
+      },
     });
   });
 });

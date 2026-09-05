@@ -633,6 +633,14 @@ export interface ReactionEventBase {
   reacted_at?: string;
 
   /**
+   * Identifier for this reaction. Pass it to
+   * `PATCH /v3/messages/{messageId}/reactions/{reactionId}` to move a sticker.
+   * Stickers stack, so this is what distinguishes one sticker from another on the
+   * same message.
+   */
+  reaction_id?: string;
+
+  /**
    * Messaging service type
    */
   service?: Shared.ServiceType;

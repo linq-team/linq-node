@@ -239,6 +239,12 @@ export class Messages extends APIResource {
    * - emphasize ‼️
    * - question ❓
    * - custom - any emoji (use `custom_emoji` field to specify)
+   * - sticker - an image peeled onto the message (use `url` or `attachment_id`)
+   *
+   * **Stickers** are iMessage-only and cannot be removed — iMessage has no unpeel
+   * operation, so `operation: "remove"` with `type: "sticker"` is rejected.
+   * Position, size and rotation are optional via `placement`, and can be changed
+   * afterwards with `PATCH /v3/messages/{messageId}/reactions/{reactionId}`.
    *
    * @example
    * ```ts
@@ -327,6 +333,47 @@ export class Messages extends APIResource {
     options?: RequestOptions,
   ): APIPromise<MessageUpdateAppCardResponse> {
     return this._client.post(path`/v3/messages/${messageID}/update`, { body, ...options });
+  }
+
+  /**
+   * Move, resize or rotate a sticker that has already been peeled onto a message.
+   * The change is sent to every device in the conversation, exactly as dragging the
+   * sticker by hand would.
+   *
+   * Only stickers can be repositioned — a tapback has no placement, so a non-sticker
+   * `reactionId` is rejected. Any field omitted from `placement` keeps its current
+   * value.
+   *
+   * `reactionId` is the `id` from the reaction on the message, or from the
+   * `reaction.added` webhook. Stickers stack, so this id is what distinguishes one
+   * sticker from another on the same message.
+   *
+   * Stickers peeled before this endpoint existed cannot be moved: addressing one
+   * requires an identifier that was not recorded at the time, and it returns 404.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.messages.updateStickerPlacement(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     {
+   *       messageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *       placement: {
+   *         x: 0.6,
+   *         y: 0.5,
+   *         scale: 0.75,
+   *       },
+   *     },
+   *   );
+   * ```
+   */
+  updateStickerPlacement(
+    reactionID: string,
+    params: MessageUpdateStickerPlacementParams,
+    options?: RequestOptions,
+  ): APIPromise<MessageUpdateStickerPlacementResponse> {
+    const { messageId, ...body } = params;
+    return this._client.patch(path`/v3/messages/${messageId}/reactions/${reactionID}`, { body, ...options });
   }
 }
 
@@ -748,6 +795,14 @@ export interface MessageUpdateAppCardResponse {
   message: MessagesAPI.SentMessage;
 }
 
+export interface MessageUpdateStickerPlacementResponse {
+  status?: string;
+
+  success?: boolean;
+
+  trace_id?: string;
+}
+
 export interface MessageCreateParams {
   /**
    * Body param: Message content container. Groups all message-related fields
@@ -859,6 +914,15 @@ export interface MessageAddReactionParams {
   type: Shared.ReactionType;
 
   /**
+   * Reference to a sticker image pre-uploaded via `POST /v3/attachments`. Only valid
+   * when type is "sticker".
+   *
+   * Either `url` or `attachment_id` must be provided when type is "sticker", but not
+   * both.
+   */
+  attachment_id?: string;
+
+  /**
    * Custom emoji string. Required when type is "custom".
    */
   custom_emoji?: string;
@@ -868,6 +932,68 @@ export interface MessageAddReactionParams {
    * entire message (part 0).
    */
   part_index?: number;
+
+  /**
+   * Optional position, size and rotation of a sticker on the target bubble. Only
+   * valid when type is "sticker".
+   *
+   * Every field is independent and optional — omit the object entirely, or any field
+   * within it, to keep the default (centred, default size, unrotated).
+   */
+  placement?: MessageAddReactionParams.Placement;
+
+  /**
+   * Linq attachment URL of the sticker image — the `download_url` returned by
+   * `POST /v3/attachments`. Only valid when type is "sticker".
+   *
+   * Unlike a media part, this does **not** accept an arbitrary host: reactions have
+   * no download step, so the image must already be stored. To send a sticker from
+   * elsewhere, upload it with `POST /v3/attachments` first and pass `attachment_id`.
+   *
+   * Either `url` or `attachment_id` must be provided when type is "sticker", but not
+   * both.
+   */
+  url?: string;
+}
+
+export namespace MessageAddReactionParams {
+  /**
+   * Optional position, size and rotation of a sticker on the target bubble. Only
+   * valid when type is "sticker".
+   *
+   * Every field is independent and optional — omit the object entirely, or any field
+   * within it, to keep the default (centred, default size, unrotated).
+   */
+  export interface Placement {
+    /**
+     * Clockwise rotation in degrees.
+     */
+    rotation?: number;
+
+    /**
+     * Size relative to the default, where 1 matches the size a sticker gets natively.
+     *
+     * Values outside 0.5–1.5 are clamped rather than rejected. The upper bound keeps a
+     * sticker within the size range iMessage itself displays: its own limit is larger,
+     * but that allowance assumes the transparent padding Apple's stickers carry, which
+     * a full-bleed image does not have.
+     *
+     * Scale is linear, so 1.5 is a little over twice the area.
+     */
+    scale?: number;
+
+    /**
+     * Horizontal position on the target bubble, from -1 (far left) to 1 (far right). 0
+     * is centred.
+     */
+    x?: number;
+
+    /**
+     * Vertical position on the target bubble, from -1 (top) to 1 (bottom). 0 is
+     * centred.
+     */
+    y?: number;
+  }
 }
 
 export interface MessageListMessagesThreadParams extends ListMessagesPaginationParams {
@@ -1027,6 +1153,62 @@ export namespace MessageUpdateAppCardParams {
   }
 }
 
+export interface MessageUpdateStickerPlacementParams {
+  /**
+   * Path param: The message the sticker sits on
+   */
+  messageId: string;
+
+  /**
+   * Body param: Optional position, size and rotation of a sticker on the target
+   * bubble. Only valid when type is "sticker".
+   *
+   * Every field is independent and optional — omit the object entirely, or any field
+   * within it, to keep the default (centred, default size, unrotated).
+   */
+  placement: MessageUpdateStickerPlacementParams.Placement;
+}
+
+export namespace MessageUpdateStickerPlacementParams {
+  /**
+   * Optional position, size and rotation of a sticker on the target bubble. Only
+   * valid when type is "sticker".
+   *
+   * Every field is independent and optional — omit the object entirely, or any field
+   * within it, to keep the default (centred, default size, unrotated).
+   */
+  export interface Placement {
+    /**
+     * Clockwise rotation in degrees.
+     */
+    rotation?: number;
+
+    /**
+     * Size relative to the default, where 1 matches the size a sticker gets natively.
+     *
+     * Values outside 0.5–1.5 are clamped rather than rejected. The upper bound keeps a
+     * sticker within the size range iMessage itself displays: its own limit is larger,
+     * but that allowance assumes the transparent padding Apple's stickers carry, which
+     * a full-bleed image does not have.
+     *
+     * Scale is linear, so 1.5 is a little over twice the area.
+     */
+    scale?: number;
+
+    /**
+     * Horizontal position on the target bubble, from -1 (far left) to 1 (far right). 0
+     * is centred.
+     */
+    x?: number;
+
+    /**
+     * Vertical position on the target bubble, from -1 (top) to 1 (bottom). 0 is
+     * centred.
+     */
+    y?: number;
+  }
+}
+
 Messages.Poll = Poll;
 
 export declare namespace Messages {
@@ -1037,12 +1219,14 @@ export declare namespace Messages {
     type MessageCreateResponse as MessageCreateResponse,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
+    type MessageUpdateStickerPlacementResponse as MessageUpdateStickerPlacementResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
     type MessageUpdateParams as MessageUpdateParams,
     type MessageAddReactionParams as MessageAddReactionParams,
     type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
+    type MessageUpdateStickerPlacementParams as MessageUpdateStickerPlacementParams,
   };
 
   export {

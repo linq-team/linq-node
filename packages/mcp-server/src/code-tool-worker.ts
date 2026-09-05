@@ -134,6 +134,7 @@ const fuse = new Fuse(
     'client.messages.retrieve',
     'client.messages.update',
     'client.messages.updateAppCard',
+    'client.messages.updateStickerPlacement',
     'client.messages.poll.addOptions',
     'client.messages.poll.retrieve',
     'client.messages.poll.vote',

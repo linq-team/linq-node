@@ -8,11 +8,13 @@ export {
   type MessageCreateResponse,
   type MessageAddReactionResponse,
   type MessageUpdateAppCardResponse,
+  type MessageUpdateStickerPlacementResponse,
   type MessageCreateParams,
   type MessageUpdateParams,
   type MessageAddReactionParams,
   type MessageListMessagesThreadParams,
   type MessageUpdateAppCardParams,
+  type MessageUpdateStickerPlacementParams,
   type MessagesListMessagesPagination,
 } from './messages';
 export { Poll, type PollAddOptionsParams, type PollVoteParams } from './poll';
