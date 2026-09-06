@@ -1601,6 +1601,14 @@ export namespace PollReceivedWebhookEvent {
      * The line that created the poll (is_me=false for an inbound poll).
      */
     sender_handle?: Shared.ChatHandle | null;
+
+    /**
+     * True when your line has zero-day-retention enabled. Unlike other poll webhooks,
+     * option `text` here is still the real, unstripped text as received — Linq never
+     * persists it in the database, but this webhook fires from the live inbound event,
+     * not a database read, so this is the one place it's shown.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
@@ -1741,6 +1749,14 @@ export namespace PollSentWebhookEvent {
     sender_handle?: Shared.ChatHandle | null;
 
     sent_at?: string | null;
+
+    /**
+     * True when this poll was sent on a zero-day-retention line. Every option's `text`
+     * is empty in that case — Linq never persists poll option text, so there is
+     * nothing to include here. The real text was only ever shown once, synchronously,
+     * in the API response when the poll was created or added to.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
@@ -1881,6 +1897,14 @@ export namespace PollDeliveredWebhookEvent {
     sender_handle?: Shared.ChatHandle | null;
 
     sent_at?: string | null;
+
+    /**
+     * True when this poll was sent on a zero-day-retention line. Every option's `text`
+     * is empty in that case — Linq never persists poll option text, so there is
+     * nothing to include here. The real text was only ever shown once, synchronously,
+     * in the API response when the poll was created or added to.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
@@ -2021,6 +2045,14 @@ export namespace PollReadWebhookEvent {
     sender_handle?: Shared.ChatHandle | null;
 
     sent_at?: string | null;
+
+    /**
+     * True when this poll was sent on a zero-day-retention line. Every option's `text`
+     * is empty in that case — Linq never persists poll option text, so there is
+     * nothing to include here. The real text was only ever shown once, synchronously,
+     * in the API response when the poll was created or added to.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
@@ -2153,6 +2185,15 @@ export namespace PollUpdatedWebhookEvent {
     sender_handle: Shared.ChatHandle;
 
     service: string;
+
+    /**
+     * True when zero-day-retention applies to this update. Behavior differs by
+     * `direction`: on an inbound update, `added_options[].text` is the real text a
+     * participant just added; on an outbound update, it is empty — you already saw the
+     * real text once, synchronously, in the API response when you made the add, and
+     * this webhook is built from a database read, which never stored it.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
@@ -2274,6 +2315,13 @@ export namespace PollFailedWebhookEvent {
      * Null on failure (the send never landed).
      */
     sender_handle?: Shared.ChatHandle | null;
+
+    /**
+     * True when this poll was sent on a zero-day-retention line. `poll` is built from
+     * the same database read as poll.sent/delivered/read, so every option's `text` is
+     * empty.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
@@ -2413,6 +2461,14 @@ export namespace PollVoteAddedWebhookEvent {
     sender_handle: Shared.ChatHandle;
 
     service: string;
+
+    /**
+     * True when this poll is on a zero-day-retention line. Votes are unaffected by
+     * zero-day-retention — a vote choice is always persisted and delivered regardless
+     * — this flag is informational only, telling you why this poll's other webhooks
+     * (poll.sent, poll.updated, etc.) may carry empty option text.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
@@ -2502,6 +2558,14 @@ export namespace PollVoteRemovedWebhookEvent {
     sender_handle: Shared.ChatHandle;
 
     service: string;
+
+    /**
+     * True when this poll is on a zero-day-retention line. Votes are unaffected by
+     * zero-day-retention — a vote choice is always persisted and delivered regardless
+     * — this flag is informational only, telling you why this poll's other webhooks
+     * (poll.sent, poll.updated, etc.) may carry empty option text.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
