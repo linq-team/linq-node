@@ -1307,6 +1307,15 @@ export namespace MessageEditedWebhookEvent {
      * The handle that sent (and edited) this message
      */
     sender_handle: Shared.ChatHandle;
+
+    /**
+     * True when the edited message is on a zero-day-retention line. Behavior differs
+     * by `direction`: on an outbound edit, `part.text` is empty — you already saw the
+     * real edited text once, synchronously, in the edit API response, and Linq never
+     * persists it. On an inbound edit, `part.text` is still the real text as received;
+     * zero-day-retention only means Linq never persists it.
+     */
+    zero_retention?: boolean;
   }
 
   export namespace Data {
