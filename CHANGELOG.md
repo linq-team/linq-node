@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.61.0](https://github.com/linq-team/linq-node/compare/v0.60.0...v0.61.0) (2026-09-06)
+
+
+### Features
+
+* add zero_retention field to message edited webhook ([b66455f](https://github.com/linq-team/linq-node/commit/b66455f13d1d2619d9bf48bacacbcf4b98e1709b))
+
 ## [0.60.0](https://github.com/linq-team/linq-node/compare/v0.59.0...v0.60.0) (2026-09-06)
 
 
