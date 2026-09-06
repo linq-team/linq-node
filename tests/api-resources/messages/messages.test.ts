@@ -198,6 +198,12 @@ describe('resource messages', () => {
         trailing_caption: '2 min',
         trailing_subcaption: 'expires',
       },
+      app: {
+        bundle_id: 'com.example.app.MessageExtension',
+        name: 'Example App',
+        team_id: 'A1B2C3D4E5',
+        app_store_id: 1234567890,
+      },
       experience: {
         action: 'attach_card',
         name: 'agentcard',

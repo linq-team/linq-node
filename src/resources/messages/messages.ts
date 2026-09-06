@@ -1023,6 +1023,11 @@ export interface MessageUpdateAppCardParams {
   layout: MessageUpdateAppCardParams.Layout;
 
   /**
+   * Identifies the iMessage app (Messages app extension) that backs the card.
+   */
+  app?: MessageUpdateAppCardParams.App;
+
+  /**
    * Invokes an action on an experience — a third party that renders inside Linq's
    * iMessage app. Linq resolves the recipient's connection, mints any session the
    * action needs, composes the card and sends it; none of that is visible to you.
@@ -1117,6 +1122,32 @@ export namespace MessageUpdateAppCardParams {
      * Label shown below `trailing_caption`, on the right.
      */
     trailing_subcaption?: string;
+  }
+
+  /**
+   * Identifies the iMessage app (Messages app extension) that backs the card.
+   */
+  export interface App {
+    /**
+     * Bundle identifier of the Messages app extension. Must not contain `:`.
+     */
+    bundle_id: string;
+
+    /**
+     * Display name of the app, shown by Messages' fallback UI.
+     */
+    name: string;
+
+    /**
+     * The app's 10-character uppercase alphanumeric team identifier.
+     */
+    team_id: string;
+
+    /**
+     * The owning app's App Store id (optional). When set, recipients without the
+     * iMessage app installed see a "Get the app" affordance.
+     */
+    app_store_id?: number;
   }
 
   /**
