@@ -100,6 +100,13 @@ export class Poll extends APIResource {
    * immutable** — you can append options but never edit or remove them (Apple
    * constraint). Returns the full poll.
    *
+   * **On a zero-day-retention line, `options` must include every existing option (in
+   * the order they were originally created) followed by the new one(s)**, not just
+   * the new option(s). Zero-day-retention polls never store option text, so this
+   * request is the only place that text still exists — it's required to correctly
+   * render the poll's existing options on the recipient's device when the update is
+   * sent. Omitting an existing option returns `400`.
+   *
    * @example
    * ```ts
    * const pollEnvelope = await client.messages.poll.addOptions(
