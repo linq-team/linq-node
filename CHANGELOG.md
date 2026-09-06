@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.62.0](https://github.com/linq-team/linq-node/compare/v0.61.0...v0.62.0) (2026-09-06)
+
+
+### Features
+
+* add app identity override for card updates on zero-day-retention lines ([e7b5ac0](https://github.com/linq-team/linq-node/commit/e7b5ac031b2ce6f1f961322169eed10eb922bf4f))
+
 ## [0.61.0](https://github.com/linq-team/linq-node/compare/v0.60.0...v0.61.0) (2026-09-06)
 
 
