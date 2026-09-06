@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.60.0](https://github.com/linq-team/linq-node/compare/v0.59.0...v0.60.0) (2026-09-06)
+
+
+### Features
+
+* add zero_retention field to poll webhooks and update add options docs ([01a8343](https://github.com/linq-team/linq-node/commit/01a8343564ce0a1335fffc5ebe33f6fd5488d18b))
+
 ## [0.59.0](https://github.com/linq-team/linq-node/compare/v0.58.0...v0.59.0) (2026-09-05)
 
 
