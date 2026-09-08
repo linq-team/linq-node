@@ -7,10 +7,10 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource location', () => {
+describe('resource paymentProviders', () => {
   // Mock server tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.chats.location.retrieve('975d0776-bd17-4273-8337-f346b4c661b0');
+    const responsePromise = client.paymentProviders.retrieve('provider');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,8 +21,10 @@ describe('resource location', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('request', async () => {
-    const responsePromise = client.chats.location.request('975d0776-bd17-4273-8337-f346b4c661b0');
+  test.skip('connect: only required params', async () => {
+    const responsePromise = client.paymentProviders.connect('provider', {
+      return_url: 'https://partner.example/settings/payments',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -30,5 +32,12 @@ describe('resource location', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('connect: required and optional params', async () => {
+    const response = await client.paymentProviders.connect('provider', {
+      return_url: 'https://partner.example/settings/payments',
+    });
   });
 });
