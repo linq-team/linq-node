@@ -5,7 +5,13 @@ import * as Shared from '../shared';
 import * as BackgroundAPI from './background';
 import { Background, BackgroundSetParams } from './background';
 import * as LocationAPI from './location';
-import { GetChatLocationResponse, Location, LocationRequestResponse } from './location';
+import {
+  GetChatLocationResponse,
+  Location,
+  LocationRequestResponse,
+  LocationStopParams,
+  StopChatLocationSharingResponse,
+} from './location';
 import * as MessagesAPI from './messages';
 import { MessageListParams, MessageSendParams, MessageSendResponse, Messages, SentMessage } from './messages';
 import * as ParticipantsAPI from './participants';
@@ -1254,6 +1260,8 @@ export declare namespace Chats {
     Location as Location,
     type GetChatLocationResponse as GetChatLocationResponse,
     type LocationRequestResponse as LocationRequestResponse,
+    type StopChatLocationSharingResponse as StopChatLocationSharingResponse,
+    type LocationStopParams as LocationStopParams,
   };
 
   export {

@@ -625,6 +625,41 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'stop',
+    endpoint: '/v3/chats/{chatId}/location',
+    httpMethod: 'delete',
+    summary: 'Stop location sharing',
+    description:
+      "End the location share a contact started with you, as though they had stopped it\nthemselves. Their device stops listing you as someone they share with, so they can\nstart a fresh share cleanly.\n\nUse this to recover when a share has gone stale — coordinates that stop advancing, or\na share you believe has ended but is still reported as active. Without it the only\nremedy is asking the contact to stop and re-share, which is confusing for them because\ntheir phone still shows everything as working.\n\nThis is not reversible from the API. Sharing can only resume when the contact starts a\nnew share, so prompt them to re-share afterwards. Request a new one with\n`POST /v3/chats/{chatId}/location/request`.\n\nApple keeps one location-sharing relationship per person rather than per chat, so this\nends that contact's share everywhere, not only in this chat.\n\n`handle` names whose share to end, and is always required — a group chat can have several\npeople sharing, and this is not an operation to infer a target for.\n\n**This returns `202`, not `200`.** The removal happens on the device that holds the\nsharing relationship, so a success here means the request was accepted, not that\nsharing has ended. Wait for the `location.sharing.stopped` webhook to confirm it —\nthat webhook is what tells you the contact's device has actually let go.\n\nReturns `404` if the contact is not currently sharing.\n",
+    stainlessPath: '(resource) chats.location > (method) stop',
+    qualified: 'client.chats.location.stop',
+    params: ['chatId: string;', 'handle: string;'],
+    response: '{ message: string; success: boolean; }',
+    markdown:
+      "## stop\n\n`client.chats.location.stop(chatId: string, handle: string): { message: string; success: boolean; }`\n\n**delete** `/v3/chats/{chatId}/location`\n\nEnd the location share a contact started with you, as though they had stopped it\nthemselves. Their device stops listing you as someone they share with, so they can\nstart a fresh share cleanly.\n\nUse this to recover when a share has gone stale — coordinates that stop advancing, or\na share you believe has ended but is still reported as active. Without it the only\nremedy is asking the contact to stop and re-share, which is confusing for them because\ntheir phone still shows everything as working.\n\nThis is not reversible from the API. Sharing can only resume when the contact starts a\nnew share, so prompt them to re-share afterwards. Request a new one with\n`POST /v3/chats/{chatId}/location/request`.\n\nApple keeps one location-sharing relationship per person rather than per chat, so this\nends that contact's share everywhere, not only in this chat.\n\n`handle` names whose share to end, and is always required — a group chat can have several\npeople sharing, and this is not an operation to infer a target for.\n\n**This returns `202`, not `200`.** The removal happens on the device that holds the\nsharing relationship, so a success here means the request was accepted, not that\nsharing has ended. Wait for the `location.sharing.stopped` webhook to confirm it —\nthat webhook is what tells you the contact's device has actually let go.\n\nReturns `404` if the contact is not currently sharing.\n\n\n### Parameters\n\n- `chatId: string`\n\n- `handle: string`\n  Phone number (E.164 format) or email address of the contact whose share to end\n\n### Returns\n\n- `{ message: string; success: boolean; }`\n\n  - `message: string`\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3();\n\nconst stopChatLocationSharingResponse = await client.chats.location.stop('975d0776-bd17-4273-8337-f346b4c661b0', { handle: '+15551234567' });\n\nconsole.log(stopChatLocationSharingResponse);\n```",
+    perLanguage: {
+      go: {
+        method: 'client.Chats.Location.Stop',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/linq-team/linq-go"\n\t"github.com/linq-team/linq-go/option"\n)\n\nfunc main() {\n\tclient := linqgo.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t)\n\tstopChatLocationSharingResponse, err := client.Chats.Location.Stop(\n\t\tcontext.TODO(),\n\t\t"975d0776-bd17-4273-8337-f346b4c661b0",\n\t\tlinqgo.ChatLocationStopParams{\n\t\t\tHandle: "+15551234567",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", stopChatLocationSharingResponse.Message)\n}\n',
+      },
+      python: {
+        method: 'chats.location.stop',
+        example:
+          'import os\nfrom linq import LinqAPIV3\n\nclient = LinqAPIV3(\n    api_key=os.environ.get("LINQ_API_V3_API_KEY"),  # This is the default and can be omitted\n)\nstop_chat_location_sharing_response = client.chats.location.stop(\n    chat_id="975d0776-bd17-4273-8337-f346b4c661b0",\n    handle="+15551234567",\n)\nprint(stop_chat_location_sharing_response.message)',
+      },
+      typescript: {
+        method: 'client.chats.location.stop',
+        example:
+          "import LinqAPIV3 from '@linqapp/sdk';\n\nconst client = new LinqAPIV3({\n  apiKey: process.env['LINQ_API_V3_API_KEY'], // This is the default and can be omitted\n});\n\nconst stopChatLocationSharingResponse = await client.chats.location.stop(\n  '975d0776-bd17-4273-8337-f346b4c661b0',\n  { handle: '+15551234567' },\n);\n\nconsole.log(stopChatLocationSharingResponse.message);",
+      },
+      http: {
+        example:
+          'curl https://api.linqapp.com/api/partner/v3/chats/$CHAT_ID/location \\\n    -X DELETE \\\n    -H "Authorization: Bearer $LINQ_API_V3_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'create',
     endpoint: '/v3/chats/{chatId}/polls',
     httpMethod: 'post',

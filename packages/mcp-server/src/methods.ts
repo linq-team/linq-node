@@ -107,6 +107,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v3/chats/{chatId}/location/request',
   },
   {
+    clientCallName: 'client.chats.location.stop',
+    fullyQualifiedName: 'chats.location.stop',
+    httpMethod: 'delete',
+    httpPath: '/v3/chats/{chatId}/location',
+  },
+  {
     clientCallName: 'client.chats.polls.create',
     fullyQualifiedName: 'chats.polls.create',
     httpMethod: 'post',

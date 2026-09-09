@@ -116,6 +116,51 @@ export class Location extends APIResource {
   request(chatID: string, options?: RequestOptions): APIPromise<LocationRequestResponse> {
     return this._client.post(path`/v3/chats/${chatID}/location/request`, options);
   }
+
+  /**
+   * End the location share a contact started with you, as though they had stopped it
+   * themselves. Their device stops listing you as someone they share with, so they
+   * can start a fresh share cleanly.
+   *
+   * Use this to recover when a share has gone stale — coordinates that stop
+   * advancing, or a share you believe has ended but is still reported as active.
+   * Without it the only remedy is asking the contact to stop and re-share, which is
+   * confusing for them because their phone still shows everything as working.
+   *
+   * This is not reversible from the API. Sharing can only resume when the contact
+   * starts a new share, so prompt them to re-share afterwards. Request a new one
+   * with `POST /v3/chats/{chatId}/location/request`.
+   *
+   * Apple keeps one location-sharing relationship per person rather than per chat,
+   * so this ends that contact's share everywhere, not only in this chat.
+   *
+   * `handle` names whose share to end, and is always required — a group chat can
+   * have several people sharing, and this is not an operation to infer a target for.
+   *
+   * **This returns `202`, not `200`.** The removal happens on the device that holds
+   * the sharing relationship, so a success here means the request was accepted, not
+   * that sharing has ended. Wait for the `location.sharing.stopped` webhook to
+   * confirm it — that webhook is what tells you the contact's device has actually
+   * let go.
+   *
+   * Returns `404` if the contact is not currently sharing.
+   *
+   * @example
+   * ```ts
+   * const stopChatLocationSharingResponse =
+   *   await client.chats.location.stop(
+   *     '975d0776-bd17-4273-8337-f346b4c661b0',
+   *     { handle: '+15551234567' },
+   *   );
+   * ```
+   */
+  stop(
+    chatID: string,
+    body: LocationStopParams,
+    options?: RequestOptions,
+  ): APIPromise<StopChatLocationSharingResponse> {
+    return this._client.delete(path`/v3/chats/${chatID}/location`, { body, ...options });
+  }
 }
 
 export interface GetChatLocationResponse {
@@ -181,9 +226,24 @@ export interface LocationRequestResponse {
   success: boolean;
 }
 
+export interface StopChatLocationSharingResponse {
+  message: string;
+
+  success: boolean;
+}
+
+export interface LocationStopParams {
+  /**
+   * Phone number (E.164 format) or email address of the contact whose share to end
+   */
+  handle: string;
+}
+
 export declare namespace Location {
   export {
     type GetChatLocationResponse as GetChatLocationResponse,
     type LocationRequestResponse as LocationRequestResponse,
+    type StopChatLocationSharingResponse as StopChatLocationSharingResponse,
+    type LocationStopParams as LocationStopParams,
   };
 }

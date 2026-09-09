@@ -73,11 +73,13 @@ Types:
 
 - <code><a href="./src/resources/chats/location.ts">GetChatLocationResponse</a></code>
 - <code><a href="./src/resources/chats/location.ts">LocationRequestResponse</a></code>
+- <code><a href="./src/resources/chats/location.ts">StopChatLocationSharingResponse</a></code>
 
 Methods:
 
 - <code title="get /v3/chats/{chatId}/location">client.chats.location.<a href="./src/resources/chats/location.ts">retrieve</a>(chatID) -> GetChatLocationResponse</code>
 - <code title="post /v3/chats/{chatId}/location/request">client.chats.location.<a href="./src/resources/chats/location.ts">request</a>(chatID) -> LocationRequestResponse</code>
+- <code title="delete /v3/chats/{chatId}/location">client.chats.location.<a href="./src/resources/chats/location.ts">stop</a>(chatID, { ...params }) -> StopChatLocationSharingResponse</code>
 
 ## Polls
 
