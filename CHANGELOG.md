@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.65.0](https://github.com/linq-team/linq-node/compare/v0.64.0...v0.65.0) (2026-09-09)
+
+
+### Features
+
+* add stop location sharing endpoint for chats ([2d9965a](https://github.com/linq-team/linq-node/commit/2d9965a7d3741b104b824eb21c424bd30ff581e2))
+
 ## [0.64.0](https://github.com/linq-team/linq-node/compare/v0.63.0...v0.64.0) (2026-09-09)
 
 
