@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.65.1](https://github.com/linq-team/linq-node/compare/v0.65.0...v0.65.1) (2026-09-09)
+
+
+### Bug Fixes
+
+* add 503 rate limit error responses to contact card endpoints ([4b518a2](https://github.com/linq-team/linq-node/commit/4b518a223aed717d9b55e9930c503c85a858b90a))
+
 ## [0.65.0](https://github.com/linq-team/linq-node/compare/v0.64.0...v0.65.0) (2026-09-09)
 
 
