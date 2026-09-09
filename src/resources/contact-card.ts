@@ -21,6 +21,10 @@ export class ContactCard extends APIResource {
    * If setup does not complete, the response is `500` (`2022`) — call this endpoint
    * again.
    *
+   * If the upstream write is rate-limited, the response is `503` (`4004`) instead.
+   * Setup did not complete and the card is not active — wait before retrying,
+   * because repeated attempts extend the rate limit.
+   *
    * **Note:** once a card is active, this endpoint returns `409` (`2014`) so an
    * existing card is never overwritten by accident. Use `PATCH /v3/contact_card` to
    * change it.
@@ -65,6 +69,10 @@ export class ContactCard extends APIResource {
    *
    * If the update does not complete, the response is `500` (`2022`) — call this
    * endpoint again.
+   *
+   * If the upstream write is rate-limited, the response is `503` (`4004`) instead.
+   * The update did not reach the line, so the card is left not active — wait before
+   * retrying, because repeated attempts extend the rate limit.
    *
    * @example
    * ```ts
