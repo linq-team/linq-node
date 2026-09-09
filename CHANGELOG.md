@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.64.0](https://github.com/linq-team/linq-node/compare/v0.63.0...v0.64.0) (2026-09-09)
+
+
+### Features
+
+* add sticker support to media message parts ([3473e0e](https://github.com/linq-team/linq-node/commit/3473e0e907d716818f9efc0169eab63bd7a89440))
+
 ## [0.63.0](https://github.com/linq-team/linq-node/compare/v0.62.0...v0.63.0) (2026-09-08)
 
 
