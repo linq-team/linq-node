@@ -456,7 +456,9 @@ export interface Message {
   > | null;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   preferred_service?: Shared.ServiceType | null;
 
@@ -486,7 +488,9 @@ export interface Message {
   sent_at?: string | null;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service?: Shared.ServiceType | null;
 }
@@ -741,7 +745,9 @@ export interface MessageCreateResponse {
   message: MessagesAPI.SentMessage;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service: Shared.ServiceType;
 

@@ -369,7 +369,9 @@ export interface Chat {
   group_chat_icon?: string | null;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service?: Shared.ServiceType | null;
 }
@@ -602,7 +604,9 @@ export interface MessageContent {
   >;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   preferred_service?: Shared.ServiceType;
 
@@ -942,7 +946,9 @@ export namespace ChatCreateResponse {
     message: MessagesAPI.SentMessage;
 
     /**
-     * Messaging service type
+     * Messaging service type. Where this names the transport a message used, it is
+     * per-message: a chat's own `service` can differ from a message in it, and Apple
+     * can downgrade an individual message.
      */
     service: Shared.ServiceType;
   }
@@ -1056,7 +1062,9 @@ export namespace ChatSendVoicememoResponse {
     voice_memo: VoiceMemo.VoiceMemo;
 
     /**
-     * Messaging service type
+     * Messaging service type. Where this names the transport a message used, it is
+     * per-message: a chat's own `service` can differ from a message in it, and Apple
+     * can downgrade an individual message.
      */
     service?: Shared.ServiceType | null;
   }
@@ -1084,7 +1092,9 @@ export namespace ChatSendVoicememoResponse {
       is_group: boolean;
 
       /**
-       * Messaging service type
+       * Messaging service type. Where this names the transport a message used, it is
+       * per-message: a chat's own `service` can differ from a message in it, and Apple
+       * can downgrade an individual message.
        */
       service: Shared.ServiceType;
     }
