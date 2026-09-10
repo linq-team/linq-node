@@ -133,6 +133,7 @@ describe('resource messages', () => {
       type: 'love',
       attachment_id: '550e8400-e29b-41d4-a716-446655440000',
       custom_emoji: 'custom_emoji',
+      emoji: '🎉',
       part_index: 1,
       placement: {
         rotation: 15,
