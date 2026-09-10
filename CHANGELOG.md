@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.65.2](https://github.com/linq-team/linq-node/compare/v0.65.1...v0.65.2) (2026-09-10)
+
+
+### Documentation
+
+* clarify message service transport semantics ([4c61b36](https://github.com/linq-team/linq-node/commit/4c61b3655ad9dc0ebdc0d2ab9f85f949f7e95e09))
+
 ## [0.65.1](https://github.com/linq-team/linq-node/compare/v0.65.0...v0.65.1) (2026-09-09)
 
 
