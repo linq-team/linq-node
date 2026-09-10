@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.66.0](https://github.com/linq-team/linq-node/compare/v0.65.2...v0.66.0) (2026-09-10)
+
+
+### Features
+
+* add emoji sticker support alongside url and attachment_id ([1f2d31f](https://github.com/linq-team/linq-node/commit/1f2d31f967e4df4d0afc7e968b5546a64b1aac26))
+
 ## [0.65.2](https://github.com/linq-team/linq-node/compare/v0.65.1...v0.65.2) (2026-09-10)
 
 
