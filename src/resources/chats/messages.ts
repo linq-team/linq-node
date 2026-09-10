@@ -233,7 +233,9 @@ export interface SentMessage {
   from_handle?: Shared.ChatHandle | null;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   preferred_service?: Shared.ServiceType | null;
 
@@ -243,7 +245,9 @@ export interface SentMessage {
   reply_to?: ResourcesMessagesAPI.ReplyTo | null;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service?: Shared.ServiceType | null;
 }

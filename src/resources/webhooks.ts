@@ -74,7 +74,9 @@ export interface MessageEventV2 {
   sender_handle: Shared.ChatHandle;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service: Shared.ServiceType;
 
@@ -655,7 +657,9 @@ export interface ReactionEventBase {
   reaction_id?: string;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service?: Shared.ServiceType;
 
@@ -1210,7 +1214,9 @@ export namespace MessageFailedWebhookEvent {
     reason?: string;
 
     /**
-     * Messaging service type
+     * Messaging service type. Where this names the transport a message used, it is
+     * per-message: a chat's own `service` can differ from a message in it, and Apple
+     * can downgrade an individual message.
      */
     service?: Shared.ServiceType | null;
   }
@@ -2909,7 +2915,9 @@ export namespace ChatCreatedWebhookEvent {
     updated_at: string;
 
     /**
-     * Messaging service type
+     * Messaging service type. Where this names the transport a message used, it is
+     * per-message: a chat's own `service` can differ from a message in it, and Apple
+     * can downgrade an individual message.
      */
     service?: Shared.ServiceType | null;
   }
