@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.66.1](https://github.com/linq-team/linq-node/compare/v0.66.0...v0.66.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* adjust sticker scale parameter bounds and defaults ([f223b88](https://github.com/linq-team/linq-node/commit/f223b8852062567a2855f3f07ca81f0ca0208143))
+
 ## [0.66.0](https://github.com/linq-team/linq-node/compare/v0.65.2...v0.66.0) (2026-09-10)
 
 
