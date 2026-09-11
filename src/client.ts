@@ -38,6 +38,14 @@ import {
   AvailableNumberRetrieveResponse,
 } from './resources/available-number';
 import {
+  BlockedHandleBlockParams,
+  BlockedHandleBlockResponse,
+  BlockedHandleEntry,
+  BlockedHandleListResponse,
+  BlockedHandleUnblockParams,
+  BlockedHandles,
+} from './resources/blocked-handles';
+import {
   Capability,
   CapabilityCheckIMessageParams,
   CapabilityCheckRCSParams,
@@ -52,21 +60,20 @@ import {
   ContactCardUpdateParams,
   SetContactCard,
 } from './resources/contact-card';
+import { ExperienceListResponse, ExperienceRetrieveResponse, Experiences } from './resources/experiences';
+import { LinkConnectionStatus, LinkConnections } from './resources/link-connections';
+import { LinkPayment, LinkPayments } from './resources/link-payments';
 import {
-  Message,
-  MessageAddReactionParams,
-  MessageAddReactionResponse,
-  MessageCreateParams,
-  MessageCreateResponse,
-  MessageEffect,
-  MessageListMessagesThreadParams,
-  MessageUpdateAppCardParams,
-  MessageUpdateAppCardResponse,
-  MessageUpdateParams,
-  Messages,
-  MessagesListMessagesPagination,
-  ReplyTo,
-} from './resources/messages';
+  PaymentHandleConnection,
+  PaymentHandleVerifyParams,
+  PaymentHandles,
+} from './resources/payment-handles';
+import {
+  PaymentProvider,
+  PaymentProviderConnectParams,
+  PaymentProviderConnectResponse,
+  PaymentProviders,
+} from './resources/payment-providers';
 import {
   PaymentRequest,
   PaymentRequestCreateParams,
@@ -74,11 +81,22 @@ import {
   PaymentRequestListResponse,
   PaymentRequests,
 } from './resources/payment-requests';
+import { Payment, PaymentCreateParams, PaymentCredentialsResponse, Payments } from './resources/payments';
 import {
+  PhoneNumberGetReputationAuditParams,
   PhoneNumberListResponse,
   PhoneNumberUpdateParams,
   PhoneNumberUpdateResponse,
   PhoneNumbers,
+  ReputationActionItem,
+  ReputationAudit,
+  ReputationAuditStarted,
+  ReputationDriver,
+  ReputationDriverKey,
+  ReputationEvidence,
+  ReputationOptOutChat,
+  ReputationReport,
+  ReputationUnhealthyChat,
 } from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
 import { WebhookEventListResponse, WebhookEventType, WebhookEvents } from './resources/webhook-events';
@@ -91,6 +109,8 @@ import {
   WebhookSubscriptions,
 } from './resources/webhook-subscriptions';
 import {
+  ChatBackgroundUpdateFailedWebhookEvent,
+  ChatBackgroundUpdatedWebhookEvent,
   ChatCreatedWebhookEvent,
   ChatGroupIconUpdateFailedWebhookEvent,
   ChatGroupIconUpdatedWebhookEvent,
@@ -98,6 +118,11 @@ import {
   ChatGroupNameUpdatedWebhookEvent,
   ChatTypingIndicatorStartedWebhookEvent,
   ChatTypingIndicatorStoppedWebhookEvent,
+  ConnectionCreatedWebhookEvent,
+  ConnectionRevokedWebhookEvent,
+  ContactCardReceivedWebhookEvent,
+  LocationSharingStartedWebhookEvent,
+  LocationSharingStoppedWebhookEvent,
   MessageDeliveredWebhookEvent,
   MessageEditedWebhookEvent,
   MessageEventV2,
@@ -108,7 +133,21 @@ import {
   MessageSentWebhookEvent,
   ParticipantAddedWebhookEvent,
   ParticipantRemovedWebhookEvent,
+  PaymentAuthorizedWebhookEvent,
+  PaymentCanceledWebhookEvent,
+  PaymentDeclinedWebhookEvent,
+  PaymentExpiredWebhookEvent,
+  PaymentSucceededWebhookEvent,
   PhoneNumberStatusUpdatedWebhookEvent,
+  PollDeliveredWebhookEvent,
+  PollFailedWebhookEvent,
+  PollReactionAddedWebhookEvent,
+  PollReadWebhookEvent,
+  PollReceivedWebhookEvent,
+  PollSentWebhookEvent,
+  PollUpdatedWebhookEvent,
+  PollVoteAddedWebhookEvent,
+  PollVoteRemovedWebhookEvent,
   ReactionAddedWebhookEvent,
   ReactionEventBase,
   ReactionRemovedWebhookEvent,
@@ -135,6 +174,23 @@ import {
   MessageContent,
   TextPart,
 } from './resources/chats/chats';
+import {
+  Message,
+  MessageAddReactionParams,
+  MessageAddReactionResponse,
+  MessageCreateParams,
+  MessageCreateResponse,
+  MessageEffect,
+  MessageListMessagesThreadParams,
+  MessageUpdateAppCardParams,
+  MessageUpdateAppCardResponse,
+  MessageUpdateParams,
+  MessageUpdateStickerPlacementParams,
+  MessageUpdateStickerPlacementResponse,
+  Messages,
+  MessagesListMessagesPagination,
+  ReplyTo,
+} from './resources/messages/messages';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -916,36 +972,49 @@ export class LinqAPIV3 {
    * - A `link` part cannot be combined with other parts in the same message.
    * - Maximum URL length: 2,048 characters.
    *
+   * ## App Clips
+   *
+   * An `app_clip` part sends a **registered App Clip** — not only Linq's Apple Pay
+   * checkout, but any partner's own App Clip. Like a `link` part it must be the
+   * **only** part in the message, and it is **iMessage only** — it never downgrades
+   * to SMS or RCS. The payment-checkout use of this part is covered in the
+   * **Payments** section.
+   *
    * ## Ephemeral Messages (Privacy Tier)
    *
-   * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is automatically given a fixed **24-hour retention window** — after that window the platform permanently deletes the message from Linq storage. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+   * For regulated or sensitive conversations, opt in to the **ephemeral messages** tier by contacting your Linq support contact. When enabled, every message on the covered phone numbers is given a **retention window configured for your account**. After that window, the message's text, formatting, and attachment references are no longer retrievable through the API — see the Attachments row below for how the attachment media itself is handled. Metadata about the message is retained: message identifiers, timestamps, phone numbers, and delivery state. Metadata retention is not bounded by this window. Bounded operational copies, such as backups and delivery queues, expire on their own separate schedules. There is no per-message flag; ephemerality is applied automatically based on your configuration.
+   *
+   * The window can be set anywhere from **60 minutes to 24 hours**, and defaults to **24 hours**. Ask your Linq support contact to configure a shorter window; it cannot be changed through the API.
    *
    * You can request it at two scopes:
    *
    * | Scope | Effect |
    * |---|---|
-   * | **Partner-wide** | Every outbound and inbound message on every phone number under your account is retained for 24 hours, then deleted. |
-   * | **Per phone number** | Only the specified phone numbers have their messages auto-deleted. The rest follow the standard message-retention policy. |
+   * | **Partner-wide** | Every outbound and inbound message on every phone number under your account has its content removed from the API surface after your configured window. Metadata is retained. |
+   * | **Per phone number** | Only the specified phone numbers have message content removed from the API surface this way. The rest follow the standard message-retention policy. |
    *
    * **Behavioral differences vs the standard default:**
    *
    * | Aspect | Standard | Ephemeral |
    * |---|---|---|
-   * | Retention | Retained per the standard message-retention policy | **Hard backstop: 24 hours** from when the message is created |
-   * | After expiry | Message stays retrievable | Message is permanently deleted — `GET /v3/messages/{messageId}` returns `404` and it no longer appears in `GET /v3/chats/{chatId}/messages` |
-   * | Content on expiry | N/A | Text, formatting, and attachment references are scrubbed; the message is gone, not blanked out |
+   * | Retention | Retained per the standard message-retention policy | **Hard backstop: your configured window** (60 minutes – 24 hours, default 24 hours) from when the message is created |
+   * | After expiry | Message stays retrievable | Message content is no longer retrievable — `GET /v3/messages/{messageId}` returns `404` and it no longer appears in `GET /v3/chats/{chatId}/messages` |
+   * | Content on expiry | N/A | Text, formatting, and attachment references are removed from the API surface, not blanked out in place. Metadata (identifiers, timestamps, phone numbers, delivery state) is retained; its retention is not bounded by this window |
+   * | Attachments | Retained | Media sent on the **ephemeral attachments tier** is removed on its own storage backstop — within roughly 24–48 hours of upload — independently of the message window, so it can outlast a window shorter than a day. Attachments on the persistent tier (including pre-uploads via `POST /v3/attachments`) are kept until you `DELETE` them |
    * | Cross-partner isolation | Enforced | Enforced |
    *
-   * **How the 24-hour window works:**
+   * **How the retention window works:**
    *
-   * - The window is fixed at **24 hours from message creation** (`created_at`) and cannot be configured per message.
-   * - It mirrors the ephemeral *attachments* 1-day backstop, so a message and any media it carries expire together.
+   * - The window runs from **message creation** (`created_at`). It is configured for your account (60 minutes – 24 hours, default 24 hours) and cannot be set per message.
+   * - Attachment media follows its own storage backstop rather than the message window — see the Attachments row above.
    * - Expiry is delivery-independent — the clock starts when the message is created, not when it is delivered or read.
+   * - **Deletion happens shortly *after* the window, not exactly at it.** A background sweep runs every ~5 minutes, so a message typically stops being retrievable within about 5 minutes of its expiry, and longer while a backlog is being worked through. Treat the window as the guaranteed *minimum* retention, never as an exact deletion time or an upper bound.
    *
    * **What you observe:**
    *
-   * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time. If you need it, compute `created_at + 24h` yourself.
+   * - **No expiry timestamp is exposed.** API responses and webhook payloads do not include the deletion time, and they do not report your configured window either — so if you are on a window shorter than 24 hours you cannot derive a message's expiry from the API today. Track the window you agreed with your Linq support contact and compute `created_at + window` yourself.
    * - **No deletion webhook is sent.** There is no `message.deleted` event — a message simply stops being retrievable once its window passes.
+   * - **The attachment backstop is separate from the message window.** API retrievability (the `404` behavior above) ends at your configured window. Ephemeral-tier media objects are removed on their own storage backstop — within roughly 24–48 hours of upload — which is independent of the message window and can outlast a window shorter than a day. Removal of the corresponding entries from the sending device happens asynchronously and can complete after the backstop.
    * - **Delivery is unaffected.** Ephemeral messages send, deliver, and fire the usual `message.sent` / `message.received` and status webhooks exactly like standard messages. Only retention changes.
    *
    * **When to choose ephemeral:**
@@ -954,7 +1023,7 @@ export class LinqAPIV3 {
    * - The conversation is high-sensitivity (PHI, financial, identity verification) and you do not want it sitting in storage long-term.
    * - Your application is the system of record — you capture what you need from the delivery webhook in real time and do not rely on reading message history back from Linq later.
    *
-   * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message after 24 hours, persist anything you need to keep from the webhook payload at the time it is delivered.
+   * **Important:** ephemeral applies in *both directions* — messages you send **and** messages received by the phone numbers in that scope. Because Linq can no longer return the message once its window passes, persist anything you need to keep from the webhook payload at the time it is delivered.
    *
    */
   messages: API.Messages = new API.Messages(this);
@@ -984,12 +1053,27 @@ export class LinqAPIV3 {
    * - **Reduce message send latency** — the file is already stored, so sending is faster
    *
    * **How it works:**
-   * 1. `POST /v3/attachments` with file metadata → returns a presigned `upload_url` (valid for **15 minutes**) and a permanent `attachment_id`
+   * 1. `POST /v3/attachments` with file metadata → returns a presigned `upload_url` (valid for **15 minutes**) and a reusable `attachment_id`
    * 2. PUT the raw file bytes to the `upload_url` with the `required_headers` (no JSON or multipart — just the binary content)
-   * 3. Reference the `attachment_id` in your media part when sending messages (no expiration)
+   * 3. Reference the `attachment_id` in your media part when sending messages (stays valid unless deleted — see [Attachment Lifetime](#attachment-lifetime))
    *
    * **Key difference:** When you provide an external `url`, we download and process the file on every send.
    * When you use a pre-uploaded `attachment_id`, the file is already stored — so repeated sends skip the download step entirely.
+   *
+   * ## Attachment Lifetime
+   *
+   * An `attachment_id` and its CDN URL stay valid until the file is deleted. Three things delete it:
+   *
+   * | Trigger | Applies to |
+   * |---|---|
+   * | `DELETE /v3/attachments/{attachmentId}` | Any attachment you own |
+   * | Ephemeral **attachments** tier (24–48h storage backstop) | Attachments on ephemeral-tier partners or phone numbers |
+   * | Ephemeral **messages** tier | Does **not** remove attachment bytes on its own: ephemeral-tier objects are removed by the 24–48h storage backstop above, and persistent-tier attachments are kept until you `DELETE` them explicitly. |
+   *
+   * Deletion is not reversible, and there is no `attachment.deleted` webhook. On either
+   * ephemeral tier, download anything you need to keep when you receive it rather than
+   * re-fetching later, and do not assume a pre-uploaded `attachment_id` can be reused
+   * indefinitely.
    *
    * ## Domain Allowlisting
    *
@@ -1041,7 +1125,7 @@ export class LinqAPIV3 {
    *
    * | Tier | URL pattern | TTL |
    * |---|---|---|
-   * | Persistent (default) | `https://cdn.linqapp.com/attachments/partners/{partner_id}/{attachment_id}/{filename}` | Long-lived |
+   * | Persistent (default) | `https://cdn.linqapp.com/attachments/partners/{partner_id}/{attachment_id}/{filename}` | Long-lived — the URL itself does not expire, but see [Attachment Lifetime](#attachment-lifetime) |
    * | Ephemeral | Pre-signed URL pointing at the ephemeral prefix on `cdn.linqapp.com` | 15 minutes per signed URL — re-fetch via the API for a fresh URL |
    *
    * Inbound media you receive over webhooks uses the same layout your outbound sends produce, so the URL you store and the URL you build look identical — no special casing in your client.
@@ -1060,7 +1144,7 @@ export class LinqAPIV3 {
    * | Aspect | Persistent | Ephemeral |
    * |---|---|---|
    * | Download URL form | Long-lived CDN URL | Pre-signed URL with short TTL |
-   * | Retention floor | Indefinite (until you call `DELETE`) | **Hard backstop: 1 day** — even without an explicit `DELETE`, the platform removes the underlying bytes after 24 hours |
+   * | Retention floor | Until you call `DELETE` | **Hard backstop: 24–48h** — even without an explicit `DELETE`, the platform removes the underlying bytes within roughly 24–48 hours of upload |
    * | URL re-fetch | Not required | Fetch via `GET /v3/attachments/{attachmentId}` for a fresh signed URL after TTL expiry |
    * | Cross-partner isolation | Enforced | Enforced |
    *
@@ -1120,9 +1204,9 @@ export class LinqAPIV3 {
    *
    * | Data | Persistent tier | Ephemeral tier |
    * |---|---|---|
-   * | Attachment bytes | Retained until you `DELETE` | **Auto-removed after 1 day**, also removable via `DELETE` |
+   * | Attachment bytes | Retained until you `DELETE` | **Auto-removed within roughly 24–48 hours** of upload, independently of any message window. Also removable via `DELETE` |
    * | Attachment metadata (id, filename, mime type, size) | Retained until you `DELETE` | Removed alongside the bytes |
-   * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy — unless the line also has **ephemeral messages** enabled (see the Messages page), in which case the message and its parts are deleted 24 hours after creation |
+   * | Message body & parts | Retained per message-retention policy | Retained per message-retention policy — unless the line also has **ephemeral messages** enabled (see the Messages page), in which case the message's text, formatting, and attachment references are no longer retrievable through the API after that account's configured retention window (60 minutes – 24 hours, default 24 hours) from creation. Metadata is retained; see the Messages page for details |
    * | Audit log of deletions | Retained per platform retention policy | Retained per platform retention policy |
    *
    * **In transit:** TLS 1.2+ everywhere. **At rest:** AES-256 (server-side encryption).
@@ -1134,7 +1218,7 @@ export class LinqAPIV3 {
    * - Allowlist exactly one outbound domain: `cdn.linqapp.com`.
    * - Decide whether you need ephemeral attachments (high-sensitivity content) — request enablement through your Linq support contact.
    * - Implement `DELETE /v3/attachments/{attachmentId}` calls in your deletion workflow.
-   * - Persist any attachments your application needs long-term — Linq is the authoritative source until you delete, but the ephemeral tier auto-purges after 1 day.
+   * - Persist any attachments your application needs long-term — Linq is the authoritative source until you delete, but the ephemeral tier auto-purges within roughly 24–48 hours of upload.
    * - For audit: every deletion is logged on Linq's side. Surface a confirmation in your application UI based on the `204` response.
    * - For end-user "right to delete" requests: enumerate attachment ids and `DELETE` each. The platform does not provide a partner-wide wipe endpoint — deletion is per-attachment by design.
    *
@@ -1149,6 +1233,15 @@ export class LinqAPIV3 {
    * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
    * in the `from` field.
    *
+   * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+   * While it is in that state, requests that would produce new activity on it — sending a
+   * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+   * (error code `2027`) before anything is created. Reads keep working, so your existing
+   * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+   * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+   * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+   * specific number to blame with a `403`).
+   *
    */
   phonenumbers: API.Phonenumbers = new API.Phonenumbers(this);
   /**
@@ -1160,6 +1253,15 @@ export class LinqAPIV3 {
    * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
    * in the `from` field.
    *
+   * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+   * While it is in that state, requests that would produce new activity on it — sending a
+   * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+   * (error code `2027`) before anything is created. Reads keep working, so your existing
+   * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+   * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+   * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+   * specific number to blame with a `403`).
+   *
    */
   phoneNumbers: API.PhoneNumbers = new API.PhoneNumbers(this);
   /**
@@ -1170,6 +1272,15 @@ export class LinqAPIV3 {
    *
    * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
    * in the `from` field.
+   *
+   * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+   * While it is in that state, requests that would produce new activity on it — sending a
+   * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+   * (error code `2027`) before anything is created. Reads keep working, so your existing
+   * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+   * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+   * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+   * specific number to blame with a `403`).
    *
    */
   availableNumber: API.AvailableNumber = new API.AvailableNumber(this);
@@ -1192,7 +1303,7 @@ export class LinqAPIV3 {
    *
    * ## Connected accounts (Stripe Standard, direct charges)
    *
-   * Agent Pay runs on **Stripe Connect Standard accounts** using **direct
+   * Payments run on **Stripe Connect Standard accounts** using **direct
    * charges**: the charge is created on *your* connected account and **you are
    * the merchant of record**. That means the money, the payout schedule, the
    * customer relationship, and the compliance surface are all yours — Linq
@@ -1235,6 +1346,45 @@ export class LinqAPIV3 {
    * the Customer and Subscription, so correlating in either direction is
    * trivial. There are no renewal webhooks from Linq by design.
    *
+   * ### Discounts
+   *
+   * Pass a `discount` with a **coupon** or **promotion code** from your
+   * connected Stripe account to apply it to the subscription. Create either in
+   * your Stripe Dashboard under Product catalog → Coupons; Linq only forwards
+   * the id.
+   *
+   * ```json
+   * {
+   *   "mode": "subscription",
+   *   "price_id": "price_1QAbCdEfGhIjKlMn",
+   *   "discount": {
+   *     "coupon": "7fKCMvBh",
+   *     "label": "50% OFF FIRST MONTH"
+   *   }
+   * }
+   * ```
+   *
+   * Stripe applies the coupon and prices the first invoice; the `amount` we
+   * return is that invoice's amount due, so a `$50.00/month` price with a
+   * 50%-off-first-month coupon comes back as `2500` and the recipient is
+   * charged **$25.00** at checkout. A coupon that covers the whole first
+   * invoice returns `amount: 0`; checkout shows $0.00 and collects the card for
+   * the renewal rather than charging now. Renewals bill at the full price
+   * automatically — how long a discount lasts is the coupon's `duration`,
+   * enforced by Stripe on your account, and Linq never re-prices anything.
+   *
+   * Use `promotion_code` instead of `coupon` to apply a promotion code by id
+   * (`promo_...`, not the customer-facing code string); pass one or the other,
+   * never both.
+   *
+   * `label` is the customer-facing promotion name displayed at checkout instead
+   * of the coupon or promotion code ID. The label is displayed exactly as
+   * provided, so include important terms such as "FIRST MONTH" or
+   * "FIRST 3 MONTHS" when applicable. These terms are not displayed elsewhere
+   * on the checkout screen.
+   *
+   * If omitted, Stripe uses the coupon's name as the promotion label.
+   *
    * ### Free trials
    *
    * Add `trial_period_days` (or a fixed `trial_end` timestamp) to start the
@@ -1269,25 +1419,145 @@ export class LinqAPIV3 {
    * `POST /v3/chats/{chatId}/messages` — it renders as a rich card with your
    * branding (title, amount, image) instead of a bare URL, which converts far
    * better. A `link` part must be the only part in the message. See
-   * [Rich Link Previews](/guides/messaging/sending-messages).
+   * [Rich Link Previews](/channel/imessage/guides/messaging/sending-messages).
    *
    * On a supported iPhone the link opens an **Apple Pay App Clip** — a native,
    * no-install checkout sheet. Everywhere else (Android, desktop, iPhones
    * without the App Clip yet) the same URL opens the web checkout, so the link
    * always works. The App Clip experience for your payment links is registered
-   * automatically by Linq and refreshed whenever you update your Agent Pay
+   * automatically by Linq and refreshed whenever you update your payments
    * branding; a newly registered experience can take up to ~24 hours to
    * activate on Apple's side, during which links open the web checkout.
+   *
+   * ## Sending it as a card instead
+   *
+   * A `link` part is one way to deliver a request. The other is the
+   * **`agentpay` experience**, which sends the same request as a native card
+   * in Linq's iMessage app — the amount and reason are drawn in the bubble,
+   * and it turns itself into "Paid" in place once the payment succeeds,
+   * without a second message.
+   *
+   * Send it to `POST /v3/chats/{chatId}/messages`:
+   *
+   * ```json
+   * {
+   *   "message": {
+   *     "experience": {
+   *       "name": "agentpay",
+   *       "action": "request_payment",
+   *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
+   *     }
+   *   }
+   * }
+   * ```
+   *
+   * `checkout_url` is the only required field — pass back exactly what
+   * `POST /v3/payment_requests` returned. **The amount and reason are read
+   * from that request, never from you**, so the card can never claim a
+   * different figure than the checkout will charge. Optional `title` and
+   * `note` override the copy only. The link must be one of your own payment
+   * requests; another partner's is rejected.
+   *
+   * The trade-off against a `link` part: a card is an app card, so it is
+   * iMessage-only, and recipients without the app see a static version of it.
+   * A link works everywhere and is what opens the Apple Pay App Clip. Send
+   * whichever suits the conversation — both settle the same payment request
+   * and fire the same webhooks.
    *
    * ## Webhooks
    *
    * Subscribe to payment lifecycle events to reconcile server-side rather than
    * polling: `payment.succeeded`, `payment.canceled`, and `payment.expired`.
    * Each event carries the payment request id, amount, currency, and your
-   * `metadata`. See [Webhooks](/guides/webhooks).
+   * `metadata`. See [Webhooks](/channel/imessage/guides/webhooks).
    *
    */
   paymentRequests: API.PaymentRequests = new API.PaymentRequests(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentProviders: API.PaymentProviders = new API.PaymentProviders(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  paymentHandles: API.PaymentHandles = new API.PaymentHandles(this);
+  /**
+   * Let an agent pay on a customer's behalf with a single-use virtual card.
+   * Connect a customer once, then create a payment — a virtual card is minted
+   * scoped to that purchase and the card details are handed back for checkout.
+   *
+   */
+  payments: API.Payments = new API.Payments(this);
+  linkConnections: API.LinkConnections = new API.LinkConnections(this);
+  linkPayments: API.LinkPayments = new API.LinkPayments(this);
+  /**
+   * Block handles — phone numbers, email addresses, SMS short codes, or
+   * sender IDs. Inbound messages from a blocked handle are dropped before
+   * they reach your webhooks, and direct sends to a blocked handle are
+   * rejected with `403` (error code `2026`). Group sends that include
+   * unblocked members are not restricted.
+   *
+   */
+  blockedHandles: API.BlockedHandles = new API.BlockedHandles(this);
+  /**
+   * An **experience** renders inside Linq's iMessage app as a native card,
+   * instead of as text or a link. You invoke one by name; Linq resolves the
+   * recipient, mints any session it needs, composes the card and sends it.
+   *
+   * Send it to `POST /v3/chats/{chatId}/messages`:
+   *
+   * ```json
+   * {
+   *   "message": {
+   *     "experience": {
+   *       "name": "agentpay",
+   *       "action": "request_payment",
+   *       "params": { "checkout_url": "https://zero.linqapp.com/pay/acme?session=tok_..." }
+   *     }
+   *   }
+   * }
+   * ```
+   *
+   * The key is `experience` — what you're invoking. Nested under it is its
+   * `name`, the action you're invoking on it, and that action's params. A card
+   * **is** the whole message on Apple's side, so a message carries either
+   * `experience` or `parts`, never both, and an action goes to exactly one
+   * recipient.
+   *
+   * ## What you can invoke
+   *
+   * | Experience | Action | What the customer sees |
+   * |---|---|---|
+   * | `agentpay` | `request_payment` | A payment request they can pay in the app. Turns itself into "Paid" in place once it settles. |
+   * | `agentcard` | `attach_card` | A prompt to add a card to their wallet. |
+   * | `agentcard` | `approve_card` | A passkey approval for a virtual card. |
+   * | `link` | `open` | A card that opens a URL you supply. |
+   *
+   * `GET /v3/experiences` is the list to build against, with every action and
+   * the fields each accepts — anything not described there is unsupported.
+   * Fields are display copy unless documented otherwise.
+   *
+   * ## Params are checked before the card is sent
+   *
+   * Unknown fields are **rejected rather than ignored**, so copy that would
+   * never have rendered fails for you now instead of arriving wrong on
+   * somebody's phone. Some fields are read rather than sent: `agentpay`'s
+   * `request_payment` takes only a `checkout_url` and resolves the amount and
+   * reason from that payment request, so a card can never claim a figure the
+   * checkout will not charge.
+   *
+   * Cards are **iMessage-only**. Recipients without the app see a static
+   * version built from the same copy; SMS and RCS recipients cannot receive
+   * one at all (error codes 2018 and 4005).
+   *
+   */
+  experiences: API.Experiences = new API.Experiences(this);
   /**
    * Webhook Subscriptions allow you to receive real-time notifications when events
    * occur on your account.
@@ -1548,12 +1818,12 @@ export class LinqAPIV3 {
    *
    */
   webhookSubscriptions: API.WebhookSubscriptions = new API.WebhookSubscriptions(this);
+  webhooks: API.Webhooks = new API.Webhooks(this);
   /**
    * Check whether a recipient address supports iMessage or RCS before sending a message.
    *
    */
   capability: API.Capability = new API.Capability(this);
-  webhooks: API.Webhooks = new API.Webhooks(this);
   /**
    * Contact Card lets you set and share your contact information (name and profile photo) with chat participants via iMessage Name and Photo Sharing.
    *
@@ -1574,10 +1844,17 @@ LinqAPIV3.Phonenumbers = Phonenumbers;
 LinqAPIV3.PhoneNumbers = PhoneNumbers;
 LinqAPIV3.AvailableNumber = AvailableNumber;
 LinqAPIV3.PaymentRequests = PaymentRequests;
+LinqAPIV3.PaymentProviders = PaymentProviders;
+LinqAPIV3.PaymentHandles = PaymentHandles;
+LinqAPIV3.Payments = Payments;
+LinqAPIV3.LinkConnections = LinkConnections;
+LinqAPIV3.LinkPayments = LinkPayments;
+LinqAPIV3.BlockedHandles = BlockedHandles;
+LinqAPIV3.Experiences = Experiences;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
-LinqAPIV3.Capability = Capability;
 LinqAPIV3.Webhooks = Webhooks;
+LinqAPIV3.Capability = Capability;
 LinqAPIV3.ContactCard = ContactCard;
 
 export declare namespace LinqAPIV3 {
@@ -1608,8 +1885,8 @@ export declare namespace LinqAPIV3 {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatListChatsParams as ChatListChatsParams,
     type ChatUpdateParams as ChatUpdateParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1621,12 +1898,14 @@ export declare namespace LinqAPIV3 {
     type MessageCreateResponse as MessageCreateResponse,
     type MessageAddReactionResponse as MessageAddReactionResponse,
     type MessageUpdateAppCardResponse as MessageUpdateAppCardResponse,
+    type MessageUpdateStickerPlacementResponse as MessageUpdateStickerPlacementResponse,
     type MessagesListMessagesPagination as MessagesListMessagesPagination,
     type MessageCreateParams as MessageCreateParams,
-    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
-    type MessageAddReactionParams as MessageAddReactionParams,
     type MessageUpdateParams as MessageUpdateParams,
+    type MessageAddReactionParams as MessageAddReactionParams,
+    type MessageListMessagesThreadParams as MessageListMessagesThreadParams,
     type MessageUpdateAppCardParams as MessageUpdateAppCardParams,
+    type MessageUpdateStickerPlacementParams as MessageUpdateStickerPlacementParams,
   };
 
   export {
@@ -1641,9 +1920,19 @@ export declare namespace LinqAPIV3 {
 
   export {
     PhoneNumbers as PhoneNumbers,
+    type ReputationActionItem as ReputationActionItem,
+    type ReputationAudit as ReputationAudit,
+    type ReputationAuditStarted as ReputationAuditStarted,
+    type ReputationDriver as ReputationDriver,
+    type ReputationDriverKey as ReputationDriverKey,
+    type ReputationEvidence as ReputationEvidence,
+    type ReputationOptOutChat as ReputationOptOutChat,
+    type ReputationReport as ReputationReport,
+    type ReputationUnhealthyChat as ReputationUnhealthyChat,
     type PhoneNumberUpdateResponse as PhoneNumberUpdateResponse,
     type PhoneNumberListResponse as PhoneNumberListResponse,
     type PhoneNumberUpdateParams as PhoneNumberUpdateParams,
+    type PhoneNumberGetReputationAuditParams as PhoneNumberGetReputationAuditParams,
   };
 
   export {
@@ -1658,6 +1947,45 @@ export declare namespace LinqAPIV3 {
     type PaymentRequestListResponse as PaymentRequestListResponse,
     type PaymentRequestCreateParams as PaymentRequestCreateParams,
     type PaymentRequestListParams as PaymentRequestListParams,
+  };
+
+  export {
+    PaymentProviders as PaymentProviders,
+    type PaymentProvider as PaymentProvider,
+    type PaymentProviderConnectResponse as PaymentProviderConnectResponse,
+    type PaymentProviderConnectParams as PaymentProviderConnectParams,
+  };
+
+  export {
+    PaymentHandles as PaymentHandles,
+    type PaymentHandleConnection as PaymentHandleConnection,
+    type PaymentHandleVerifyParams as PaymentHandleVerifyParams,
+  };
+
+  export {
+    Payments as Payments,
+    type Payment as Payment,
+    type PaymentCredentialsResponse as PaymentCredentialsResponse,
+    type PaymentCreateParams as PaymentCreateParams,
+  };
+
+  export { LinkConnections as LinkConnections, type LinkConnectionStatus as LinkConnectionStatus };
+
+  export { LinkPayments as LinkPayments, type LinkPayment as LinkPayment };
+
+  export {
+    BlockedHandles as BlockedHandles,
+    type BlockedHandleEntry as BlockedHandleEntry,
+    type BlockedHandleListResponse as BlockedHandleListResponse,
+    type BlockedHandleBlockResponse as BlockedHandleBlockResponse,
+    type BlockedHandleBlockParams as BlockedHandleBlockParams,
+    type BlockedHandleUnblockParams as BlockedHandleUnblockParams,
+  };
+
+  export {
+    Experiences as Experiences,
+    type ExperienceRetrieveResponse as ExperienceRetrieveResponse,
+    type ExperienceListResponse as ExperienceListResponse,
   };
 
   export {
@@ -1676,14 +2004,6 @@ export declare namespace LinqAPIV3 {
   };
 
   export {
-    Capability as Capability,
-    type HandleCheck as HandleCheck,
-    type HandleCheckResponse as HandleCheckResponse,
-    type CapabilityCheckIMessageParams as CapabilityCheckIMessageParams,
-    type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
-  };
-
-  export {
     Webhooks as Webhooks,
     type MessageEventV2 as MessageEventV2,
     type MessagePayload as MessagePayload,
@@ -1699,6 +2019,15 @@ export declare namespace LinqAPIV3 {
     type MessageEditedWebhookEvent as MessageEditedWebhookEvent,
     type ReactionAddedWebhookEvent as ReactionAddedWebhookEvent,
     type ReactionRemovedWebhookEvent as ReactionRemovedWebhookEvent,
+    type PollReceivedWebhookEvent as PollReceivedWebhookEvent,
+    type PollSentWebhookEvent as PollSentWebhookEvent,
+    type PollDeliveredWebhookEvent as PollDeliveredWebhookEvent,
+    type PollReadWebhookEvent as PollReadWebhookEvent,
+    type PollUpdatedWebhookEvent as PollUpdatedWebhookEvent,
+    type PollFailedWebhookEvent as PollFailedWebhookEvent,
+    type PollVoteAddedWebhookEvent as PollVoteAddedWebhookEvent,
+    type PollVoteRemovedWebhookEvent as PollVoteRemovedWebhookEvent,
+    type PollReactionAddedWebhookEvent as PollReactionAddedWebhookEvent,
     type ParticipantAddedWebhookEvent as ParticipantAddedWebhookEvent,
     type ParticipantRemovedWebhookEvent as ParticipantRemovedWebhookEvent,
     type ChatCreatedWebhookEvent as ChatCreatedWebhookEvent,
@@ -1708,16 +2037,36 @@ export declare namespace LinqAPIV3 {
     type ChatGroupIconUpdateFailedWebhookEvent as ChatGroupIconUpdateFailedWebhookEvent,
     type ChatTypingIndicatorStartedWebhookEvent as ChatTypingIndicatorStartedWebhookEvent,
     type ChatTypingIndicatorStoppedWebhookEvent as ChatTypingIndicatorStoppedWebhookEvent,
+    type ChatBackgroundUpdatedWebhookEvent as ChatBackgroundUpdatedWebhookEvent,
+    type ChatBackgroundUpdateFailedWebhookEvent as ChatBackgroundUpdateFailedWebhookEvent,
+    type ContactCardReceivedWebhookEvent as ContactCardReceivedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
+    type ConnectionCreatedWebhookEvent as ConnectionCreatedWebhookEvent,
+    type ConnectionRevokedWebhookEvent as ConnectionRevokedWebhookEvent,
+    type LocationSharingStartedWebhookEvent as LocationSharingStartedWebhookEvent,
+    type LocationSharingStoppedWebhookEvent as LocationSharingStoppedWebhookEvent,
+    type PaymentAuthorizedWebhookEvent as PaymentAuthorizedWebhookEvent,
+    type PaymentCanceledWebhookEvent as PaymentCanceledWebhookEvent,
+    type PaymentDeclinedWebhookEvent as PaymentDeclinedWebhookEvent,
+    type PaymentExpiredWebhookEvent as PaymentExpiredWebhookEvent,
+    type PaymentSucceededWebhookEvent as PaymentSucceededWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
+  };
+
+  export {
+    Capability as Capability,
+    type HandleCheck as HandleCheck,
+    type HandleCheckResponse as HandleCheckResponse,
+    type CapabilityCheckIMessageParams as CapabilityCheckIMessageParams,
+    type CapabilityCheckRCSParams as CapabilityCheckRCSParams,
   };
 
   export {
     ContactCard as ContactCard,
     type SetContactCard as SetContactCard,
     type ContactCardRetrieveResponse as ContactCardRetrieveResponse,
-    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardCreateParams as ContactCardCreateParams,
+    type ContactCardRetrieveParams as ContactCardRetrieveParams,
     type ContactCardUpdateParams as ContactCardUpdateParams,
   };
 
