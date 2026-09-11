@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.66.3](https://github.com/linq-team/linq-node/compare/v0.66.2...v0.66.3) (2026-09-11)
+
+
+### Bug Fixes
+
+* clarify location sharing stop endpoint behavior ([530026d](https://github.com/linq-team/linq-node/commit/530026d0f5e0731a8fb7243ebf61648f1b305d81))
+
 ## [0.66.2](https://github.com/linq-team/linq-node/compare/v0.66.1...v0.66.2) (2026-09-11)
 
 
