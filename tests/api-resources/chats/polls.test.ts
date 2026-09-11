@@ -7,10 +7,12 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource availableNumber', () => {
+describe('resource polls', () => {
   // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.availableNumber.retrieve();
+  test.skip('create: only required params', async () => {
+    const responsePromise = client.chats.polls.create('550e8400-e29b-41d4-a716-446655440000', {
+      poll: { options: [{ text: 'Tacos' }, { text: 'Sushi' }] },
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,13 +23,9 @@ describe('resource availableNumber', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.availableNumber.retrieve(
-        { exclude_from: ['string'], to: ['string'] },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(LinqAPIV3.NotFoundError);
+  test.skip('create: required and optional params', async () => {
+    const response = await client.chats.polls.create('550e8400-e29b-41d4-a716-446655440000', {
+      poll: { options: [{ text: 'Tacos' }, { text: 'Sushi' }], idempotency_key: 'poll-abc123' },
+    });
   });
 });
