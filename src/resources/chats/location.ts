@@ -118,32 +118,17 @@ export class Location extends APIResource {
   }
 
   /**
-   * End the location share a contact started with you, as though they had stopped it
-   * themselves. Their device stops listing you as someone they share with, so they
-   * can start a fresh share cleanly.
+   * Stop a contact's location share with you. `handle` is required and names whose
+   * share to end.
    *
-   * Use this to recover when a share has gone stale — coordinates that stop
-   * advancing, or a share you believe has ended but is still reported as active.
-   * Without it the only remedy is asking the contact to stop and re-share, which is
-   * confusing for them because their phone still shows everything as working.
+   * Returns `202` when the request is accepted. The stop is carried out on the
+   * contact's device, and the `location.sharing.stopped` webhook fires once sharing
+   * has ended.
    *
-   * This is not reversible from the API. Sharing can only resume when the contact
-   * starts a new share, so prompt them to re-share afterwards. Request a new one
-   * with `POST /v3/chats/{chatId}/location/request`.
+   * Sharing is per contact, so this ends that contact's share in every chat you have
+   * with them.
    *
-   * Apple keeps one location-sharing relationship per person rather than per chat,
-   * so this ends that contact's share everywhere, not only in this chat.
-   *
-   * `handle` names whose share to end, and is always required — a group chat can
-   * have several people sharing, and this is not an operation to infer a target for.
-   *
-   * **This returns `202`, not `200`.** The removal happens on the device that holds
-   * the sharing relationship, so a success here means the request was accepted, not
-   * that sharing has ended. Wait for the `location.sharing.stopped` webhook to
-   * confirm it — that webhook is what tells you the contact's device has actually
-   * let go.
-   *
-   * Returns `404` if the contact is not currently sharing.
+   * Returns `404` if the contact isn't currently sharing.
    *
    * @example
    * ```ts
