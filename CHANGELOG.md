@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.66.2](https://github.com/linq-team/linq-node/compare/v0.66.1...v0.66.2) (2026-09-11)
+
+
+### Documentation
+
+* add example to stop chat location sharing request ([674f4fd](https://github.com/linq-team/linq-node/commit/674f4fdafdedd36e630c91d262231a2038ea094b))
+
 ## [0.66.1](https://github.com/linq-team/linq-node/compare/v0.66.0...v0.66.1) (2026-09-10)
 
 
