@@ -3800,6 +3800,8 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -3873,6 +3875,230 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
   }
 }
 
+/**
+ * Complete webhook payload for phone_number.assigned events
+ */
+export interface PhoneNumberAssignedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for phone_number.assigned and phone_number.released webhook events
+   */
+  data: PhoneNumberAssignedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * The type of event
+   */
+  event_type:
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PhoneNumberAssignedWebhookEvent {
+  /**
+   * Payload for phone_number.assigned and phone_number.released webhook events
+   */
+  export interface Data {
+    /**
+     * When the ownership change occurred
+     */
+    changed_at: string;
+
+    /**
+     * Phone number in E.164 format
+     */
+    phone_number: string;
+  }
+}
+
+/**
+ * Complete webhook payload for phone_number.released events
+ */
+export interface PhoneNumberReleasedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for phone_number.assigned and phone_number.released webhook events
+   */
+  data: PhoneNumberReleasedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * The type of event
+   */
+  event_type:
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PhoneNumberReleasedWebhookEvent {
+  /**
+   * Payload for phone_number.assigned and phone_number.released webhook events
+   */
+  export interface Data {
+    /**
+     * When the ownership change occurred
+     */
+    changed_at: string;
+
+    /**
+     * Phone number in E.164 format
+     */
+    phone_number: string;
+  }
+}
+
 export interface ConnectionCreatedWebhookEvent {
   /**
    * API version for the webhook payload format
@@ -3928,6 +4154,8 @@ export interface ConnectionCreatedWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -4167,6 +4395,8 @@ export interface ConnectionRevokedWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -4400,6 +4630,8 @@ export interface LocationSharingStartedWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -4518,6 +4750,8 @@ export interface LocationSharingStoppedWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -4641,6 +4875,8 @@ export interface PaymentAuthorizedWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -4880,6 +5116,8 @@ export interface PaymentCanceledWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -5119,6 +5357,8 @@ export interface PaymentDeclinedWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -5358,6 +5598,8 @@ export interface PaymentExpiredWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -5597,6 +5839,8 @@ export interface PaymentSucceededWebhookEvent {
     | 'chat.typing_indicator.started'
     | 'chat.typing_indicator.stopped'
     | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
     | 'contact_card.received'
     | 'call.initiated'
     | 'call.ringing'
@@ -5815,6 +6059,8 @@ export type UnwrapWebhookEvent =
   | ChatBackgroundUpdateFailedWebhookEvent
   | ContactCardReceivedWebhookEvent
   | PhoneNumberStatusUpdatedWebhookEvent
+  | PhoneNumberAssignedWebhookEvent
+  | PhoneNumberReleasedWebhookEvent
   | ConnectionCreatedWebhookEvent
   | ConnectionRevokedWebhookEvent
   | LocationSharingStartedWebhookEvent
@@ -5863,6 +6109,8 @@ export declare namespace Webhooks {
     type ChatBackgroundUpdateFailedWebhookEvent as ChatBackgroundUpdateFailedWebhookEvent,
     type ContactCardReceivedWebhookEvent as ContactCardReceivedWebhookEvent,
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
+    type PhoneNumberAssignedWebhookEvent as PhoneNumberAssignedWebhookEvent,
+    type PhoneNumberReleasedWebhookEvent as PhoneNumberReleasedWebhookEvent,
     type ConnectionCreatedWebhookEvent as ConnectionCreatedWebhookEvent,
     type ConnectionRevokedWebhookEvent as ConnectionRevokedWebhookEvent,
     type LocationSharingStartedWebhookEvent as LocationSharingStartedWebhookEvent,
