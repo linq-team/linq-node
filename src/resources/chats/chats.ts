@@ -467,10 +467,12 @@ export interface MediaPart {
    * off and place it on any message in the conversation, and it renders without a
    * bubble.
    *
-   * An opaque photo is cut out automatically — the subject is lifted from its
-   * background, the same way "Add Sticker" does on iOS. An image that already has
-   * transparency is sent as-is. If no subject can be found, the image sends as an
-   * ordinary photo.
+   * An ordinary photo is cut out automatically — the subject is lifted from its
+   * background. An image that has already been cut out is sent as-is. If no subject
+   * can be found, the image sends as an ordinary photo.
+   *
+   * An animated image sends as an animated sticker, in whatever shape the file
+   * already has — the cut-out does not apply to it.
    *
    * **iMessage only.** On SMS/RCS the flag is ignored and the image sends as a
    * photo.
