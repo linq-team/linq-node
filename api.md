@@ -345,6 +345,8 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">ChatBackgroundUpdateFailedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ContactCardReceivedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PhoneNumberAssignedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PhoneNumberReleasedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ConnectionCreatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ConnectionRevokedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">LocationSharingStartedWebhookEvent</a></code>

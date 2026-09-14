@@ -161,6 +161,8 @@ export {
   type ChatBackgroundUpdateFailedWebhookEvent,
   type ContactCardReceivedWebhookEvent,
   type PhoneNumberStatusUpdatedWebhookEvent,
+  type PhoneNumberAssignedWebhookEvent,
+  type PhoneNumberReleasedWebhookEvent,
   type ConnectionCreatedWebhookEvent,
   type ConnectionRevokedWebhookEvent,
   type LocationSharingStartedWebhookEvent,
