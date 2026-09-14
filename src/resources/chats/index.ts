@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+export { Background, type BackgroundSetParams } from './background';
 export {
   Chats,
   type Chat,
@@ -12,18 +13,24 @@ export {
   type ChatLeaveChatResponse,
   type ChatSendVoicememoResponse,
   type ChatCreateParams,
-  type ChatListChatsParams,
   type ChatUpdateParams,
+  type ChatListChatsParams,
   type ChatSendVoicememoParams,
   type ChatsListChatsPagination,
 } from './chats';
-export { Location, type GetChatLocationResponse, type LocationRequestResponse } from './location';
+export {
+  Location,
+  type GetChatLocationResponse,
+  type LocationRequestResponse,
+  type StopChatLocationSharingResponse,
+  type LocationStopParams,
+} from './location';
 export {
   Messages,
   type SentMessage,
   type MessageSendResponse,
-  type MessageSendParams,
   type MessageListParams,
+  type MessageSendParams,
 } from './messages';
 export {
   Participants,
@@ -32,4 +39,5 @@ export {
   type ParticipantAddParams,
   type ParticipantRemoveParams,
 } from './participants';
+export { Polls, type Poll, type PollEnvelope, type PollCreateParams } from './polls';
 export { Typing } from './typing';

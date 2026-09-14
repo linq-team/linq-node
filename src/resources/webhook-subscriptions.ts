@@ -161,7 +161,7 @@ export class WebhookSubscriptions extends APIResource {
    * - Legacy `X-Webhook-*` headers are also sent for backwards compatibility
    *   (deprecated)
    * - See
-   *   [Verifying Webhook Signatures](https://docs.linqapp.com/guides/webhooks#verifying-webhook-signatures)
+   *   [Verifying Webhook Signatures](https://docs.linqapp.com/channel/imessage/guides/webhooks#verifying-webhook-signatures)
    *   for verification details
    * - Failed deliveries (5xx, 429, network errors) are retried up to 10 times over
    *   ~25 minutes with exponential backoff
@@ -185,20 +185,6 @@ export class WebhookSubscriptions extends APIResource {
     options?: RequestOptions,
   ): APIPromise<WebhookSubscriptionCreateResponse> {
     return this._client.post('/v3/webhook-subscriptions', { body, ...options });
-  }
-
-  /**
-   * Retrieve all webhook subscriptions for the authenticated partner. Returns a list
-   * of active and inactive subscriptions with their configuration and status.
-   *
-   * @example
-   * ```ts
-   * const webhookSubscriptions =
-   *   await client.webhookSubscriptions.list();
-   * ```
-   */
-  list(options?: RequestOptions): APIPromise<WebhookSubscriptionListResponse> {
-    return this._client.get('/v3/webhook-subscriptions', options);
   }
 
   /**
@@ -241,6 +227,20 @@ export class WebhookSubscriptions extends APIResource {
     options?: RequestOptions,
   ): APIPromise<WebhookSubscription> {
     return this._client.put(path`/v3/webhook-subscriptions/${subscriptionID}`, { body, ...options });
+  }
+
+  /**
+   * Retrieve all webhook subscriptions for the authenticated partner. Returns a list
+   * of active and inactive subscriptions with their configuration and status.
+   *
+   * @example
+   * ```ts
+   * const webhookSubscriptions =
+   *   await client.webhookSubscriptions.list();
+   * ```
+   */
+  list(options?: RequestOptions): APIPromise<WebhookSubscriptionListResponse> {
+    return this._client.get('/v3/webhook-subscriptions', options);
   }
 
   /**
@@ -293,6 +293,12 @@ export interface WebhookSubscription {
   updated_at: string;
 
   /**
+   * Environment this subscription belongs to. Null means production. Only events
+   * from lines in the same environment are delivered.
+   */
+  environment_id?: string | null;
+
+  /**
    * Phone numbers this subscription filters for. If null or empty, events from all
    * phone numbers are delivered.
    */
@@ -339,6 +345,12 @@ export interface WebhookSubscriptionCreateResponse {
    * When the subscription was last updated
    */
   updated_at: string;
+
+  /**
+   * Environment this subscription belongs to. Null means production. Only events
+   * from lines in the same environment are delivered.
+   */
+  environment_id?: string | null;
 
   /**
    * Phone numbers this subscription filters for. If null or empty, events from all
