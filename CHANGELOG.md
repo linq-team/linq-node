@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.67.0](https://github.com/linq-team/linq-node/compare/v0.66.3...v0.67.0) (2026-09-14)
+
+
+### Features
+
+* add environment_id field to subscription objects ([10b2714](https://github.com/linq-team/linq-node/commit/10b2714ee25c146058db25888ba345062fa8b790))
+* clarify sticker behavior for animated images and simplify docs ([10b2714](https://github.com/linq-team/linq-node/commit/10b2714ee25c146058db25888ba345062fa8b790))
+
 ## [0.66.3](https://github.com/linq-team/linq-node/compare/v0.66.2...v0.66.3) (2026-09-11)
 
 
