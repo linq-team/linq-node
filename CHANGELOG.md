@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.69.0](https://github.com/linq-team/linq-node/compare/v0.68.0...v0.69.0) (2026-09-15)
+
+
+### Features
+
+* add inline stickers support for imessage text messages ([ebe8ec1](https://github.com/linq-team/linq-node/commit/ebe8ec1add46deb06de17b87769b7bcf53b89499))
+
 ## [0.68.0](https://github.com/linq-team/linq-node/compare/v0.67.0...v0.68.0) (2026-09-14)
 
 
