@@ -87,6 +87,42 @@ export class Chats extends APIResource {
    * participants, iMessage recipients see the decorations and SMS/RCS recipients
    * receive the same message as plain text.
    *
+   * ## Inline Stickers (iMessage only)
+   *
+   * Use the `inline_stickers` array on a text part to place stickers inside the
+   * text. Each sticker replaces the characters in its `range: [start, end)` and
+   * takes its image from exactly one of `url` or `attachment_id` — an image uploaded
+   * with `POST /v3/attachments`.
+   *
+   * ```json
+   * {
+   *   "type": "text",
+   *   "value": "Happy birthday 🎂! 🎉🎉",
+   *   "inline_stickers": [
+   *     {
+   *       "range": [15, 17],
+   *       "attachment_id": "550e8400-e29b-41d4-a716-446655440000"
+   *     },
+   *     {
+   *       "range": [19, 21],
+   *       "attachment_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+   *     },
+   *     {
+   *       "range": [21, 23],
+   *       "attachment_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+   *     }
+   *   ]
+   * }
+   * ```
+   *
+   * **Note:** A sticker takes the place of the characters it covers, so they are
+   * hidden on iMessage: `"Sip cup"` with a sticker on `cup` reads "Sip [sticker]".
+   * Those characters are what SMS and RCS recipients receive (the stickers are
+   * dropped and `value` is sent as written) and what VoiceOver reads. To keep a word
+   * visible, give the sticker its own placeholder: `"Sip cup 🥤"` with the range on
+   * `🥤`. Up to 100 stickers and 10 different images per part; copies of one image
+   * count as one.
+   *
    * ## First-Message Link Restriction
    *
    * To protect sender deliverability, the **first outbound message** of a new chat
@@ -429,6 +465,38 @@ export namespace Chat {
      */
     updated_at: string;
   }
+}
+
+/**
+ * A sticker image placed inside the text of a part, replacing the characters in
+ * `range`. Provide exactly one of `url` or `attachment_id`.
+ */
+export interface InlineSticker {
+  /**
+   * Character range `[start, end)` in the `value` string that the sticker replaces.
+   * `start` is inclusive, `end` is exclusive. Those characters are hidden on
+   * iMessage and sent as written on SMS and RCS. _Characters are measured as UTF-16
+   * code units. Most characters count as 1; some emoji count as 2._
+   */
+  range: Array<number>;
+
+  /**
+   * Reference to a sticker image pre-uploaded via `POST /v3/attachments`.
+   *
+   * Exactly one of `url` or `attachment_id` is required.
+   */
+  attachment_id?: string;
+
+  /**
+   * Linq attachment URL of the sticker image — the `download_url` returned by
+   * `POST /v3/attachments`.
+   *
+   * The image must already be stored with us. To use an image from elsewhere, upload
+   * it with `POST /v3/attachments` first and pass `attachment_id`.
+   *
+   * Exactly one of `url` or `attachment_id` is required.
+   */
+  url?: string;
 }
 
 export interface LinkPart {
@@ -844,6 +912,33 @@ export interface TextPart {
   value: string;
 
   /**
+   * Optional stickers placed inside the text, in the line with the words (iMessage
+   * only).
+   *
+   * Each sticker replaces the characters in its `range` `[start, end)` of `value`,
+   * and takes its image from exactly one of `url` or `attachment_id` — an image
+   * uploaded with `POST /v3/attachments`. The characters a sticker covers are hidden
+   * on iMessage and are what SMS and RCS recipients receive and VoiceOver reads, so
+   * cover something that stands in for the sticker (`"🎂"`, `"[cake]"`). To keep a
+   * word visible, give the sticker its own placeholder: `"Sip cup 🥤"` with the
+   * range on `🥤`.
+   *
+   * Up to 100 stickers and 10 different images per part. Copies of one image count
+   * as one: twenty copies of one sticker use one of the 10. An animated image
+   * arrives as a still.
+   *
+   * Stickers cannot overlap each other or a `text_decorations` range, cannot split a
+   * character, and cannot be combined with `mention`.
+   *
+   * _Characters are measured as UTF-16 code units. Most characters count as 1; some
+   * emoji count as 2._
+   *
+   * **Note:** on SMS and RCS the stickers are dropped and `value` is sent as plain
+   * text.
+   */
+  inline_stickers?: Array<InlineSticker>;
+
+  /**
    * Mention a chat participant. Group chats only — sending a mention to a direct
    * chat is rejected with `409` / `2023`. The chat's service is not a constraint: a
    * mention is accepted in any group, including one with SMS/RCS participants.
@@ -1235,6 +1330,7 @@ Chats.Background = Background;
 export declare namespace Chats {
   export {
     type Chat as Chat,
+    type InlineSticker as InlineSticker,
     type LinkPart as LinkPart,
     type MediaPart as MediaPart,
     type MessageContent as MessageContent,
