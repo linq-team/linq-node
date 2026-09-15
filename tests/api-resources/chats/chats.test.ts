@@ -40,6 +40,18 @@ describe('resource chats', () => {
           {
             type: 'text',
             value: 'Hello! How can I help you today?',
+            inline_stickers: [
+              {
+                range: [15, 17],
+                attachment_id: '550e8400-e29b-41d4-a716-446655440000',
+                url: 'https://cdn.linqapp.com/attachments/partners/acme/550e8400-e29b-41d4-a716-446655440000/sticker.png',
+              },
+              {
+                range: [19, 21],
+                attachment_id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+                url: 'https://cdn.linqapp.com/attachments/partners/acme/550e8400-e29b-41d4-a716-446655440000/sticker.png',
+              },
+            ],
             mention: '+14155551234',
             mention_range: [4, 9],
             text_decorations: [

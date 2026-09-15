@@ -3,6 +3,7 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">ChatHandle</a></code>
+- <code><a href="./src/resources/shared.ts">InlineStickerResponse</a></code>
 - <code><a href="./src/resources/shared.ts">LinkPartResponse</a></code>
 - <code><a href="./src/resources/shared.ts">MediaPartResponse</a></code>
 - <code><a href="./src/resources/shared.ts">Reaction</a></code>
@@ -16,6 +17,7 @@ Types:
 Types:
 
 - <code><a href="./src/resources/chats/chats.ts">Chat</a></code>
+- <code><a href="./src/resources/chats/chats.ts">InlineSticker</a></code>
 - <code><a href="./src/resources/chats/chats.ts">LinkPart</a></code>
 - <code><a href="./src/resources/chats/chats.ts">MediaPart</a></code>
 - <code><a href="./src/resources/chats/chats.ts">MessageContent</a></code>

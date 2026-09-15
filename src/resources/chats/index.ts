@@ -4,6 +4,7 @@ export { Background, type BackgroundSetParams } from './background';
 export {
   Chats,
   type Chat,
+  type InlineSticker,
   type LinkPart,
   type MediaPart,
   type MessageContent,

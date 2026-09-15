@@ -138,10 +138,11 @@ export class Messages extends APIResource {
    * - Voice memos are **not** supported here. To send an iMessage voice-memo bubble,
    *   use `POST /v3/chats/{chatId}/voicememo` with a known chat id.
    *
-   * ## Service preference, effects, decorations
+   * ## Service preference, effects, decorations, inline stickers
    *
    * Set `message.preferred_service` (`iMessage` | `RCS` | `SMS`), `message.effect`,
-   * and per-part `text_decorations` exactly as on the other send endpoints.
+   * and per-part `text_decorations` and `inline_stickers` exactly as on the other
+   * send endpoints.
    *
    * Always responds `202 Accepted` — chat creation is incidental to the send.
    *

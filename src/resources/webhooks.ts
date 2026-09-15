@@ -768,6 +768,15 @@ export interface SchemasTextPartResponse {
   value: string;
 
   /**
+   * Stickers placed inside the text, in the order they appear in `value`. `null`
+   * when the part has none.
+   *
+   * Set on messages sent with `inline_stickers`. An inline sticker received over
+   * iMessage currently arrives as a separate media part.
+   */
+  inline_stickers?: Array<Shared.InlineStickerResponse> | null;
+
+  /**
    * @deprecated DEPRECATED: Use `mentions` instead. Handle (E.164 phone number or
    * Apple ID email) of the **first** mention on this part. A part may carry several
    * mentions; this field shows only the first in `value` order, so it cannot be used

@@ -40,6 +40,41 @@ export interface ChatHandle {
 }
 
 /**
+ * One sticker image placed inside the text of a part: `id`, `url` and the image
+ * details.
+ */
+export interface InlineStickerResponse {
+  /**
+   * Character range `[start, end)` in `value` that the sticker replaces. Those
+   * characters are hidden on iMessage and sent as written on SMS and RCS.
+   * _Characters are measured as UTF-16 code units. Most characters count as 1; some
+   * emoji count as 2._
+   */
+  range: Array<number>;
+
+  /**
+   * Attachment ID of the sticker image.
+   */
+  id?: string | null;
+
+  /**
+   * Filename of the sticker
+   */
+  file_name?: string | null;
+
+  /**
+   * MIME type of the sticker image
+   */
+  mime_type?: string | null;
+
+  /**
+   * URL for downloading the sticker image. Permanent for a normal upload; a
+   * time-limited signed URL when the image is an ephemeral attachment.
+   */
+  url?: string | null;
+}
+
+/**
  * A rich link preview part
  */
 export interface LinkPartResponse {
@@ -230,6 +265,15 @@ export interface TextPartResponse {
    * The text content
    */
   value: string;
+
+  /**
+   * Stickers placed inside the text, in the order they appear in `value`. `null`
+   * when the part has none.
+   *
+   * Set on messages sent with `inline_stickers`. An inline sticker received over
+   * iMessage currently arrives as a separate media part.
+   */
+  inline_stickers?: Array<InlineStickerResponse> | null;
 
   /**
    * @deprecated DEPRECATED: Use `mentions` instead. Handle (E.164 phone number or

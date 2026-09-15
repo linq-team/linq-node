@@ -171,6 +171,7 @@ import {
   ChatUpdateResponse,
   Chats,
   ChatsListChatsPagination,
+  InlineSticker,
   LinkPart,
   MediaPart,
   MessageContent,
@@ -1877,6 +1878,7 @@ export declare namespace LinqAPIV3 {
   export {
     Chats as Chats,
     type Chat as Chat,
+    type InlineSticker as InlineSticker,
     type LinkPart as LinkPart,
     type MediaPart as MediaPart,
     type MessageContent as MessageContent,
@@ -2075,6 +2077,7 @@ export declare namespace LinqAPIV3 {
   };
 
   export type ChatHandle = API.ChatHandle;
+  export type InlineStickerResponse = API.InlineStickerResponse;
   export type LinkPartResponse = API.LinkPartResponse;
   export type MediaPartResponse = API.MediaPartResponse;
   export type Reaction = API.Reaction;

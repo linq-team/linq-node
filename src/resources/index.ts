@@ -31,6 +31,7 @@ export {
 export {
   Chats,
   type Chat,
+  type InlineSticker,
   type LinkPart,
   type MediaPart,
   type MessageContent,
