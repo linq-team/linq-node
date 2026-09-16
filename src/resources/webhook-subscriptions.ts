@@ -293,12 +293,6 @@ export interface WebhookSubscription {
   updated_at: string;
 
   /**
-   * Environment this subscription belongs to. Null means production. Only events
-   * from lines in the same environment are delivered.
-   */
-  environment_id?: string | null;
-
-  /**
    * Phone numbers this subscription filters for. If null or empty, events from all
    * phone numbers are delivered.
    */
@@ -345,12 +339,6 @@ export interface WebhookSubscriptionCreateResponse {
    * When the subscription was last updated
    */
   updated_at: string;
-
-  /**
-   * Environment this subscription belongs to. Null means production. Only events
-   * from lines in the same environment are delivered.
-   */
-  environment_id?: string | null;
 
   /**
    * Phone numbers this subscription filters for. If null or empty, events from all
