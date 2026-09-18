@@ -1,11 +1,18 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as MessagesAPI from '../messages';
 import * as Shared from '../shared';
+import * as BackgroundAPI from './background';
+import { Background, BackgroundSetParams } from './background';
 import * as LocationAPI from './location';
-import { GetChatLocationResponse, Location, LocationRequestResponse } from './location';
-import * as ChatsMessagesAPI from './messages';
+import {
+  GetChatLocationResponse,
+  Location,
+  LocationRequestResponse,
+  LocationStopParams,
+  StopChatLocationSharingResponse,
+} from './location';
+import * as MessagesAPI from './messages';
 import { MessageListParams, MessageSendParams, MessageSendResponse, Messages, SentMessage } from './messages';
 import * as ParticipantsAPI from './participants';
 import {
@@ -15,8 +22,11 @@ import {
   ParticipantRemoveResponse,
   Participants,
 } from './participants';
+import * as PollsAPI from './polls';
+import { Poll, PollCreateParams, PollEnvelope, Polls } from './polls';
 import * as TypingAPI from './typing';
 import { Typing } from './typing';
+import * as ResourcesMessagesAPI from '../messages/messages';
 import { APIPromise } from '../../core/api-promise';
 import { ListChatsPagination, type ListChatsPaginationParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
@@ -26,8 +36,10 @@ import { path } from '../../internal/utils/path';
 export class Chats extends APIResource {
   participants: ParticipantsAPI.Participants = new ParticipantsAPI.Participants(this._client);
   typing: TypingAPI.Typing = new TypingAPI.Typing(this._client);
-  messages: ChatsMessagesAPI.Messages = new ChatsMessagesAPI.Messages(this._client);
+  messages: MessagesAPI.Messages = new MessagesAPI.Messages(this._client);
   location: LocationAPI.Location = new LocationAPI.Location(this._client);
+  polls: PollsAPI.Polls = new PollsAPI.Polls(this._client);
+  background: BackgroundAPI.Background = new BackgroundAPI.Background(this._client);
 
   /**
    * Create a new chat with specified participants and send an initial message. The
@@ -70,8 +82,46 @@ export class Chats extends APIResource {
    * ```
    *
    * **Note:** Style ranges (bold, italic, etc.) may overlap, but animation ranges
-   * must not overlap with other animations or styles. Text decorations only render
-   * for iMessage recipients. For SMS/RCS, text decorations are not applied.
+   * must not overlap with other animations or styles. Decorations render per
+   * recipient, not per message: in a group with both iMessage and SMS/RCS
+   * participants, iMessage recipients see the decorations and SMS/RCS recipients
+   * receive the same message as plain text.
+   *
+   * ## Inline Stickers (iMessage only)
+   *
+   * Use the `inline_stickers` array on a text part to place stickers inside the
+   * text. Each sticker replaces the characters in its `range: [start, end)` and
+   * takes its image from exactly one of `url` or `attachment_id` — an image uploaded
+   * with `POST /v3/attachments`.
+   *
+   * ```json
+   * {
+   *   "type": "text",
+   *   "value": "Happy birthday 🎂! 🎉🎉",
+   *   "inline_stickers": [
+   *     {
+   *       "range": [15, 17],
+   *       "attachment_id": "550e8400-e29b-41d4-a716-446655440000"
+   *     },
+   *     {
+   *       "range": [19, 21],
+   *       "attachment_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+   *     },
+   *     {
+   *       "range": [21, 23],
+   *       "attachment_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+   *     }
+   *   ]
+   * }
+   * ```
+   *
+   * **Note:** A sticker takes the place of the characters it covers, so they are
+   * hidden on iMessage: `"Sip cup"` with a sticker on `cup` reads "Sip [sticker]".
+   * Those characters are what SMS and RCS recipients receive (the stickers are
+   * dropped and `value` is sent as written) and what VoiceOver reads. To keep a word
+   * visible, give the sticker its own placeholder: `"Sip cup 🥤"` with the range on
+   * `🥤`. Up to 100 stickers and 10 different images per part; copies of one image
+   * count as one.
    *
    * ## First-Message Link Restriction
    *
@@ -83,6 +133,24 @@ export class Chats extends APIResource {
    *
    * This rule applies only to `POST /v3/chats`. Follow-up messages on an existing
    * chat (`POST /v3/chats/{chatId}/messages`) are not subject to this restriction.
+   *
+   * ## Reusing an Existing Chat
+   *
+   * Chats are keyed on the `from` line plus the exact set of `to` handles. Repeating
+   * this request with the same `from` and `to` returns the **existing** chat and
+   * sends the message into it instead of starting a second conversation.
+   *
+   * A group chat that has a `display_name` is excluded from that matching. To run
+   * several parallel groups over the same participants, name each one with
+   * `PUT /v3/chats/{chatId}` before creating the next: the following
+   * `POST /v3/chats` with the same `to` then returns a new, separate `chat_id`. Two
+   * other cases also produce a new chat instead of reusing one — the participant set
+   * changed (a participant was added or removed), or the `from` line left the group.
+   *
+   * Whenever the response is a new chat, the first-message rules above apply to that
+   * request: no link in the first message, and no `reply_to` or message effect. To
+   * send into a chat you already know, use `POST /v3/chats/{chatId}/messages` with
+   * its `chat_id`.
    *
    * @example
    * ```ts
@@ -102,6 +170,65 @@ export class Chats extends APIResource {
    */
   create(body: ChatCreateParams, options?: RequestOptions): APIPromise<ChatCreateResponse> {
     return this._client.post('/v3/chats', { body, ...options });
+  }
+
+  /**
+   * Retrieve a chat by its unique identifier.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.retrieve(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
+    return this._client.get(path`/v3/chats/${chatID}`, options);
+  }
+
+  /**
+   * Update chat properties such as display name and group chat icon.
+   *
+   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
+   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
+   * events to confirm the outcome.
+   *
+   * @example
+   * ```ts
+   * const chat = await client.chats.update(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   *   { display_name: 'Team Discussion' },
+   * );
+   * ```
+   */
+  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
+    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
+  }
+
+  /**
+   * Removes your phone number from a group chat. Once you leave, you will no longer
+   * receive messages from the group and all interaction endpoints (send message,
+   * typing, mark read, etc.) will return 409.
+   *
+   * A `participant.removed` webhook will fire once the leave has been processed.
+   *
+   * **Supported**
+   *
+   * - iMessage group chats with 4 or more active participants (including yourself)
+   *
+   * **Not supported**
+   *
+   * - DM (1-on-1) chats — use the chat directly to continue the conversation
+   *
+   * @example
+   * ```ts
+   * const response = await client.chats.leaveChat(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   * );
+   * ```
+   */
+  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
+    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
   }
 
   /**
@@ -145,39 +272,6 @@ export class Chats extends APIResource {
   }
 
   /**
-   * Retrieve a chat by its unique identifier.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.retrieve(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  retrieve(chatID: string, options?: RequestOptions): APIPromise<Chat> {
-    return this._client.get(path`/v3/chats/${chatID}`, options);
-  }
-
-  /**
-   * Update chat properties such as display name and group chat icon.
-   *
-   * Listen for `chat.group_name_updated`, `chat.group_icon_updated`,
-   * `chat.group_name_update_failed`, or `chat.group_icon_update_failed` webhook
-   * events to confirm the outcome.
-   *
-   * @example
-   * ```ts
-   * const chat = await client.chats.update(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   *   { display_name: 'Team Discussion' },
-   * );
-   * ```
-   */
-  update(chatID: string, body: ChatUpdateParams, options?: RequestOptions): APIPromise<ChatUpdateResponse> {
-    return this._client.put(path`/v3/chats/${chatID}`, { body, ...options });
-  }
-
-  /**
    * Mark all messages in a chat as read.
    *
    * @example
@@ -189,53 +283,6 @@ export class Chats extends APIResource {
    */
   markAsRead(chatID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.post(path`/v3/chats/${chatID}/read`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
-  }
-
-  /**
-   * Removes your phone number from a group chat. Once you leave, you will no longer
-   * receive messages from the group and all interaction endpoints (send message,
-   * typing, mark read, etc.) will return 409.
-   *
-   * A `participant.removed` webhook will fire once the leave has been processed.
-   *
-   * **Supported**
-   *
-   * - iMessage group chats with 4 or more active participants (including yourself)
-   *
-   * **Not supported**
-   *
-   * - DM (1-on-1) chats — use the chat directly to continue the conversation
-   *
-   * @example
-   * ```ts
-   * const response = await client.chats.leaveChat(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
-   */
-  leaveChat(chatID: string, options?: RequestOptions): APIPromise<ChatLeaveChatResponse> {
-    return this._client.post(path`/v3/chats/${chatID}/leave`, options);
-  }
-
-  /**
-   * Share your contact information (Name and Photo Sharing) with a chat.
-   *
-   * **Note:** A contact card must be configured before sharing. You can set up your
-   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
-   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
-   *
-   * @example
-   * ```ts
-   * await client.chats.shareContactCard(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
-    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -272,6 +319,27 @@ export class Chats extends APIResource {
   ): APIPromise<ChatSendVoicememoResponse> {
     return this._client.post(path`/v3/chats/${chatID}/voicememo`, { body, ...options });
   }
+
+  /**
+   * Share your contact information (Name and Photo Sharing) with a chat.
+   *
+   * **Note:** A contact card must be configured before sharing. You can set up your
+   * contact card via the [Contact Card API](#tag/Contact-Card) or on the
+   * [Linq dashboard](https://dashboard.linqapp.com/contact-cards).
+   *
+   * @example
+   * ```ts
+   * await client.chats.shareContactCard(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  shareContactCard(chatID: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.post(path`/v3/chats/${chatID}/share_contact_card`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
+  }
 }
 
 export type ChatsListChatsPagination = ListChatsPagination<Chat>;
@@ -305,12 +373,13 @@ export interface Chat {
    * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
    * flagging.
    *
-   * Switch on `status` to gate sends or surface line health in your UI — the enum is
-   * the long-term contract. Each status carries a `doc_url` that deep-links to the
-   * relevant section of the Chat Health guide.
+   * Switch on `status` to surface chat and line health in your UI — the enum is the
+   * long-term contract. Each status carries a `doc_url` that deep-links to the
+   * relevant section of the Chat Health guide. To gate a send, act on the response
+   * rather than the status: a `403` is the authoritative answer.
    *
-   * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-   * means and how to react.
+   * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+   * each status means and how to react.
    */
   health_status: Chat.HealthStatus;
 
@@ -336,7 +405,9 @@ export interface Chat {
   group_chat_icon?: string | null;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service?: Shared.ServiceType | null;
 }
@@ -348,12 +419,13 @@ export namespace Chat {
    * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
    * flagging.
    *
-   * Switch on `status` to gate sends or surface line health in your UI — the enum is
-   * the long-term contract. Each status carries a `doc_url` that deep-links to the
-   * relevant section of the Chat Health guide.
+   * Switch on `status` to surface chat and line health in your UI — the enum is the
+   * long-term contract. Each status carries a `doc_url` that deep-links to the
+   * relevant section of the Chat Health guide. To gate a send, act on the response
+   * rather than the status: a `403` is the authoritative answer.
    *
-   * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-   * means and how to react.
+   * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+   * each status means and how to react.
    */
   export interface HealthStatus {
     /**
@@ -363,8 +435,28 @@ export namespace Chat {
 
     /**
      * Current health bucket for the chat. See the
-     * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
-     * to react. `doc_url` deep-links to the relevant section.
+     * [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what each
+     * value means and how to react. `doc_url` deep-links to the relevant section.
+     *
+     * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+     * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+     * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+     * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+     * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+     * count. It clears as soon as they reply again: any later message from them that
+     * is not itself an opt-out keyword opts them back in immediately — a reply in any
+     * conversation with you counts, the same way the block does.
+     *
+     * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+     * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+     * as well — gate on the `403`, not on the status. Group threads are never marked
+     * and are never blocked.
+     *
+     * Linq enforces this: while a recipient is opted out, every send to them is
+     * rejected with `403` (error code `2024`) before the message is queued, across
+     * every chat and every line on your account. Nothing is delivered, including a
+     * final courtesy message — to send one, set `override_optout: true` on that single
+     * request.
      */
     status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -373,6 +465,38 @@ export namespace Chat {
      */
     updated_at: string;
   }
+}
+
+/**
+ * A sticker image placed inside the text of a part, replacing the characters in
+ * `range`. Provide exactly one of `url` or `attachment_id`.
+ */
+export interface InlineSticker {
+  /**
+   * Character range `[start, end)` in the `value` string that the sticker replaces.
+   * `start` is inclusive, `end` is exclusive. Those characters are hidden on
+   * iMessage and sent as written on SMS and RCS. _Characters are measured as UTF-16
+   * code units. Most characters count as 1; some emoji count as 2._
+   */
+  range: Array<number>;
+
+  /**
+   * Reference to a sticker image pre-uploaded via `POST /v3/attachments`.
+   *
+   * Exactly one of `url` or `attachment_id` is required.
+   */
+  attachment_id?: string;
+
+  /**
+   * Linq attachment URL of the sticker image — the `download_url` returned by
+   * `POST /v3/attachments`.
+   *
+   * The image must already be stored with us. To use an image from elsewhere, upload
+   * it with `POST /v3/attachments` first and pass `attachment_id`.
+   *
+   * Exactly one of `url` or `attachment_id` is required.
+   */
+  url?: string;
 }
 
 export interface LinkPart {
@@ -405,6 +529,27 @@ export interface MediaPart {
    * Either `url` or `attachment_id` must be provided, but not both.
    */
   attachment_id?: string;
+
+  /**
+   * Send this image as a **sticker** rather than a photo. The recipient can peel it
+   * off and place it on any message in the conversation, and it renders without a
+   * bubble.
+   *
+   * An ordinary photo is cut out automatically — the subject is lifted from its
+   * background. An image that has already been cut out is sent as-is. If no subject
+   * can be found, the image sends as an ordinary photo.
+   *
+   * An animated image sends as an animated sticker, in whatever shape the file
+   * already has — the cut-out does not apply to it.
+   *
+   * **iMessage only.** On SMS/RCS the flag is ignored and the image sends as a
+   * photo.
+   *
+   * Stickers can be combined with a `text` part in the same message; the text
+   * arrives as its own bubble. To place a sticker _onto_ an existing message
+   * instead, use `POST /v3/messages/{messageId}/reactions` with `type: "sticker"`.
+   */
+  sticker?: boolean;
 
   /**
    * Any publicly accessible HTTPS URL to the media file. The server downloads and
@@ -443,8 +588,37 @@ export interface MediaPart {
  * Message content container. Groups all message-related fields together,
  * separating the "what" (message content) from the "where" (routing fields like
  * from/to).
+ *
+ * A message carries EITHER `parts` — text and attachments, which compose into one
+ * bubble — or a single `experience` invocation, which renders an experience inside
+ * Linq's iMessage app. Never both: an app card is the whole message (Apple's
+ * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
+ * one.
  */
 export interface MessageContent {
+  /**
+   * iMessage effect to apply to this message (screen or bubble effect)
+   */
+  effect?: ResourcesMessagesAPI.MessageEffect;
+
+  /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  experience?: MessageContent.Experience;
+
+  /**
+   * Optional idempotency key for this message. Use this to prevent duplicate sends
+   * of the same message. Reusing a key whose message was deleted — or was an
+   * ephemeral message that has since expired — returns 404; the message is never
+   * resent.
+   */
+  idempotency_key?: string;
+
   /**
    * Array of message parts. Each part can be text, media, or link. Parts are
    * displayed in order. Text and media can be mixed freely, but a `link` part must
@@ -455,6 +629,14 @@ export interface MessageContent {
    * - Use a `link` part to send a URL with a rich preview card
    * - A `link` part must be the **only** part in the message
    * - To send a URL as plain text (no preview), use a `text` part instead
+   *
+   * **App Clip Payment Cards:**
+   *
+   * - Use an `app_clip` part to send a Linq checkout link as an Apple Pay App Clip
+   *   card (the payment preview with the Open button)
+   * - An `app_clip` part must be the **only** part in the message
+   * - iMessage-only: unlike `link`, it never downgrades to SMS/RCS — the send fails
+   *   instead of delivering a bare URL
    *
    * **Supported Media:**
    *
@@ -476,6 +658,9 @@ export interface MessageContent {
    *
    * - A `link` part must be the **only** part in the message. It cannot be combined
    *   with text or media parts.
+   * - An `app_clip` part must be the **only** part in the message. Its `value` must
+   *   be a Linq checkout link (e.g. from `POST /v3/payment_requests`); any other URL
+   *   is rejected.
    * - Consecutive text parts are not allowed. Text parts must be separated by media
    *   parts. For example, [text, text] is invalid, but [text, media, text] is valid.
    * - Maximum of **100 parts** total.
@@ -484,31 +669,57 @@ export interface MessageContent {
    *   sub-limit. For bulk media sends exceeding 40 files, pre-upload via
    *   `POST /v3/attachments` and reference by `attachment_id` or `download_url`.
    */
-  parts: Array<TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart>;
+  parts?: Array<
+    TextPart | MediaPart | LinkPart | MessageContent.IMessageAppPart | MessageContent.AppClipPart
+  >;
 
   /**
-   * iMessage effect to apply to this message (screen or bubble effect)
-   */
-  effect?: MessagesAPI.MessageEffect;
-
-  /**
-   * Optional idempotency key for this message. Use this to prevent duplicate sends
-   * of the same message.
-   */
-  idempotency_key?: string;
-
-  /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   preferred_service?: Shared.ServiceType;
 
   /**
    * Reply to another message to create a threaded conversation
    */
-  reply_to?: MessagesAPI.ReplyTo;
+  reply_to?: ResourcesMessagesAPI.ReplyTo;
 }
 
 export namespace MessageContent {
+  /**
+   * Invokes an action on an experience — a third party that renders inside Linq's
+   * iMessage app. Linq resolves the recipient's connection, mints any session the
+   * action needs, composes the card and sends it; none of that is visible to you.
+   *
+   * Call `GET /v3/experiences/{experience}` for the actions you may invoke and the
+   * fields each accepts.
+   */
+  export interface Experience {
+    /**
+     * Which of its actions, e.g. `attach_card`.
+     */
+    action: string;
+
+    /**
+     * The experience to invoke, e.g. `agentcard` or `agentpay`.
+     */
+    name: string;
+
+    /**
+     * Values for the fields this action exposes. Keys are exactly the field names
+     * listed for the action — no mapping, no nesting.
+     *
+     * Display copy only, except a `url`-type field — that value sets the destination,
+     * and must be an absolute `https` URL.
+     *
+     * Some fields are read rather than sent: `agentpay`'s `request_payment` takes only
+     * a `checkout_url` and resolves the amount and reason from that payment request
+     * itself, so the card cannot state a figure the checkout will not charge.
+     */
+    params?: { [key: string]: unknown };
+  }
+
   /**
    * An iMessage app card, backed by a Messages app extension. iMessage only — an
    * `imessage_app` part must be the **only** part in the message and is never
@@ -654,6 +865,37 @@ export namespace MessageContent {
       trailing_subcaption?: string;
     }
   }
+
+  /**
+   * Sends a **registered App Clip** — not only Linq's Apple Pay checkout, but any
+   * partner's own App Clip. `caption` is optional.
+   *
+   * An `app_clip` part must be the **only** part in the message.
+   *
+   * **iMessage only**, and it never downgrades. A `service_preference` of `sms` or
+   * `rcs` is rejected (`AppClipServiceUnsupported`, 2028). A recipient who can't
+   * receive it fails the send rather than being sent a plain link in its place.
+   */
+  export interface AppClipPart {
+    /**
+     * Indicates this is an App Clip card
+     */
+    type: 'app_clip';
+
+    /**
+     * An https link whose page is a registered App Clip — Linq's checkout link (e.g.
+     * the `checkout_url` from `POST /v3/payment_requests`) or a partner's own App Clip
+     * URL. A URL that doesn't resolve to a sendable App Clip page is rejected.
+     */
+    value: string;
+
+    /**
+     * Optional caption for the card's **Open** button row. Omit it and the card uses
+     * the App Clip's own default (`Tap open`). Set it to override that with your own
+     * short call to action.
+     */
+    caption?: string;
+  }
 }
 
 export interface TextPart {
@@ -668,6 +910,62 @@ export interface TextPart {
    * `text_decorations` to apply inline formatting and animations (iMessage only).
    */
   value: string;
+
+  /**
+   * Optional stickers placed inside the text, in the line with the words (iMessage
+   * only).
+   *
+   * Each sticker replaces the characters in its `range` `[start, end)` of `value`,
+   * and takes its image from exactly one of `url` or `attachment_id` — an image
+   * uploaded with `POST /v3/attachments`. The characters a sticker covers are hidden
+   * on iMessage and are what SMS and RCS recipients receive and VoiceOver reads, so
+   * cover something that stands in for the sticker (`"🎂"`, `"[cake]"`). To keep a
+   * word visible, give the sticker its own placeholder: `"Sip cup 🥤"` with the
+   * range on `🥤`.
+   *
+   * Up to 100 stickers and 10 different images per part. Copies of one image count
+   * as one: twenty copies of one sticker use one of the 10. An animated image
+   * arrives as a still.
+   *
+   * Stickers cannot overlap each other or a `text_decorations` range, cannot split a
+   * character, and cannot be combined with `mention`.
+   *
+   * _Characters are measured as UTF-16 code units. Most characters count as 1; some
+   * emoji count as 2._
+   *
+   * **Note:** on SMS and RCS the stickers are dropped and `value` is sent as plain
+   * text.
+   */
+  inline_stickers?: Array<InlineSticker>;
+
+  /**
+   * Mention a chat participant. Group chats only — sending a mention to a direct
+   * chat is rejected with `409` / `2023`. The chat's service is not a constraint: a
+   * mention is accepted in any group, including one with SMS/RCS participants.
+   *
+   * Set to their handle — E.164 phone number or Apple ID email. `value` is the
+   * display text; use the bare name (`"Juan"`, not `"@Juan"`). By default the entire
+   * `value` renders as the mention; use `mention_range` to highlight only part of
+   * it.
+   *
+   * Rendering is per recipient, not per message. iMessage recipients see the mention
+   * highlighted and are notified even if they have muted the chat. SMS and RCS
+   * recipients receive the same message as plain text — no highlight, and no mute
+   * override. One send, two experiences.
+   */
+  mention?: string;
+
+  /**
+   * Optional character range `[start, end)` in `value` that renders as the `mention`
+   * highlight (e.g. just the name in `"Hey Kevin, can you look at this?"`). Requires
+   * `mention`. Without it, the entire `value` is highlighted. `start` is inclusive,
+   * `end` is exclusive. _Characters are measured as UTF-16 code units. Most
+   * characters count as 1; some emoji count as 2._
+   *
+   * Applies to iMessage recipients only, matching `mention` — SMS and RCS recipients
+   * receive the text with no highlight.
+   */
+  mention_range?: Array<number>;
 
   /**
    * Optional array of text decorations applied to character ranges in the `value`
@@ -685,8 +983,9 @@ export interface TextPart {
    * _Characters are measured as UTF-16 code units. Most characters count as 1; some
    * emoji count as 2._
    *
-   * **Note:** Text decorations only render for iMessage recipients. For SMS/RCS,
-   * text decorations are not applied.
+   * **Note:** decorations render per recipient, not per message. In a group
+   * containing both iMessage and SMS/RCS participants, iMessage recipients see the
+   * decorations and SMS/RCS recipients receive the same message as plain text.
    */
   text_decorations?: Array<Shared.TextDecoration>;
 }
@@ -723,12 +1022,13 @@ export namespace ChatCreateResponse {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
+     * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+     * each status means and how to react.
      */
     health_status: Chat.HealthStatus;
 
@@ -740,10 +1040,12 @@ export namespace ChatCreateResponse {
     /**
      * A message that was sent (used in CreateChat and SendMessage responses)
      */
-    message: ChatsMessagesAPI.SentMessage;
+    message: MessagesAPI.SentMessage;
 
     /**
-     * Messaging service type
+     * Messaging service type. Where this names the transport a message used, it is
+     * per-message: a chat's own `service` can differ from a message in it, and Apple
+     * can downgrade an individual message.
      */
     service: Shared.ServiceType;
   }
@@ -755,12 +1057,13 @@ export namespace ChatCreateResponse {
      * `AT_RISK` or `CRITICAL` chats on a single line increase the risk of line
      * flagging.
      *
-     * Switch on `status` to gate sends or surface line health in your UI — the enum is
-     * the long-term contract. Each status carries a `doc_url` that deep-links to the
-     * relevant section of the Chat Health guide.
+     * Switch on `status` to surface chat and line health in your UI — the enum is the
+     * long-term contract. Each status carries a `doc_url` that deep-links to the
+     * relevant section of the Chat Health guide. To gate a send, act on the response
+     * rather than the status: a `403` is the authoritative answer.
      *
-     * See the [Chat Health guide](/guides/chats/chat-health) for what each status
-     * means and how to react.
+     * See the [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what
+     * each status means and how to react.
      */
     export interface HealthStatus {
       /**
@@ -770,8 +1073,28 @@ export namespace ChatCreateResponse {
 
       /**
        * Current health bucket for the chat. See the
-       * [Chat Health guide](/guides/chats/chat-health) for what each value means and how
-       * to react. `doc_url` deep-links to the relevant section.
+       * [Chat Health guide](/channel/imessage/guides/chats/chat-health) for what each
+       * value means and how to react. `doc_url` deep-links to the relevant section.
+       *
+       * `OPTED_OUT` — the recipient sent `STOP`, `UNSUBSCRIBE`, `OPTOUT`, `CANCEL`,
+       * `END`, or `QUIT`. The keyword must be the whole trimmed message, never part of a
+       * longer one: `STOP` counts, `please stop` does not. Most keywords must match
+       * exactly, including case. `OPT OUT` is the exception — it matches in any casing,
+       * with or without the space or a hyphen, so `opt out`, `Opt-Out` and `optout` all
+       * count. It clears as soon as they reply again: any later message from them that
+       * is not itself an opt-out keyword opts them back in immediately — a reply in any
+       * conversation with you counts, the same way the block does.
+       *
+       * `OPTED_OUT` marks only the conversation the keyword arrived in. The block below
+       * is wider than the mark, so a conversation still reading `HEALTHY` can be blocked
+       * as well — gate on the `403`, not on the status. Group threads are never marked
+       * and are never blocked.
+       *
+       * Linq enforces this: while a recipient is opted out, every send to them is
+       * rejected with `403` (error code `2024`) before the message is queued, across
+       * every chat and every line on your account. Nothing is delivered, including a
+       * final courtesy message — to send one, set `override_optout: true` on that single
+       * request.
        */
       status: 'HEALTHY' | 'AT_RISK' | 'CRITICAL' | 'OPTED_OUT';
 
@@ -836,7 +1159,9 @@ export namespace ChatSendVoicememoResponse {
     voice_memo: VoiceMemo.VoiceMemo;
 
     /**
-     * Messaging service type
+     * Messaging service type. Where this names the transport a message used, it is
+     * per-message: a chat's own `service` can differ from a message in it, and Apple
+     * can downgrade an individual message.
      */
     service?: Shared.ServiceType | null;
   }
@@ -864,7 +1189,9 @@ export namespace ChatSendVoicememoResponse {
       is_group: boolean;
 
       /**
-       * Messaging service type
+       * Messaging service type. Where this names the transport a message used, it is
+       * per-message: a chat's own `service` can differ from a message in it, and Apple
+       * can downgrade an individual message.
        */
       service: Shared.ServiceType;
     }
@@ -914,6 +1241,12 @@ export interface ChatCreateParams {
    * Message content container. Groups all message-related fields together,
    * separating the "what" (message content) from the "where" (routing fields like
    * from/to).
+   *
+   * A message carries EITHER `parts` — text and attachments, which compose into one
+   * bubble — or a single `experience` invocation, which renders an experience inside
+   * Linq's iMessage app. Never both: an app card is the whole message (Apple's
+   * `MSMessage` cannot coexist with text), so copy and a card are two sends, not
+   * one.
    */
   message: MessageContent;
 
@@ -922,6 +1255,26 @@ export interface ChatCreateParams {
    * For individual chats, provide one recipient. For group chats, provide multiple.
    */
   to: Array<string>;
+
+  /**
+   * Send even though the recipient asked you to stop (`403`, error code `2024`).
+   * Applies to this request only: the opt-out stays in place, so the next send
+   * without this flag is rejected again. Every override is recorded against your API
+   * key.
+   */
+  override_optout?: boolean;
+}
+
+export interface ChatUpdateParams {
+  /**
+   * New display name for the chat (group chats only)
+   */
+  display_name?: string;
+
+  /**
+   * URL of an image to set as the group chat icon (group chats only)
+   */
+  group_chat_icon?: string;
 }
 
 export interface ChatListChatsParams extends ListChatsPaginationParams {
@@ -942,18 +1295,6 @@ export interface ChatListChatsParams extends ListChatsPaginationParams {
   to?: string;
 }
 
-export interface ChatUpdateParams {
-  /**
-   * New display name for the chat (group chats only)
-   */
-  display_name?: string;
-
-  /**
-   * URL of an image to set as the group chat icon (group chats only)
-   */
-  group_chat_icon?: string;
-}
-
 export interface ChatSendVoicememoParams {
   /**
    * Reference to a voice memo file pre-uploaded via `POST /v3/attachments`. The file
@@ -962,6 +1303,14 @@ export interface ChatSendVoicememoParams {
    * Either `voice_memo_url` or `attachment_id` must be provided, but not both.
    */
   attachment_id?: string;
+
+  /**
+   * Send even though the recipient asked you to stop (`403`, error code `2024`).
+   * Applies to this request only: the opt-out stays in place, so the next send
+   * without this flag is rejected again. Every override is recorded against your API
+   * key.
+   */
+  override_optout?: boolean;
 
   /**
    * URL of the voice memo audio file. Must be a publicly accessible HTTPS URL.
@@ -975,10 +1324,13 @@ Chats.Participants = Participants;
 Chats.Typing = Typing;
 Chats.Messages = Messages;
 Chats.Location = Location;
+Chats.Polls = Polls;
+Chats.Background = Background;
 
 export declare namespace Chats {
   export {
     type Chat as Chat,
+    type InlineSticker as InlineSticker,
     type LinkPart as LinkPart,
     type MediaPart as MediaPart,
     type MessageContent as MessageContent,
@@ -989,8 +1341,8 @@ export declare namespace Chats {
     type ChatSendVoicememoResponse as ChatSendVoicememoResponse,
     type ChatsListChatsPagination as ChatsListChatsPagination,
     type ChatCreateParams as ChatCreateParams,
-    type ChatListChatsParams as ChatListChatsParams,
     type ChatUpdateParams as ChatUpdateParams,
+    type ChatListChatsParams as ChatListChatsParams,
     type ChatSendVoicememoParams as ChatSendVoicememoParams,
   };
 
@@ -1008,13 +1360,24 @@ export declare namespace Chats {
     Messages as Messages,
     type SentMessage as SentMessage,
     type MessageSendResponse as MessageSendResponse,
-    type MessageSendParams as MessageSendParams,
     type MessageListParams as MessageListParams,
+    type MessageSendParams as MessageSendParams,
   };
 
   export {
     Location as Location,
     type GetChatLocationResponse as GetChatLocationResponse,
     type LocationRequestResponse as LocationRequestResponse,
+    type StopChatLocationSharingResponse as StopChatLocationSharingResponse,
+    type LocationStopParams as LocationStopParams,
   };
+
+  export {
+    Polls as Polls,
+    type Poll as Poll,
+    type PollEnvelope as PollEnvelope,
+    type PollCreateParams as PollCreateParams,
+  };
+
+  export { Background as Background, type BackgroundSetParams as BackgroundSetParams };
 }
