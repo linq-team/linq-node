@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.69.2](https://github.com/linq-team/linq-node/compare/v0.69.1...v0.69.2) (2026-09-18)
+
+
+### Documentation
+
+* clarify message transport behavior for newly created chats ([4489d7a](https://github.com/linq-team/linq-node/commit/4489d7a602e727806f4da257b4332f90a3da6ea4))
+
 ## [0.69.1](https://github.com/linq-team/linq-node/compare/v0.69.0...v0.69.1) (2026-09-16)
 
 
