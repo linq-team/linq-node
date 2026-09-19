@@ -297,6 +297,16 @@ export interface WebhookSubscription {
    * phone numbers are delivered.
    */
   phone_numbers?: Array<string> | null;
+
+  /**
+   * Header carrying the chat id. Defaults to `Linq-Chat-Id` when affinity is on.
+   */
+  routing_id_header?: string | null;
+
+  /**
+   * Header carrying the routing token. Null disables delivery affinity.
+   */
+  routing_key_header?: string | null;
 }
 
 /**
@@ -345,6 +355,16 @@ export interface WebhookSubscriptionCreateResponse {
    * phone numbers are delivered.
    */
   phone_numbers?: Array<string> | null;
+
+  /**
+   * Header carrying the chat id. Defaults to `Linq-Chat-Id` when affinity is on.
+   */
+  routing_id_header?: string | null;
+
+  /**
+   * Header carrying the routing token. Null disables delivery affinity.
+   */
+  routing_key_header?: string | null;
 }
 
 export interface WebhookSubscriptionListResponse {
@@ -372,6 +392,19 @@ export interface WebhookSubscriptionCreateParams {
    * E.164 format.
    */
   phone_numbers?: Array<string>;
+
+  /**
+   * Name of the header carrying the chat id, used to hash-route before a token is
+   * learned. Defaults to `Linq-Chat-Id`. Ignored without `routing_key_header`.
+   */
+  routing_id_header?: string;
+
+  /**
+   * Enables delivery affinity. Name of the header carrying an opaque routing token:
+   * we send it on each webhook for a chat and read it back from your 2xx response,
+   * so your edge can route to the cluster holding that chat. Omit to disable.
+   */
+  routing_key_header?: string;
 }
 
 export interface WebhookSubscriptionUpdateParams {
@@ -387,6 +420,18 @@ export interface WebhookSubscriptionUpdateParams {
    * E.164 format.
    */
   phone_numbers?: Array<string> | null;
+
+  /**
+   * Updated header name for the chat id. Set to null or an empty string to fall back
+   * to `Linq-Chat-Id`.
+   */
+  routing_id_header?: string | null;
+
+  /**
+   * Updated header name for the routing token. Set to null or an empty string to
+   * disable delivery affinity and drop the stored tokens.
+   */
+  routing_key_header?: string | null;
 
   /**
    * Updated list of event types to subscribe to

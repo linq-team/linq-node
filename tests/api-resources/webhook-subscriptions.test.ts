@@ -29,6 +29,8 @@ describe('resource webhookSubscriptions', () => {
       subscribed_events: ['message.sent', 'message.delivered', 'message.read'],
       target_url: 'https://webhooks.example.com/linq/events',
       phone_numbers: ['+12025551234', '+12025559876'],
+      routing_id_header: 'x-openai-chat-id',
+      routing_key_header: 'x-openai-thread-route',
     });
   });
 
