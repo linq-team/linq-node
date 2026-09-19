@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.70.1](https://github.com/linq-team/linq-node/compare/v0.70.0...v0.70.1) (2026-09-19)
+
+
+### Bug Fixes
+
+* update webhook header name examples to reflect current api ([24b5f0a](https://github.com/linq-team/linq-node/commit/24b5f0abdd8fcd6ae673f8a2634ce30ba2b6e51e))
+
 ## [0.70.0](https://github.com/linq-team/linq-node/compare/v0.69.2...v0.70.0) (2026-09-19)
 
 
