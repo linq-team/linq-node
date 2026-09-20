@@ -3375,6 +3375,11 @@ export namespace ChatTypingIndicatorStartedWebhookEvent {
      * Chat identifier
      */
     chat_id: string;
+
+    /**
+     * Who is typing.
+     */
+    actor_handle?: Shared.ChatHandle | null;
   }
 }
 
@@ -3438,6 +3443,11 @@ export namespace ChatTypingIndicatorStoppedWebhookEvent {
      * Chat identifier
      */
     chat_id: string;
+
+    /**
+     * Who stopped typing.
+     */
+    actor_handle?: Shared.ChatHandle | null;
   }
 }
 
