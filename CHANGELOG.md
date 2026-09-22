@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.71.1](https://github.com/linq-team/linq-node/compare/v0.71.0...v0.71.1) (2026-09-22)
+
+
+### Bug Fixes
+
+* clarify contact card requirement for sharing contact info ([027d46b](https://github.com/linq-team/linq-node/commit/027d46b0156fff59f6c7a400ae43c08c3c4c0345))
+
 ## [0.71.0](https://github.com/linq-team/linq-node/compare/v0.70.1...v0.71.0) (2026-09-20)
 
 
