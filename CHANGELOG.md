@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.72.1](https://github.com/linq-team/linq-node/compare/v0.72.0...v0.72.1) (2026-09-26)
+
+
+### Bug Fixes
+
+* remove environment id field from webhook payloads ([0c42853](https://github.com/linq-team/linq-node/commit/0c42853450bee8ea50b5c0deeff7bf80bd2c25e6))
+
 ## [0.72.0](https://github.com/linq-team/linq-node/compare/v0.71.2...v0.72.0) (2026-09-26)
 
 
