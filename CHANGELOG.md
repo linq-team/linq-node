@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.71.2](https://github.com/linq-team/linq-node/compare/v0.71.1...v0.71.2) (2026-09-26)
+
+
+### Bug Fixes
+
+* update webhook retry behavior to 30-minute window with adjusted timing ([8ff6d5b](https://github.com/linq-team/linq-node/commit/8ff6d5b43fc92e44cc0b57f7136880d20a6741c8))
+
 ## [0.71.1](https://github.com/linq-team/linq-node/compare/v0.71.0...v0.71.1) (2026-09-22)
 
 
