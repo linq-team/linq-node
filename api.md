@@ -358,6 +358,33 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">PaymentDeclinedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PaymentExpiredWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PaymentSucceededWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ZeroDayRetentionUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PhoneNumberForwardingUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">EnvironmentLineMovedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ContactCardCreatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ContactCardUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">ContactCardDeletedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">APITokenCreatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">APITokenRenamedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">APITokenExpiryScheduledWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">APITokenExpiredWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">APITokenActivatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">APITokenDeletedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">EnvironmentCreatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">EnvironmentRenamedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">EnvironmentDeletedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionCreatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionDeletedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionTargetURLChangedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionEnabledWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionDisabledWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionEventsUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionRoutingHeadersSetWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">WebhookSubscriptionRoutingHeadersClearedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">TeamMemberAddedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">TeamMemberSignedInWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">TeamMemberSignedOutWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">UnwrapWebhookEvent</a></code>
 
 Methods:
