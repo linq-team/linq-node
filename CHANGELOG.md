@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.74.0](https://github.com/linq-team/linq-node/compare/v0.73.0...v0.74.0) (2026-09-26)
+
+
+### Features
+
+* add expires_at field to api token webhook events ([5ce3675](https://github.com/linq-team/linq-node/commit/5ce3675de5d79cb5ad97f529790ac866fd0c94e0))
+
 ## [0.73.0](https://github.com/linq-team/linq-node/compare/v0.72.1...v0.73.0) (2026-09-26)
 
 
