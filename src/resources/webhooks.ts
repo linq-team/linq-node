@@ -6631,10 +6631,9 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -7070,10 +7069,9 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -7509,10 +7507,9 @@ export namespace EnvironmentLineMovedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -7948,10 +7945,9 @@ export namespace ContactCardCreatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -8387,10 +8383,9 @@ export namespace ContactCardUpdatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -8826,10 +8821,9 @@ export namespace ContactCardDeletedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -9265,10 +9259,9 @@ export namespace APITokenCreatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -9704,10 +9697,9 @@ export namespace APITokenRenamedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -10143,10 +10135,9 @@ export namespace APITokenExpiryScheduledWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -10582,10 +10573,9 @@ export namespace APITokenExpiredWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -11021,10 +11011,9 @@ export namespace APITokenActivatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -11460,10 +11449,9 @@ export namespace APITokenDeletedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -11899,10 +11887,9 @@ export namespace EnvironmentCreatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -12338,10 +12325,9 @@ export namespace EnvironmentRenamedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -12777,10 +12763,9 @@ export namespace EnvironmentDeletedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -13216,10 +13201,9 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -13655,10 +13639,9 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -14094,10 +14077,9 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -14533,10 +14515,9 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -14972,10 +14953,9 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -15411,10 +15391,9 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -15850,10 +15829,9 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -16289,10 +16267,9 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -16728,10 +16705,9 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -17167,10 +17143,9 @@ export namespace TeamMemberAddedWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -17606,10 +17581,9 @@ export namespace TeamMemberSignedInWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
@@ -18045,10 +18019,9 @@ export namespace TeamMemberSignedOutWebhookEvent {
       id: string;
 
       /**
-       * When the token expires. On `api_token.created`, `api_token.expired` and
-       * `api_token.deleted`; absent if it never expires.
+       * When the token expires; null if it never does.
        */
-      expires_at?: string;
+      expires_at: string | null;
 
       /**
        * Absent when the token has no name.
