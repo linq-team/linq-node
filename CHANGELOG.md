@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.75.0](https://github.com/linq-team/linq-node/compare/v0.74.0...v0.75.0) (2026-09-26)
+
+
+### Features
+
+* add token_prefix to api_token webhook events ([f905ac7](https://github.com/linq-team/linq-node/commit/f905ac7d6ae16fd10ae1917d3a02b84b1d1e6898))
+
 ## [0.74.0](https://github.com/linq-team/linq-node/compare/v0.73.0...v0.74.0) (2026-09-26)
 
 
