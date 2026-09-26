@@ -12,6 +12,15 @@ import { RequestOptions } from '../internal/request-options';
  *
  * When creating chats, listing chats, or sending a voice memo, use one of your assigned phone numbers
  * in the `from` field.
+ *
+ * **Ineligible numbers.** A number can temporarily lose the ability to deliver messages.
+ * While it is in that state, requests that would produce new activity on it — sending a
+ * message, creating a chat, reacting, typing, group actions — are rejected with `403`
+ * (error code `2027`) before anything is created. Reads keep working, so your existing
+ * chats, messages, and history stay available. Omit `from` on `POST /v3/messages` and we
+ * pick an eligible number for you, skipping ineligible ones; if none of your assigned
+ * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
+ * specific number to blame with a `403`).
  */
 export class AvailableNumber extends APIResource {
   /**
@@ -30,7 +39,8 @@ export class AvailableNumber extends APIResource {
    * Also returns `vcf_url`: a time-limited link to a vCard (`.vcf`) for the chosen
    * line, carrying its contact card (name/photo) with the chosen number as the
    * primary `TEL` and the partner's other available lines as backups. Share it with
-   * recipients so they can save the line as a contact.
+   * recipients so they can save the line as a contact. Lines you pass in
+   * `exclude_from` are left out of the vCard too.
    */
   retrieve(
     query: AvailableNumberRetrieveParams | null | undefined = {},
@@ -59,6 +69,18 @@ export interface AvailableNumberRetrieveResponse {
 }
 
 export interface AvailableNumberRetrieveParams {
+  /**
+   * Lines (E.164) to leave out of this selection. Applies to the returned
+   * `phone_number`, to the sticky choice when `to` is given, and to the vCard's
+   * backup numbers. Repeat the parameter for multiple lines; use `%2B` for the
+   * leading `+`.
+   *
+   * Numbers that are not your lines are ignored. Every entry must be E.164 — a value
+   * like `4155551234` is rejected rather than silently skipped. Excluding every one
+   * of your available lines returns 400.
+   */
+  exclude_from?: Array<string>;
+
   /**
    * Recipient handles (E.164 or email) the message is destined for. When provided,
    * an existing chat with these recipients makes the choice sticky. Repeat the
