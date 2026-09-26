@@ -11,8 +11,8 @@ import { RequestOptions } from '../internal/request-options';
  * Configure webhook endpoints to receive events such as messages sent/received,
  * delivery status changes, reactions, typing indicators, and more.
  *
- * Failed deliveries (5xx, 429, network errors) are retried up to 10 times over
- * ~25 minutes with exponential backoff. Each event includes a unique ID for
+ * Failed deliveries (5xx, 429, network errors) are retried with exponential
+ * backoff for up to 30 minutes. Each event includes a unique ID for
  * deduplication.
  *
  * ## Webhook Headers
@@ -159,6 +159,15 @@ export type WebhookEventType =
   | 'message.edited'
   | 'reaction.added'
   | 'reaction.removed'
+  | 'poll.received'
+  | 'poll.failed'
+  | 'poll.sent'
+  | 'poll.delivered'
+  | 'poll.read'
+  | 'poll.updated'
+  | 'poll.vote.added'
+  | 'poll.vote.removed'
+  | 'poll.reaction.added'
   | 'participant.added'
   | 'participant.removed'
   | 'chat.created'
@@ -167,9 +176,13 @@ export type WebhookEventType =
   | 'chat.group_name_update_failed'
   | 'chat.group_icon_update_failed'
   | 'chat.background_updated'
+  | 'chat.background_update_failed'
   | 'chat.typing_indicator.started'
   | 'chat.typing_indicator.stopped'
   | 'phone_number.status_updated'
+  | 'phone_number.assigned'
+  | 'phone_number.released'
+  | 'contact_card.received'
   | 'call.initiated'
   | 'call.ringing'
   | 'call.answered'
@@ -191,7 +204,7 @@ export interface WebhookEventListResponse {
   /**
    * URL to the webhook events documentation
    */
-  doc_url: 'https://docs.linqapp.com/guides/webhooks/events';
+  doc_url: 'https://docs.linqapp.com/channel/imessage/guides/webhooks/events';
 
   /**
    * List of all available webhook event types
