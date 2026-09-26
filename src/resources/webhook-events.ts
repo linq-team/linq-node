@@ -11,8 +11,8 @@ import { RequestOptions } from '../internal/request-options';
  * Configure webhook endpoints to receive events such as messages sent/received,
  * delivery status changes, reactions, typing indicators, and more.
  *
- * Failed deliveries (5xx, 429, network errors) are retried up to 10 times over
- * ~25 minutes with exponential backoff. Each event includes a unique ID for
+ * Failed deliveries (5xx, 429, network errors) are retried with exponential
+ * backoff for up to 30 minutes. Each event includes a unique ID for
  * deduplication.
  *
  * ## Webhook Headers
