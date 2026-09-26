@@ -6548,8 +6548,9 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -6653,20 +6654,33 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -6676,17 +6690,49 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -6698,15 +6744,17 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -6939,8 +6987,9 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -7044,20 +7093,33 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -7067,17 +7129,49 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -7089,15 +7183,17 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -7330,8 +7426,9 @@ export namespace EnvironmentLineMovedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -7435,20 +7532,33 @@ export namespace EnvironmentLineMovedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -7458,17 +7568,49 @@ export namespace EnvironmentLineMovedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -7480,15 +7622,17 @@ export namespace EnvironmentLineMovedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -7721,8 +7865,9 @@ export namespace ContactCardCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -7826,20 +7971,33 @@ export namespace ContactCardCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -7849,17 +8007,49 @@ export namespace ContactCardCreatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -7871,15 +8061,17 @@ export namespace ContactCardCreatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -8112,8 +8304,9 @@ export namespace ContactCardUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -8217,20 +8410,33 @@ export namespace ContactCardUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -8240,17 +8446,49 @@ export namespace ContactCardUpdatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -8262,15 +8500,17 @@ export namespace ContactCardUpdatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -8503,8 +8743,9 @@ export namespace ContactCardDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -8608,20 +8849,33 @@ export namespace ContactCardDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -8631,17 +8885,49 @@ export namespace ContactCardDeletedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -8653,15 +8939,17 @@ export namespace ContactCardDeletedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -8894,8 +9182,9 @@ export namespace APITokenCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -8999,20 +9288,33 @@ export namespace APITokenCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -9022,17 +9324,49 @@ export namespace APITokenCreatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -9044,15 +9378,17 @@ export namespace APITokenCreatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -9285,8 +9621,9 @@ export namespace APITokenRenamedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -9390,20 +9727,33 @@ export namespace APITokenRenamedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -9413,17 +9763,49 @@ export namespace APITokenRenamedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -9435,15 +9817,17 @@ export namespace APITokenRenamedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -9676,8 +10060,9 @@ export namespace APITokenExpiryScheduledWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -9781,20 +10166,33 @@ export namespace APITokenExpiryScheduledWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -9804,17 +10202,49 @@ export namespace APITokenExpiryScheduledWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -9826,15 +10256,17 @@ export namespace APITokenExpiryScheduledWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -10067,8 +10499,9 @@ export namespace APITokenExpiredWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -10172,20 +10605,33 @@ export namespace APITokenExpiredWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -10195,17 +10641,49 @@ export namespace APITokenExpiredWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -10217,15 +10695,17 @@ export namespace APITokenExpiredWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -10458,8 +10938,9 @@ export namespace APITokenActivatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -10563,20 +11044,33 @@ export namespace APITokenActivatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -10586,17 +11080,49 @@ export namespace APITokenActivatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -10608,15 +11134,17 @@ export namespace APITokenActivatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -10849,8 +11377,9 @@ export namespace APITokenDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -10954,20 +11483,33 @@ export namespace APITokenDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -10977,17 +11519,49 @@ export namespace APITokenDeletedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -10999,15 +11573,17 @@ export namespace APITokenDeletedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -11240,8 +11816,9 @@ export namespace EnvironmentCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -11345,20 +11922,33 @@ export namespace EnvironmentCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -11368,17 +11958,49 @@ export namespace EnvironmentCreatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -11390,15 +12012,17 @@ export namespace EnvironmentCreatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -11631,8 +12255,9 @@ export namespace EnvironmentRenamedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -11736,20 +12361,33 @@ export namespace EnvironmentRenamedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -11759,17 +12397,49 @@ export namespace EnvironmentRenamedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -11781,15 +12451,17 @@ export namespace EnvironmentRenamedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -12022,8 +12694,9 @@ export namespace EnvironmentDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -12127,20 +12800,33 @@ export namespace EnvironmentDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -12150,17 +12836,49 @@ export namespace EnvironmentDeletedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -12172,15 +12890,17 @@ export namespace EnvironmentDeletedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -12413,8 +13133,9 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -12518,20 +13239,33 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -12541,17 +13275,49 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -12563,15 +13329,17 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -12804,8 +13572,9 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -12909,20 +13678,33 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -12932,17 +13714,49 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -12954,15 +13768,17 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -13195,8 +14011,9 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -13300,20 +14117,33 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -13323,17 +14153,49 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -13345,15 +14207,17 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -13586,8 +14450,9 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -13691,20 +14556,33 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -13714,17 +14592,49 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -13736,15 +14646,17 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -13977,8 +14889,9 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -14082,20 +14995,33 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -14105,17 +15031,49 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -14127,15 +15085,17 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -14368,8 +15328,9 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -14473,20 +15434,33 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -14496,17 +15470,49 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -14518,15 +15524,17 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -14759,8 +15767,9 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -14864,20 +15873,33 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -14887,17 +15909,49 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -14909,15 +15963,17 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -15150,8 +16206,9 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -15255,20 +16312,33 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -15278,17 +16348,49 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -15300,15 +16402,17 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -15541,8 +16645,9 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -15646,20 +16751,33 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -15669,17 +16787,49 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -15691,15 +16841,17 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -15932,8 +17084,9 @@ export namespace TeamMemberAddedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -16037,20 +17190,33 @@ export namespace TeamMemberAddedWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -16060,17 +17226,49 @@ export namespace TeamMemberAddedWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -16082,15 +17280,17 @@ export namespace TeamMemberAddedWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -16323,8 +17523,9 @@ export namespace TeamMemberSignedInWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -16428,20 +17629,33 @@ export namespace TeamMemberSignedInWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -16451,17 +17665,49 @@ export namespace TeamMemberSignedInWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -16473,15 +17719,17 @@ export namespace TeamMemberSignedInWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
@@ -16714,8 +17962,9 @@ export namespace TeamMemberSignedOutWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     change?: Data.Change;
 
@@ -16819,20 +18068,33 @@ export namespace TeamMemberSignedOutWebhookEvent {
      * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
      * expired and activated events never carry it. `null` means none: `to: null` means
      * cleared and `from: null` means first set. The value type depends on the event
-     * and is given in each event's description. `contact_card.updated` uses `name`
-     * instead of `from` and `to`.
+     * and is given in each event's description. `contact_card.updated` uses
+     * `first_name`, `last_name` and `image_url` instead of `from` and `to`, each
+     * present only when that field changed.
      */
     export interface Change {
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      first_name?: Change.FirstName;
+
       /**
        * The value before the change; null when there was none.
        */
       from?: unknown;
 
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      name?: Change.Name;
+      image_url?: Change.ImageURL;
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      last_name?: Change.LastName;
 
       /**
        * The value after the change; null when it was cleared.
@@ -16842,17 +18104,49 @@ export namespace TeamMemberSignedOutWebhookEvent {
 
     export namespace Change {
       /**
-       * A contact card name change. Only on `contact_card.updated`, when the name
-       * changed.
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
        */
-      export interface Name {
+      export interface FirstName {
         /**
-         * The name before the change; null when the card had no name.
+         * The value before the change; null when the card had none.
          */
         from: string | null;
 
         /**
-         * The name after the change; null when it was removed.
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface ImageURL {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+
+      /**
+       * A single field's change, on `contact_card.updated`. Present only for the field
+       * that changed.
+       */
+      export interface LastName {
+        /**
+         * The value before the change; null when the card had none.
+         */
+        from: string | null;
+
+        /**
+         * The value after the change; null when it was removed.
          */
         to: string | null;
       }
@@ -16864,15 +18158,17 @@ export namespace TeamMemberSignedOutWebhookEvent {
     export interface ContactCard {
       id: string;
 
-      /**
-       * Display name. Absent when the card has no name.
-       */
-      name?: string;
+      first_name: string;
 
       /**
-       * True when the photo changed. Only on `contact_card.updated`.
+       * Null when the card has no photo.
        */
-      photo_updated?: boolean;
+      image_url: string | null;
+
+      /**
+       * Null when the card has no last name.
+       */
+      last_name: string | null;
     }
 
     /**
