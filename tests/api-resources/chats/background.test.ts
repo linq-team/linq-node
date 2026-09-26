@@ -7,10 +7,10 @@ const client = new LinqAPIV3({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource location', () => {
+describe('resource background', () => {
   // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.chats.location.retrieve('975d0776-bd17-4273-8337-f346b4c661b0');
+  test.skip('remove', async () => {
+    const responsePromise = client.chats.background.remove('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,21 +21,9 @@ describe('resource location', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('request', async () => {
-    const responsePromise = client.chats.location.request('975d0776-bd17-4273-8337-f346b4c661b0');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('stop: only required params', async () => {
-    const responsePromise = client.chats.location.stop('975d0776-bd17-4273-8337-f346b4c661b0', {
-      handle: '+15551234567',
+  test.skip('set: only required params', async () => {
+    const responsePromise = client.chats.background.set('550e8400-e29b-41d4-a716-446655440000', {
+      type: 'color',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,9 +35,13 @@ describe('resource location', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('stop: required and optional params', async () => {
-    const response = await client.chats.location.stop('975d0776-bd17-4273-8337-f346b4c661b0', {
-      handle: '+15551234567',
+  test.skip('set: required and optional params', async () => {
+    const response = await client.chats.background.set('550e8400-e29b-41d4-a716-446655440000', {
+      type: 'color',
+      image_url: 'https://example.com',
+      shades: ['string', 'string'],
+      style: 'sky',
+      variant: 'mango',
     });
   });
 });
