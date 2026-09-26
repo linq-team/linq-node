@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.72.0](https://github.com/linq-team/linq-node/compare/v0.71.2...v0.72.0) (2026-09-26)
+
+
+### Features
+
+* add webhook events for account changes ([44e422e](https://github.com/linq-team/linq-node/commit/44e422e11636defc922be8910438bbdcbb0b9bf3))
+
 ## [0.71.2](https://github.com/linq-team/linq-node/compare/v0.71.1...v0.71.2) (2026-09-26)
 
 
