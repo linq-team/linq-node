@@ -6397,7 +6397,7 @@ export interface ZeroDayRetentionUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: ZeroDayRetentionUpdatedWebhookEvent.Data;
 
@@ -6509,7 +6509,7 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -6559,9 +6559,9 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -6710,19 +6710,14 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -6793,7 +6788,7 @@ export interface PhoneNumberForwardingUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: PhoneNumberForwardingUpdatedWebhookEvent.Data;
 
@@ -6905,7 +6900,7 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -6955,9 +6950,9 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -7106,19 +7101,14 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -7189,7 +7179,7 @@ export interface EnvironmentLineMovedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: EnvironmentLineMovedWebhookEvent.Data;
 
@@ -7301,7 +7291,7 @@ export namespace EnvironmentLineMovedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -7351,9 +7341,9 @@ export namespace EnvironmentLineMovedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -7502,19 +7492,14 @@ export namespace EnvironmentLineMovedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -7585,7 +7570,7 @@ export interface ContactCardCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: ContactCardCreatedWebhookEvent.Data;
 
@@ -7697,7 +7682,7 @@ export namespace ContactCardCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -7747,9 +7732,9 @@ export namespace ContactCardCreatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -7898,19 +7883,14 @@ export namespace ContactCardCreatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -7981,7 +7961,7 @@ export interface ContactCardUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: ContactCardUpdatedWebhookEvent.Data;
 
@@ -8093,7 +8073,7 @@ export namespace ContactCardUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -8143,9 +8123,9 @@ export namespace ContactCardUpdatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -8294,19 +8274,14 @@ export namespace ContactCardUpdatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -8377,7 +8352,7 @@ export interface ContactCardDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: ContactCardDeletedWebhookEvent.Data;
 
@@ -8489,7 +8464,7 @@ export namespace ContactCardDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -8539,9 +8514,9 @@ export namespace ContactCardDeletedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -8690,19 +8665,14 @@ export namespace ContactCardDeletedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -8773,7 +8743,7 @@ export interface APITokenCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: APITokenCreatedWebhookEvent.Data;
 
@@ -8885,7 +8855,7 @@ export namespace APITokenCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -8935,9 +8905,9 @@ export namespace APITokenCreatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -9086,19 +9056,14 @@ export namespace APITokenCreatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -9169,7 +9134,7 @@ export interface APITokenRenamedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: APITokenRenamedWebhookEvent.Data;
 
@@ -9281,7 +9246,7 @@ export namespace APITokenRenamedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -9331,9 +9296,9 @@ export namespace APITokenRenamedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -9482,19 +9447,14 @@ export namespace APITokenRenamedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -9565,7 +9525,7 @@ export interface APITokenExpiryScheduledWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: APITokenExpiryScheduledWebhookEvent.Data;
 
@@ -9677,7 +9637,7 @@ export namespace APITokenExpiryScheduledWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -9727,9 +9687,9 @@ export namespace APITokenExpiryScheduledWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -9878,19 +9838,14 @@ export namespace APITokenExpiryScheduledWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -9961,7 +9916,7 @@ export interface APITokenExpiredWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: APITokenExpiredWebhookEvent.Data;
 
@@ -10073,7 +10028,7 @@ export namespace APITokenExpiredWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -10123,9 +10078,9 @@ export namespace APITokenExpiredWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -10274,19 +10229,14 @@ export namespace APITokenExpiredWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -10357,7 +10307,7 @@ export interface APITokenActivatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: APITokenActivatedWebhookEvent.Data;
 
@@ -10469,7 +10419,7 @@ export namespace APITokenActivatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -10519,9 +10469,9 @@ export namespace APITokenActivatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -10670,19 +10620,14 @@ export namespace APITokenActivatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -10753,7 +10698,7 @@ export interface APITokenDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: APITokenDeletedWebhookEvent.Data;
 
@@ -10865,7 +10810,7 @@ export namespace APITokenDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -10915,9 +10860,9 @@ export namespace APITokenDeletedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -11066,19 +11011,14 @@ export namespace APITokenDeletedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -11149,7 +11089,7 @@ export interface EnvironmentCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: EnvironmentCreatedWebhookEvent.Data;
 
@@ -11261,7 +11201,7 @@ export namespace EnvironmentCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -11311,9 +11251,9 @@ export namespace EnvironmentCreatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -11462,19 +11402,14 @@ export namespace EnvironmentCreatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -11545,7 +11480,7 @@ export interface EnvironmentRenamedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: EnvironmentRenamedWebhookEvent.Data;
 
@@ -11657,7 +11592,7 @@ export namespace EnvironmentRenamedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -11707,9 +11642,9 @@ export namespace EnvironmentRenamedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -11858,19 +11793,14 @@ export namespace EnvironmentRenamedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -11941,7 +11871,7 @@ export interface EnvironmentDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: EnvironmentDeletedWebhookEvent.Data;
 
@@ -12053,7 +11983,7 @@ export namespace EnvironmentDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -12103,9 +12033,9 @@ export namespace EnvironmentDeletedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -12254,19 +12184,14 @@ export namespace EnvironmentDeletedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -12337,7 +12262,7 @@ export interface WebhookSubscriptionCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionCreatedWebhookEvent.Data;
 
@@ -12449,7 +12374,7 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -12499,9 +12424,9 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -12650,19 +12575,14 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -12733,7 +12653,7 @@ export interface WebhookSubscriptionDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionDeletedWebhookEvent.Data;
 
@@ -12845,7 +12765,7 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -12895,9 +12815,9 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -13046,19 +12966,14 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -13129,7 +13044,7 @@ export interface WebhookSubscriptionTargetURLChangedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionTargetURLChangedWebhookEvent.Data;
 
@@ -13241,7 +13156,7 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -13291,9 +13206,9 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -13442,19 +13357,14 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -13525,7 +13435,7 @@ export interface WebhookSubscriptionEnabledWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionEnabledWebhookEvent.Data;
 
@@ -13637,7 +13547,7 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -13687,9 +13597,9 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -13838,19 +13748,14 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -13921,7 +13826,7 @@ export interface WebhookSubscriptionDisabledWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionDisabledWebhookEvent.Data;
 
@@ -14033,7 +13938,7 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -14083,9 +13988,9 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -14234,19 +14139,14 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -14317,7 +14217,7 @@ export interface WebhookSubscriptionEventsUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionEventsUpdatedWebhookEvent.Data;
 
@@ -14429,7 +14329,7 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -14479,9 +14379,9 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -14630,19 +14530,14 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -14713,7 +14608,7 @@ export interface WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent.Data;
 
@@ -14825,7 +14720,7 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -14875,9 +14770,9 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -15026,19 +14921,14 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -15109,7 +14999,7 @@ export interface WebhookSubscriptionRoutingHeadersSetWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionRoutingHeadersSetWebhookEvent.Data;
 
@@ -15221,7 +15111,7 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -15271,9 +15161,9 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -15422,19 +15312,14 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -15505,7 +15390,7 @@ export interface WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: WebhookSubscriptionRoutingHeadersClearedWebhookEvent.Data;
 
@@ -15617,7 +15502,7 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -15667,9 +15552,9 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -15818,19 +15703,14 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -15901,7 +15781,7 @@ export interface TeamMemberAddedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: TeamMemberAddedWebhookEvent.Data;
 
@@ -16013,7 +15893,7 @@ export namespace TeamMemberAddedWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -16063,9 +15943,9 @@ export namespace TeamMemberAddedWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -16214,19 +16094,14 @@ export namespace TeamMemberAddedWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -16297,7 +16172,7 @@ export interface TeamMemberSignedInWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: TeamMemberSignedInWebhookEvent.Data;
 
@@ -16409,7 +16284,7 @@ export namespace TeamMemberSignedInWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -16459,9 +16334,9 @@ export namespace TeamMemberSignedInWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -16610,19 +16485,14 @@ export namespace TeamMemberSignedInWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
@@ -16693,7 +16563,7 @@ export interface TeamMemberSignedOutWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   data: TeamMemberSignedOutWebhookEvent.Data;
 
@@ -16805,7 +16675,7 @@ export namespace TeamMemberSignedOutWebhookEvent {
    * `phone_number`, `team_member`) identify what changed; on update events `change`
    * describes the transition. Created and deleted events carry only the object that
    * was created or deleted. Fields are absent when they don't apply; `null` appears
-   * only inside `change` and as Production's environment `id`.
+   * only inside `change`.
    */
   export interface Data {
     /**
@@ -16855,9 +16725,9 @@ export namespace TeamMemberSignedOutWebhookEvent {
     contact_card?: Data.ContactCard;
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     environment?: Data.Environment;
 
@@ -17006,19 +16876,14 @@ export namespace TeamMemberSignedOutWebhookEvent {
     }
 
     /**
-     * An environment. Production is
-     * `{"id": null, "name": "Production", "type": "production"}`; every other
-     * environment has an `id` and type `environment`.
+     * An environment, identified by name. Production is
+     * `{"name": "Production", "type": "environment"}`; a named environment you created
+     * (e.g. "Staging") looks the same shape, just with its own name.
      */
     export interface Environment {
-      /**
-       * Null for Production.
-       */
-      id: string | null;
+      name: string;
 
-      type: 'production' | 'environment';
-
-      name?: string;
+      type: 'environment';
     }
 
     /**
