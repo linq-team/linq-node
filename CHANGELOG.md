@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.73.0](https://github.com/linq-team/linq-node/compare/v0.72.1...v0.73.0) (2026-09-26)
+
+
+### Features
+
+* split contact card name into first and last name fields ([35e06f4](https://github.com/linq-team/linq-node/commit/35e06f458170734c3cc55f068598b60f4f3491c5))
+
 ## [0.72.1](https://github.com/linq-team/linq-node/compare/v0.72.0...v0.72.1) (2026-09-26)
 
 
