@@ -3837,7 +3837,34 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -3969,7 +3996,34 @@ export interface PhoneNumberAssignedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -4081,7 +4135,34 @@ export interface PhoneNumberReleasedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -4188,7 +4269,34 @@ export interface ConnectionCreatedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -4429,7 +4537,34 @@ export interface ConnectionRevokedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -4666,7 +4801,34 @@ export interface LocationSharingStartedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -4786,7 +4948,34 @@ export interface LocationSharingStoppedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -4909,7 +5098,34 @@ export interface PaymentAuthorizedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -5150,7 +5366,34 @@ export interface PaymentCanceledWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -5391,7 +5634,34 @@ export interface PaymentDeclinedWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -5632,7 +5902,34 @@ export interface PaymentExpiredWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -5873,7 +6170,34 @@ export interface PaymentSucceededWebhookEvent {
     | 'payment.declined'
     | 'payment.authorized'
     | 'connection.created'
-    | 'connection.revoked';
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
 
   /**
    * Partner identifier. Present on all webhooks for cross-referencing.
@@ -6045,6 +6369,10698 @@ export namespace PaymentSucceededWebhookEvent {
 }
 
 /**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface ZeroDayRetentionUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: ZeroDayRetentionUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ZeroDayRetentionUpdatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface PhoneNumberForwardingUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: PhoneNumberForwardingUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PhoneNumberForwardingUpdatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface EnvironmentLineMovedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: EnvironmentLineMovedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace EnvironmentLineMovedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface ContactCardCreatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: ContactCardCreatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ContactCardCreatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface ContactCardUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: ContactCardUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ContactCardUpdatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface ContactCardDeletedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: ContactCardDeletedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace ContactCardDeletedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface APITokenCreatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: APITokenCreatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace APITokenCreatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface APITokenRenamedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: APITokenRenamedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace APITokenRenamedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface APITokenExpiryScheduledWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: APITokenExpiryScheduledWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace APITokenExpiryScheduledWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface APITokenExpiredWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: APITokenExpiredWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace APITokenExpiredWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface APITokenActivatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: APITokenActivatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace APITokenActivatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface APITokenDeletedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: APITokenDeletedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace APITokenDeletedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface EnvironmentCreatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: EnvironmentCreatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace EnvironmentCreatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface EnvironmentRenamedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: EnvironmentRenamedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace EnvironmentRenamedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface EnvironmentDeletedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: EnvironmentDeletedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace EnvironmentDeletedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionCreatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionCreatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionCreatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionDeletedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionDeletedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionDeletedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionTargetURLChangedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionTargetURLChangedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionEnabledWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionEnabledWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionEnabledWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionDisabledWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionDisabledWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionDisabledWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionEventsUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionEventsUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionRoutingHeadersSetWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionRoutingHeadersSetWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: WebhookSubscriptionRoutingHeadersClearedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface TeamMemberAddedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: TeamMemberAddedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace TeamMemberAddedWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface TeamMemberSignedInWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: TeamMemberSignedInWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace TeamMemberSignedInWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
+ * Webhook payload for account events. One event type per kind of account change.
+ * `event_id` is the same on every retry and on every subscription the event is
+ * delivered to; use it to deduplicate. `created_at` is when the webhook was
+ * created and `data.occurred_at` when the change happened. Events are not
+ * guaranteed to arrive in order. Delivery is best-effort: if a delivery still
+ * fails after retries, the change remains on your Activity page. Changes to
+ * webhook subscriptions are account events too, so a subscription to
+ * `webhook_subscription.*` events receives an event about the subscription that
+ * was just created or edited.
+ */
+export interface TeamMemberSignedOutWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  data: TeamMemberSignedOutWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'contact_card.received'
+    | 'call.initiated'
+    | 'call.ringing'
+    | 'call.answered'
+    | 'call.ended'
+    | 'call.failed'
+    | 'call.declined'
+    | 'call.no_answer'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace TeamMemberSignedOutWebhookEvent {
+  /**
+   * A change on your account, the same change shown on your Activity page. Every
+   * event carries `summary`, `occurred_at`, `actor` and `origin`. The object fields
+   * (`api_token`, `webhook_subscription`, `environment`, `contact_card`,
+   * `phone_number`, `team_member`) identify what changed; on update events `change`
+   * describes the transition. Created and deleted events carry only the object that
+   * was created or deleted. Fields are absent when they don't apply; `null` appears
+   * only inside `change` and as Production's environment `id`.
+   */
+  export interface Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    actor: Data.Actor;
+
+    /**
+     * When the change happened.
+     */
+    occurred_at: string;
+
+    /**
+     * Where the change was made.
+     */
+    origin: 'dashboard' | 'api' | 'linq';
+
+    /**
+     * Human-readable label, identical to the Activity page. For display only; the
+     * wording may change without a new webhook version.
+     */
+    summary: string;
+
+    /**
+     * The API token that changed.
+     */
+    api_token?: Data.APIToken;
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    change?: Data.Change;
+
+    /**
+     * The contact card that changed.
+     */
+    contact_card?: Data.ContactCard;
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    environment?: Data.Environment;
+
+    /**
+     * Lines moved to Production when an environment was deleted.
+     */
+    lines_moved_to_production?: number;
+
+    /**
+     * How the team member signed in. `code` is a one-time code sent by email or text.
+     * Only on `team_member.signed_in`.
+     */
+    method?: 'code' | 'sso' | 'google' | 'apple' | 'linkedin';
+
+    /**
+     * The line the change is about, in E.164 format.
+     */
+    phone_number?: string;
+
+    /**
+     * The team member the event is about.
+     */
+    team_member?: Data.TeamMember;
+
+    /**
+     * API tokens revoked when an environment was deleted.
+     */
+    tokens_revoked?: number;
+
+    /**
+     * The webhook subscription that changed.
+     */
+    webhook_subscription?: Data.WebhookSubscription;
+  }
+
+  export namespace Data {
+    /**
+     * Who made the change. `team_member` carries the member's id, name and email;
+     * other types carry no identity. `system` is a change made by Linq, matching
+     * "System" on your Activity page. `unknown` means the actor could not be
+     * identified.
+     */
+    export interface Actor {
+      type: 'team_member' | 'api' | 'system' | 'unknown';
+
+      /**
+       * Team member's user ID. Only for `team_member`.
+       */
+      id?: string;
+
+      /**
+       * Team member's email. Only for `team_member`.
+       */
+      email?: string;
+
+      /**
+       * Team member's name. Only for `team_member`.
+       */
+      name?: string;
+    }
+
+    /**
+     * The API token that changed.
+     */
+    export interface APIToken {
+      id: string;
+
+      /**
+       * When the token expires. On `api_token.created`, `api_token.expired` and
+       * `api_token.deleted`; absent if it never expires.
+       */
+      expires_at?: string;
+
+      /**
+       * Absent when the token has no name.
+       */
+      name?: string;
+
+      /**
+       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
+       */
+      token_prefix?: string;
+    }
+
+    /**
+     * The transition an update event describes: `from` is the value before and `to`
+     * the value after. Present only on update events (`*.updated`, `*.renamed`,
+     * `*_changed`, `api_token.expiry_scheduled`, `environment.line_moved`,
+     * `webhook_subscription.routing_headers_*`); created, deleted, enabled, disabled,
+     * expired and activated events never carry it. `null` means none: `to: null` means
+     * cleared and `from: null` means first set. The value type depends on the event
+     * and is given in each event's description. `contact_card.updated` uses `name`
+     * instead of `from` and `to`.
+     */
+    export interface Change {
+      /**
+       * The value before the change; null when there was none.
+       */
+      from?: unknown;
+
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      name?: Change.Name;
+
+      /**
+       * The value after the change; null when it was cleared.
+       */
+      to?: unknown;
+    }
+
+    export namespace Change {
+      /**
+       * A contact card name change. Only on `contact_card.updated`, when the name
+       * changed.
+       */
+      export interface Name {
+        /**
+         * The name before the change; null when the card had no name.
+         */
+        from: string | null;
+
+        /**
+         * The name after the change; null when it was removed.
+         */
+        to: string | null;
+      }
+    }
+
+    /**
+     * The contact card that changed.
+     */
+    export interface ContactCard {
+      id: string;
+
+      /**
+       * Display name. Absent when the card has no name.
+       */
+      name?: string;
+
+      /**
+       * True when the photo changed. Only on `contact_card.updated`.
+       */
+      photo_updated?: boolean;
+    }
+
+    /**
+     * An environment. Production is
+     * `{"id": null, "name": "Production", "type": "production"}`; every other
+     * environment has an `id` and type `environment`.
+     */
+    export interface Environment {
+      /**
+       * Null for Production.
+       */
+      id: string | null;
+
+      type: 'production' | 'environment';
+
+      name?: string;
+    }
+
+    /**
+     * The team member the event is about.
+     */
+    export interface TeamMember {
+      /**
+       * The team member's user ID.
+       */
+      id: string;
+
+      /**
+       * Absent when the member has no name.
+       */
+      name?: string;
+
+      /**
+       * Role the member joined with. Only on `team_member.added`.
+       */
+      role?: 'admin' | 'manager' | 'member';
+    }
+
+    /**
+     * The webhook subscription that changed.
+     */
+    export interface WebhookSubscription {
+      id: string;
+
+      /**
+       * Event types it listens for. Only on `webhook_subscription.created`.
+       */
+      events?: Array<string>;
+
+      /**
+       * Sent without credentials, query string or fragment.
+       */
+      target_url?: string;
+    }
+  }
+}
+
+/**
  * Complete webhook payload for message.sent events (2026-02-03 format)
  */
 export type UnwrapWebhookEvent =
@@ -6088,7 +17104,34 @@ export type UnwrapWebhookEvent =
   | PaymentCanceledWebhookEvent
   | PaymentDeclinedWebhookEvent
   | PaymentExpiredWebhookEvent
-  | PaymentSucceededWebhookEvent;
+  | PaymentSucceededWebhookEvent
+  | ZeroDayRetentionUpdatedWebhookEvent
+  | PhoneNumberForwardingUpdatedWebhookEvent
+  | EnvironmentLineMovedWebhookEvent
+  | ContactCardCreatedWebhookEvent
+  | ContactCardUpdatedWebhookEvent
+  | ContactCardDeletedWebhookEvent
+  | APITokenCreatedWebhookEvent
+  | APITokenRenamedWebhookEvent
+  | APITokenExpiryScheduledWebhookEvent
+  | APITokenExpiredWebhookEvent
+  | APITokenActivatedWebhookEvent
+  | APITokenDeletedWebhookEvent
+  | EnvironmentCreatedWebhookEvent
+  | EnvironmentRenamedWebhookEvent
+  | EnvironmentDeletedWebhookEvent
+  | WebhookSubscriptionCreatedWebhookEvent
+  | WebhookSubscriptionDeletedWebhookEvent
+  | WebhookSubscriptionTargetURLChangedWebhookEvent
+  | WebhookSubscriptionEnabledWebhookEvent
+  | WebhookSubscriptionDisabledWebhookEvent
+  | WebhookSubscriptionEventsUpdatedWebhookEvent
+  | WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent
+  | WebhookSubscriptionRoutingHeadersSetWebhookEvent
+  | WebhookSubscriptionRoutingHeadersClearedWebhookEvent
+  | TeamMemberAddedWebhookEvent
+  | TeamMemberSignedInWebhookEvent
+  | TeamMemberSignedOutWebhookEvent;
 
 export declare namespace Webhooks {
   export {
@@ -6139,6 +17182,33 @@ export declare namespace Webhooks {
     type PaymentDeclinedWebhookEvent as PaymentDeclinedWebhookEvent,
     type PaymentExpiredWebhookEvent as PaymentExpiredWebhookEvent,
     type PaymentSucceededWebhookEvent as PaymentSucceededWebhookEvent,
+    type ZeroDayRetentionUpdatedWebhookEvent as ZeroDayRetentionUpdatedWebhookEvent,
+    type PhoneNumberForwardingUpdatedWebhookEvent as PhoneNumberForwardingUpdatedWebhookEvent,
+    type EnvironmentLineMovedWebhookEvent as EnvironmentLineMovedWebhookEvent,
+    type ContactCardCreatedWebhookEvent as ContactCardCreatedWebhookEvent,
+    type ContactCardUpdatedWebhookEvent as ContactCardUpdatedWebhookEvent,
+    type ContactCardDeletedWebhookEvent as ContactCardDeletedWebhookEvent,
+    type APITokenCreatedWebhookEvent as APITokenCreatedWebhookEvent,
+    type APITokenRenamedWebhookEvent as APITokenRenamedWebhookEvent,
+    type APITokenExpiryScheduledWebhookEvent as APITokenExpiryScheduledWebhookEvent,
+    type APITokenExpiredWebhookEvent as APITokenExpiredWebhookEvent,
+    type APITokenActivatedWebhookEvent as APITokenActivatedWebhookEvent,
+    type APITokenDeletedWebhookEvent as APITokenDeletedWebhookEvent,
+    type EnvironmentCreatedWebhookEvent as EnvironmentCreatedWebhookEvent,
+    type EnvironmentRenamedWebhookEvent as EnvironmentRenamedWebhookEvent,
+    type EnvironmentDeletedWebhookEvent as EnvironmentDeletedWebhookEvent,
+    type WebhookSubscriptionCreatedWebhookEvent as WebhookSubscriptionCreatedWebhookEvent,
+    type WebhookSubscriptionDeletedWebhookEvent as WebhookSubscriptionDeletedWebhookEvent,
+    type WebhookSubscriptionTargetURLChangedWebhookEvent as WebhookSubscriptionTargetURLChangedWebhookEvent,
+    type WebhookSubscriptionEnabledWebhookEvent as WebhookSubscriptionEnabledWebhookEvent,
+    type WebhookSubscriptionDisabledWebhookEvent as WebhookSubscriptionDisabledWebhookEvent,
+    type WebhookSubscriptionEventsUpdatedWebhookEvent as WebhookSubscriptionEventsUpdatedWebhookEvent,
+    type WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent as WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent,
+    type WebhookSubscriptionRoutingHeadersSetWebhookEvent as WebhookSubscriptionRoutingHeadersSetWebhookEvent,
+    type WebhookSubscriptionRoutingHeadersClearedWebhookEvent as WebhookSubscriptionRoutingHeadersClearedWebhookEvent,
+    type TeamMemberAddedWebhookEvent as TeamMemberAddedWebhookEvent,
+    type TeamMemberSignedInWebhookEvent as TeamMemberSignedInWebhookEvent,
+    type TeamMemberSignedOutWebhookEvent as TeamMemberSignedOutWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
 }
