@@ -6636,14 +6636,14 @@ export namespace ZeroDayRetentionUpdatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -7074,14 +7074,14 @@ export namespace PhoneNumberForwardingUpdatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -7512,14 +7512,14 @@ export namespace EnvironmentLineMovedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -7950,14 +7950,14 @@ export namespace ContactCardCreatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -8388,14 +8388,14 @@ export namespace ContactCardUpdatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -8826,14 +8826,14 @@ export namespace ContactCardDeletedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -9264,14 +9264,14 @@ export namespace APITokenCreatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -9702,14 +9702,14 @@ export namespace APITokenRenamedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -10140,14 +10140,14 @@ export namespace APITokenExpiryScheduledWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -10578,14 +10578,14 @@ export namespace APITokenExpiredWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -11016,14 +11016,14 @@ export namespace APITokenActivatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -11454,14 +11454,14 @@ export namespace APITokenDeletedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -11892,14 +11892,14 @@ export namespace EnvironmentCreatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -12330,14 +12330,14 @@ export namespace EnvironmentRenamedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -12768,14 +12768,14 @@ export namespace EnvironmentDeletedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -13206,14 +13206,14 @@ export namespace WebhookSubscriptionCreatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -13644,14 +13644,14 @@ export namespace WebhookSubscriptionDeletedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -14082,14 +14082,14 @@ export namespace WebhookSubscriptionTargetURLChangedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -14520,14 +14520,14 @@ export namespace WebhookSubscriptionEnabledWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -14958,14 +14958,14 @@ export namespace WebhookSubscriptionDisabledWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -15396,14 +15396,14 @@ export namespace WebhookSubscriptionEventsUpdatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -15834,14 +15834,14 @@ export namespace WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -16272,14 +16272,14 @@ export namespace WebhookSubscriptionRoutingHeadersSetWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -16710,14 +16710,14 @@ export namespace WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -17148,14 +17148,14 @@ export namespace TeamMemberAddedWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -17586,14 +17586,14 @@ export namespace TeamMemberSignedInWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
@@ -18024,14 +18024,14 @@ export namespace TeamMemberSignedOutWebhookEvent {
       expires_at: string | null;
 
       /**
+       * The token's visible prefix.
+       */
+      token_prefix: string;
+
+      /**
        * Absent when the token has no name.
        */
       name?: string;
-
-      /**
-       * The token's visible prefix. On `api_token.created` and `api_token.deleted`.
-       */
-      token_prefix?: string;
     }
 
     /**
