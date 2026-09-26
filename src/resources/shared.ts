@@ -17,7 +17,9 @@ export interface ChatHandle {
   joined_at: string;
 
   /**
-   * Messaging service type
+   * Messaging service type. Where this names the transport a message used, it is
+   * per-message: a chat's own `service` can differ from a message in it, and Apple
+   * can downgrade an individual message.
    */
   service: ServiceType;
 
@@ -35,6 +37,41 @@ export interface ChatHandle {
    * Participant status
    */
   status?: 'active' | 'left' | 'removed' | null;
+}
+
+/**
+ * One sticker image placed inside the text of a part: `id`, `url` and the image
+ * details.
+ */
+export interface InlineStickerResponse {
+  /**
+   * Character range `[start, end)` in `value` that the sticker replaces. Those
+   * characters are hidden on iMessage and sent as written on SMS and RCS.
+   * _Characters are measured as UTF-16 code units. Most characters count as 1; some
+   * emoji count as 2._
+   */
+  range: Array<number>;
+
+  /**
+   * Attachment ID of the sticker image.
+   */
+  id?: string | null;
+
+  /**
+   * Filename of the sticker
+   */
+  file_name?: string | null;
+
+  /**
+   * MIME type of the sticker image
+   */
+  mime_type?: string | null;
+
+  /**
+   * URL for downloading the sticker image. Permanent for a normal upload; a
+   * time-limited signed URL when the image is an ephemeral attachment.
+   */
+  url?: string | null;
 }
 
 /**
@@ -114,6 +151,16 @@ export interface Reaction {
   type: ReactionType;
 
   /**
+   * Identifier for this reaction. Pass it to
+   * `PATCH /v3/messages/{messageId}/reactions/{reactionId}` to move a sticker.
+   *
+   * Stickers placed before this API shipped can be read but not moved: the
+   * device-side reference needed to reposition them was never recorded, so `PATCH`
+   * returns 404 for those.
+   */
+  id?: string;
+
+  /**
    * Custom emoji if type is "custom", null otherwise
    */
   custom_emoji?: string | null;
@@ -175,7 +222,9 @@ export type ReactionType =
   | 'sticker';
 
 /**
- * Messaging service type
+ * Messaging service type. Where this names the transport a message used, it is
+ * per-message: a chat's own `service` can differ from a message in it, and Apple
+ * can downgrade an individual message.
  */
 export type ServiceType = 'iMessage' | 'SMS' | 'RCS';
 
@@ -218,7 +267,73 @@ export interface TextPartResponse {
   value: string;
 
   /**
+   * Stickers placed inside the text, in the order they appear in `value`. `null`
+   * when the part has none.
+   *
+   * Set on messages sent with `inline_stickers`. An inline sticker received over
+   * iMessage currently arrives as a separate media part.
+   */
+  inline_stickers?: Array<InlineStickerResponse> | null;
+
+  /**
+   * @deprecated DEPRECATED: Use `mentions` instead. Handle (E.164 phone number or
+   * Apple ID email) of the **first** mention on this part. A part may carry several
+   * mentions; this field shows only the first in `value` order, so it cannot be used
+   * to determine whether a given participant was mentioned. `null` when the part
+   * carries no mention.
+   */
+  mention?: string | null;
+
+  /**
+   * @deprecated DEPRECATED: Use `mentions[].range` instead. Character range
+   * `[start, end)` in `value` highlighted as the **first** mention only. `null` when
+   * the range was omitted (the whole `value` is highlighted) or the part carries no
+   * mention. _Characters are measured as UTF-16 code units. Most characters count as
+   * 1; some emoji count as 2._
+   */
+  mention_range?: Array<number> | null;
+
+  /**
+   * Every mention on this part, in the order they appear in `value`. `null` when the
+   * part carries no mention. A part can carry several mentions of different people —
+   * check `is_me` to tell whether this line was one of them.
+   *
+   * Only iMessage carries mentions. On a received message this is populated when the
+   * sender was on iMessage; SMS and RCS have no way to mark a mention, so a message
+   * from an SMS or RCS participant arrives as plain text with `mentions` null, even
+   * in a group where other participants are on iMessage.
+   */
+  mentions?: Array<TextPartResponse.Mention> | null;
+
+  /**
    * Text decorations applied to character ranges in the value
    */
   text_decorations?: Array<TextDecoration> | null;
+}
+
+export namespace TextPartResponse {
+  /**
+   * One mention on a text part — who was mentioned, and which characters of `value`
+   * are the mention. A part carries one of these per mention, in the order they
+   * appear in the text, so a message naming two people has two entries.
+   */
+  export interface Mention {
+    /**
+     * Address of the mentioned participant, exactly as the device recorded it — an
+     * E.164 phone number or an email address.
+     */
+    handle: string;
+
+    /**
+     * Whether the mentioned participant is this line.
+     */
+    is_me: boolean;
+
+    /**
+     * Character range `[start, end)` in `value` highlighted as this mention.
+     * _Characters are measured as UTF-16 code units. Most characters count as 1; some
+     * emoji count as 2._
+     */
+    range: Array<number>;
+  }
 }
