@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.75.1](https://github.com/linq-team/linq-node/compare/v0.75.0...v0.75.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* clarify imessage app card update delivery requirements ([a3adccd](https://github.com/linq-team/linq-node/commit/a3adccda21124324844588e31e808a05b5b00952))
+
 ## [0.75.0](https://github.com/linq-team/linq-node/compare/v0.74.0...v0.75.0) (2026-09-26)
 
 
