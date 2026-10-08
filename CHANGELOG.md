@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.77.0](https://github.com/linq-team/linq-node/compare/v0.76.0...v0.77.0) (2026-10-08)
+
+
+### Features
+
+* add line_type field to handle and phone number resources ([0d281e2](https://github.com/linq-team/linq-node/commit/0d281e2532589042375c8df34d46851466a1acba))
+
 ## [0.76.0](https://github.com/linq-team/linq-node/compare/v0.75.1...v0.76.0) (2026-10-08)
 
 
