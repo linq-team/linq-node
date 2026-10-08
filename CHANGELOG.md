@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.76.0](https://github.com/linq-team/linq-node/compare/v0.75.1...v0.76.0) (2026-10-08)
+
+
+### Features
+
+* add type parameter to phone number resolution endpoint ([6ea95de](https://github.com/linq-team/linq-node/commit/6ea95de1d1b42d369716a83bc631d2fe41ea919f))
+
 ## [0.75.1](https://github.com/linq-team/linq-node/compare/v0.75.0...v0.75.1) (2026-10-01)
 
 
