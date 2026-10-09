@@ -329,6 +329,8 @@ export class Chats extends APIResource {
    * line has no active contact card, the request is rejected with `404` (error code
    * `2012`, "Contact card not found").
    *
+   * Rate limited per chat: at most 1 share per chat every 5 minutes.
+   *
    * @example
    * ```ts
    * await client.chats.shareContactCard(

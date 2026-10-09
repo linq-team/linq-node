@@ -29,6 +29,10 @@ export class ContactCard extends APIResource {
    * existing card is never overwritten by accident. Use `PATCH /v3/contact_card` to
    * change it.
    *
+   * Rate limited per phone number: `POST` and `PATCH` share a budget of 3 calls
+   * every 10 minutes. Further calls return `429`, with `Retry-After` carrying the
+   * wait.
+   *
    * @example
    * ```ts
    * const setContactCard = await client.contactCard.create({
@@ -73,6 +77,10 @@ export class ContactCard extends APIResource {
    * If the upstream write is rate-limited, the response is `503` (`4004`) instead.
    * The update did not reach the line, so the card is left not active — wait before
    * retrying, because repeated attempts extend the rate limit.
+   *
+   * Rate limited per phone number: `POST` and `PATCH` share a budget of 3 calls
+   * every 10 minutes. Further calls return `429`, with `Retry-After` carrying the
+   * wait.
    *
    * @example
    * ```ts
