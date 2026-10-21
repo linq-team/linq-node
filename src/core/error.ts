@@ -16,11 +16,30 @@ export class APIError<
   /** JSON body of the response that caused the error */
   readonly error: TError;
 
+  /**
+   * Linq API error code.
+   */
+  readonly code: number | undefined;
+  /**
+   * Link to documentation for this error code
+   */
+  readonly doc_url: string | undefined;
+  /**
+   * Number of seconds to wait before retrying. Only present on 429 rate limit
+   * errors.
+   */
+  readonly retry_after?: number | undefined;
+
   constructor(status: TStatus, error: TError, message: string | undefined, headers: THeaders) {
     super(`${APIError.makeMessage(status, error, message)}`);
     this.status = status;
     this.headers = headers;
     this.error = error;
+
+    const data = error as Record<string, any>;
+    this.code = data?.['code'];
+    this.doc_url = data?.['doc_url'];
+    this.retry_after = data?.['retry_after'];
   }
 
   private static makeMessage(status: number | undefined, error: any, message: string | undefined) {
@@ -54,7 +73,7 @@ export class APIError<
       return new APIConnectionError({ message, cause: castToError(errorResponse) });
     }
 
-    const error = errorResponse as Record<string, any>;
+    const error = (errorResponse as Record<string, any>)?.['error'];
 
     if (status === 400) {
       return new BadRequestError(status, error, message, headers);
