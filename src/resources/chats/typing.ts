@@ -46,8 +46,8 @@ export class Typing extends APIResource {
    * - **No delivery guarantee:** Even for active chats, a `204` response only
    *   indicates the request was accepted for processing.
    *
-   * - **Group chats not supported:** Attempting to start a typing indicator in a
-   *   group chat will return a `403` error.
+   * - **Direct and group chats:** Typing indicators work in both direct and group
+   *   chats.
    *
    * ## Duration & keeping it visible
    *
@@ -101,7 +101,7 @@ export class Typing extends APIResource {
    * See the start typing endpoint (`POST /v3/chats/{chatId}/typing`) above for
    * behavior details.
    *
-   * **Note:** Group chats are not supported and will return a `403` error.
+   * **Note:** Works in both direct and group chats.
    *
    * @example
    * ```ts
