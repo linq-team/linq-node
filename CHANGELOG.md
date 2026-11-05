@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.79.0](https://github.com/linq-team/linq-node/compare/v0.78.0...v0.79.0) (2026-11-05)
+
+
+### Features
+
+* prepare official Linq MCP directory submissions ([#269](https://github.com/linq-team/linq-node/issues/269)) ([ed3116b](https://github.com/linq-team/linq-node/commit/ed3116b391c8fdeb5dc077db29921db1737453e3))
+
 ## [0.78.0](https://github.com/linq-team/linq-node/compare/v0.77.0...v0.78.0) (2026-10-09)
 
 
