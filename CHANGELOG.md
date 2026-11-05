@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.80.0](https://github.com/linq-team/linq-node/compare/v0.79.0...v0.80.0) (2026-11-05)
+
+
+### Features
+
+* publish reviewed MCP registry metadata with GitHub OIDC ([#271](https://github.com/linq-team/linq-node/issues/271)) ([a7e48a6](https://github.com/linq-team/linq-node/commit/a7e48a675a6a868f915d5fc2598bd107313cdbac))
+
 ## [0.79.0](https://github.com/linq-team/linq-node/compare/v0.78.0...v0.79.0) (2026-11-05)
 
 
