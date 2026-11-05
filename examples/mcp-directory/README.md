@@ -44,3 +44,7 @@ Run `node examples/mcp-directory/smoke.mjs` to test the exact npm version declar
 ## Ongoing ownership
 
 The release-please configuration updates both registry version fields alongside the MCP package version. SDK releases must keep the registry manifest version in sync. Only re-submit directory changes after validating the released package. Review tools and permission behavior when new SDK actions ship: the `execute` tool can perform writes authorized by the user's Linq key.
+
+## GitHub OIDC publication
+
+The `Publish MCP Registry` workflow publishes from `main` without a personal GitHub token. Configure the `mcp-registry-release` environment for protected branches, then dispatch `publish-mcp-registry.yml` with the exact released version. It verifies the manifest against npm's published ownership marker, runs the exact-version MCP smoke test, checks the publisher binary's pinned SHA-256, and authenticates with GitHub OIDC. It refuses a version mismatch before authenticating or publishing.
