@@ -92,5 +92,6 @@
       "require": "./dist/*.js",
       "default": "./dist/*.mjs"
     }
-  }
+  },
+  "mcpName": "io.github.linq-team/linq"
 }

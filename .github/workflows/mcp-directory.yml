@@ -1,0 +1,28 @@
+name: MCP directory metadata
+on:
+  pull_request:
+    paths:
+      - 'examples/mcp-directory/**'
+      - 'packages/mcp-server/package.json'
+      - 'release-please-config.json'
+      - 'scripts/utils/make-dist-package-json.cjs'
+      - '.github/workflows/mcp-directory.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'examples/mcp-directory/**'
+      - 'packages/mcp-server/package.json'
+      - 'release-please-config.json'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node examples/mcp-directory/sync-manifest.mjs
+      - run: git diff --exit-code -- examples/mcp-directory/server.json
+      - run: node --test examples/mcp-directory/test/*.test.mjs
