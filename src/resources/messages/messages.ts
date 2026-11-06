@@ -238,7 +238,8 @@ export class Messages extends APIResource {
    * - laugh 😂
    * - emphasize ‼️
    * - question ❓
-   * - custom - any emoji as a tapback (use `custom_emoji` field to specify)
+   * - custom - any emoji or image as a tapback (use `custom_emoji` for an emoji, or
+   *   `url` / `attachment_id` for an image)
    * - sticker - an emoji or image peeled onto the message (use `emoji`, `url` or
    *   `attachment_id`)
    *
@@ -246,6 +247,9 @@ export class Messages extends APIResource {
    * tapback: the emoji sits in a small bubble on the corner of the message. A
    * `sticker` is peeled onto the bubble itself, and can be dragged, resized and
    * rotated. Both accept an emoji; they do not look alike.
+   *
+   * **Image tapbacks** are iMessage-only. Remove one with `operation: "remove"` and
+   * `type: "custom"`; no image is needed.
    *
    * **Stickers** are iMessage-only and cannot be removed, so `operation: "remove"`
    * with `type: "sticker"` is rejected. Position, size and rotation are optional via
@@ -932,15 +936,17 @@ export interface MessageAddReactionParams {
 
   /**
    * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
-   * emphasize, question. Custom emoji reactions have type "custom" with the actual
-   * emoji in the custom_emoji field. Sticker reactions have type "sticker" with
-   * sticker attachment details in the sticker field.
+   * emphasize, question. Custom tapbacks have type "custom": an emoji tapback
+   * carries the emoji in the custom_emoji field, and an image tapback carries the
+   * image in the sticker field. Sticker reactions have type "sticker" with sticker
+   * attachment details in the sticker field.
    */
   type: Shared.ReactionType;
 
   /**
-   * Reference to a sticker image pre-uploaded via `POST /v3/attachments`. Only valid
-   * when type is "sticker".
+   * Reference to an image pre-uploaded via `POST /v3/attachments`. Valid when type
+   * is "sticker", or when adding a type "custom" reaction to make it an image
+   * tapback.
    *
    * Exactly one of `emoji`, `url` or `attachment_id` is required when type is
    * "sticker".
@@ -948,7 +954,9 @@ export interface MessageAddReactionParams {
   attachment_id?: string;
 
   /**
-   * Custom emoji string. Required when type is "custom".
+   * Custom emoji string. When adding a type "custom" reaction, provide exactly one
+   * of `custom_emoji`, `url` or `attachment_id`. To remove an emoji reaction, pass
+   * the same `custom_emoji`.
    *
    * This is a **tapback** — the emoji sits in the tapback bubble on the corner of
    * the message. To peel an emoji onto the message as a draggable sticker instead,
@@ -983,11 +991,12 @@ export interface MessageAddReactionParams {
   placement?: MessageAddReactionParams.Placement;
 
   /**
-   * Linq attachment URL of the sticker image — the `download_url` returned by
-   * `POST /v3/attachments`. Only valid when type is "sticker".
+   * Linq attachment URL of the image — the `download_url` returned by
+   * `POST /v3/attachments`. Valid when type is "sticker", or when adding a type
+   * "custom" reaction to make it an image tapback.
    *
-   * The image must already be stored with us. To send a sticker from elsewhere,
-   * upload it with `POST /v3/attachments` first and pass `attachment_id`.
+   * The image must already be stored with us. To use an image from elsewhere, upload
+   * it with `POST /v3/attachments` first and pass `attachment_id`.
    *
    * Exactly one of `emoji`, `url` or `attachment_id` is required when type is
    * "sticker".

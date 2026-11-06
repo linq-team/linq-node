@@ -649,9 +649,10 @@ export interface ReactionEventBase {
 
   /**
    * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
-   * emphasize, question. Custom emoji reactions have type "custom" with the actual
-   * emoji in the custom_emoji field. Sticker reactions have type "sticker" with
-   * sticker attachment details in the sticker field.
+   * emphasize, question. Custom tapbacks have type "custom": an emoji tapback
+   * carries the emoji in the custom_emoji field, and an image tapback carries the
+   * image in the sticker field. Sticker reactions have type "sticker" with sticker
+   * attachment details in the sticker field.
    */
   reaction_type: Shared.ReactionType;
 
@@ -661,7 +662,8 @@ export interface ReactionEventBase {
   chat_id?: string;
 
   /**
-   * The actual emoji when reaction_type is "custom". Null for standard tapbacks.
+   * The actual emoji when reaction_type is "custom" and the tapback is an emoji.
+   * Null otherwise.
    */
   custom_emoji?: string | null;
 
@@ -709,16 +711,16 @@ export interface ReactionEventBase {
   service?: Shared.ServiceType;
 
   /**
-   * Sticker attachment details when reaction_type is "sticker". Null for non-sticker
-   * reactions.
+   * The image when reaction_type is "sticker", or when reaction_type is "custom" and
+   * the tapback is an image. Null otherwise.
    */
   sticker?: ReactionEventBase.Sticker | null;
 }
 
 export namespace ReactionEventBase {
   /**
-   * Sticker attachment details when reaction_type is "sticker". Null for non-sticker
-   * reactions.
+   * The image when reaction_type is "sticker", or when reaction_type is "custom" and
+   * the tapback is an image. Null otherwise.
    */
   export interface Sticker {
     /**
