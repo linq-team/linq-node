@@ -269,9 +269,9 @@ export interface SentMessage {
   from_handle?: Shared.ChatHandle | null;
 
   /**
-   * Messaging service type. Where this names the transport a message used, it is
-   * per-message: a chat's own `service` can differ from a message in it, and Apple
-   * can downgrade an individual message.
+   * @deprecated Messaging service type. Where this names the transport a message
+   * used, it is per-message: a chat's own `service` can differ from a message in it,
+   * and Apple can downgrade an individual message.
    */
   preferred_service?: Shared.ServiceType | null;
 
@@ -490,6 +490,14 @@ export interface MessageSendParams {
    * one.
    */
   message: ChatsAPI.MessageContent;
+
+  /**
+   * iMessage only. If the recipient has Do Not Disturb or another Focus on and the
+   * message is delivered silently, alert them anyway (iMessage's "Notify Anyway").
+   * Best effort: ignored for SMS and RCS, and a no-op when the recipient was already
+   * notified.
+   */
+  force_notify?: boolean;
 
   /**
    * Send even though the recipient asked you to stop (`403`, error code `2024`).

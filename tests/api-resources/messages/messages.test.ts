@@ -72,6 +72,7 @@ describe('resource messages', () => {
       to: ['+14155559876'],
       continuation_message: { text: "Hi, it's Acme Support reaching you from a new number." },
       exclude_from: ['+12052535597'],
+      force_notify: false,
       override_optout: false,
       'Idempotency-Key': 'send-abc123xyz',
     });

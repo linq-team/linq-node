@@ -280,6 +280,35 @@ Methods:
 - <code title="get /v3/experiences/{experience}">client.experiences.<a href="./src/resources/experiences.ts">retrieve</a>(experience) -> ExperienceRetrieveResponse</code>
 - <code title="get /v3/experiences">client.experiences.<a href="./src/resources/experiences.ts">list</a>() -> ExperienceListResponse</code>
 
+# SipProfiles
+
+Types:
+
+- <code><a href="./src/resources/sip-profiles.ts">SipProfile</a></code>
+- <code><a href="./src/resources/sip-profiles.ts">SipProfileListResponse</a></code>
+- <code><a href="./src/resources/sip-profiles.ts">SipProfileAssignResponse</a></code>
+
+Methods:
+
+- <code title="post /v3/sip-profiles">client.sipProfiles.<a href="./src/resources/sip-profiles.ts">create</a>({ ...params }) -> SipProfile</code>
+- <code title="get /v3/sip-profiles/{sipProfileId}">client.sipProfiles.<a href="./src/resources/sip-profiles.ts">retrieve</a>(sipProfileID) -> SipProfile</code>
+- <code title="put /v3/sip-profiles/{sipProfileId}">client.sipProfiles.<a href="./src/resources/sip-profiles.ts">update</a>(sipProfileID, { ...params }) -> SipProfile</code>
+- <code title="get /v3/sip-profiles">client.sipProfiles.<a href="./src/resources/sip-profiles.ts">list</a>() -> SipProfileListResponse</code>
+- <code title="delete /v3/sip-profiles/{sipProfileId}">client.sipProfiles.<a href="./src/resources/sip-profiles.ts">delete</a>(sipProfileID) -> void</code>
+- <code title="put /v3/phone-numbers/{phoneNumber}/sip-profile">client.sipProfiles.<a href="./src/resources/sip-profiles.ts">assign</a>(phoneNumber, { ...params }) -> SipProfileAssignResponse</code>
+
+# CallVoice
+
+Types:
+
+- <code><a href="./src/resources/call-voice.ts">CallVoiceRecord</a></code>
+- <code><a href="./src/resources/call-voice.ts">CallVoiceListResponse</a></code>
+
+Methods:
+
+- <code title="get /v3/call-voice/{callVoiceId}">client.callVoice.<a href="./src/resources/call-voice.ts">retrieve</a>(callVoiceID) -> CallVoiceRecord</code>
+- <code title="get /v3/phone-numbers/{phoneNumber}/call-voice">client.callVoice.<a href="./src/resources/call-voice.ts">list</a>(phoneNumber, { ...params }) -> CallVoiceListResponse</code>
+
 # WebhookEvents
 
 Types:
@@ -349,6 +378,7 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberStatusUpdatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberAssignedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">PhoneNumberReleasedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">PhoneNumberLineTypeUpdatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ConnectionCreatedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">ConnectionRevokedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">LocationSharingStartedWebhookEvent</a></code>
@@ -385,6 +415,13 @@ Types:
 - <code><a href="./src/resources/webhooks.ts">TeamMemberAddedWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">TeamMemberSignedInWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">TeamMemberSignedOutWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">CallVoiceInitiatedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">CallVoiceRingingWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">CallVoiceAnsweredWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">CallVoiceEndedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">CallVoiceFailedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">CallVoiceDeclinedWebhookEvent</a></code>
+- <code><a href="./src/resources/webhooks.ts">CallVoiceNoAnswerWebhookEvent</a></code>
 - <code><a href="./src/resources/webhooks.ts">UnwrapWebhookEvent</a></code>
 
 Methods:

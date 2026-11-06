@@ -22,6 +22,12 @@ export {
   type BlockedHandleUnblockParams,
 } from './blocked-handles';
 export {
+  CallVoice,
+  type CallVoiceRecord,
+  type CallVoiceListResponse,
+  type CallVoiceListParams,
+} from './call-voice';
+export {
   Capability,
   type HandleCheck,
   type HandleCheckResponse,
@@ -115,6 +121,15 @@ export {
   type PhoneNumberGetReputationAuditParams,
 } from './phone-numbers';
 export { Phonenumbers, type PhonenumberListResponse } from './phonenumbers';
+export {
+  SipProfiles,
+  type SipProfile,
+  type SipProfileListResponse,
+  type SipProfileAssignResponse,
+  type SipProfileCreateParams,
+  type SipProfileUpdateParams,
+  type SipProfileAssignParams,
+} from './sip-profiles';
 export { WebhookEvents, type WebhookEventType, type WebhookEventListResponse } from './webhook-events';
 export {
   WebhookSubscriptions,
@@ -164,6 +179,7 @@ export {
   type PhoneNumberStatusUpdatedWebhookEvent,
   type PhoneNumberAssignedWebhookEvent,
   type PhoneNumberReleasedWebhookEvent,
+  type PhoneNumberLineTypeUpdatedWebhookEvent,
   type ConnectionCreatedWebhookEvent,
   type ConnectionRevokedWebhookEvent,
   type LocationSharingStartedWebhookEvent,
@@ -200,5 +216,12 @@ export {
   type TeamMemberAddedWebhookEvent,
   type TeamMemberSignedInWebhookEvent,
   type TeamMemberSignedOutWebhookEvent,
+  type CallVoiceInitiatedWebhookEvent,
+  type CallVoiceRingingWebhookEvent,
+  type CallVoiceAnsweredWebhookEvent,
+  type CallVoiceEndedWebhookEvent,
+  type CallVoiceFailedWebhookEvent,
+  type CallVoiceDeclinedWebhookEvent,
+  type CallVoiceNoAnswerWebhookEvent,
   type UnwrapWebhookEvent,
 } from './webhooks';

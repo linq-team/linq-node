@@ -168,7 +168,7 @@ export interface PollEnvelope {
   poll: Poll;
 
   /**
-   * Tapbacks/stickers on the whole poll (message part 0).
+   * Stickers on the whole poll (message part 0). Polls take stickers only.
    */
   reactions: Array<Shared.Reaction>;
 
