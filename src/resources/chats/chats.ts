@@ -678,9 +678,9 @@ export interface MessageContent {
   >;
 
   /**
-   * Messaging service type. Where this names the transport a message used, it is
-   * per-message: a chat's own `service` can differ from a message in it, and Apple
-   * can downgrade an individual message.
+   * @deprecated Messaging service type. Where this names the transport a message
+   * used, it is per-message: a chat's own `service` can differ from a message in it,
+   * and Apple can downgrade an individual message.
    */
   preferred_service?: Shared.ServiceType;
 
@@ -1261,6 +1261,14 @@ export interface ChatCreateParams {
   to: Array<string>;
 
   /**
+   * iMessage only. If the recipient has Do Not Disturb or another Focus on and the
+   * message is delivered silently, alert them anyway (iMessage's "Notify Anyway").
+   * Best effort: ignored for SMS and RCS, and a no-op when the recipient was already
+   * notified.
+   */
+  force_notify?: boolean;
+
+  /**
    * Send even though the recipient asked you to stop (`403`, error code `2024`).
    * Applies to this request only: the opt-out stays in place, so the next send
    * without this flag is rejected again. Every override is recorded against your API
@@ -1307,6 +1315,13 @@ export interface ChatSendVoicememoParams {
    * Either `voice_memo_url` or `attachment_id` must be provided, but not both.
    */
   attachment_id?: string;
+
+  /**
+   * iMessage only. If the recipient has Do Not Disturb or another Focus on and the
+   * voice memo is delivered silently, alert them anyway (iMessage's "Notify
+   * Anyway"). Best effort: a no-op when the recipient was already notified.
+   */
+  force_notify?: boolean;
 
   /**
    * Send even though the recipient asked you to stop (`403`, error code `2024`).

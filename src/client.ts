@@ -46,6 +46,12 @@ import {
   BlockedHandles,
 } from './resources/blocked-handles';
 import {
+  CallVoice,
+  CallVoiceListParams,
+  CallVoiceListResponse,
+  CallVoiceRecord,
+} from './resources/call-voice';
+import {
   Capability,
   CapabilityCheckIMessageParams,
   CapabilityCheckRCSParams,
@@ -99,6 +105,15 @@ import {
   ReputationUnhealthyChat,
 } from './resources/phone-numbers';
 import { PhonenumberListResponse, Phonenumbers } from './resources/phonenumbers';
+import {
+  SipProfile,
+  SipProfileAssignParams,
+  SipProfileAssignResponse,
+  SipProfileCreateParams,
+  SipProfileListResponse,
+  SipProfileUpdateParams,
+  SipProfiles,
+} from './resources/sip-profiles';
 import { WebhookEventListResponse, WebhookEventType, WebhookEvents } from './resources/webhook-events';
 import {
   WebhookSubscription,
@@ -115,6 +130,13 @@ import {
   APITokenExpiredWebhookEvent,
   APITokenExpiryScheduledWebhookEvent,
   APITokenRenamedWebhookEvent,
+  CallVoiceAnsweredWebhookEvent,
+  CallVoiceDeclinedWebhookEvent,
+  CallVoiceEndedWebhookEvent,
+  CallVoiceFailedWebhookEvent,
+  CallVoiceInitiatedWebhookEvent,
+  CallVoiceNoAnswerWebhookEvent,
+  CallVoiceRingingWebhookEvent,
   ChatBackgroundUpdateFailedWebhookEvent,
   ChatBackgroundUpdatedWebhookEvent,
   ChatCreatedWebhookEvent,
@@ -153,6 +175,7 @@ import {
   PaymentSucceededWebhookEvent,
   PhoneNumberAssignedWebhookEvent,
   PhoneNumberForwardingUpdatedWebhookEvent,
+  PhoneNumberLineTypeUpdatedWebhookEvent,
   PhoneNumberReleasedWebhookEvent,
   PhoneNumberStatusUpdatedWebhookEvent,
   PollDeliveredWebhookEvent,
@@ -1272,6 +1295,19 @@ export class LinqAPIV3 {
    * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
    * specific number to blame with a `403`).
    *
+   * **Published vs unpublished.** A *published* number is available for your account to use.
+   * Only published numbers appear in `GET /v3/phone_numbers`.
+   *
+   * Unpublished numbers allow `GET` requests. `POST`, `PUT`, `PATCH`, and `DELETE` requests that
+   * change a chat return `403` with error code `2033` (`Phone number is unpublished`).
+   *
+   * A number's existing data is preserved when its status changes to unpublished. Unpublished
+   * status alone does not block reads, blocked-handle management, or deletion
+   * of your data. Existing authorization, retention, and endpoint rules still apply.
+   *
+   * Webhook events are suppressed for affected numbers when their publication status is known to
+   * be unpublished.
+   *
    */
   phonenumbers: API.Phonenumbers = new API.Phonenumbers(this);
   /**
@@ -1292,6 +1328,19 @@ export class LinqAPIV3 {
    * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
    * specific number to blame with a `403`).
    *
+   * **Published vs unpublished.** A *published* number is available for your account to use.
+   * Only published numbers appear in `GET /v3/phone_numbers`.
+   *
+   * Unpublished numbers allow `GET` requests. `POST`, `PUT`, `PATCH`, and `DELETE` requests that
+   * change a chat return `403` with error code `2033` (`Phone number is unpublished`).
+   *
+   * A number's existing data is preserved when its status changes to unpublished. Unpublished
+   * status alone does not block reads, blocked-handle management, or deletion
+   * of your data. Existing authorization, retention, and endpoint rules still apply.
+   *
+   * Webhook events are suppressed for affected numbers when their publication status is known to
+   * be unpublished.
+   *
    */
   phoneNumbers: API.PhoneNumbers = new API.PhoneNumbers(this);
   /**
@@ -1311,6 +1360,19 @@ export class LinqAPIV3 {
    * pick an eligible number for you, skipping ineligible ones; if none of your assigned
    * numbers are eligible, you get `409` (no `from` number was ever chosen, so there's no
    * specific number to blame with a `403`).
+   *
+   * **Published vs unpublished.** A *published* number is available for your account to use.
+   * Only published numbers appear in `GET /v3/phone_numbers`.
+   *
+   * Unpublished numbers allow `GET` requests. `POST`, `PUT`, `PATCH`, and `DELETE` requests that
+   * change a chat return `403` with error code `2033` (`Phone number is unpublished`).
+   *
+   * A number's existing data is preserved when its status changes to unpublished. Unpublished
+   * status alone does not block reads, blocked-handle management, or deletion
+   * of your data. Existing authorization, retention, and endpoint rules still apply.
+   *
+   * Webhook events are suppressed for affected numbers when their publication status is known to
+   * be unpublished.
    *
    */
   availableNumber: API.AvailableNumber = new API.AvailableNumber(this);
@@ -1588,6 +1650,38 @@ export class LinqAPIV3 {
    *
    */
   experiences: API.Experiences = new API.Experiences(this);
+  /**
+   * ## SIP configuration
+   *
+   * Add these IP ranges to your SIP endpoint's allowlist:
+   *
+   * ```
+   * 54.172.60.0/30
+   * 54.244.51.0/30
+   * 168.86.128.0/18
+   * ```
+   *
+   * Set `primary_uri` to your endpoint as scheme + host — `sips:` for TLS or
+   * `sip:` for UDP, with no user part (we add it). Each call arrives at your
+   * endpoint as:
+   *
+   * ```
+   * sip:<called-number>@<your-host>
+   * ```
+   *
+   * so you can route on the dialed number. The caller's number is in the
+   * `From` header in E.164. Media (RTP) uses UDP ports 10000–60000.
+   *
+   */
+  sipProfiles: API.SipProfiles = new API.SipProfiles(this);
+  /**
+   * Read the carrier (BYOC) voice calls received on your phone numbers. Each
+   * record is the durable form of the `call_voice.*` webhooks for that call and
+   * shares the same `id`, so you can look a call up by the id a webhook
+   * delivered. See SIP Profiles for routing inbound calls to your endpoint.
+   *
+   */
+  callVoice: API.CallVoice = new API.CallVoice(this);
   /**
    * Webhook Subscriptions allow you to receive real-time notifications when events
    * occur on your account.
@@ -1881,6 +1975,8 @@ LinqAPIV3.LinkConnections = LinkConnections;
 LinqAPIV3.LinkPayments = LinkPayments;
 LinqAPIV3.BlockedHandles = BlockedHandles;
 LinqAPIV3.Experiences = Experiences;
+LinqAPIV3.SipProfiles = SipProfiles;
+LinqAPIV3.CallVoice = CallVoice;
 LinqAPIV3.WebhookEvents = WebhookEvents;
 LinqAPIV3.WebhookSubscriptions = WebhookSubscriptions;
 LinqAPIV3.Webhooks = Webhooks;
@@ -2020,6 +2116,23 @@ export declare namespace LinqAPIV3 {
   };
 
   export {
+    SipProfiles as SipProfiles,
+    type SipProfile as SipProfile,
+    type SipProfileListResponse as SipProfileListResponse,
+    type SipProfileAssignResponse as SipProfileAssignResponse,
+    type SipProfileCreateParams as SipProfileCreateParams,
+    type SipProfileUpdateParams as SipProfileUpdateParams,
+    type SipProfileAssignParams as SipProfileAssignParams,
+  };
+
+  export {
+    CallVoice as CallVoice,
+    type CallVoiceRecord as CallVoiceRecord,
+    type CallVoiceListResponse as CallVoiceListResponse,
+    type CallVoiceListParams as CallVoiceListParams,
+  };
+
+  export {
     WebhookEvents as WebhookEvents,
     type WebhookEventType as WebhookEventType,
     type WebhookEventListResponse as WebhookEventListResponse,
@@ -2074,6 +2187,7 @@ export declare namespace LinqAPIV3 {
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
     type PhoneNumberAssignedWebhookEvent as PhoneNumberAssignedWebhookEvent,
     type PhoneNumberReleasedWebhookEvent as PhoneNumberReleasedWebhookEvent,
+    type PhoneNumberLineTypeUpdatedWebhookEvent as PhoneNumberLineTypeUpdatedWebhookEvent,
     type ConnectionCreatedWebhookEvent as ConnectionCreatedWebhookEvent,
     type ConnectionRevokedWebhookEvent as ConnectionRevokedWebhookEvent,
     type LocationSharingStartedWebhookEvent as LocationSharingStartedWebhookEvent,
@@ -2110,6 +2224,13 @@ export declare namespace LinqAPIV3 {
     type TeamMemberAddedWebhookEvent as TeamMemberAddedWebhookEvent,
     type TeamMemberSignedInWebhookEvent as TeamMemberSignedInWebhookEvent,
     type TeamMemberSignedOutWebhookEvent as TeamMemberSignedOutWebhookEvent,
+    type CallVoiceInitiatedWebhookEvent as CallVoiceInitiatedWebhookEvent,
+    type CallVoiceRingingWebhookEvent as CallVoiceRingingWebhookEvent,
+    type CallVoiceAnsweredWebhookEvent as CallVoiceAnsweredWebhookEvent,
+    type CallVoiceEndedWebhookEvent as CallVoiceEndedWebhookEvent,
+    type CallVoiceFailedWebhookEvent as CallVoiceFailedWebhookEvent,
+    type CallVoiceDeclinedWebhookEvent as CallVoiceDeclinedWebhookEvent,
+    type CallVoiceNoAnswerWebhookEvent as CallVoiceNoAnswerWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
 

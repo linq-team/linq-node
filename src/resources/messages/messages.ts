@@ -138,11 +138,10 @@ export class Messages extends APIResource {
    * - Voice memos are **not** supported here. To send an iMessage voice-memo bubble,
    *   use `POST /v3/chats/{chatId}/voicememo` with a known chat id.
    *
-   * ## Service preference, effects, decorations, inline stickers
+   * ## Effects, decorations, inline stickers
    *
-   * Set `message.preferred_service` (`iMessage` | `RCS` | `SMS`), `message.effect`,
-   * and per-part `text_decorations` and `inline_stickers` exactly as on the other
-   * send endpoints.
+   * Set `message.effect` and per-part `text_decorations` and `inline_stickers`
+   * exactly as on the other send endpoints.
    *
    * Always responds `202 Accepted` — chat creation is incidental to the send.
    *
@@ -253,6 +252,9 @@ export class Messages extends APIResource {
    * `placement`, and can be changed afterwards with
    * `PATCH /v3/messages/{messageId}/reactions/{reactionId}`. An animated image peels
    * as an animated sticker, in whatever shape the file already has.
+   *
+   * **Polls** take stickers only. Any tapback on a poll message — standard or
+   * `custom` — is rejected with a 400.
    *
    * @example
    * ```ts
@@ -465,9 +467,9 @@ export interface Message {
   > | null;
 
   /**
-   * Messaging service type. Where this names the transport a message used, it is
-   * per-message: a chat's own `service` can differ from a message in it, and Apple
-   * can downgrade an individual message.
+   * @deprecated Messaging service type. Where this names the transport a message
+   * used, it is per-message: a chat's own `service` can differ from a message in it,
+   * and Apple can downgrade an individual message.
    */
   preferred_service?: Shared.ServiceType | null;
 
@@ -867,6 +869,14 @@ export interface MessageCreateParams {
    * of your available lines returns 400 when a line has to be picked.
    */
   exclude_from?: Array<string>;
+
+  /**
+   * Body param: iMessage only. If the recipient has Do Not Disturb or another Focus
+   * on and the message is delivered silently, alert them anyway (iMessage's "Notify
+   * Anyway"). Best effort: ignored for SMS and RCS, and a no-op when the recipient
+   * was already notified.
+   */
+  force_notify?: boolean;
 
   /**
    * Body param: Send even though the recipient asked you to stop (`403`, error code

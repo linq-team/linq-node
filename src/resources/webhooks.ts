@@ -86,6 +86,27 @@ export interface MessageEventV2 {
   delivered_at?: string | null;
 
   /**
+   * When the sending device was first seen for this sender (the message time for a
+   * newly seen device). Absent for SMS/RCS and for outbound messages.
+   */
+  device_first_seen_at?: string | null;
+
+  /**
+   * An opaque identifier for the sending device. Pair it with `device_status` to
+   * tell a sender's devices apart, including after a new device has become `known`.
+   * Absent for SMS/RCS and for outbound messages.
+   */
+  device_id?: string | null;
+
+  /**
+   * The device a sender used, relative to devices we've seen from them before.
+   * `first_contact` = their first device (first message we've seen from this
+   * sender); `known` = a device we've seen before; `new` = a device we have NOT seen
+   * for a sender who already had one (the account/SIM-takeover signal).
+   */
+  device_status?: 'first_contact' | 'known' | 'new' | null;
+
+  /**
    * iMessage effect applied to a message (screen or bubble animation)
    */
   effect?: SchemasMessageEffect | null;
@@ -96,7 +117,8 @@ export interface MessageEventV2 {
   idempotency_key?: string | null;
 
   /**
-   * Preferred messaging service type. Includes "auto" for default fallback behavior.
+   * @deprecated Preferred messaging service type. Includes "auto" for default
+   * fallback behavior.
    */
   preferred_service?: 'iMessage' | 'SMS' | 'RCS' | 'auto' | null;
 
@@ -389,6 +411,27 @@ export interface MessagePayload {
   delivered_at?: string | null;
 
   /**
+   * When the sending device was first seen for this sender (the message time for a
+   * newly seen device). Absent for SMS/RCS and for outbound messages.
+   */
+  device_first_seen_at?: string | null;
+
+  /**
+   * An opaque identifier for the sending device. Pair it with `device_status` to
+   * tell a sender's devices apart, including after a new device has become `known`.
+   * Absent for SMS/RCS and for outbound messages.
+   */
+  device_id?: string | null;
+
+  /**
+   * The device a sender used, relative to devices we've seen from them before.
+   * `first_contact` = their first device (first message we've seen from this
+   * sender); `known` = a device we've seen before; `new` = a device we have NOT seen
+   * for a sender who already had one (the account/SIM-takeover signal).
+   */
+  device_status?: 'first_contact' | 'known' | 'new' | null;
+
+  /**
    * iMessage effect applied to a message (screen or bubble animation)
    */
   effect?: SchemasMessageEffect;
@@ -649,7 +692,9 @@ export interface ReactionEventBase {
   reacted_at?: string;
 
   /**
-   * Identifier for this reaction. Pass it to
+   * Identifier for this reaction, matching `id` on the message's `reactions`.
+   * Changing a tapback keeps the same id, and `reaction.removed` carries the id of
+   * the reaction it removed. Pass it to
    * `PATCH /v3/messages/{messageId}/reactions/{reactionId}` to move a sticker.
    * Stickers stack, so this is what distinguishes one sticker from another on the
    * same message.
@@ -1213,7 +1258,8 @@ export namespace MessageFailedWebhookEvent {
     message_id?: string;
 
     /**
-     * Preferred messaging service type. Includes "auto" for default fallback behavior.
+     * @deprecated Preferred messaging service type. Includes "auto" for default
+     * fallback behavior.
      */
     preferred_service?: 'iMessage' | 'SMS' | 'RCS' | 'auto' | null;
 
@@ -3821,14 +3867,8 @@ export interface PhoneNumberStatusUpdatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -3980,14 +4020,8 @@ export interface PhoneNumberAssignedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -4119,14 +4153,8 @@ export interface PhoneNumberReleasedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -4199,6 +4227,149 @@ export namespace PhoneNumberReleasedWebhookEvent {
   }
 }
 
+/**
+ * Complete webhook payload for phone_number.line_type_updated events
+ */
+export interface PhoneNumberLineTypeUpdatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  /**
+   * Payload for phone_number.line_type_updated webhook events
+   */
+  data: PhoneNumberLineTypeUpdatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  /**
+   * The type of event
+   */
+  event_type:
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace PhoneNumberLineTypeUpdatedWebhookEvent {
+  /**
+   * Payload for phone_number.line_type_updated webhook events
+   */
+  export interface Data {
+    /**
+     * When the line type changed
+     */
+    changed_at: string;
+
+    /**
+     * The line type after the change
+     */
+    new_line_type: 'iMessage' | 'RCS';
+
+    /**
+     * Phone number in E.164 format
+     */
+    phone_number: string;
+
+    /**
+     * The line type before the change
+     */
+    previous_line_type: 'iMessage' | 'RCS';
+  }
+}
+
 export interface ConnectionCreatedWebhookEvent {
   /**
    * API version for the webhook payload format
@@ -4256,14 +4427,8 @@ export interface ConnectionCreatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.declined'
@@ -4524,14 +4689,8 @@ export interface ConnectionRevokedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.declined'
@@ -4786,14 +4945,8 @@ export interface LocationSharingStartedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
     | 'payment.canceled'
@@ -4933,14 +5086,8 @@ export interface LocationSharingStoppedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'payment.succeeded'
     | 'payment.canceled'
@@ -5085,14 +5232,8 @@ export interface PaymentAuthorizedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.declined'
@@ -5353,14 +5494,8 @@ export interface PaymentCanceledWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.declined'
@@ -5621,14 +5756,8 @@ export interface PaymentDeclinedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.declined'
@@ -5889,14 +6018,8 @@ export interface PaymentExpiredWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.declined'
@@ -6157,14 +6280,8 @@ export interface PaymentSucceededWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.declined'
@@ -6465,14 +6582,8 @@ export interface ZeroDayRetentionUpdatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -6903,14 +7014,8 @@ export interface PhoneNumberForwardingUpdatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -7341,14 +7446,8 @@ export interface EnvironmentLineMovedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -7779,14 +7878,8 @@ export interface ContactCardCreatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -8217,14 +8310,8 @@ export interface ContactCardUpdatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -8655,14 +8742,8 @@ export interface ContactCardDeletedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -9093,14 +9174,8 @@ export interface APITokenCreatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -9531,14 +9606,8 @@ export interface APITokenRenamedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -9969,14 +10038,8 @@ export interface APITokenExpiryScheduledWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -10407,14 +10470,8 @@ export interface APITokenExpiredWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -10845,14 +10902,8 @@ export interface APITokenActivatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -11283,14 +11334,8 @@ export interface APITokenDeletedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -11721,14 +11766,8 @@ export interface EnvironmentCreatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -12159,14 +12198,8 @@ export interface EnvironmentRenamedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -12597,14 +12630,8 @@ export interface EnvironmentDeletedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -13035,14 +13062,8 @@ export interface WebhookSubscriptionCreatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -13473,14 +13494,8 @@ export interface WebhookSubscriptionDeletedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -13911,14 +13926,8 @@ export interface WebhookSubscriptionTargetURLChangedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -14349,14 +14358,8 @@ export interface WebhookSubscriptionEnabledWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -14787,14 +14790,8 @@ export interface WebhookSubscriptionDisabledWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -15225,14 +15222,8 @@ export interface WebhookSubscriptionEventsUpdatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -15663,14 +15654,8 @@ export interface WebhookSubscriptionPhoneNumbersUpdatedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -16101,14 +16086,8 @@ export interface WebhookSubscriptionRoutingHeadersSetWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -16539,14 +16518,8 @@ export interface WebhookSubscriptionRoutingHeadersClearedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -16977,14 +16950,8 @@ export interface TeamMemberAddedWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -17415,14 +17382,8 @@ export interface TeamMemberSignedInWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -17853,14 +17814,8 @@ export interface TeamMemberSignedOutWebhookEvent {
     | 'phone_number.status_updated'
     | 'phone_number.assigned'
     | 'phone_number.released'
+    | 'phone_number.line_type_updated'
     | 'contact_card.received'
-    | 'call.initiated'
-    | 'call.ringing'
-    | 'call.answered'
-    | 'call.ended'
-    | 'call.failed'
-    | 'call.declined'
-    | 'call.no_answer'
     | 'location.sharing.started'
     | 'location.sharing.stopped'
     | 'payment.succeeded'
@@ -18194,6 +18149,1021 @@ export namespace TeamMemberSignedOutWebhookEvent {
   }
 }
 
+export interface CallVoiceInitiatedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: CallVoiceInitiatedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'call_voice.initiated'
+    | 'call_voice.ringing'
+    | 'call_voice.answered'
+    | 'call_voice.ended'
+    | 'call_voice.failed'
+    | 'call_voice.declined'
+    | 'call_voice.no_answer'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace CallVoiceInitiatedWebhookEvent {
+  export interface Data {
+    /**
+     * Carrier voice call ID
+     */
+    id: string;
+
+    direction: 'inbound';
+
+    /**
+     * External caller, E.164
+     */
+    from: string;
+
+    /**
+     * Terminal call outcome. Null on progress events (initiated/ringing/answered); set
+     * once the call ends.
+     */
+    status: 'completed' | 'busy' | 'no_answer' | 'failed' | 'canceled' | null;
+
+    /**
+     * Your line that was called, E.164
+     */
+    to: string;
+
+    ended_at?: string | null;
+
+    started_at?: string | null;
+  }
+}
+
+export interface CallVoiceRingingWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: CallVoiceRingingWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'call_voice.initiated'
+    | 'call_voice.ringing'
+    | 'call_voice.answered'
+    | 'call_voice.ended'
+    | 'call_voice.failed'
+    | 'call_voice.declined'
+    | 'call_voice.no_answer'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace CallVoiceRingingWebhookEvent {
+  export interface Data {
+    /**
+     * Carrier voice call ID
+     */
+    id: string;
+
+    direction: 'inbound';
+
+    /**
+     * External caller, E.164
+     */
+    from: string;
+
+    /**
+     * Terminal call outcome. Null on progress events (initiated/ringing/answered); set
+     * once the call ends.
+     */
+    status: 'completed' | 'busy' | 'no_answer' | 'failed' | 'canceled' | null;
+
+    /**
+     * Your line that was called, E.164
+     */
+    to: string;
+
+    ended_at?: string | null;
+
+    started_at?: string | null;
+  }
+}
+
+export interface CallVoiceAnsweredWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: CallVoiceAnsweredWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'call_voice.initiated'
+    | 'call_voice.ringing'
+    | 'call_voice.answered'
+    | 'call_voice.ended'
+    | 'call_voice.failed'
+    | 'call_voice.declined'
+    | 'call_voice.no_answer'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace CallVoiceAnsweredWebhookEvent {
+  export interface Data {
+    /**
+     * Carrier voice call ID
+     */
+    id: string;
+
+    direction: 'inbound';
+
+    /**
+     * External caller, E.164
+     */
+    from: string;
+
+    /**
+     * Terminal call outcome. Null on progress events (initiated/ringing/answered); set
+     * once the call ends.
+     */
+    status: 'completed' | 'busy' | 'no_answer' | 'failed' | 'canceled' | null;
+
+    /**
+     * Your line that was called, E.164
+     */
+    to: string;
+
+    ended_at?: string | null;
+
+    started_at?: string | null;
+  }
+}
+
+export interface CallVoiceEndedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: CallVoiceEndedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'call_voice.initiated'
+    | 'call_voice.ringing'
+    | 'call_voice.answered'
+    | 'call_voice.ended'
+    | 'call_voice.failed'
+    | 'call_voice.declined'
+    | 'call_voice.no_answer'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace CallVoiceEndedWebhookEvent {
+  export interface Data {
+    /**
+     * Carrier voice call ID
+     */
+    id: string;
+
+    direction: 'inbound';
+
+    /**
+     * External caller, E.164
+     */
+    from: string;
+
+    /**
+     * Terminal call outcome. Null on progress events (initiated/ringing/answered); set
+     * once the call ends.
+     */
+    status: 'completed' | 'busy' | 'no_answer' | 'failed' | 'canceled' | null;
+
+    /**
+     * Your line that was called, E.164
+     */
+    to: string;
+
+    ended_at?: string | null;
+
+    started_at?: string | null;
+  }
+}
+
+export interface CallVoiceFailedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: CallVoiceFailedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'call_voice.initiated'
+    | 'call_voice.ringing'
+    | 'call_voice.answered'
+    | 'call_voice.ended'
+    | 'call_voice.failed'
+    | 'call_voice.declined'
+    | 'call_voice.no_answer'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace CallVoiceFailedWebhookEvent {
+  export interface Data {
+    /**
+     * Carrier voice call ID
+     */
+    id: string;
+
+    direction: 'inbound';
+
+    /**
+     * External caller, E.164
+     */
+    from: string;
+
+    /**
+     * Terminal call outcome. Null on progress events (initiated/ringing/answered); set
+     * once the call ends.
+     */
+    status: 'completed' | 'busy' | 'no_answer' | 'failed' | 'canceled' | null;
+
+    /**
+     * Your line that was called, E.164
+     */
+    to: string;
+
+    ended_at?: string | null;
+
+    started_at?: string | null;
+  }
+}
+
+export interface CallVoiceDeclinedWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: CallVoiceDeclinedWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'call_voice.initiated'
+    | 'call_voice.ringing'
+    | 'call_voice.answered'
+    | 'call_voice.ended'
+    | 'call_voice.failed'
+    | 'call_voice.declined'
+    | 'call_voice.no_answer'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace CallVoiceDeclinedWebhookEvent {
+  export interface Data {
+    /**
+     * Carrier voice call ID
+     */
+    id: string;
+
+    direction: 'inbound';
+
+    /**
+     * External caller, E.164
+     */
+    from: string;
+
+    /**
+     * Terminal call outcome. Null on progress events (initiated/ringing/answered); set
+     * once the call ends.
+     */
+    status: 'completed' | 'busy' | 'no_answer' | 'failed' | 'canceled' | null;
+
+    /**
+     * Your line that was called, E.164
+     */
+    to: string;
+
+    ended_at?: string | null;
+
+    started_at?: string | null;
+  }
+}
+
+export interface CallVoiceNoAnswerWebhookEvent {
+  /**
+   * API version for the webhook payload format
+   */
+  api_version: string;
+
+  /**
+   * When the event was created
+   */
+  created_at: string;
+
+  data: CallVoiceNoAnswerWebhookEvent.Data;
+
+  /**
+   * Unique identifier for this event (for deduplication)
+   */
+  event_id: string;
+
+  event_type:
+    | 'call_voice.initiated'
+    | 'call_voice.ringing'
+    | 'call_voice.answered'
+    | 'call_voice.ended'
+    | 'call_voice.failed'
+    | 'call_voice.declined'
+    | 'call_voice.no_answer'
+    | 'message.sent'
+    | 'message.received'
+    | 'message.read'
+    | 'message.delivered'
+    | 'message.failed'
+    | 'message.edited'
+    | 'reaction.added'
+    | 'reaction.removed'
+    | 'poll.received'
+    | 'poll.failed'
+    | 'poll.sent'
+    | 'poll.delivered'
+    | 'poll.read'
+    | 'poll.updated'
+    | 'poll.vote.added'
+    | 'poll.vote.removed'
+    | 'poll.reaction.added'
+    | 'participant.added'
+    | 'participant.removed'
+    | 'chat.created'
+    | 'chat.group_name_updated'
+    | 'chat.group_icon_updated'
+    | 'chat.group_name_update_failed'
+    | 'chat.group_icon_update_failed'
+    | 'chat.background_updated'
+    | 'chat.background_update_failed'
+    | 'chat.typing_indicator.started'
+    | 'chat.typing_indicator.stopped'
+    | 'phone_number.status_updated'
+    | 'phone_number.assigned'
+    | 'phone_number.released'
+    | 'phone_number.line_type_updated'
+    | 'contact_card.received'
+    | 'location.sharing.started'
+    | 'location.sharing.stopped'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'payment.expired'
+    | 'payment.declined'
+    | 'payment.authorized'
+    | 'connection.created'
+    | 'connection.revoked'
+    | 'zero_day_retention.updated'
+    | 'phone_number.forwarding_updated'
+    | 'environment.line_moved'
+    | 'contact_card.created'
+    | 'contact_card.updated'
+    | 'contact_card.deleted'
+    | 'api_token.created'
+    | 'api_token.renamed'
+    | 'api_token.expiry_scheduled'
+    | 'api_token.expired'
+    | 'api_token.activated'
+    | 'api_token.deleted'
+    | 'environment.created'
+    | 'environment.renamed'
+    | 'environment.deleted'
+    | 'webhook_subscription.created'
+    | 'webhook_subscription.deleted'
+    | 'webhook_subscription.target_url_changed'
+    | 'webhook_subscription.enabled'
+    | 'webhook_subscription.disabled'
+    | 'webhook_subscription.events.updated'
+    | 'webhook_subscription.phone_numbers.updated'
+    | 'webhook_subscription.routing_headers_set'
+    | 'webhook_subscription.routing_headers_cleared'
+    | 'team_member.added'
+    | 'team_member.signed_in'
+    | 'team_member.signed_out';
+
+  /**
+   * Partner identifier. Present on all webhooks for cross-referencing.
+   */
+  partner_id: string;
+
+  /**
+   * Trace ID for debugging and correlation across systems.
+   */
+  trace_id: string;
+
+  /**
+   * Date-based webhook payload version. Determined by the `?version=` query
+   * parameter in your webhook subscription URL. If no version parameter is
+   * specified, defaults based on subscription creation date.
+   */
+  webhook_version: string;
+}
+
+export namespace CallVoiceNoAnswerWebhookEvent {
+  export interface Data {
+    /**
+     * Carrier voice call ID
+     */
+    id: string;
+
+    direction: 'inbound';
+
+    /**
+     * External caller, E.164
+     */
+    from: string;
+
+    /**
+     * Terminal call outcome. Null on progress events (initiated/ringing/answered); set
+     * once the call ends.
+     */
+    status: 'completed' | 'busy' | 'no_answer' | 'failed' | 'canceled' | null;
+
+    /**
+     * Your line that was called, E.164
+     */
+    to: string;
+
+    ended_at?: string | null;
+
+    started_at?: string | null;
+  }
+}
+
 /**
  * Complete webhook payload for message.sent events (2026-02-03 format)
  */
@@ -18230,6 +19200,7 @@ export type UnwrapWebhookEvent =
   | PhoneNumberStatusUpdatedWebhookEvent
   | PhoneNumberAssignedWebhookEvent
   | PhoneNumberReleasedWebhookEvent
+  | PhoneNumberLineTypeUpdatedWebhookEvent
   | ConnectionCreatedWebhookEvent
   | ConnectionRevokedWebhookEvent
   | LocationSharingStartedWebhookEvent
@@ -18265,7 +19236,14 @@ export type UnwrapWebhookEvent =
   | WebhookSubscriptionRoutingHeadersClearedWebhookEvent
   | TeamMemberAddedWebhookEvent
   | TeamMemberSignedInWebhookEvent
-  | TeamMemberSignedOutWebhookEvent;
+  | TeamMemberSignedOutWebhookEvent
+  | CallVoiceInitiatedWebhookEvent
+  | CallVoiceRingingWebhookEvent
+  | CallVoiceAnsweredWebhookEvent
+  | CallVoiceEndedWebhookEvent
+  | CallVoiceFailedWebhookEvent
+  | CallVoiceDeclinedWebhookEvent
+  | CallVoiceNoAnswerWebhookEvent;
 
 export declare namespace Webhooks {
   export {
@@ -18307,6 +19285,7 @@ export declare namespace Webhooks {
     type PhoneNumberStatusUpdatedWebhookEvent as PhoneNumberStatusUpdatedWebhookEvent,
     type PhoneNumberAssignedWebhookEvent as PhoneNumberAssignedWebhookEvent,
     type PhoneNumberReleasedWebhookEvent as PhoneNumberReleasedWebhookEvent,
+    type PhoneNumberLineTypeUpdatedWebhookEvent as PhoneNumberLineTypeUpdatedWebhookEvent,
     type ConnectionCreatedWebhookEvent as ConnectionCreatedWebhookEvent,
     type ConnectionRevokedWebhookEvent as ConnectionRevokedWebhookEvent,
     type LocationSharingStartedWebhookEvent as LocationSharingStartedWebhookEvent,
@@ -18343,6 +19322,13 @@ export declare namespace Webhooks {
     type TeamMemberAddedWebhookEvent as TeamMemberAddedWebhookEvent,
     type TeamMemberSignedInWebhookEvent as TeamMemberSignedInWebhookEvent,
     type TeamMemberSignedOutWebhookEvent as TeamMemberSignedOutWebhookEvent,
+    type CallVoiceInitiatedWebhookEvent as CallVoiceInitiatedWebhookEvent,
+    type CallVoiceRingingWebhookEvent as CallVoiceRingingWebhookEvent,
+    type CallVoiceAnsweredWebhookEvent as CallVoiceAnsweredWebhookEvent,
+    type CallVoiceEndedWebhookEvent as CallVoiceEndedWebhookEvent,
+    type CallVoiceFailedWebhookEvent as CallVoiceFailedWebhookEvent,
+    type CallVoiceDeclinedWebhookEvent as CallVoiceDeclinedWebhookEvent,
+    type CallVoiceNoAnswerWebhookEvent as CallVoiceNoAnswerWebhookEvent,
     type UnwrapWebhookEvent as UnwrapWebhookEvent,
   };
 }
