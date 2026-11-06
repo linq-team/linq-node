@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.1](https://github.com/linq-team/linq-node/compare/v0.82.0...v0.82.1) (2026-11-06)
+
+
+### Documentation
+
+* update sip configuration guidance in api documentation ([0f7fe57](https://github.com/linq-team/linq-node/commit/0f7fe57f7634dc4992b0049ef202e57e7a2c5291))
+
 ## [0.82.0](https://github.com/linq-team/linq-node/compare/v0.81.0...v0.82.0) (2026-11-06)
 
 
