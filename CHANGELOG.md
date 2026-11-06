@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.2](https://github.com/linq-team/linq-node/compare/v0.82.1...v0.82.2) (2026-11-06)
+
+
+### Bug Fixes
+
+* restore MCP Registry metadata after SDK regeneration ([#279](https://github.com/linq-team/linq-node/issues/279)) ([298506f](https://github.com/linq-team/linq-node/commit/298506fc64f830fdaefd68dbbc99d85cce8b5414))
+
 ## [0.82.1](https://github.com/linq-team/linq-node/compare/v0.82.0...v0.82.1) (2026-11-06)
 
 
