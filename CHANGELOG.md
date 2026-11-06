@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.0](https://github.com/linq-team/linq-node/compare/v0.81.0...v0.82.0) (2026-11-06)
+
+
+### Features
+
+* support image tapbacks and improve reaction documentation ([bf569a9](https://github.com/linq-team/linq-node/commit/bf569a9a6fa7be34ca196023d0cfbe40eaaf4210))
+
 ## [0.81.0](https://github.com/linq-team/linq-node/compare/v0.80.0...v0.81.0) (2026-11-06)
 
 
