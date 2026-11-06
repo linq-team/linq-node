@@ -153,9 +153,10 @@ export interface Reaction {
 
   /**
    * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
-   * emphasize, question. Custom emoji reactions have type "custom" with the actual
-   * emoji in the custom_emoji field. Sticker reactions have type "sticker" with
-   * sticker attachment details in the sticker field.
+   * emphasize, question. Custom tapbacks have type "custom": an emoji tapback
+   * carries the emoji in the custom_emoji field, and an image tapback carries the
+   * image in the sticker field. Sticker reactions have type "sticker" with sticker
+   * attachment details in the sticker field.
    */
   type: ReactionType;
 
@@ -172,21 +173,21 @@ export interface Reaction {
   id?: string;
 
   /**
-   * Custom emoji if type is "custom", null otherwise
+   * Custom emoji if type is "custom" and the tapback is an emoji, null otherwise
    */
   custom_emoji?: string | null;
 
   /**
-   * Sticker attachment details when reaction_type is "sticker". Null for non-sticker
-   * reactions.
+   * The image when type is "sticker", or when type is "custom" and the tapback is an
+   * image. Null otherwise.
    */
   sticker?: Reaction.Sticker | null;
 }
 
 export namespace Reaction {
   /**
-   * Sticker attachment details when reaction_type is "sticker". Null for non-sticker
-   * reactions.
+   * The image when type is "sticker", or when type is "custom" and the tapback is an
+   * image. Null otherwise.
    */
   export interface Sticker {
     /**
@@ -218,9 +219,10 @@ export namespace Reaction {
 
 /**
  * Type of reaction. Standard iMessage tapbacks are love, like, dislike, laugh,
- * emphasize, question. Custom emoji reactions have type "custom" with the actual
- * emoji in the custom_emoji field. Sticker reactions have type "sticker" with
- * sticker attachment details in the sticker field.
+ * emphasize, question. Custom tapbacks have type "custom": an emoji tapback
+ * carries the emoji in the custom_emoji field, and an image tapback carries the
+ * image in the sticker field. Sticker reactions have type "sticker" with sticker
+ * attachment details in the sticker field.
  */
 export type ReactionType =
   | 'love'
