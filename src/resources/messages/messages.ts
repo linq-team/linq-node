@@ -374,8 +374,8 @@ export class Messages extends APIResource {
    *     {
    *       messageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *       placement: {
-   *         x: 0.6,
-   *         y: 0.5,
+   *         x: 0.9,
+   *         y: 0.9,
    *         scale: 0.75,
    *       },
    *     },
@@ -985,8 +985,24 @@ export interface MessageAddReactionParams {
    * Optional position, size and rotation of a sticker on the target bubble. Only
    * valid when type is "sticker".
    *
-   * Every field is independent and optional — omit the object entirely, or any field
-   * within it, to keep the default (centred, default size, unrotated).
+   * `x` and `y` set where the sticker's centre lands, as a fraction of the target
+   * bubble's width and height:
+   *
+   * | Position            | `x` | `y` |
+   * | ------------------- | --- | --- |
+   * | Top-left corner     | 0   | 0   |
+   * | Top-right corner    | 1   | 0   |
+   * | Centre              | 0.5 | 0.5 |
+   * | Bottom-left corner  | 0   | 1   |
+   * | Bottom-right corner | 1   | 1   |
+   *
+   * Every field is independent and optional. Omit `x` and `y` and the sticker lands
+   * on the top-left corner.
+   *
+   * Position and size are relative to the target bubble, so a sticker keeps its
+   * place on the bubble on every device. Its size follows the bubble's width: the
+   * same sticker is drawn smaller on a bubble that a recipient's screen renders
+   * narrower than the sender's.
    */
   placement?: MessageAddReactionParams.Placement;
 
@@ -1009,8 +1025,24 @@ export namespace MessageAddReactionParams {
    * Optional position, size and rotation of a sticker on the target bubble. Only
    * valid when type is "sticker".
    *
-   * Every field is independent and optional — omit the object entirely, or any field
-   * within it, to keep the default (centred, default size, unrotated).
+   * `x` and `y` set where the sticker's centre lands, as a fraction of the target
+   * bubble's width and height:
+   *
+   * | Position            | `x` | `y` |
+   * | ------------------- | --- | --- |
+   * | Top-left corner     | 0   | 0   |
+   * | Top-right corner    | 1   | 0   |
+   * | Centre              | 0.5 | 0.5 |
+   * | Bottom-left corner  | 0   | 1   |
+   * | Bottom-right corner | 1   | 1   |
+   *
+   * Every field is independent and optional. Omit `x` and `y` and the sticker lands
+   * on the top-left corner.
+   *
+   * Position and size are relative to the target bubble, so a sticker keeps its
+   * place on the bubble on every device. Its size follows the bubble's width: the
+   * same sticker is drawn smaller on a bubble that a recipient's screen renders
+   * narrower than the sender's.
    */
   export interface Placement {
     /**
@@ -1029,14 +1061,20 @@ export namespace MessageAddReactionParams {
     scale?: number;
 
     /**
-     * Horizontal position on the target bubble, from -1 (far left) to 1 (far right). 0
-     * is centred.
+     * Where the sticker's centre sits horizontally, as a fraction of the target
+     * bubble's width: 0 is its left edge, 0.5 its centre and 1 its right edge. Values
+     * outside -1–1 are clamped.
+     *
+     * Avoid negative values: a sticker left of a received bubble makes the recipient's
+     * device shift the whole message to fit it.
      */
     x?: number;
 
     /**
-     * Vertical position on the target bubble, from -1 (top) to 1 (bottom). 0 is
-     * centred.
+     * Where the sticker's centre sits vertically, as a fraction of the target bubble's
+     * height: 0 is its top edge, 0.5 its centre and 1 its bottom edge. Negative values
+     * place it above the bubble; `-0.3` sits just above the top edge. Values outside
+     * -1–1 are clamped.
      */
     y?: number;
   }
@@ -1240,8 +1278,24 @@ export interface MessageUpdateStickerPlacementParams {
    * Body param: Optional position, size and rotation of a sticker on the target
    * bubble. Only valid when type is "sticker".
    *
-   * Every field is independent and optional — omit the object entirely, or any field
-   * within it, to keep the default (centred, default size, unrotated).
+   * `x` and `y` set where the sticker's centre lands, as a fraction of the target
+   * bubble's width and height:
+   *
+   * | Position            | `x` | `y` |
+   * | ------------------- | --- | --- |
+   * | Top-left corner     | 0   | 0   |
+   * | Top-right corner    | 1   | 0   |
+   * | Centre              | 0.5 | 0.5 |
+   * | Bottom-left corner  | 0   | 1   |
+   * | Bottom-right corner | 1   | 1   |
+   *
+   * Every field is independent and optional. Omit `x` and `y` and the sticker lands
+   * on the top-left corner.
+   *
+   * Position and size are relative to the target bubble, so a sticker keeps its
+   * place on the bubble on every device. Its size follows the bubble's width: the
+   * same sticker is drawn smaller on a bubble that a recipient's screen renders
+   * narrower than the sender's.
    */
   placement: MessageUpdateStickerPlacementParams.Placement;
 }
@@ -1251,8 +1305,24 @@ export namespace MessageUpdateStickerPlacementParams {
    * Optional position, size and rotation of a sticker on the target bubble. Only
    * valid when type is "sticker".
    *
-   * Every field is independent and optional — omit the object entirely, or any field
-   * within it, to keep the default (centred, default size, unrotated).
+   * `x` and `y` set where the sticker's centre lands, as a fraction of the target
+   * bubble's width and height:
+   *
+   * | Position            | `x` | `y` |
+   * | ------------------- | --- | --- |
+   * | Top-left corner     | 0   | 0   |
+   * | Top-right corner    | 1   | 0   |
+   * | Centre              | 0.5 | 0.5 |
+   * | Bottom-left corner  | 0   | 1   |
+   * | Bottom-right corner | 1   | 1   |
+   *
+   * Every field is independent and optional. Omit `x` and `y` and the sticker lands
+   * on the top-left corner.
+   *
+   * Position and size are relative to the target bubble, so a sticker keeps its
+   * place on the bubble on every device. Its size follows the bubble's width: the
+   * same sticker is drawn smaller on a bubble that a recipient's screen renders
+   * narrower than the sender's.
    */
   export interface Placement {
     /**
@@ -1271,14 +1341,20 @@ export namespace MessageUpdateStickerPlacementParams {
     scale?: number;
 
     /**
-     * Horizontal position on the target bubble, from -1 (far left) to 1 (far right). 0
-     * is centred.
+     * Where the sticker's centre sits horizontally, as a fraction of the target
+     * bubble's width: 0 is its left edge, 0.5 its centre and 1 its right edge. Values
+     * outside -1–1 are clamped.
+     *
+     * Avoid negative values: a sticker left of a received bubble makes the recipient's
+     * device shift the whole message to fit it.
      */
     x?: number;
 
     /**
-     * Vertical position on the target bubble, from -1 (top) to 1 (bottom). 0 is
-     * centred.
+     * Where the sticker's centre sits vertically, as a fraction of the target bubble's
+     * height: 0 is its top edge, 0.5 its centre and 1 its bottom edge. Negative values
+     * place it above the bubble; `-0.3` sits just above the top edge. Values outside
+     * -1–1 are clamped.
      */
     y?: number;
   }
