@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.3](https://github.com/linq-team/linq-node/compare/v0.82.2...v0.82.3) (2026-11-09)
+
+
+### Documentation
+
+* clarify sticker placement coordinate system and behavior ([2470048](https://github.com/linq-team/linq-node/commit/247004842f8bdc3962f15419daf87f4b004a9fa2))
+
 ## [0.82.2](https://github.com/linq-team/linq-node/compare/v0.82.1...v0.82.2) (2026-11-06)
 
 
