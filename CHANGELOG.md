@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.5](https://github.com/linq-team/linq-node/compare/v0.82.4...v0.82.5) (2026-11-10)
+
+
+### Bug Fixes
+
+* clarify message.failed webhook event ordering and delivery possibilities ([f18990b](https://github.com/linq-team/linq-node/commit/f18990b31b109bb7cd8b7718534348faca1b0ecb))
+
 ## [0.82.4](https://github.com/linq-team/linq-node/compare/v0.82.3...v0.82.4) (2026-11-10)
 
 
