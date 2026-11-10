@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.4](https://github.com/linq-team/linq-node/compare/v0.82.3...v0.82.4) (2026-11-10)
+
+
+### Bug Fixes
+
+* update message timeout error reason text ([8610d2b](https://github.com/linq-team/linq-node/commit/8610d2b0f5c6b6e3e46bdc8dce5fd69bfff9f62f))
+
 ## [0.82.3](https://github.com/linq-team/linq-node/compare/v0.82.2...v0.82.3) (2026-11-09)
 
 
