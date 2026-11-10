@@ -1181,8 +1181,9 @@ export interface MessageFailedWebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    *
-   * In rare cases the message can still be delivered after this event fires — a
-   * `message.delivered` webhook for the same message ID may follow.
+   * This event can follow `message.sent`. The message can still be delivered after
+   * this event fires, most often with code 4006 — a `message.delivered` webhook for
+   * the same message ID may follow.
    */
   data: MessageFailedWebhookEvent.Data;
 
@@ -1224,8 +1225,9 @@ export namespace MessageFailedWebhookEvent {
    * [WebhookErrorCode](#/components/schemas/WebhookErrorCode) for the full error
    * code reference.
    *
-   * In rare cases the message can still be delivered after this event fires — a
-   * `message.delivered` webhook for the same message ID may follow.
+   * This event can follow `message.sent`. The message can still be delivered after
+   * this event fires, most often with code 4006 — a `message.delivered` webhook for
+   * the same message ID may follow.
    */
   export interface Data {
     /**
