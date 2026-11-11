@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.6](https://github.com/linq-team/linq-node/compare/v0.82.5...v0.82.6) (2026-11-11)
+
+
+### Bug Fixes
+
+* update webhook retry backoff timing and add additional retry attempts ([c9af3c8](https://github.com/linq-team/linq-node/commit/c9af3c800420e41b10522d3bbb0c3d9b79cde4b9))
+
 ## [0.82.5](https://github.com/linq-team/linq-node/compare/v0.82.4...v0.82.5) (2026-11-10)
 
 
