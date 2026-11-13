@@ -202,9 +202,11 @@ export interface ReputationDriver {
    *   back in. Every send to them is rejected with `403` (error code `2024`),
    *   including a final courtesy message — to send one telling them they can reply
    *   to resume, set `override_optout: true` on that single request.
-   * - `flagged` — The line is currently restricted and its messages may not be
-   *   reaching recipients. Move active traffic to a healthy line now, and let this
-   *   one recover before sending more.
+   * - `flagged` — This line has a delivery problem. Add a line or contact support.
+   *   Our team can help move your conversations to a working line. On a line with no
+   *   recent conversations: This line has a delivery problem. It has no recent
+   *   conversations, so nothing needs to move. Our team can help you get a working
+   *   line.
    * - `other` — Fallback for a signal without dedicated partner copy.
    */
   key?: ReputationDriverKey;
@@ -244,9 +246,11 @@ export interface ReputationDriver {
  *   back in. Every send to them is rejected with `403` (error code `2024`),
  *   including a final courtesy message — to send one telling them they can reply
  *   to resume, set `override_optout: true` on that single request.
- * - `flagged` — The line is currently restricted and its messages may not be
- *   reaching recipients. Move active traffic to a healthy line now, and let this
- *   one recover before sending more.
+ * - `flagged` — This line has a delivery problem. Add a line or contact support.
+ *   Our team can help move your conversations to a working line. On a line with no
+ *   recent conversations: This line has a delivery problem. It has no recent
+ *   conversations, so nothing needs to move. Our team can help you get a working
+ *   line.
  * - `other` — Fallback for a signal without dedicated partner copy.
  */
 export type ReputationDriverKey =
