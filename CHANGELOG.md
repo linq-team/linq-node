@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.82.7](https://github.com/linq-team/linq-node/compare/v0.82.6...v0.82.7) (2026-11-13)
+
+
+### Bug Fixes
+
+* clarify messaging for flagged line delivery problems ([4ace23e](https://github.com/linq-team/linq-node/commit/4ace23e4f96d28eeaf9e3b062f8650c634d77b53))
+
 ## [0.82.6](https://github.com/linq-team/linq-node/compare/v0.82.5...v0.82.6) (2026-11-11)
 
 
