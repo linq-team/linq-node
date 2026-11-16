@@ -149,6 +149,7 @@ describe('resource messages', () => {
       emoji: '🎉',
       part_index: 1,
       placement: {
+        anchor: 'bottom_right',
         rotation: 15,
         scale: 1.25,
         x: 0.9,
@@ -249,6 +250,7 @@ describe('resource messages', () => {
     const response = await client.messages.updateStickerPlacement('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       messageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       placement: {
+        anchor: 'bottom_right',
         rotation: 15,
         scale: 0.75,
         x: 0.9,
