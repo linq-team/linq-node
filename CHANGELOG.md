@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.83.0](https://github.com/linq-team/linq-node/compare/v0.82.7...v0.83.0) (2026-11-16)
+
+
+### Features
+
+* add anchor parameter for sticker placement alignment ([30c21d7](https://github.com/linq-team/linq-node/commit/30c21d7378e0c2f2a6be5c53e3ca46d1cf21d6dc))
+
 ## [0.82.7](https://github.com/linq-team/linq-node/compare/v0.82.6...v0.82.7) (2026-11-13)
 
 
