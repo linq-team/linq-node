@@ -254,8 +254,10 @@ export class Messages extends APIResource {
    * **Stickers** are iMessage-only and cannot be removed, so `operation: "remove"`
    * with `type: "sticker"` is rejected. Position, size and rotation are optional via
    * `placement`, and can be changed afterwards with
-   * `PATCH /v3/messages/{messageId}/reactions/{reactionId}`. An animated image peels
-   * as an animated sticker, in whatever shape the file already has.
+   * `PATCH /v3/messages/{messageId}/reactions/{reactionId}`. A GIF with a
+   * transparent background peels as an animated sticker, in the shape of the file. A
+   * GIF with a solid background has its subject cut out and peels as a still; if no
+   * subject is found, it peels as-is.
    *
    * **Polls** take stickers only. Any tapback on a poll message — standard or
    * `custom` — is rejected with a 400.
@@ -1046,6 +1048,31 @@ export namespace MessageAddReactionParams {
    */
   export interface Placement {
     /**
+     * Which point of the sticker sits at `x`/`y`. Omit it to place the sticker's
+     * centre there, as without `anchor`.
+     *
+     * Use it to line a sticker up with the bubble's edges:
+     * `x: 1, y: 0, anchor: "bottom_right"` rests the sticker on the bubble's top-right
+     * corner, right edges flush. With `anchor` set, `x`/`y` past the bubble's edge are
+     * measured in sticker widths/heights, so `y: -0.1` lifts it clear by the same gap
+     * on every message. A sticker never extends past the bubble's left edge.
+     *
+     * With `anchor` set, `scale` is the size on an iPhone on every message, and the
+     * edges stay lined up on every device. Other screens scale the sticker with the
+     * bubble.
+     */
+    anchor?:
+      | 'top_left'
+      | 'top'
+      | 'top_right'
+      | 'left'
+      | 'center'
+      | 'right'
+      | 'bottom_left'
+      | 'bottom'
+      | 'bottom_right';
+
+    /**
      * Clockwise rotation in degrees.
      */
     rotation?: number;
@@ -1325,6 +1352,31 @@ export namespace MessageUpdateStickerPlacementParams {
    * narrower than the sender's.
    */
   export interface Placement {
+    /**
+     * Which point of the sticker sits at `x`/`y`. Omit it to place the sticker's
+     * centre there, as without `anchor`.
+     *
+     * Use it to line a sticker up with the bubble's edges:
+     * `x: 1, y: 0, anchor: "bottom_right"` rests the sticker on the bubble's top-right
+     * corner, right edges flush. With `anchor` set, `x`/`y` past the bubble's edge are
+     * measured in sticker widths/heights, so `y: -0.1` lifts it clear by the same gap
+     * on every message. A sticker never extends past the bubble's left edge.
+     *
+     * With `anchor` set, `scale` is the size on an iPhone on every message, and the
+     * edges stay lined up on every device. Other screens scale the sticker with the
+     * bubble.
+     */
+    anchor?:
+      | 'top_left'
+      | 'top'
+      | 'top_right'
+      | 'left'
+      | 'center'
+      | 'right'
+      | 'bottom_left'
+      | 'bottom'
+      | 'bottom_right';
+
     /**
      * Clockwise rotation in degrees.
      */

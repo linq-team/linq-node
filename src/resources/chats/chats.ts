@@ -543,8 +543,9 @@ export interface MediaPart {
    * background. An image that has already been cut out is sent as-is. If no subject
    * can be found, the image sends as an ordinary photo.
    *
-   * An animated image sends as an animated sticker, in whatever shape the file
-   * already has — the cut-out does not apply to it.
+   * A GIF with a transparent background sends as an animated sticker, in the shape
+   * of the file. A GIF with a solid background has its subject cut out and sends as
+   * a still; if no subject is found, it sends as-is.
    *
    * **iMessage only.** On SMS/RCS the flag is ignored and the image sends as a
    * photo.
