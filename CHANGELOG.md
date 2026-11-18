@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.84.0](https://github.com/linq-team/linq-node/compare/v0.83.1...v0.84.0) (2026-11-18)
+
+
+### Features
+
+* clarify imessage capability check behavior without from parameter ([48bdd1a](https://github.com/linq-team/linq-node/commit/48bdd1aaa2bab3c8d4cd393f7ac1bbd20072f074))
+
 ## [0.83.1](https://github.com/linq-team/linq-node/compare/v0.83.0...v0.83.1) (2026-11-18)
 
 
