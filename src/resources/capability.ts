@@ -12,6 +12,9 @@ export class Capability extends APIResource {
    * Check whether a recipient address (phone number or email) is reachable via
    * iMessage.
    *
+   * Without `from`, the check runs from one of your phone numbers in the same
+   * environment as the API token making the request.
+   *
    * @example
    * ```ts
    * const handleCheckResponse =
