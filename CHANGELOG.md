@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.83.1](https://github.com/linq-team/linq-node/compare/v0.83.0...v0.83.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* clarify sms exclusion for send failure webhook event 4006 ([bec9e38](https://github.com/linq-team/linq-node/commit/bec9e38427d8eaa7e2ccb540bf33374d4baaeec1))
+
 ## [0.83.0](https://github.com/linq-team/linq-node/compare/v0.82.7...v0.83.0) (2026-11-16)
 
 
