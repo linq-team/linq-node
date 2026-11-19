@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.0](https://github.com/linq-team/linq-node/compare/v0.85.2...v0.86.0) (2026-11-19)
+
+
+### Features
+
+* add text_decorations support to mention parts ([1a67f1b](https://github.com/linq-team/linq-node/commit/1a67f1ba9899f54179805bacf83cd78214be1d44))
+
 ## [0.85.2](https://github.com/linq-team/linq-node/compare/v0.85.1...v0.85.2) (2026-11-19)
 
 
