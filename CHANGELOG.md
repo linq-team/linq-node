@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.1](https://github.com/linq-team/linq-node/compare/v0.86.0...v0.86.1) (2026-11-19)
+
+
+### Bug Fixes
+
+* update example in reputation driver label description ([f26807e](https://github.com/linq-team/linq-node/commit/f26807ea625d7984dc57b710cdf7f0e0565a82b0))
+
 ## [0.86.0](https://github.com/linq-team/linq-node/compare/v0.85.2...v0.86.0) (2026-11-19)
 
 
