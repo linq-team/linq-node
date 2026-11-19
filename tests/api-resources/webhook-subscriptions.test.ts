@@ -29,19 +29,9 @@ describe('resource webhookSubscriptions', () => {
       subscribed_events: ['message.sent', 'message.delivered', 'message.read'],
       target_url: 'https://webhooks.example.com/linq/events',
       phone_numbers: ['+12025551234', '+12025559876'],
+      routing_id_header: 'X-Chat-Id',
+      routing_key_header: 'X-Route-Token',
     });
-  });
-
-  // Mock server tests are disabled
-  test.skip('list', async () => {
-    const responsePromise = client.webhookSubscriptions.list();
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
   });
 
   // Mock server tests are disabled
@@ -59,6 +49,18 @@ describe('resource webhookSubscriptions', () => {
   // Mock server tests are disabled
   test.skip('update', async () => {
     const responsePromise = client.webhookSubscriptions.update('b2c3d4e5-f6a7-8901-bcde-f23456789012', {});
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('list', async () => {
+    const responsePromise = client.webhookSubscriptions.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
