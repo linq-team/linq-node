@@ -212,6 +212,11 @@ export interface ReputationDriver {
   key?: ReputationDriverKey;
 
   /**
+   * Display name for `key`, ready to show as-is (for example "Delivery issue").
+   */
+  label?: string;
+
+  /**
    * A specific observed figure when available; otherwise a short qualitative note.
    */
   metric?: string;
