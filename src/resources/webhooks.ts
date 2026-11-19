@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as PhoneNumbersAPI from './phone-numbers';
 import * as Shared from './shared';
 import * as WebhookEventsAPI from './webhook-events';
 import { Webhook } from 'standardwebhooks';
@@ -3962,6 +3963,21 @@ export namespace PhoneNumberStatusUpdatedWebhookEvent {
      * The previous service status
      */
     previous_status: 'ACTIVE' | 'FLAGGED';
+
+    /**
+     * The new line state
+     */
+    new_state?: 'HEALTHY' | 'WATCH' | 'NEEDS_ATTENTION' | 'DELIVERY_LIMITED';
+
+    /**
+     * The previous line state
+     */
+    previous_state?: 'HEALTHY' | 'WATCH' | 'NEEDS_ATTENTION' | 'DELIVERY_LIMITED';
+
+    /**
+     * What is behind `new_state`, in a stable order. Empty when nothing is.
+     */
+    reason_codes?: Array<PhoneNumbersAPI.ReputationDriverKey>;
   }
 }
 
