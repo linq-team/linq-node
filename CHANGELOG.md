@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.85.0](https://github.com/linq-team/linq-node/compare/v0.84.0...v0.85.0) (2026-11-19)
+
+
+### Features
+
+* add label field to reputation driver details ([9d70140](https://github.com/linq-team/linq-node/commit/9d70140ff1d8eaa9de198ff2922cdfe0ad114ead))
+
 ## [0.84.0](https://github.com/linq-team/linq-node/compare/v0.83.1...v0.84.0) (2026-11-18)
 
 
