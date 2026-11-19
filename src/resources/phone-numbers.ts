@@ -213,7 +213,7 @@ export interface ReputationDriver {
   key?: ReputationDriverKey;
 
   /**
-   * Display name for `key`, ready to show as-is (for example "Delivery Limited").
+   * Display name for `key`, ready to show as-is (for example "Delivery problem").
    */
   label?: string;
 
