@@ -37,7 +37,7 @@ const client = new LinqAPIV3({
 
 const chat = await client.chats.create({
   from: '+12052535597',
-  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  message: {},
   to: ['+12052532136'],
 });
 
@@ -58,7 +58,7 @@ const client = new LinqAPIV3({
 
 const params: LinqAPIV3.ChatCreateParams = {
   from: '+12052535597',
-  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  message: {},
   to: ['+12052532136'],
 };
 const chat: LinqAPIV3.ChatCreateResponse = await client.chats.create(params);
@@ -77,7 +77,7 @@ a subclass of `APIError` will be thrown:
 const chat = await client.chats
   .create({
     from: '+12052535597',
-    message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+    message: {},
     to: ['+12052532136'],
   })
   .catch(async (err) => {
@@ -122,7 +122,7 @@ const client = new LinqAPIV3({
 // Or, configure per-request:
 await client.chats.create({
   from: '+12052535597',
-  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  message: {},
   to: ['+12052532136'],
 }, {
   maxRetries: 5,
@@ -143,7 +143,7 @@ const client = new LinqAPIV3({
 // Override per-request:
 await client.chats.create({
   from: '+12052535597',
-  message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+  message: {},
   to: ['+12052532136'],
 }, {
   timeout: 5 * 1000,
@@ -202,7 +202,7 @@ const client = new LinqAPIV3();
 const response = await client.chats
   .create({
     from: '+12052535597',
-    message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+    message: {},
     to: ['+12052532136'],
   })
   .asResponse();
@@ -212,7 +212,7 @@ console.log(response.statusText); // access the underlying Response object
 const { data: chat, response: raw } = await client.chats
   .create({
     from: '+12052535597',
-    message: { parts: [{ type: 'text', value: 'Hello! How can I help you today?' }] },
+    message: {},
     to: ['+12052532136'],
   })
   .withResponse();
