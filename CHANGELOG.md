@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.85.1](https://github.com/linq-team/linq-node/compare/v0.85.0...v0.85.1) (2026-11-19)
+
+
+### Bug Fixes
+
+* improve clarity in reputation driver descriptions ([664eb92](https://github.com/linq-team/linq-node/commit/664eb92d4473cd1d74f2d5d36b19643631499212))
+
 ## [0.85.0](https://github.com/linq-team/linq-node/compare/v0.84.0...v0.85.0) (2026-11-19)
 
 
