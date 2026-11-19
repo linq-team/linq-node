@@ -957,6 +957,12 @@ export interface TextPart {
    * highlighted and are notified even if they have muted the chat. SMS and RCS
    * recipients receive the same message as plain text — no highlight, and no mute
    * override. One send, two experiences.
+   *
+   * A mention part can also carry `text_decorations` (e.g. the mention on `"Kevin"`
+   * and bold on `"today"` in `"Kevin, the report is due today"`). A decoration
+   * cannot overlap the mention, which is `mention_range` or the entire `value`
+   * without it; iMessage drops the mention under a decoration. It cannot be combined
+   * with `inline_stickers`.
    */
   mention?: string;
 
