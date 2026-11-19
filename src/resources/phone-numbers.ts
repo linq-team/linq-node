@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as PhoneNumbersAPI from './phone-numbers';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -212,7 +213,7 @@ export interface ReputationDriver {
   key?: ReputationDriverKey;
 
   /**
-   * Display name for `key`, ready to show as-is (for example "Delivery issue").
+   * Display name for `key`, ready to show as-is (for example "Delivery Limited").
    */
   label?: string;
 
@@ -321,6 +322,10 @@ export interface ReputationReport {
   primary_driver?: string;
 
   /**
+   * **Legacy.** Use `state`. Derived from `state`: `HEALTHY` and `WATCH` report
+   * `HEALTHY`, `NEEDS_ATTENTION` reports `AT_RISK`, and `DELIVERY_LIMITED` reports
+   * `CRITICAL`. It stays available for a long notice period before removal.
+   *
    * Current reputation of this phone line.
    *
    * - `HEALTHY` — The line is in good standing. Send normally.
@@ -455,6 +460,29 @@ export namespace PhoneNumberListResponse {
       doc_url: string;
 
       /**
+       * What is behind `state`, in a stable order. Empty when nothing is. Same
+       * vocabulary as the reputation report's drivers.
+       */
+      reason_codes: Array<PhoneNumbersAPI.ReputationDriverKey>;
+
+      /**
+       * Current state of this phone line.
+       *
+       * - `HEALTHY` — This line is in good standing.
+       * - `WATCH` — A recent change in activity that usually settles on its own.
+       * - `NEEDS_ATTENTION` — A sustained pattern that needs a change in how this line
+       *   is used.
+       * - `DELIVERY_LIMITED` — Outbound messages from this line are not being delivered.
+       *
+       * Defaults to `HEALTHY` for lines that have not yet been scored.
+       */
+      state: 'HEALTHY' | 'WATCH' | 'NEEDS_ATTENTION' | 'DELIVERY_LIMITED';
+
+      /**
+       * **Legacy.** Use `state`. Derived from `state`: `HEALTHY` and `WATCH` report
+       * `HEALTHY`, `NEEDS_ATTENTION` reports `AT_RISK`, and `DELIVERY_LIMITED` reports
+       * `CRITICAL`. It stays available for a long notice period before removal.
+       *
        * Current reputation of this phone line.
        *
        * - `HEALTHY` — The line is in good standing. Send normally.
