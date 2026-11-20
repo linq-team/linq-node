@@ -196,8 +196,9 @@ export interface ReputationDriver {
    *   prioritize people who have already engaged with you, and spread sustained high
    *   volume across additional lines.
    * - `new_conversation_rate` — This line is starting too many brand-new
-   *   conversations in a single day. Spread new conversations out over time instead
-   *   of starting many at once.
+   *   conversations in a single day. A smaller burst is an early warning; it only
+   *   affects the line together with other signals. Spread new conversations out
+   *   over time instead of starting many at once.
    * - `opt_out_handling` — Recipients asked this line to stop. Continuing to message
    *   someone after they ask you to stop is a serious deliverability and trust risk.
    *   Honor every stop request immediately: send nothing further to that recipient
@@ -245,8 +246,9 @@ export interface ReputationDriver {
  *   prioritize people who have already engaged with you, and spread sustained high
  *   volume across additional lines.
  * - `new_conversation_rate` — This line is starting too many brand-new
- *   conversations in a single day. Spread new conversations out over time instead
- *   of starting many at once.
+ *   conversations in a single day. A smaller burst is an early warning; it only
+ *   affects the line together with other signals. Spread new conversations out
+ *   over time instead of starting many at once.
  * - `opt_out_handling` — Recipients asked this line to stop. Continuing to message
  *   someone after they ask you to stop is a serious deliverability and trust risk.
  *   Honor every stop request immediately: send nothing further to that recipient
