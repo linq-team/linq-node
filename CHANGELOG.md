@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.2](https://github.com/linq-team/linq-node/compare/v0.86.1...v0.86.2) (2026-11-20)
+
+
+### Bug Fixes
+
+* clarify new conversation rate warning behavior ([bb58a49](https://github.com/linq-team/linq-node/commit/bb58a49f6f35e8b07c52398eddf6b58b4a41e82f))
+
 ## [0.86.1](https://github.com/linq-team/linq-node/compare/v0.86.0...v0.86.1) (2026-11-19)
 
 
