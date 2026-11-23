@@ -457,7 +457,7 @@ export namespace PhoneNumberListResponse {
      */
     export interface Reputation {
       /**
-       * Deep-link to the relevant section of the Phone Reputation guide for this status.
+       * Deep-link to the section of the Phone Reputation guide for this line's `state`.
        */
       doc_url: string;
 
