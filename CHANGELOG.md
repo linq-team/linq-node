@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.3](https://github.com/linq-team/linq-node/compare/v0.86.2...v0.86.3) (2026-11-23)
+
+
+### Bug Fixes
+
+* update phone reputation documentation links and descriptions ([13e94fc](https://github.com/linq-team/linq-node/commit/13e94fceeca6fb1e81894b390d914a40c007b4d5))
+
 ## [0.86.2](https://github.com/linq-team/linq-node/compare/v0.86.1...v0.86.2) (2026-11-20)
 
 
