@@ -14,6 +14,18 @@ name: Auto-merge release PR
 # release branch cannot hijack it; it is unreachable from fork PRs, so the token
 # is never exposed to untrusted code; and it re-fires after a re-run, so a
 # cleared flake merges with no new push.
+#
+# The merge runs as the linq-release-bot GitHub App, a bypass actor on the
+# release-bots ruleset, so it needs no --admin. The App key lives in the
+# main-only `release-bot` environment of this repo: only a workflow running from
+# main can read it, and workflow_run always runs from main. Setup:
+# linq-team/onboarding workflow/rollout/release-bot.md.
+#
+# Transition: until the App bypass is live on every SDK repo (onboarding on-360),
+# a refused App merge falls back to --admin on RELEASE_PLEASE_TOKEN with a
+# warning. The CI-flake rerun also stays on that token, since the App has no
+# Actions permission. A follow-up removes both once a release PR merges on the
+# App path.
 
 on:
   workflow_run:
@@ -36,13 +48,33 @@ jobs:
       github.event.workflow_run.head_branch == 'stainless/release' &&
       github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
+    # Main-only environment holding RELEASE_BOT_APP_ID / RELEASE_BOT_PRIVATE_KEY.
+    environment: release-bot
     steps:
+      # Non-fatal during the transition: with no App token the step below
+      # falls back to the PAT instead of leaving the release PR open.
+      - name: Mint release-bot token
+        id: app-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          # Only what a merge needs. Workflows: release PRs change
+          # .github/workflows/*, which an App can't merge without it.
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
+
       - name: Merge, retry, or stand down
         env:
-          # The `main` ruleset requires an approving review, which no bot can
-          # give itself, and GITHUB_TOKEN cannot bypass a ruleset — so the merge
-          # needs --admin and a PAT. Same org secret release-please.yml uses.
-          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          # The App merges: the release-bots ruleset lets it skip the required
+          # review. GITHUB_TOKEN can't bypass a ruleset.
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          # Transition fallback and the CI rerun (see header). Same org secret
+          # release-please.yml uses.
+          PAT_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.RELEASE_PLEASE_TOKEN }}
           # No checkout in this job, so gh has no git context to infer from.
           GH_REPO: ${{ github.repository }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion }}
@@ -60,7 +92,7 @@ jobs:
             # with run_attempt=2, so a second failure falls through and stops.
             if [ "$ATTEMPT" -lt 2 ]; then
               echo "CI failed on attempt ${ATTEMPT} — re-running failed jobs."
-              gh run rerun "$RUN_ID" --failed
+              GH_TOKEN="$PAT_TOKEN" gh run rerun "$RUN_ID" --failed
             else
               echo "::warning::CI failed on attempt ${ATTEMPT} — release PR left open."
               echo "CI failed after ${ATTEMPT} attempts. Release PR not merged." \
@@ -90,10 +122,24 @@ jobs:
             exit 0
           fi
 
-          # Squash is the only method the repos enable; --admin covers the
-          # required review. Both are why this can't use `gh pr merge --auto`.
-          # --match-head-commit refuses the merge if the PR head moved after CI
-          # tested HEAD_SHA, so only tested code is merged.
-          echo "CI green — merging release PR #${N} at ${HEAD_SHA}."
-          gh pr merge "$N" --squash --admin --match-head-commit "$HEAD_SHA"
-          echo "Auto-merged release PR #${N}." >> "$GITHUB_STEP_SUMMARY"
+          # Merge through the REST API, not `gh pr merge`: gh refuses locally
+          # when the PR's merge state is BLOCKED (a required review is missing)
+          # unless given --admin, and that state doesn't account for the App's
+          # bypass. The API leaves the bypass decision to GitHub. Squash is the
+          # only method the release-bots ruleset allows. `sha` refuses the merge
+          # if the PR head moved after CI tested HEAD_SHA, so only tested code
+          # is merged.
+          echo "CI green — merging release PR #${N} at ${HEAD_SHA} as linq-release-bot."
+          if [ -n "$APP_TOKEN" ] && GH_TOKEN="$APP_TOKEN" gh api -X PUT \
+              "repos/${GH_REPO}/pulls/${N}/merge" \
+              -f merge_method=squash -f sha="$HEAD_SHA" --silent; then
+            echo "Auto-merged release PR #${N} as linq-release-bot." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # Transition fallback (see header): the App's bypass isn't live here
+          # yet. Same tested-commit guard. The refusal reason is in the log
+          # above (gh api prints the API error).
+          echo "::warning::linq-release-bot merge of #${N} refused or no App token — falling back to --admin on RELEASE_PLEASE_TOKEN."
+          GH_TOKEN="$PAT_TOKEN" gh pr merge "$N" --squash --admin --match-head-commit "$HEAD_SHA"
+          echo "Auto-merged release PR #${N} via the RELEASE_PLEASE_TOKEN fallback (App merge refused or no App token)." >> "$GITHUB_STEP_SUMMARY"
