@@ -39,9 +39,21 @@ jobs:
           # workflow with a template error even though `if` skips the step.
           RELEASE_PR: ${{ steps.release.outputs.pr }}
         run: |
+          set -euo pipefail
           N=$(jq -r '.number' <<< "$RELEASE_PR")
+          # This repo is public and allows forks. Merge only a same-repo PR, and
+          # bind the merge to the head commit read here so a push between this
+          # read and the merge is refused rather than merged.
+          read -r CROSS SHA < <(gh pr view "$N" \
+            --json isCrossRepository,headRefOid \
+            --jq '"\(.isCrossRepository) \(.headRefOid)"')
+          if [ "$CROSS" != false ]; then
+            echo "::error::Release PR #${N} is from a fork; not merging."
+            exit 1
+          fi
           # The main ruleset requires reviews and only allows the merge-commit
           # method, which the bot token cannot satisfy — merging needs an
           # explicit admin bypass. Try a plain merge first so this keeps
           # working if the policy is ever relaxed.
-          gh pr merge "$N" --squash || gh pr merge "$N" --squash --admin
+          gh pr merge "$N" --squash --match-head-commit "$SHA" \
+            || gh pr merge "$N" --squash --admin --match-head-commit "$SHA"
