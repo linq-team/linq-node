@@ -18,7 +18,7 @@ decisions:
     options:
       - 'A: same gating as lint/build (push, or fork PR). Exactly one `ci` per head SHA, always backed by real results. Same-repo PRs get `ci` via the push run.'
       - 'B: run on every pull_request too. A same-repo PR gets a second `ci` from the pull_request run whose needs were all skipped, so it passes vacuously and could satisfy the required check.'
-      - "C: change lint/build to also run on same-repo PRs to main. Doubles CI runs and edits Stainless-generated job conditions, outside this ticket's scope."
+      - 'C: run lint/build on every pull_request event (any base branch except stl-preview-*), and run `ci` after them in every run. Same-repo PRs run lint/build twice (push and pull_request). Edits Stainless-generated job conditions, which a future regeneration could revert.'
     recommend: 'C'
     why: 'A was tried on #316: the pull_request run still produced a skipped `ci` check, and skipped can satisfy a required check. C makes every `ci` check reflect real lint/build results. User approved C on 2026-11-24.'
     supersedes: []

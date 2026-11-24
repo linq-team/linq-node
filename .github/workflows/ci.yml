@@ -67,9 +67,11 @@ jobs:
         run: ./scripts/build
 
   ci:
+    timeout-minutes: 5
     name: ci
     needs: [lint, build]
     runs-on: ubuntu-latest
+    permissions: {}
     if: always()
     steps:
       - name: Check required jobs
