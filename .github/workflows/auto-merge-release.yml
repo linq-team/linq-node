@@ -48,6 +48,8 @@ jobs:
           CONCLUSION: ${{ github.event.workflow_run.conclusion }}
           ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
           RUN_ID: ${{ github.event.workflow_run.id }}
+          # The commit CI just tested. The merge is bound to it below.
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           set -euo pipefail
 
@@ -74,15 +76,24 @@ jobs:
             exit 0
           fi
 
+          # --head matches the branch NAME only, and these repos are public and
+          # allow forks: anyone can open a fork PR from a branch named
+          # stainless/release. Take only a same-repo PR whose head is the
+          # commit this CI run tested, so a fork PR is never picked.
+          # jq --arg keeps the SHA out of the program text (gh's --jq has no --arg).
           N=$(gh pr list --head stainless/release --base main --state open \
-            --json number --jq '.[0].number // empty')
+            --json number,isCrossRepository,headRefOid \
+            | jq -r --arg sha "$HEAD_SHA" \
+              '[.[] | select(.isCrossRepository == false and .headRefOid == $sha)][0].number // empty')
           if [ -z "$N" ]; then
-            echo "No open release PR — nothing to merge."
+            echo "No open same-repo release PR at ${HEAD_SHA} (a newer push may have superseded it) — nothing to merge."
             exit 0
           fi
 
           # Squash is the only method the repos enable; --admin covers the
           # required review. Both are why this can't use `gh pr merge --auto`.
-          echo "CI green — merging release PR #${N}."
-          gh pr merge "$N" --squash --admin
+          # --match-head-commit refuses the merge if the PR head moved after CI
+          # tested HEAD_SHA, so only tested code is merged.
+          echo "CI green — merging release PR #${N} at ${HEAD_SHA}."
+          gh pr merge "$N" --squash --admin --match-head-commit "$HEAD_SHA"
           echo "Auto-merged release PR #${N}." >> "$GITHUB_STEP_SUMMARY"
