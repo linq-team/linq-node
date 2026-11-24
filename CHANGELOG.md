@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.5](https://github.com/linq-team/linq-node/compare/v0.86.4...v0.86.5) (2026-11-24)
+
+
+### Chores
+
+* reorder per-language examples in api docs ([0f7acef](https://github.com/linq-team/linq-node/commit/0f7acef95451a73366e702f6a44ed0676a902553))
+
 ## [0.86.4](https://github.com/linq-team/linq-node/compare/v0.86.3...v0.86.4) (2026-11-24)
 
 
