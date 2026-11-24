@@ -65,3 +65,21 @@ jobs:
 
       - name: Check build
         run: ./scripts/build
+
+  ci:
+    name: ci
+    needs: [lint, build]
+    runs-on: ubuntu-latest
+    if: always() && (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    steps:
+      - name: Check required jobs
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "needs results: $RESULTS"
+          for r in $RESULTS; do
+            case "$r" in
+              success|skipped) ;;
+              *) echo "a required job ended with: $r"; exit 1 ;;
+            esac
+          done
