@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.4](https://github.com/linq-team/linq-node/compare/v0.86.3...v0.86.4) (2026-11-24)
+
+
+### Chores
+
+* bump mcp server version and go sdk release ([abb89bf](https://github.com/linq-team/linq-node/commit/abb89bf312f01fde548ab906098d2f4cab4e0a9a))
+
 ## [0.86.3](https://github.com/linq-team/linq-node/compare/v0.86.2...v0.86.3) (2026-11-23)
 
 
